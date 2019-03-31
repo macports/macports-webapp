@@ -1,0 +1,11 @@
+{% if search_results.count > 0 %}
+{% for port in search_results %}
+    <li class="list-group-item"><a href="/ports/{{ port.name }}">{{ port.name }}</a></li>
+{% endfor %}
+{% else %}
+    {% if has_input %}
+        <div class="alert alert-danger" role="alert">
+            Sorry, no matching ports found.
+        </div>
+    {% endif %}
+{% endif %}

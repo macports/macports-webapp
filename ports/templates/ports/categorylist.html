@@ -1,0 +1,15 @@
+{% extends 'ports/layout.html' %}
+
+{% block content %}
+    <br>
+    <h5>{{ portscount }} Ports Found | Category: {{ category }}</h5>
+    <br>
+    <ul class="list-group">
+        {% for port in ports %}
+            <li class="list-group-item"><a href="/ports/{{ port.name }}">{{ port.name }}</a></li>
+        {% endfor %}
+</ul>
+
+{{ port.portdir }}<br>
+
+{% endblock %}
