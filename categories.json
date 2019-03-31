@@ -1,0 +1,639 @@
+[
+  {
+    "model": "ports.Category",
+    "pk": "amusements",
+    "fields": {
+      "name": "amusements"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "aqua",
+    "fields" : {
+      "name": "aqua"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "archivers",
+    "fields" : {
+      "name": "archivers"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "audio",
+    "fields" : {
+      "name": "audio"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "benchmarks",
+    "fields" : {
+      "name": "benchmarks"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "biology",
+    "fields" : {
+      "name": "biology"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "blinkenlights",
+    "fields" : {
+      "name": "blinkenlights"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "cad",
+    "fields" : {
+      "name": "cad"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "chat",
+    "fields" : {
+      "name": "chat"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "chemistry",
+    "fields" : {
+      "name": "chemistry"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "chinese",
+    "fields" : {
+      "name": "chinese"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "comms",
+    "fields" : {
+      "name": "comms"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "compression",
+    "fields" : {
+      "name": "compression"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "cross",
+    "fields" : {
+      "name": "cross"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "crypto",
+    "fields" : {
+      "name": "crypto"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "databases",
+    "fields" : {
+      "name": "databases"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "devel",
+    "fields" : {
+      "name": "devel"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "editors",
+    "fields" : {
+      "name": "editors"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "education",
+    "fields" : {
+      "name": "education"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "electronics",
+    "fields" : {
+      "name": "electronics"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "emulators",
+    "fields" : {
+      "name": "emulators"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "erlang",
+    "fields" : {
+      "name": "erlang"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "finance",
+    "fields" : {
+      "name": "finance"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "fonts",
+    "fields" : {
+      "name": "fonts"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "framework",
+    "fields" : {
+      "name": "framework"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "fuse",
+    "fields" : {
+      "name": "fuse"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "games",
+    "fields" : {
+      "name": "games"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "genealogy",
+    "fields" : {
+      "name": "genealogy"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "gis",
+    "fields" : {
+      "name": "gis"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "gnome",
+    "fields" : {
+      "name": "gnome"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "gnustep",
+    "fields" : {
+      "name": "gnustep"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "graphics",
+    "fields" : {
+      "name": "graphics"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "groovy",
+    "fields" : {
+      "name": "groovy"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "gtk",
+    "fields" : {
+      "name": "gtk"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "haskell",
+    "fields" : {
+      "name": "haskell"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "irc",
+    "fields" : {
+      "name": "irc"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "japanese",
+    "fields" : {
+      "name": "japanese"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "java",
+    "fields" : {
+      "name": "java"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "kde",
+    "fields" : {
+      "name": "kde"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "kde4",
+    "fields" : {
+      "name": "kde4"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "kf5",
+    "fields" : {
+      "name": "kf5"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "lang",
+    "fields" : {
+      "name": "lang"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "libs",
+    "fields" : {
+      "name": "libs"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "lua",
+    "fields" : {
+      "name": "lua"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "macports",
+    "fields" : {
+      "name": "macports"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "mail",
+    "fields" : {
+      "name": "mail"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "math",
+    "fields" : {
+      "name": "math"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "matlab",
+    "fields" : {
+      "name": "matlab"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "ml",
+    "fields" : {
+      "name": "ml"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "mono",
+    "fields" : {
+      "name": "mono"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "multimedia",
+    "fields" : {
+      "name": "multimedia"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "net",
+    "fields" : {
+      "name": "net"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "news",
+    "fields" : {
+      "name": "news"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "ocaml",
+    "fields" : {
+      "name": "ocaml"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "octave",
+    "fields" : {
+      "name": "octave"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "office",
+    "fields" : {
+      "name": "office"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "palm",
+    "fields" : {
+      "name": "palm"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "parallel",
+    "fields" : {
+      "name": "parallel"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "pdf",
+    "fields" : {
+      "name": "pdf"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "perl",
+    "fields" : {
+      "name": "perl"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "php",
+    "fields" : {
+      "name": "php"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "pim",
+    "fields" : {
+      "name": "pim"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "print",
+    "fields" : {
+      "name": "print"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "pure",
+    "fields" : {
+      "name": "pure"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "python",
+    "fields" : {
+      "name": "python"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "qt4",
+    "fields" : {
+      "name": "qt4"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "qt5",
+    "fields" : {
+      "name": "qt5"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "ruby",
+    "fields" : {
+      "name": "ruby"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "scheme",
+    "fields" : {
+      "name": "scheme"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "science",
+    "fields" : {
+      "name": "science"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "sciences",
+    "fields" : {
+      "name": "sciences"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "security",
+    "fields" : {
+      "name": "security"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "shells",
+    "fields" : {
+      "name": "shells"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "shibboleth",
+    "fields" : {
+      "name": "shibboleth"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "sml",
+    "fields" : {
+      "name": "sml"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "spelling",
+    "fields" : {
+      "name": "spelling"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "sysutils",
+    "fields" : {
+      "name": "sysutils"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "tcl",
+    "fields" : {
+      "name": "tcl"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "tex",
+    "fields" : {
+      "name": "tex"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "textproc",
+    "fields" : {
+      "name": "textproc"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "tk",
+    "fields" : {
+      "name": "tk"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "vnc",
+    "fields" : {
+      "name": "vnc"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "www",
+    "fields" : {
+      "name": "www"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "x11",
+    "fields" : {
+      "name": "x11"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "x11-font",
+    "fields" : {
+      "name": "x11-font"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "x11-wm",
+    "fields" : {
+      "name": "x11-wm"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "xfce",
+    "fields" : {
+      "name": "xfce"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "xml",
+    "fields" : {
+      "name": "xml"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "yorick",
+    "fields" : {
+      "name": "yorick"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "zope",
+    "fields" : {
+      "name": "zope"
+    }
+  },
+  {
+    "model": "ports.Category",
+    "pk": "No Category",
+    "fields" : {
+      "name": "nocategory"
+    }
+  }
+]

@@ -1,0 +1,15 @@
+body{
+    padding: 0;
+}
+
+.topnav-li{
+    border-right: black solid 1px;
+}
+
+.topnav-li:hover {
+    background-color: #047AFB !important;
+}
+
+.topnav-a{
+    color: white !important;
+}
