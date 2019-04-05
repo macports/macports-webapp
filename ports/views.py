@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from .models import Port, Category, BuildHistory
-import json
-from django.http import HttpResponse
+from bs4 import BeautifulSoup
+import requests
+import html5lib
+import ssl
 
 def index(request):
     alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
@@ -80,6 +82,26 @@ def search(request):
     return render(request, 'ports/search.html', {
         'search_results' : search_results,
         'has_input': has_input
+    })
+
+def tickets(request):
+    if request.method == 'POST':
+        port_name = request.POST['portname']
+    URL = "https://trac.macports.org/query?status=!closed&port=~{}".format(port_name)
+    r = requests.get(URL)
+    Soup = BeautifulSoup(r.content, 'html5lib')
+    all_tickets = []
+    for row in Soup.findAll('tr', attrs={'class':'prio2'}):
+        srow = row.find('td', attrs={'class':'summary'})
+        ticket = {}
+        ticket['url'] = srow.a['href']
+        ticket['title'] = srow.a.text
+        print(srow.a['href'])
+        all_tickets.append(ticket)
+
+    return render(request, 'ports/tickets.html', {
+        'portname':port_name,
+        'tickets' : all_tickets
     })
 
 

@@ -1,0 +1,15 @@
+{% if tickets|length > 0 %}
+    <table class="table table-striped">
+        {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.title }}</td>
+                <td><a target="_blank" href="https://trac.macports.org{{ ticket.url }}">View On Trac</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <div class="alert alert-warning">
+        No Tickets Found
+    </div>
+{% endif %}
+

@@ -2,6 +2,8 @@
 
 {% block content %}
     <br>
+    <span style="display: none" id="port_name">{{ port.name }}</span>
+    {% csrf_token %}
     <h3>{{ port.portdir }} | {{ port.name }}</h3>
     <p class="text-secondary">{{ port.description }}</p>
     <a class="btn-warning btn" href="https://github.com/macports/macports-ports/tree/master/{{ port.portdir }}/Portfile" target="_blank">View on Github</a><br><br>
@@ -125,6 +127,12 @@
     {% endfor %}
     </tbody>
     </table>
+
+
+    <div class="border-secondary border rounded container p-2" style="background-color: floralwhite">
+        <h5>Open Tickets for {{ port.name }} from trac.macports.org</h5>
+        <div id="trac_tickets"></div>
+    </div>
 
     <p class="text-danger">Functionality for Build Reproduciblity will also be here.</p>
 {% endblock %}
