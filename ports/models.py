@@ -3,6 +3,24 @@ from django.db import models
 class Category(models.Model):
     name = models.TextField(primary_key=True)
 
+
+class MaintainerManager(models.Manager):
+    def get_by_natural_key(self, name, domain):
+        return self.get(name=name, domain=domain)
+
+
+class Maintainer(models.Model):
+    name = models.CharField(max_length=50)
+    domain = models.CharField(max_length=50)
+    github = models.CharField(max_length=50, db_index=True)
+
+    objects = MaintainerManager()
+
+    class Meta:
+        unique_together = (('name', 'domain'),)
+
+
+
 class Port(models.Model):
     portdir = models.CharField(max_length=100)
     variants = models.TextField(default='')
@@ -15,7 +33,8 @@ class Port(models.Model):
     depends_extract = models.TextField(default='')
     version = models.CharField(max_length=100)
     revision = models.TextField(default='')
-    maintainers = models.TextField(default='')
+    maintainers = models.ManyToManyField(Maintainer, related_name='maintainer')
+    closedmaintainer = models.BooleanField()
     name = models.CharField(max_length=100, db_index=True)
     license = models.CharField(max_length=100)
     depends_lib = models.TextField(default='')
@@ -39,7 +58,6 @@ class BuildHistory(models.Model):
     build_url = models.URLField(default='')
     watcher_id = models.IntegerField()
     watcher_url = models.URLField()
-
 
 
 

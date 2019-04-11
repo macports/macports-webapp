@@ -6,11 +6,18 @@ with open('portindex.json', "r") as file:
 i = 0
 port_fixtures = []
 for port in data:
-    try:
-        categories_list = port['categories'].split(' ')
-        port['categories'] = categories_list
-    except:
-        port['categories'] = ["nocategory"]
+    maintainers = []
+    one_maintainer = []
+    for maintainer in port['maintainers']:
+        try:
+            one_maintainer.append(maintainer['email']['name'])
+            one_maintainer.append(maintainer['email']['domain'])
+        except:
+            continue
+        maintainers.append(one_maintainer)
+        one_maintainer = []
+    port['maintainers'] = maintainers
+
 
     newdata = {
         'model': 'ports.Port',
