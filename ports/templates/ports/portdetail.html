@@ -20,7 +20,19 @@
                 </tr>
                 <tr>
                     <th scope="row">Maintained By:</th>
-                    <td>{{ port.maintainers }}</td>
+                    <td>{% if port.maintainers.all|length > 0 %}
+                        {% for maintainer in port.maintainers.all %}
+                        <a href="/maintainer/{{ maintainer.name }}__{{ maintainer.domain }}">{{ maintainer.name }}</a>,
+                        {% endfor %}
+                        {% else %}
+                        No Maintainers Found
+                        {% endif %}
+
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">ClosedMaintainer:</th>
+                    <td>{{ port.closedmaintainer }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Variants:</th>

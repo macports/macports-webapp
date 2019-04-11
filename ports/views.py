@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Port, Category, BuildHistory
+from .models import Port, Category, BuildHistory, Maintainer
 from bs4 import BeautifulSoup
 import requests
 import html5lib
@@ -71,6 +71,16 @@ def stats_portdetail(request, name):
         'port':port,
     })
 
+def maintainer_detail(request, slug):
+    name = slug.split('__')[0]
+    domain = slug.split('__')[1]
+    ports = Port.objects.filter(maintainers__name=name, maintainers__domain=domain)
+    maintainer = Maintainer.objects.get(name=name,domain=domain)
+    return render(request, 'ports/maintainerdetail.html',{
+        'maintainer':maintainer,
+        'ports': ports
+    })
+
 def search(request):
     if request.method == 'POST':
         search_text = request.POST['search_text']
@@ -96,7 +106,6 @@ def tickets(request):
         ticket = {}
         ticket['url'] = srow.a['href']
         ticket['title'] = srow.a.text
-        print(srow.a['href'])
         all_tickets.append(ticket)
 
     return render(request, 'ports/tickets.html', {
