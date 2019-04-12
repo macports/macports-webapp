@@ -85,10 +85,10 @@ WSGI_APPLICATION = 'MacPorts.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
+        'NAME': 'mp',
+        'USER': 'mp',
+        'PASSWORD': os.environ['AWS_PASSWORD'],
+        'HOST': os.environ['AWS_HOST'],
         'PORT': '5432',
     }
 }

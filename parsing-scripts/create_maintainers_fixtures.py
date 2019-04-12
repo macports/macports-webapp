@@ -15,11 +15,16 @@ for port in data:
                 maintainer_object['github'] = maintainer['github']
             else:
                 for test in temp_maintainers:
-                    if maintainer['github'] == test['github']:
-                        repeat = True
-                        break
+                    try:
+                        if maintainer['github'] == test['github']:
+                            repeat = True
+                            break
+                    except:
+                        pass
             if temp_maintainers != [] and repeat is False:
                 maintainer_object['github'] = maintainer['github']
+                if maintainer['github'] == 'mojca':
+                    print('mojca')
         except:
             pass
 
@@ -29,9 +34,12 @@ for port in data:
                 maintainer_object['domain'] = maintainer['email']['domain']
             else:
                 for test in temp_maintainers:
-                    if maintainer['email']['name'] == test['name'] and maintainer['email']['domain'] == test['domain']:
-                        repeat = True
-                        break
+                    try:
+                        if maintainer['email']['name'] == test['name'] and maintainer['email']['domain'] == test['domain']:
+                            repeat = True
+                            break
+                    except:
+                        pass
             if temp_maintainers != [] and repeat is False:
                 maintainer_object['name'] = maintainer['email']['name']
                 maintainer_object['domain'] = maintainer['email']['domain']
