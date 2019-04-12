@@ -74,6 +74,7 @@
         "model": "ports.Maintainer",
         "pk": 8,
         "fields": {
+            "github": "g5pw",
             "name": "g5pw",
             "domain": "macports.org"
         }
@@ -82,6 +83,7 @@
         "model": "ports.Maintainer",
         "pk": 9,
         "fields": {
+            "github": "mojca",
             "name": "mojca",
             "domain": "macports.org"
         }
@@ -90,6 +92,7 @@
         "model": "ports.Maintainer",
         "pk": 10,
         "fields": {
+            "github": "tobypeterson",
             "name": "toby",
             "domain": "macports.org"
         }
@@ -98,6 +101,7 @@
         "model": "ports.Maintainer",
         "pk": 11,
         "fields": {
+            "github": "NicosPavlov",
             "name": "nicos",
             "domain": "macports.org"
         }
@@ -106,6 +110,7 @@
         "model": "ports.Maintainer",
         "pk": 12,
         "fields": {
+            "github": "jmroot",
             "name": "jmr",
             "domain": "macports.org"
         }
@@ -114,6 +119,7 @@
         "model": "ports.Maintainer",
         "pk": 13,
         "fields": {
+            "github": "MarcusCalhoun-Lopez",
             "name": "mcalhoun",
             "domain": "macports.org"
         }
@@ -122,6 +128,7 @@
         "model": "ports.Maintainer",
         "pk": 14,
         "fields": {
+            "github": "michaelld",
             "name": "michaelld",
             "domain": "macports.org"
         }
@@ -130,6 +137,7 @@
         "model": "ports.Maintainer",
         "pk": 15,
         "fields": {
+            "github": "markemer",
             "name": "emer",
             "domain": "emer.net"
         }
@@ -146,6 +154,7 @@
         "model": "ports.Maintainer",
         "pk": 17,
         "fields": {
+            "github": "Ionic",
             "name": "ionic",
             "domain": "macports.org"
         }
@@ -154,6 +163,7 @@
         "model": "ports.Maintainer",
         "pk": 18,
         "fields": {
+            "github": "blair",
             "name": "blair",
             "domain": "macports.org"
         }
@@ -162,6 +172,7 @@
         "model": "ports.Maintainer",
         "pk": 19,
         "fields": {
+            "github": "raimue",
             "name": "raimue",
             "domain": "macports.org"
         }
@@ -170,6 +181,7 @@
         "model": "ports.Maintainer",
         "pk": 20,
         "fields": {
+            "github": "mklein-de",
             "name": "michael.klein",
             "domain": "puffin.lb.shuttle.de"
         }
@@ -186,6 +198,7 @@
         "model": "ports.Maintainer",
         "pk": 22,
         "fields": {
+            "github": "nerdling",
             "name": "snc",
             "domain": "macports.org"
         }
@@ -202,6 +215,7 @@
         "model": "ports.Maintainer",
         "pk": 24,
         "fields": {
+            "github": "stromnov",
             "name": "stromnov",
             "domain": "macports.org"
         }
@@ -210,6 +224,7 @@
         "model": "ports.Maintainer",
         "pk": 25,
         "fields": {
+            "github": "mkhon",
             "name": "fjoe",
             "domain": "samodelkin.net"
         }
@@ -218,6 +233,7 @@
         "model": "ports.Maintainer",
         "pk": 26,
         "fields": {
+            "github": "eborisch",
             "name": "eborisch",
             "domain": "macports.org"
         }
@@ -226,6 +242,7 @@
         "model": "ports.Maintainer",
         "pk": 27,
         "fields": {
+            "github": "tenomoto",
             "name": "takeshi",
             "domain": "macports.org"
         }
@@ -250,6 +267,7 @@
         "model": "ports.Maintainer",
         "pk": 30,
         "fields": {
+            "github": "danchr",
             "name": "danchr",
             "domain": "macports.org"
         }
@@ -266,6 +284,7 @@
         "model": "ports.Maintainer",
         "pk": 32,
         "fields": {
+            "github": "l2dy",
             "name": "l2dy",
             "domain": "macports.org"
         }
@@ -282,6 +301,7 @@
         "model": "ports.Maintainer",
         "pk": 34,
         "fields": {
+            "github": "lperry",
             "name": "perry",
             "domain": "macports.org"
         }
@@ -298,6 +318,7 @@
         "model": "ports.Maintainer",
         "pk": 36,
         "fields": {
+            "github": "RJVB",
             "name": "rjvbertin",
             "domain": "gmail.com"
         }
@@ -306,6 +327,7 @@
         "model": "ports.Maintainer",
         "pk": 37,
         "fields": {
+            "github": "jeremyhu",
             "name": "jeremyhu",
             "domain": "macports.org"
         }
@@ -322,6 +344,7 @@
         "model": "ports.Maintainer",
         "pk": 39,
         "fields": {
+            "github": "slewsys",
             "name": "slewsys",
             "domain": "gmail.com"
         }
@@ -330,6 +353,7 @@
         "model": "ports.Maintainer",
         "pk": 40,
         "fields": {
+            "github": "Traace",
             "name": "xxtraacexx",
             "domain": "hotmail.de"
         }
@@ -346,6 +370,7 @@
         "model": "ports.Maintainer",
         "pk": 42,
         "fields": {
+            "github": "dbevans",
             "name": "devans",
             "domain": "macports.org"
         }
@@ -354,6 +379,7 @@
         "model": "ports.Maintainer",
         "pk": 43,
         "fields": {
+            "github": "agraef",
             "name": "aggraef",
             "domain": "gmail.com"
         }
@@ -386,6 +412,7 @@
         "model": "ports.Maintainer",
         "pk": 47,
         "fields": {
+            "github": "audionuma",
             "name": "audionuma",
             "domain": "gmail.com"
         }
@@ -402,6 +429,7 @@
         "model": "ports.Maintainer",
         "pk": 49,
         "fields": {
+            "github": "lbschenkel",
             "name": "lbschenkel",
             "domain": "macports.org"
         }
@@ -410,6 +438,7 @@
         "model": "ports.Maintainer",
         "pk": 50,
         "fields": {
+            "github": "mark4o",
             "name": "mark.hsj",
             "domain": "gmail.com"
         }
@@ -418,6 +447,7 @@
         "model": "ports.Maintainer",
         "pk": 51,
         "fields": {
+            "github": "janstary",
             "name": "hans",
             "domain": "stare.cz"
         }
@@ -426,6 +456,7 @@
         "model": "ports.Maintainer",
         "pk": 52,
         "fields": {
+            "github": "casr",
             "name": "casr+macports",
             "domain": "darkcog.com"
         }
@@ -450,6 +481,7 @@
         "model": "ports.Maintainer",
         "pk": 55,
         "fields": {
+            "github": "ra1nb0w",
             "name": "rainbow",
             "domain": "irh.it"
         }
@@ -474,6 +506,7 @@
         "model": "ports.Maintainer",
         "pk": 58,
         "fields": {
+            "github": "cssdev",
             "name": "css",
             "domain": "macports.org"
         }
@@ -482,6 +515,7 @@
         "model": "ports.Maintainer",
         "pk": 59,
         "fields": {
+            "github": "kencu",
             "name": "kencu",
             "domain": "macports.org"
         }
@@ -506,6 +540,7 @@
         "model": "ports.Maintainer",
         "pk": 62,
         "fields": {
+            "github": "mbrethen",
             "name": "mark.brethen",
             "domain": "gmail.com"
         }
@@ -514,6 +549,7 @@
         "model": "ports.Maintainer",
         "pk": 63,
         "fields": {
+            "github": "maehne",
             "name": "Torsten.Maehne",
             "domain": "gmx.de"
         }
@@ -554,6 +590,7 @@
         "model": "ports.Maintainer",
         "pk": 68,
         "fields": {
+            "github": "ranauei",
             "name": "ranauei",
             "domain": "gmail.com"
         }
@@ -570,6 +607,7 @@
         "model": "ports.Maintainer",
         "pk": 70,
         "fields": {
+            "github": "alfredh",
             "name": "aeh",
             "domain": "db.org"
         }
@@ -602,6 +640,7 @@
         "model": "ports.Maintainer",
         "pk": 74,
         "fields": {
+            "github": "JacksonIsaac",
             "name": "ijackson",
             "domain": "macports.org"
         }
@@ -610,6 +649,7 @@
         "model": "ports.Maintainer",
         "pk": 75,
         "fields": {
+            "github": "adfernandes",
             "name": "adfernandes",
             "domain": "macports.org"
         }
@@ -642,6 +682,7 @@
         "model": "ports.Maintainer",
         "pk": 79,
         "fields": {
+            "github": "mohd-akram",
             "name": "mohd.akram",
             "domain": "outlook.com"
         }
@@ -650,13 +691,20 @@
         "model": "ports.Maintainer",
         "pk": 80,
         "fields": {
+            "github": "gerardsoleca"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 81,
+        "fields": {
             "name": "kou",
             "domain": "clear-code.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 81,
+        "pk": 82,
         "fields": {
             "name": "mta",
             "domain": "umich.edu"
@@ -664,15 +712,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 82,
+        "pk": 83,
         "fields": {
+            "github": "bendiken",
             "name": "arto",
             "domain": "bendiken.net"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 83,
+        "pk": 84,
         "fields": {
             "name": "macports",
             "domain": "jann"
@@ -680,15 +729,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 84,
+        "pk": 85,
         "fields": {
+            "github": "xeron",
             "name": "xeron.oskom",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 85,
+        "pk": 86,
         "fields": {
             "name": "kmayer",
             "domain": "bitwrangler.com"
@@ -696,17 +746,10 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 86,
-        "fields": {
-            "name": "vince",
-            "domain": "macports.org"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
         "pk": 87,
         "fields": {
-            "name": "jwa",
+            "github": "Veence",
+            "name": "vince",
             "domain": "macports.org"
         }
     },
@@ -714,13 +757,22 @@
         "model": "ports.Maintainer",
         "pk": 88,
         "fields": {
+            "github": "jyrkiwahlstedt",
+            "name": "jwa",
+            "domain": "macports.org"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 89,
+        "fields": {
             "name": "macports",
             "domain": "panulla.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 89,
+        "pk": 90,
         "fields": {
             "name": "f.celler",
             "domain": "triagens.de"
@@ -728,7 +780,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 90,
+        "pk": 91,
         "fields": {
             "name": "k.salewski",
             "domain": "triagens.de"
@@ -736,7 +788,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 91,
+        "pk": 92,
         "fields": {
             "name": "w.helisch",
             "domain": "triagens.de"
@@ -744,7 +796,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 92,
+        "pk": 93,
         "fields": {
             "name": "wreese",
             "domain": "gmail.com"
@@ -752,7 +804,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 93,
+        "pk": 94,
         "fields": {
             "name": "g.lorenz",
             "domain": "rmh.de"
@@ -760,7 +812,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 94,
+        "pk": 95,
         "fields": {
             "name": "nel",
             "domain": "soraneko.com"
@@ -768,23 +820,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 95,
+        "pk": 96,
         "fields": {
+            "github": "giansalvo",
             "name": "giansalvo.gusinu",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 96,
+        "pk": 97,
         "fields": {
+            "github": "neverpanic",
             "name": "cal",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 97,
+        "pk": 98,
         "fields": {
             "name": "bstj",
             "domain": "yandex.com"
@@ -792,15 +846,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 98,
+        "pk": 99,
         "fields": {
+            "github": "lockhart",
             "name": "tlockhart1976",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 99,
+        "pk": 100,
         "fields": {
             "name": "hibou",
             "domain": "hibnet.org"
@@ -808,23 +863,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 100,
+        "pk": 101,
         "fields": {
+            "github": "danielluke",
             "name": "dluke",
             "domain": "geeklair.net"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 101,
+        "pk": 102,
         "fields": {
+            "github": "drkp",
             "name": "dports",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 102,
+        "pk": 103,
         "fields": {
             "name": "isak",
             "domain": "hypergene.com"
@@ -832,7 +889,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 103,
+        "pk": 104,
         "fields": {
             "name": "rlonstein",
             "domain": "pobox.com"
@@ -840,17 +897,10 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 104,
-        "fields": {
-            "name": "g.litenstein",
-            "domain": "gmail.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
         "pk": 105,
         "fields": {
-            "name": "csoren",
+            "github": "Lord-Kamina",
+            "name": "g.litenstein",
             "domain": "gmail.com"
         }
     },
@@ -858,13 +908,22 @@
         "model": "ports.Maintainer",
         "pk": 106,
         "fields": {
+            "name": "csoren",
+            "domain": "gmail.com"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 107,
+        "fields": {
+            "github": "larryv",
             "name": "larryv",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 107,
+        "pk": 108,
         "fields": {
             "name": "springer.jonathan",
             "domain": "gmail.com"
@@ -872,7 +931,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 108,
+        "pk": 109,
         "fields": {
             "name": "masa",
             "domain": "takatsuka.org"
@@ -880,23 +939,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 109,
+        "pk": 110,
         "fields": {
+            "github": "RootFunction",
             "name": "mohamed.issa",
             "domain": "tfmnet.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 110,
+        "pk": 111,
         "fields": {
+            "github": "cjones051073",
             "name": "jonesc",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 111,
+        "pk": 112,
         "fields": {
             "name": "sanchom",
             "domain": "gmail.com"
@@ -904,7 +965,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 112,
+        "pk": 113,
         "fields": {
             "name": "jon.olsson",
             "domain": "gmail.com"
@@ -912,7 +973,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 113,
+        "pk": 114,
         "fields": {
             "name": "nikkoara",
             "domain": "hates.ms"
@@ -920,7 +981,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 114,
+        "pk": 115,
         "fields": {
             "name": "michipili",
             "domain": "gmail.com"
@@ -928,7 +989,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 115,
+        "pk": 116,
         "fields": {
             "name": "cardi",
             "domain": "ieee.org"
@@ -936,31 +997,34 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 116,
+        "pk": 117,
         "fields": {
+            "github": "aquynh",
             "name": "aquynh",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 117,
+        "pk": 118,
         "fields": {
+            "github": "saagarjha",
             "name": "saagarjha",
             "domain": "saagarjha.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 118,
+        "pk": 119,
         "fields": {
+            "github": "egorenar",
             "name": "egorenar",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 119,
+        "pk": 120,
         "fields": {
             "name": "paul",
             "domain": "lucasmail.org"
@@ -968,7 +1032,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 120,
+        "pk": 121,
         "fields": {
             "name": "jfrederich",
             "domain": "gmail.com"
@@ -976,7 +1040,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 121,
+        "pk": 122,
         "fields": {
             "name": "dinh.viet.hoa",
             "domain": "free.fr"
@@ -984,31 +1048,34 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 122,
+        "pk": 123,
         "fields": {
+            "github": "raybellis",
             "name": "ray",
             "domain": "isc.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 123,
+        "pk": 124,
         "fields": {
+            "github": "wyuenho",
             "name": "wyuenho",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 124,
+        "pk": 125,
         "fields": {
+            "github": "SoapZA",
             "name": "git",
             "domain": "soap.za.net"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 125,
+        "pk": 126,
         "fields": {
             "name": "ocheron",
             "domain": "noos.fr"
@@ -1016,7 +1083,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 126,
+        "pk": 127,
         "fields": {
             "name": "dadler",
             "domain": "uni-goettingen.de"
@@ -1024,23 +1091,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 127,
+        "pk": 128,
         "fields": {
+            "github": "emcrisostomo",
             "name": "emcrisostomo",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 128,
+        "pk": 129,
         "fields": {
+            "github": "eighthave",
             "name": "hans",
             "domain": "eds.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 129,
+        "pk": 130,
         "fields": {
             "name": "mccdo",
             "domain": "iastate.edu"
@@ -1048,7 +1117,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 130,
+        "pk": 131,
         "fields": {
             "name": "team",
             "domain": "flusspferd.org"
@@ -1056,16 +1125,9 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 131,
-        "fields": {
-            "name": "casr",
-            "domain": "darkcog.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
         "pk": 132,
         "fields": {
+            "github": "breun",
             "name": "nils",
             "domain": "breun.nl"
         }
@@ -1098,6 +1160,7 @@
         "model": "ports.Maintainer",
         "pk": 136,
         "fields": {
+            "github": "harciga",
             "name": "starkhalo",
             "domain": "gmail.com"
         }
@@ -1106,39 +1169,42 @@
         "model": "ports.Maintainer",
         "pk": 137,
         "fields": {
-            "name": "jpo",
-            "domain": "vt.edu"
+            "github": "nareshov"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 138,
         "fields": {
-            "name": "grimreaper",
-            "domain": "macports.org"
+            "github": "jpouellet",
+            "name": "jpo",
+            "domain": "vt.edu"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 139,
         "fields": {
-            "name": "jason-macports",
-            "domain": "maiar.org"
+            "github": "grimreaper",
+            "name": "grimreaper",
+            "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 140,
         "fields": {
-            "name": "jjstickel",
-            "domain": "gmail.com"
+            "github": "gorticus",
+            "name": "jason-macports",
+            "domain": "maiar.org"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 141,
         "fields": {
-            "name": "g.sole.ca",
+            "github": "jjstickel",
+            "name": "jjstickel",
             "domain": "gmail.com"
         }
     },
@@ -1154,21 +1220,14 @@
         "model": "ports.Maintainer",
         "pk": 143,
         "fields": {
-            "name": "macports",
-            "domain": "naresh.moe"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
-        "pk": 144,
-        "fields": {
+            "github": "mamoll",
             "name": "mmoll",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 145,
+        "pk": 144,
         "fields": {
             "name": "a",
             "domain": "piu.fm"
@@ -1176,15 +1235,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 146,
+        "pk": 145,
         "fields": {
+            "github": "elelay",
             "name": "elelay",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 147,
+        "pk": 146,
         "fields": {
             "name": "me",
             "domain": "thomaskeller.biz"
@@ -1192,7 +1252,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 148,
+        "pk": 147,
         "fields": {
             "name": "yanjingfeng",
             "domain": "hotmail.com"
@@ -1200,7 +1260,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 149,
+        "pk": 148,
         "fields": {
             "name": "mike",
             "domain": "flyn.org"
@@ -1208,7 +1268,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 150,
+        "pk": 149,
         "fields": {
             "name": "vim",
             "domain": "tritarget.com"
@@ -1216,7 +1276,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 151,
+        "pk": 150,
         "fields": {
             "name": "yoanlin93",
             "domain": "gmail.com"
@@ -1224,7 +1284,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 152,
+        "pk": 151,
         "fields": {
             "name": "mpd",
             "domain": "cs.wm.edu"
@@ -1232,7 +1292,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 153,
+        "pk": 152,
         "fields": {
             "name": "zaraki",
             "domain": "gmx.com"
@@ -1240,7 +1300,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 154,
+        "pk": 153,
         "fields": {
             "name": "nefar",
             "domain": "otherware.org"
@@ -1248,7 +1308,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 155,
+        "pk": 154,
         "fields": {
             "name": "gtolemans",
             "domain": "gmail.com"
@@ -1256,39 +1316,43 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 156,
+        "pk": 155,
         "fields": {
+            "github": "cwrinn",
             "name": "c.wrinn",
             "domain": "nixgeex.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 157,
+        "pk": 156,
         "fields": {
+            "github": "kimuraw",
             "name": "kimuraw",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 158,
+        "pk": 157,
         "fields": {
+            "github": "adsun701",
             "name": "adsun701",
             "domain": "gmail.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 159,
+        "pk": 158,
         "fields": {
+            "github": "ierofant",
             "name": "aw.kornilov",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 160,
+        "pk": 159,
         "fields": {
             "name": "halboof",
             "domain": "gmail.com"
@@ -1296,15 +1360,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 161,
+        "pk": 160,
         "fields": {
+            "github": "raphael-st",
             "name": "raphael",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 162,
+        "pk": 161,
         "fields": {
             "name": "SCL",
             "domain": "caltech.edu"
@@ -1312,7 +1377,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 163,
+        "pk": 162,
         "fields": {
             "name": "jstrine",
             "domain": "vexate.net"
@@ -1320,15 +1385,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 164,
+        "pk": 163,
         "fields": {
+            "github": "jerryyhom",
             "name": "jerryyhom",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 165,
+        "pk": 164,
         "fields": {
             "name": "jt.burgess",
             "domain": "hillcrestlabs.com"
@@ -1336,10 +1402,17 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 166,
+        "pk": 165,
         "fields": {
             "name": "sean",
             "domain": "sfarc.net"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 166,
+        "fields": {
+            "github": "KensingtonTech"
         }
     },
     {
@@ -1354,6 +1427,7 @@
         "model": "ports.Maintainer",
         "pk": 168,
         "fields": {
+            "github": "ylluminarious",
             "name": "georgedp",
             "domain": "orbitalimpact.com"
         }
@@ -1378,6 +1452,7 @@
         "model": "ports.Maintainer",
         "pk": 171,
         "fields": {
+            "github": "Gminfly",
             "name": "normen",
             "domain": "wohner.eu"
         }
@@ -1386,6 +1461,7 @@
         "model": "ports.Maintainer",
         "pk": 172,
         "fields": {
+            "github": "ctreleaven",
             "name": "ctreleaven",
             "domain": "macports.org"
         }
@@ -1426,6 +1502,7 @@
         "model": "ports.Maintainer",
         "pk": 177,
         "fields": {
+            "github": "dgilman",
             "name": "dgilman",
             "domain": "gilslotd.com"
         }
@@ -1434,6 +1511,7 @@
         "model": "ports.Maintainer",
         "pk": 178,
         "fields": {
+            "github": "roederja",
             "name": "jann",
             "domain": "macports.org"
         }
@@ -1442,6 +1520,7 @@
         "model": "ports.Maintainer",
         "pk": 179,
         "fields": {
+            "github": "schiebel",
             "name": "darrell",
             "domain": "schiebel.us"
         }
@@ -1466,6 +1545,7 @@
         "model": "ports.Maintainer",
         "pk": 182,
         "fields": {
+            "github": "dylanbr",
             "name": "light",
             "domain": "ether.org.za"
         }
@@ -1474,6 +1554,7 @@
         "model": "ports.Maintainer",
         "pk": 183,
         "fields": {
+            "github": "scarface-one",
             "name": "scarface",
             "domain": "disroot.org"
         }
@@ -1490,6 +1571,7 @@
         "model": "ports.Maintainer",
         "pk": 185,
         "fields": {
+            "github": "michbsd",
             "name": "mich",
             "domain": "freebsdcluster.org"
         }
@@ -1498,6 +1580,7 @@
         "model": "ports.Maintainer",
         "pk": 186,
         "fields": {
+            "github": "arjanvandervelde",
             "name": "vandervelde.ag",
             "domain": "gmail.com"
         }
@@ -1506,6 +1589,7 @@
         "model": "ports.Maintainer",
         "pk": 187,
         "fields": {
+            "github": "jobor",
             "name": "joerg.bornemann",
             "domain": "qt.io"
         }
@@ -1554,6 +1638,7 @@
         "model": "ports.Maintainer",
         "pk": 193,
         "fields": {
+            "github": "conradwt",
             "name": "conradwt",
             "domain": "gmail.com"
         }
@@ -1562,6 +1647,7 @@
         "model": "ports.Maintainer",
         "pk": 194,
         "fields": {
+            "github": "repagh",
             "name": "rene.vanpaassen",
             "domain": "gmail.com"
         }
@@ -1570,6 +1656,7 @@
         "model": "ports.Maintainer",
         "pk": 195,
         "fields": {
+            "github": "dstrubbe",
             "name": "dstrubbe",
             "domain": "macports.org"
         }
@@ -1586,6 +1673,7 @@
         "model": "ports.Maintainer",
         "pk": 197,
         "fields": {
+            "github": "DanielO",
             "name": "darius",
             "domain": "dons.net.au"
         }
@@ -1602,6 +1690,7 @@
         "model": "ports.Maintainer",
         "pk": 199,
         "fields": {
+            "github": "akimd",
             "name": "akim",
             "domain": "lrde.epita.fr"
         }
@@ -1610,6 +1699,7 @@
         "model": "ports.Maintainer",
         "pk": 200,
         "fields": {
+            "github": "dliessi",
             "name": "davide.liessi",
             "domain": "gmail.com"
         }
@@ -1642,6 +1732,7 @@
         "model": "ports.Maintainer",
         "pk": 204,
         "fields": {
+            "github": "jambonrose",
             "name": "code",
             "domain": "andrewsforge.com"
         }
@@ -1650,6 +1741,7 @@
         "model": "ports.Maintainer",
         "pk": 205,
         "fields": {
+            "github": "isomarcte",
             "name": "isomarcte",
             "domain": "gmail.com"
         }
@@ -1698,6 +1790,7 @@
         "model": "ports.Maintainer",
         "pk": 211,
         "fields": {
+            "github": "easye",
             "name": "easieste",
             "domain": "macports.org"
         }
@@ -1738,13 +1831,20 @@
         "model": "ports.Maintainer",
         "pk": 216,
         "fields": {
+            "github": "Nax"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 217,
+        "fields": {
             "name": "james",
             "domain": "slor.net"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 217,
+        "pk": 218,
         "fields": {
             "name": "bryan",
             "domain": "ischo.com"
@@ -1752,15 +1852,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 218,
+        "pk": 219,
         "fields": {
+            "github": "chenguokai",
             "name": "chenguokai17",
             "domain": "mails.ucas.ac.cn"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 219,
+        "pk": 220,
         "fields": {
             "name": "brg",
             "domain": "dgate.org"
@@ -1768,15 +1869,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 220,
+        "pk": 221,
         "fields": {
+            "github": "lastic",
             "name": "lasticppc",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 221,
+        "pk": 222,
         "fields": {
             "name": "sami.laine",
             "domain": "yopmail.com"
@@ -1784,15 +1886,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 222,
+        "pk": 223,
         "fields": {
+            "github": "umeshksingla",
             "name": "umeshksingla",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 223,
+        "pk": 224,
         "fields": {
             "name": "darenzana",
             "domain": "gmail.com"
@@ -1800,7 +1903,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 224,
+        "pk": 225,
         "fields": {
             "name": "mellon85",
             "domain": "gmail.com"
@@ -1808,15 +1911,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 225,
+        "pk": 226,
         "fields": {
+            "github": "jfcaron3",
             "name": "jfcaron",
             "domain": "phas.ubc.ca"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 226,
+        "pk": 227,
         "fields": {
             "name": "jeremy",
             "domain": "rixon.org"
@@ -1824,15 +1928,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 227,
+        "pk": 228,
         "fields": {
+            "github": "allejo",
             "name": "me",
             "domain": "allejo.io"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 228,
+        "pk": 229,
         "fields": {
             "name": "macports",
             "domain": "stereo.lu"
@@ -1840,7 +1945,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 229,
+        "pk": 230,
         "fields": {
             "name": "Christoph.Ender",
             "domain": "spellbreaker.org"
@@ -1848,7 +1953,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 230,
+        "pk": 231,
         "fields": {
             "name": "pack-darwinports",
             "domain": "rattus.net"
@@ -1856,15 +1961,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 231,
+        "pk": 232,
         "fields": {
+            "github": "daitakahashi",
             "name": "dtakahashi",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 232,
+        "pk": 233,
         "fields": {
             "name": "warp-opendarwin",
             "domain": "spin.de"
@@ -1872,7 +1978,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 233,
+        "pk": 234,
         "fields": {
             "name": "msk",
             "domain": "nullpointer.dk"
@@ -1880,7 +1986,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 234,
+        "pk": 235,
         "fields": {
             "name": "james.r.haigh",
             "domain": "gmail.com"
@@ -1888,15 +1994,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 235,
+        "pk": 236,
         "fields": {
+            "github": "jflude",
             "name": "justin_flude",
             "domain": "hotmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 236,
+        "pk": 237,
         "fields": {
             "name": "zizban",
             "domain": "adelphia.net"
@@ -1904,7 +2011,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 237,
+        "pk": 238,
         "fields": {
             "name": "jweede",
             "domain": "gmail.com"
@@ -1912,15 +2019,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 238,
+        "pk": 239,
         "fields": {
+            "github": "Raimondi",
             "name": "macports",
             "domain": "en.sent.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 239,
+        "pk": 240,
         "fields": {
             "name": "pandagoat",
             "domain": "gmail.com"
@@ -1928,7 +2036,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 240,
+        "pk": 241,
         "fields": {
             "name": "macport",
             "domain": "web.de"
@@ -1936,7 +2044,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 241,
+        "pk": 242,
         "fields": {
             "name": "pierreetienne.meunier",
             "domain": "gmail.com"
@@ -1944,17 +2052,10 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 242,
-        "fields": {
-            "name": "sikmir",
-            "domain": "gmail.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
         "pk": 243,
         "fields": {
-            "name": "crmoore",
+            "github": "sikmir",
+            "name": "sikmir",
             "domain": "gmail.com"
         }
     },
@@ -1962,13 +2063,21 @@
         "model": "ports.Maintainer",
         "pk": 244,
         "fields": {
+            "name": "crmoore",
+            "domain": "gmail.com"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 245,
+        "fields": {
             "name": "jea",
             "domain": "hbaspecto.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 245,
+        "pk": 246,
         "fields": {
             "name": "framic5",
             "domain": "web.de"
@@ -1976,15 +2085,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 246,
+        "pk": 247,
         "fields": {
+            "github": "oleaamot",
             "name": "ole",
             "domain": "gnome.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 247,
+        "pk": 248,
         "fields": {
             "name": "gerald",
             "domain": "grisbi.org"
@@ -1992,7 +2102,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 248,
+        "pk": 249,
         "fields": {
             "name": "dia",
             "domain": "diagramr.biz"
@@ -2000,7 +2110,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 249,
+        "pk": 250,
         "fields": {
             "name": "wdc",
             "domain": "mit.edu"
@@ -2008,7 +2118,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 250,
+        "pk": 251,
         "fields": {
             "name": "bernhard",
             "domain": "ahoi.io"
@@ -2016,7 +2126,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 251,
+        "pk": 252,
         "fields": {
             "name": "alex",
             "domain": "aiei.ch"
@@ -2024,7 +2134,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 252,
+        "pk": 253,
         "fields": {
             "name": "karcaw",
             "domain": "gmail.com"
@@ -2032,7 +2142,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 253,
+        "pk": 254,
         "fields": {
             "name": "gordon.child",
             "domain": "gmail.com"
@@ -2040,7 +2150,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 254,
+        "pk": 255,
         "fields": {
             "name": "p.schmiedeskamp",
             "domain": "auckland.ac.nz"
@@ -2048,7 +2158,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 255,
+        "pk": 256,
         "fields": {
             "name": "hvdwolf",
             "domain": "gmail.com"
@@ -2056,15 +2166,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 256,
+        "pk": 257,
         "fields": {
+            "github": "johanmattssonm",
             "name": "johan.mattsson.m",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 257,
+        "pk": 258,
         "fields": {
             "name": "jbenninghoff",
             "domain": "mac.com"
@@ -2072,15 +2183,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 258,
+        "pk": 259,
         "fields": {
+            "github": "pietvo",
             "name": "piet",
             "domain": "vanoostrum.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 259,
+        "pk": 260,
         "fields": {
             "name": "dtownsend",
             "domain": "oxymoronical.com"
@@ -2088,7 +2200,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 260,
+        "pk": 261,
         "fields": {
             "name": "krugazor",
             "domain": "free.fr"
@@ -2096,7 +2208,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 261,
+        "pk": 262,
         "fields": {
             "name": "eyre",
             "domain": "thphys.ox.ac.uk"
@@ -2104,15 +2216,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 262,
+        "pk": 263,
         "fields": {
+            "github": "miniupnp",
             "name": "miniupnp",
             "domain": "free.fr"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 263,
+        "pk": 264,
         "fields": {
             "name": "julien.lusson",
             "domain": "gmail.com"
@@ -2120,23 +2233,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 264,
+        "pk": 265,
         "fields": {
+            "github": "SenseGraphics",
             "name": "support",
             "domain": "sensegraphics.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 265,
+        "pk": 266,
         "fields": {
+            "github": "m7thon",
             "name": "m7.thon",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 266,
+        "pk": 267,
         "fields": {
             "name": "s",
             "domain": "pahtak.org"
@@ -2144,7 +2259,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 267,
+        "pk": 268,
         "fields": {
             "name": "jingoro",
             "domain": "casa-z.org"
@@ -2152,15 +2267,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 268,
+        "pk": 269,
         "fields": {
+            "github": "cbradney",
             "name": "cbradney",
             "domain": "zip.com.au"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 269,
+        "pk": 270,
         "fields": {
             "name": "dardo82",
             "domain": "gmail.com"
@@ -2168,7 +2284,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 270,
+        "pk": 271,
         "fields": {
             "name": "grrr",
             "domain": "technokracy.net"
@@ -2176,31 +2292,34 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 271,
+        "pk": 272,
         "fields": {
+            "github": "freespace",
             "name": "freespace",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 272,
+        "pk": 273,
         "fields": {
+            "github": "bgilbert",
             "name": "bgilbert",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 273,
+        "pk": 274,
         "fields": {
+            "github": "jcupitt",
             "name": "jcupitt",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 274,
+        "pk": 275,
         "fields": {
             "name": "prahl",
             "domain": "bme.ogi.edu"
@@ -2208,15 +2327,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 275,
+        "pk": 276,
         "fields": {
+            "github": "lloyd",
             "name": "me",
             "domain": "lloyd.io"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 276,
+        "pk": 277,
         "fields": {
             "name": "julian9",
             "domain": "gmail.com"
@@ -2224,7 +2344,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 277,
+        "pk": 278,
         "fields": {
             "name": "gnubeest",
             "domain": "gmail.com"
@@ -2232,25 +2352,17 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 278,
-        "fields": {
-            "name": "benjamin.seppke",
-            "domain": "gmail.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
         "pk": 279,
         "fields": {
-            "name": "haya10.ito",
-            "domain": "gmail.com"
+            "github": "tuffnatty"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 280,
         "fields": {
-            "name": "nhoj.patrick",
+            "github": "BSeppke",
+            "name": "benjamin.seppke",
             "domain": "gmail.com"
         }
     },
@@ -2258,13 +2370,29 @@
         "model": "ports.Maintainer",
         "pk": 281,
         "fields": {
+            "name": "haya10.ito",
+            "domain": "gmail.com"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 282,
+        "fields": {
+            "name": "nhoj.patrick",
+            "domain": "gmail.com"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 283,
+        "fields": {
             "name": "dmunneke",
             "domain": "2moro.com.au"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 282,
+        "pk": 284,
         "fields": {
             "name": "m",
             "domain": "hum.ph"
@@ -2272,15 +2400,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 283,
+        "pk": 285,
         "fields": {
+            "github": "chicagotripp",
             "name": "ndiscreet",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 284,
+        "pk": 286,
         "fields": {
             "name": "panayotis",
             "domain": "panayotis.com"
@@ -2288,15 +2417,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 285,
+        "pk": 287,
         "fields": {
+            "github": "gk5885",
             "name": "gk5885",
             "domain": "kickstyle.net"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 286,
+        "pk": 288,
         "fields": {
             "name": "decibel",
             "domain": "decibel.org"
@@ -2304,7 +2434,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 287,
+        "pk": 289,
         "fields": {
             "name": "simon",
             "domain": "redhillconsulting.com.au"
@@ -2312,15 +2442,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 288,
+        "pk": 290,
         "fields": {
+            "github": "mattbishop",
             "name": "matt",
             "domain": "thebishops.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 289,
+        "pk": 291,
         "fields": {
             "name": "jan",
             "domain": "hyper-world.de"
@@ -2328,7 +2459,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 290,
+        "pk": 292,
         "fields": {
             "name": "caulier.gilles",
             "domain": "gmail.com"
@@ -2336,7 +2467,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 291,
+        "pk": 293,
         "fields": {
             "name": "bjoern.ricks",
             "domain": "intevation.de"
@@ -2344,7 +2475,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 292,
+        "pk": 294,
         "fields": {
             "name": "meik.michalke",
             "domain": "hhu.de"
@@ -2352,7 +2483,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 293,
+        "pk": 295,
         "fields": {
             "name": "rkward-devel",
             "domain": "kde.org"
@@ -2360,23 +2491,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 294,
+        "pk": 296,
         "fields": {
+            "github": "coke",
             "name": "will",
             "domain": "coleda.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 295,
+        "pk": 297,
         "fields": {
+            "github": "pmetzger",
             "name": "pmetzger",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 296,
+        "pk": 298,
         "fields": {
             "name": "trashgod",
             "domain": "gmail.com"
@@ -2384,23 +2517,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 297,
+        "pk": 299,
         "fields": {
+            "github": "milmazz",
             "name": "me",
             "domain": "milmazz.uno"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 298,
+        "pk": 300,
         "fields": {
+            "github": "pmoura",
             "name": "pmoura",
             "domain": "logtalk.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 299,
+        "pk": 301,
         "fields": {
             "name": "dev",
             "domain": "sergiokas.com"
@@ -2408,7 +2543,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 300,
+        "pk": 302,
         "fields": {
             "name": "wiml",
             "domain": "hhhh.org"
@@ -2416,7 +2551,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 301,
+        "pk": 303,
         "fields": {
             "name": "cso",
             "domain": "rift.dk"
@@ -2424,7 +2559,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 302,
+        "pk": 304,
         "fields": {
             "name": "razvan",
             "domain": "musaloiu.com"
@@ -2432,47 +2567,52 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 303,
+        "pk": 305,
         "fields": {
+            "github": "gustafn",
             "name": "neumann",
             "domain": "wu.ac.at"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 304,
+        "pk": 306,
         "fields": {
+            "github": "scantor",
             "name": "scantor",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 305,
+        "pk": 307,
         "fields": {
+            "github": "pclayton",
             "name": "phil.clayton",
             "domain": "veonix.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 306,
+        "pk": 308,
         "fields": {
+            "github": "numeratus",
             "name": "macports",
             "domain": "guenael.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 307,
+        "pk": 309,
         "fields": {
+            "github": "davidnich",
             "name": "davidnichols",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 308,
+        "pk": 310,
         "fields": {
             "name": "yoav.nir",
             "domain": "gmail.com"
@@ -2480,7 +2620,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 309,
+        "pk": 311,
         "fields": {
             "name": "franck.cassedanne",
             "domain": "ouarz.net"
@@ -2488,7 +2628,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 310,
+        "pk": 312,
         "fields": {
             "name": "norman",
             "domain": "astro.gla.ac.uk"
@@ -2496,15 +2636,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 311,
+        "pk": 313,
         "fields": {
+            "github": "JanWielemaker",
             "name": "J.Wielemaker",
             "domain": "uva.nl"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 312,
+        "pk": 314,
         "fields": {
             "name": "john",
             "domain": "netpurgatory.com"
@@ -2512,7 +2653,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 313,
+        "pk": 315,
         "fields": {
             "name": "alan.macports.sp",
             "domain": "polyphase.ca"
@@ -2520,15 +2661,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 314,
+        "pk": 316,
         "fields": {
+            "github": "jdberry",
             "name": "jberry",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 315,
+        "pk": 317,
         "fields": {
             "name": "andrea+darwinports",
             "domain": "webcom.it"
@@ -2536,23 +2678,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 316,
+        "pk": 318,
         "fields": {
+            "github": "rseichter",
             "name": "macports",
             "domain": "seichter.de"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 317,
+        "pk": 319,
         "fields": {
+            "github": "kjellpk",
             "name": "kjell.konis",
             "domain": "me.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 318,
+        "pk": 320,
         "fields": {
             "name": "el.dirte",
             "domain": "gmail.com"
@@ -2560,7 +2704,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 319,
+        "pk": 321,
         "fields": {
             "name": "casey",
             "domain": "rodarmor.com"
@@ -2568,7 +2712,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 320,
+        "pk": 322,
         "fields": {
             "name": "jrblevin",
             "domain": "sdf.org"
@@ -2576,49 +2720,37 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 321,
+        "pk": 323,
         "fields": {
+            "github": "beauby",
             "name": "hoss",
             "domain": "fb.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 322,
+        "pk": 324,
         "fields": {
+            "github": "mdouze",
             "name": "matthijs",
             "domain": "fb.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 323,
+        "pk": 325,
         "fields": {
+            "github": "KubaO",
             "name": "kuba",
             "domain": "mareimbrium.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 324,
-        "fields": {
-            "name": "howarth.at.macports",
-            "domain": "gmail.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
-        "pk": 325,
-        "fields": {
-            "name": "jens",
-            "domain": "nfft.org"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
         "pk": 326,
         "fields": {
-            "name": "watsonbladd",
+            "github": "jwhowarth",
+            "name": "howarth.at.macports",
             "domain": "gmail.com"
         }
     },
@@ -2626,13 +2758,30 @@
         "model": "ports.Maintainer",
         "pk": 327,
         "fields": {
+            "name": "jens",
+            "domain": "nfft.org"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 328,
+        "fields": {
+            "github": "wbl",
+            "name": "watsonbladd",
+            "domain": "gmail.com"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 329,
+        "fields": {
             "name": "tomaz.solc",
             "domain": "tablix.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 328,
+        "pk": 330,
         "fields": {
             "name": "mail",
             "domain": "carljohancrafoord.se"
@@ -2640,23 +2789,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 329,
+        "pk": 331,
         "fields": {
+            "github": "robbyn",
             "name": "maurice",
             "domain": "perry.ch"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 330,
+        "pk": 332,
         "fields": {
+            "github": "ddennedy",
             "name": "dan",
             "domain": "dennedy.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 331,
+        "pk": 333,
         "fields": {
             "name": "vladashram",
             "domain": "gmail.com"
@@ -2664,7 +2815,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 332,
+        "pk": 334,
         "fields": {
             "name": "emyr.thomas",
             "domain": "gmail.com"
@@ -2672,7 +2823,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 333,
+        "pk": 335,
         "fields": {
             "name": "rkitover",
             "domain": "gmail.com"
@@ -2680,7 +2831,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 334,
+        "pk": 336,
         "fields": {
             "name": "ale275",
             "domain": "gmail.com"
@@ -2688,7 +2839,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 335,
+        "pk": 337,
         "fields": {
             "name": "stephen",
             "domain": "shortround.net"
@@ -2696,7 +2847,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 336,
+        "pk": 338,
         "fields": {
             "name": "k.pranas",
             "domain": "gmail.com"
@@ -2704,15 +2855,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 337,
+        "pk": 339,
         "fields": {
+            "github": "Liontooth",
             "name": "lionteeth",
             "domain": "cogweb.net"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 338,
+        "pk": 340,
         "fields": {
             "name": "0booo5b02",
             "domain": "sneakemail.com"
@@ -2720,7 +2872,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 339,
+        "pk": 341,
         "fields": {
             "name": "stefan.van.der.eijk",
             "domain": "gmail.com"
@@ -2728,15 +2880,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 340,
+        "pk": 342,
         "fields": {
+            "github": "nano103",
             "name": "nano103",
             "domain": "mail.ru"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 341,
+        "pk": 343,
         "fields": {
             "name": "usx303",
             "domain": "googlemail.com"
@@ -2744,7 +2897,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 342,
+        "pk": 344,
         "fields": {
             "name": "bk532",
             "domain": "iname.com"
@@ -2752,15 +2905,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 343,
+        "pk": 345,
         "fields": {
+            "github": "ecronin",
             "name": "ecronin",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 344,
+        "pk": 346,
         "fields": {
             "name": "jack",
             "domain": "codezen.org"
@@ -2768,7 +2922,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 345,
+        "pk": 347,
         "fields": {
             "name": "andrew",
             "domain": "ugh.net.au"
@@ -2776,7 +2930,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 346,
+        "pk": 348,
         "fields": {
             "name": "jsaucier",
             "domain": "gmail.com"
@@ -2784,39 +2938,43 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 347,
+        "pk": 349,
         "fields": {
+            "github": "herbygillot",
             "name": "herby.gillot",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 348,
+        "pk": 350,
         "fields": {
+            "github": "cdeccio",
             "name": "casey",
             "domain": "deccio.net"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 349,
+        "pk": 351,
         "fields": {
+            "github": "unix-fan",
             "name": "unixfan",
             "domain": "github.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 350,
+        "pk": 352,
         "fields": {
+            "github": "fhgwright",
             "name": "fw",
             "domain": "fwright.net"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 351,
+        "pk": 353,
         "fields": {
             "name": "syzdek",
             "domain": "gmail.com"
@@ -2824,25 +2982,10 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 352,
-        "fields": {
-            "name": "jeremy.mcmillan",
-            "domain": "gmail.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
-        "pk": 353,
-        "fields": {
-            "name": "tomhennigan",
-            "domain": "gmail.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
         "pk": 354,
         "fields": {
-            "name": "allan.que",
+            "github": "aphor",
+            "name": "jeremy.mcmillan",
             "domain": "gmail.com"
         }
     },
@@ -2850,7 +2993,7 @@
         "model": "ports.Maintainer",
         "pk": 355,
         "fields": {
-            "name": "alexey.trenikhin+macports",
+            "name": "tomhennigan",
             "domain": "gmail.com"
         }
     },
@@ -2858,15 +3001,17 @@
         "model": "ports.Maintainer",
         "pk": 356,
         "fields": {
-            "name": "victor",
-            "domain": "macports.org"
+            "github": "aque",
+            "name": "allan.que",
+            "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 357,
         "fields": {
-            "name": "olsner",
+            "github": "alexeyt820",
+            "name": "alexey.trenikhin+macports",
             "domain": "gmail.com"
         }
     },
@@ -2874,15 +3019,15 @@
         "model": "ports.Maintainer",
         "pk": 358,
         "fields": {
-            "name": "jim",
-            "domain": "geovedi.com"
+            "name": "victor",
+            "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 359,
         "fields": {
-            "name": "yattenator",
+            "name": "olsner",
             "domain": "gmail.com"
         }
     },
@@ -2890,21 +3035,38 @@
         "model": "ports.Maintainer",
         "pk": 360,
         "fields": {
-            "name": "arm39",
-            "domain": "buffalo.edu"
+            "name": "jim",
+            "domain": "geovedi.com"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 361,
         "fields": {
+            "name": "yattenator",
+            "domain": "gmail.com"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 362,
+        "fields": {
+            "name": "arm39",
+            "domain": "buffalo.edu"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 363,
+        "fields": {
+            "github": "quentinmit",
             "name": "quentin",
             "domain": "mit.edu"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 362,
+        "pk": 364,
         "fields": {
             "name": "karl",
             "domain": "kornel.us"
@@ -2912,7 +3074,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 363,
+        "pk": 365,
         "fields": {
             "name": "max",
             "domain": "clarksys.com"
@@ -2920,7 +3082,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 364,
+        "pk": 366,
         "fields": {
             "name": "msmk",
             "domain": "lavabit.com"
@@ -2928,7 +3090,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 365,
+        "pk": 367,
         "fields": {
             "name": "david",
             "domain": "davidlaporte.org"
@@ -2936,15 +3098,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 366,
-        "fields": {
-            "name": "sireeshkodali1",
-            "domain": "gmail.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
-        "pk": 367,
+        "pk": 368,
         "fields": {
             "name": "opendarwin.org",
             "domain": "darkart.com"
@@ -2952,25 +3106,19 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 368,
+        "pk": 369,
         "fields": {
+            "github": "peternewman",
             "name": "bugs",
             "domain": "pjnewman.co.uk"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 369,
-        "fields": {
-            "name": "millerdev",
-            "domain": "gmail.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
         "pk": 370,
         "fields": {
-            "name": "smibrahim",
+            "github": "millerdev",
+            "name": "millerdev",
             "domain": "gmail.com"
         }
     },
@@ -2978,7 +3126,7 @@
         "model": "ports.Maintainer",
         "pk": 371,
         "fields": {
-            "name": "james.trammell",
+            "name": "smibrahim",
             "domain": "gmail.com"
         }
     },
@@ -2986,29 +3134,40 @@
         "model": "ports.Maintainer",
         "pk": 372,
         "fields": {
-            "name": "rsync",
-            "domain": "reifferscheid.org"
+            "github": "jtrammel",
+            "name": "james.trammell",
+            "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 373,
         "fields": {
-            "name": "rowue",
-            "domain": "macports.org"
+            "name": "rsync",
+            "domain": "reifferscheid.org"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 374,
         "fields": {
+            "github": "rowue",
+            "name": "rowue",
+            "domain": "macports.org"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 375,
+        "fields": {
+            "github": "roddiekieley",
             "name": "roddie.kieley",
             "domain": "unifiedsoftworx.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 375,
+        "pk": 376,
         "fields": {
             "name": "lars.rasmusson",
             "domain": "sics.se"
@@ -3016,15 +3175,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 376,
+        "pk": 377,
         "fields": {
+            "github": "pdvnl",
             "name": "github",
             "domain": "parvis.nl"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 377,
+        "pk": 378,
         "fields": {
             "name": "henkpoley",
             "domain": "gmail.com"
@@ -3032,7 +3192,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 378,
+        "pk": 379,
         "fields": {
             "name": "mjl",
             "domain": "luckie.org.nz"
@@ -3040,7 +3200,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 379,
+        "pk": 380,
         "fields": {
             "name": "hscholz",
             "domain": "wormulon.net"
@@ -3048,7 +3208,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 380,
+        "pk": 381,
         "fields": {
             "name": "alistair.israel",
             "domain": "acuityph.com"
@@ -3056,7 +3216,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 381,
+        "pk": 382,
         "fields": {
             "name": "blair",
             "domain": "the-blair.com"
@@ -3064,7 +3224,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 382,
+        "pk": 383,
         "fields": {
             "name": "vlm",
             "domain": "lionet.info"
@@ -3072,17 +3232,10 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 383,
-        "fields": {
-            "name": "graemelawes",
-            "domain": "gmail.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
         "pk": 384,
         "fields": {
-            "name": "darren.bane",
+            "github": "gclawes",
+            "name": "graemelawes",
             "domain": "gmail.com"
         }
     },
@@ -3090,7 +3243,7 @@
         "model": "ports.Maintainer",
         "pk": 385,
         "fields": {
-            "name": "luis.kop",
+            "name": "darren.bane",
             "domain": "gmail.com"
         }
     },
@@ -3098,13 +3251,22 @@
         "model": "ports.Maintainer",
         "pk": 386,
         "fields": {
+            "name": "luis.kop",
+            "domain": "gmail.com"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 387,
+        "fields": {
+            "github": "cardi",
             "name": "calvin",
             "domain": "isi.edu"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 387,
+        "pk": 388,
         "fields": {
             "name": "hsivank",
             "domain": "gmail.com"
@@ -3112,15 +3274,30 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 388,
+        "pk": 389,
         "fields": {
+            "github": "ghosthound"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 390,
+        "fields": {
+            "github": "jlopezr"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 391,
+        "fields": {
+            "github": "toots",
             "name": "toots",
             "domain": "rastageeks.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 389,
+        "pk": 392,
         "fields": {
             "name": "benedikt.meurer",
             "domain": "googlemail.com"
@@ -3128,7 +3305,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 390,
+        "pk": 393,
         "fields": {
             "name": "fh",
             "domain": "labri.fr"
@@ -3136,15 +3313,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 391,
+        "pk": 394,
         "fields": {
+            "github": "tazzben",
             "name": "bosmith",
             "domain": "unomaha.edu"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 392,
+        "pk": 395,
         "fields": {
             "name": "sepp",
             "domain": "perlhacker.org"
@@ -3152,15 +3330,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 393,
+        "pk": 396,
         "fields": {
+            "github": "frankdean",
             "name": "frank.dean",
             "domain": "fdsd.co.uk"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 394,
+        "pk": 397,
         "fields": {
             "name": "adriano",
             "domain": "adrianomelo.com"
@@ -3168,7 +3347,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 395,
+        "pk": 398,
         "fields": {
             "name": "kristian.peters",
             "domain": "korseby.net"
@@ -3176,7 +3355,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 396,
+        "pk": 399,
         "fields": {
             "name": "dev",
             "domain": "fpassera.com"
@@ -3184,7 +3363,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 397,
+        "pk": 400,
         "fields": {
             "name": "mni",
             "domain": "oaf.dk"
@@ -3192,7 +3371,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 398,
+        "pk": 401,
         "fields": {
             "name": "ron",
             "domain": "costite.com"
@@ -3200,7 +3379,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 399,
+        "pk": 402,
         "fields": {
             "name": "borys",
             "domain": "designvox.com"
@@ -3208,15 +3387,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 400,
+        "pk": 403,
         "fields": {
+            "github": "jpoliv",
             "name": "jpo",
             "domain": "di.uminho.pt"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 401,
+        "pk": 404,
         "fields": {
             "name": "tonym",
             "domain": "tonym.us"
@@ -3224,7 +3404,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 402,
+        "pk": 405,
         "fields": {
             "name": "face",
             "domain": "centosprime.com"
@@ -3232,15 +3412,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 403,
+        "pk": 406,
         "fields": {
+            "github": "chrstphrchvz",
             "name": "chrischavez",
             "domain": "gmx.us"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 404,
+        "pk": 407,
         "fields": {
             "name": "rpz",
             "domain": "cse.wustl.edu"
@@ -3248,15 +3429,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 405,
+        "pk": 408,
         "fields": {
+            "github": "nottwo",
             "name": "nottwo",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 406,
+        "pk": 409,
         "fields": {
             "name": "macports",
             "domain": "roback.cc"
@@ -3264,7 +3446,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 407,
+        "pk": 410,
         "fields": {
             "name": "dikshie",
             "domain": "sfc.wide.ad.jp"
@@ -3272,7 +3454,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 408,
+        "pk": 411,
         "fields": {
             "name": "liampg72",
             "domain": "aol.com"
@@ -3280,7 +3462,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 409,
+        "pk": 412,
         "fields": {
             "name": "ww.galen",
             "domain": "gmail.com"
@@ -3288,7 +3470,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 410,
+        "pk": 413,
         "fields": {
             "name": "pokui",
             "domain": "psg.com"
@@ -3296,7 +3478,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 411,
+        "pk": 414,
         "fields": {
             "name": "macports",
             "domain": "master-developer.com"
@@ -3304,15 +3486,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 412,
+        "pk": 415,
         "fields": {
+            "github": "blairc",
             "name": "blair.christensen",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 413,
+        "pk": 416,
         "fields": {
             "name": "clot",
             "domain": "univ-lyon1.fr"
@@ -3320,15 +3503,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 414,
+        "pk": 417,
         "fields": {
+            "github": "mvgrimes",
             "name": "mgrimes",
             "domain": "peculier.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 415,
+        "pk": 418,
         "fields": {
             "name": "macportscf",
             "domain": "komatasche.de"
@@ -3336,7 +3520,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 416,
+        "pk": 419,
         "fields": {
             "name": "kykim",
             "domain": "mac.com"
@@ -3344,7 +3528,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 417,
+        "pk": 420,
         "fields": {
             "name": "pengyu.ut",
             "domain": "gmail.com"
@@ -3352,7 +3536,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 418,
+        "pk": 421,
         "fields": {
             "name": "jon.hermansen",
             "domain": "gmail.com"
@@ -3360,7 +3544,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 419,
+        "pk": 422,
         "fields": {
             "name": "paul.totterman",
             "domain": "gmail.com"
@@ -3368,7 +3552,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 420,
+        "pk": 423,
         "fields": {
             "name": "cowboyneal",
             "domain": "gmail.com"
@@ -3376,7 +3560,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 421,
+        "pk": 424,
         "fields": {
             "name": "master",
             "domain": "iaas.msu.ru"
@@ -3384,7 +3568,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 422,
+        "pk": 425,
         "fields": {
             "name": "rbeyer",
             "domain": "rossbeyer.net"
@@ -3392,33 +3576,10 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 423,
-        "fields": {
-            "name": "pedro.salgado",
-            "domain": "gmail.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
-        "pk": 424,
-        "fields": {
-            "name": "aronnax",
-            "domain": "macports.org"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
-        "pk": 425,
-        "fields": {
-            "name": "petr",
-            "domain": "macports.org"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
         "pk": 426,
         "fields": {
-            "name": "rubendibattista",
+            "github": "steenzout",
+            "name": "pedro.salgado",
             "domain": "gmail.com"
         }
     },
@@ -3426,23 +3587,26 @@
         "model": "ports.Maintainer",
         "pk": 427,
         "fields": {
-            "name": "giovanni.bussi",
-            "domain": "gmail.com"
+            "github": "lpsinger",
+            "name": "aronnax",
+            "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 428,
         "fields": {
-            "name": "christophe.pradal",
-            "domain": "inria.fr"
+            "github": "petrrr",
+            "name": "petr",
+            "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 429,
         "fields": {
-            "name": "esafak",
+            "github": "rubendibattista",
+            "name": "rubendibattista",
             "domain": "gmail.com"
         }
     },
@@ -3450,45 +3614,76 @@
         "model": "ports.Maintainer",
         "pk": 430,
         "fields": {
-            "name": "miguel",
-            "domain": "ipglider.org"
+            "github": "GiovanniBussi",
+            "name": "giovanni.bussi",
+            "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 431,
         "fields": {
-            "name": "reneeotten",
-            "domain": "macports.org"
+            "name": "christophe.pradal",
+            "domain": "inria.fr"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 432,
         "fields": {
-            "name": "robitaille",
-            "domain": "macports.org"
+            "github": "esafak",
+            "name": "esafak",
+            "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 433,
         "fields": {
-            "name": "mperrin",
-            "domain": "stsci.edu"
+            "github": "ipglider",
+            "name": "miguel",
+            "domain": "ipglider.org"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 434,
         "fields": {
+            "github": "reneeotten",
+            "name": "reneeotten",
+            "domain": "macports.org"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 435,
+        "fields": {
+            "github": "astrofrog",
+            "name": "robitaille",
+            "domain": "macports.org"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 436,
+        "fields": {
+            "github": "mperrin",
+            "name": "mperrin",
+            "domain": "stsci.edu"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 437,
+        "fields": {
+            "github": "duncanmmacleod",
             "name": "duncan.macleod",
             "domain": "ligo.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 435,
+        "pk": 438,
         "fields": {
             "name": "macports",
             "domain": "dckd.nl"
@@ -3496,15 +3691,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 436,
+        "pk": 439,
         "fields": {
+            "github": "dfm",
             "name": "dan",
             "domain": "danfm.ca"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 437,
+        "pk": 440,
         "fields": {
             "name": "ahkdiep",
             "domain": "gmail.com"
@@ -3512,23 +3708,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 438,
+        "pk": 441,
         "fields": {
+            "github": "donkopotamus",
             "name": "dh",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 439,
+        "pk": 442,
         "fields": {
+            "github": "skymoo",
             "name": "ram",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 440,
+        "pk": 443,
         "fields": {
             "name": "zdw",
             "domain": "artisancomputer.com"
@@ -3536,7 +3734,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 441,
+        "pk": 444,
         "fields": {
             "name": "alex",
             "domain": "alexnicksay.com"
@@ -3544,47 +3742,52 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 442,
+        "pk": 445,
         "fields": {
+            "github": "Synss",
             "name": "Mathias.Laurin+macports",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 443,
+        "pk": 446,
         "fields": {
+            "github": "coquellen",
             "name": "coquelleni",
             "domain": "ill.fr"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 444,
+        "pk": 447,
         "fields": {
+            "github": "funasoul",
             "name": "funasoul",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 445,
+        "pk": 448,
         "fields": {
+            "github": "smithsp",
             "name": "smithsp",
             "domain": "fusion.gat.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 446,
+        "pk": 449,
         "fields": {
+            "github": "cdeil",
             "name": "Deil.Christoph",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 447,
+        "pk": 450,
         "fields": {
             "name": "jls",
             "domain": "icoost.com"
@@ -3592,31 +3795,34 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 448,
+        "pk": 451,
         "fields": {
+            "github": "conallob",
             "name": "conall+macports",
             "domain": "conall.net"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 449,
+        "pk": 452,
         "fields": {
+            "github": "mndavidoff",
             "name": "md14-macports",
             "domain": "alluvialsw.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 450,
+        "pk": 453,
         "fields": {
+            "github": "F30",
             "name": "f30",
             "domain": "f30.me"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 451,
+        "pk": 454,
         "fields": {
             "name": "alexander.afanasyev",
             "domain": "ucla.edu"
@@ -3624,15 +3830,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 452,
+        "pk": 455,
         "fields": {
+            "github": "stefco",
             "name": "stefan.countryman",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 453,
+        "pk": 456,
         "fields": {
             "name": "tiago",
             "domain": "skewed.de"
@@ -3640,7 +3847,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 454,
+        "pk": 457,
         "fields": {
             "name": "rjkroege",
             "domain": "liqui.org"
@@ -3648,7 +3855,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 455,
+        "pk": 458,
         "fields": {
             "name": "waterson",
             "domain": "maubi.net"
@@ -3656,7 +3863,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 456,
+        "pk": 459,
         "fields": {
             "name": "petrus.hyvonen",
             "domain": "gmail.com"
@@ -3664,7 +3871,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 457,
+        "pk": 460,
         "fields": {
             "name": "info",
             "domain": "rickvanderzwet.nl"
@@ -3672,23 +3879,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 458,
+        "pk": 461,
         "fields": {
-            "name": "egorenar-dev",
-            "domain": "posteo.net"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
-        "pk": 459,
-        "fields": {
+            "github": "bfarr",
             "name": "bfarr",
             "domain": "uoregon.edu"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 460,
+        "pk": 462,
         "fields": {
             "name": "msavory",
             "domain": "nzbox.com"
@@ -3696,7 +3896,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 461,
+        "pk": 463,
         "fields": {
             "name": "chris.owen",
             "domain": "consault.com"
@@ -3704,7 +3904,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 462,
+        "pk": 464,
         "fields": {
             "name": "sb",
             "domain": "minimoog.org"
@@ -3712,15 +3912,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 463,
+        "pk": 465,
         "fields": {
+            "github": "rpfisher",
             "name": "ryan.fisher",
             "domain": "ligo.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 464,
+        "pk": 466,
         "fields": {
             "name": "yangx59",
             "domain": "mcmaster.ca"
@@ -3728,7 +3929,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 465,
+        "pk": 467,
         "fields": {
             "name": "jweede+macports",
             "domain": "gmail.com"
@@ -3736,33 +3937,19 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 466,
+        "pk": 468,
         "fields": {
+            "github": "jswhit",
             "name": "jswhit",
             "domain": "fastmail.fm"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 467,
-        "fields": {
-            "name": "stevenbird1",
-            "domain": "gmail.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
-        "pk": 468,
-        "fields": {
-            "name": "jaap",
-            "domain": "NLnetLabs.nl"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
         "pk": 469,
         "fields": {
-            "name": "mahergamal",
+            "github": "stevenbird",
+            "name": "stevenbird1",
             "domain": "gmail.com"
         }
     },
@@ -3770,23 +3957,25 @@
         "model": "ports.Maintainer",
         "pk": 470,
         "fields": {
-            "name": "chiszp",
-            "domain": "gmail.com"
+            "github": "Jakker",
+            "name": "jaap",
+            "domain": "NLnetLabs.nl"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 471,
         "fields": {
-            "name": "thibaut",
-            "domain": "macports.org"
+            "github": "maherg",
+            "name": "mahergamal",
+            "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 472,
         "fields": {
-            "name": "andrew.reusch",
+            "name": "chiszp",
             "domain": "gmail.com"
         }
     },
@@ -3794,13 +3983,30 @@
         "model": "ports.Maintainer",
         "pk": 473,
         "fields": {
+            "github": "paumard",
+            "name": "thibaut",
+            "domain": "macports.org"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 474,
+        "fields": {
+            "name": "andrew.reusch",
+            "domain": "gmail.com"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 475,
+        "fields": {
             "name": "servicegruppe.wissinfo",
             "domain": "fmf.uni-freiburg.de"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 474,
+        "pk": 476,
         "fields": {
             "name": "rasmus",
             "domain": "macports.org"
@@ -3808,23 +4014,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 475,
+        "pk": 477,
         "fields": {
+            "github": "valyukov",
             "name": "valyukov",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 476,
+        "pk": 478,
         "fields": {
+            "github": "neurodroid",
             "name": "christsc",
             "domain": "gmx.de"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 477,
+        "pk": 479,
         "fields": {
             "name": "francisga",
             "domain": "katatechnen.net"
@@ -3832,7 +4040,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 478,
+        "pk": 480,
         "fields": {
             "name": "maugustin",
             "domain": "gmx.net"
@@ -3840,7 +4048,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 479,
+        "pk": 481,
         "fields": {
             "name": "olv.bonnet",
             "domain": "free.fr"
@@ -3848,7 +4056,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 480,
+        "pk": 482,
         "fields": {
             "name": "dima",
             "domain": "amln.net"
@@ -3856,7 +4064,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 481,
+        "pk": 483,
         "fields": {
             "name": "mfisher",
             "domain": "csh.rit.edu"
@@ -3864,15 +4072,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 482,
+        "pk": 484,
         "fields": {
+            "github": "jrjsmrtn",
             "name": "jrjsmrtn",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 483,
+        "pk": 485,
         "fields": {
             "name": "dports",
             "domain": "otierney.net"
@@ -3880,7 +4089,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 484,
+        "pk": 486,
         "fields": {
             "name": "jstetser",
             "domain": "icongarden.com"
@@ -3888,7 +4097,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 485,
+        "pk": 487,
         "fields": {
             "name": "roberto",
             "domain": "freebsd.org"
@@ -3896,7 +4105,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 486,
+        "pk": 488,
         "fields": {
             "name": "matt",
             "domain": "bodgit-n-scarper.com"
@@ -3904,7 +4113,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 487,
+        "pk": 489,
         "fields": {
             "name": "nathan",
             "domain": "atnan.com"
@@ -3912,7 +4121,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 488,
+        "pk": 490,
         "fields": {
             "name": "doug",
             "domain": "lathi.net"
@@ -3920,15 +4129,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 489,
+        "pk": 491,
         "fields": {
+            "github": "randomphrase",
             "name": "arsptr",
             "domain": "internode.on.net"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 490,
+        "pk": 492,
         "fields": {
             "name": "blair",
             "domain": "devclue.com"
@@ -3936,7 +4146,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 491,
+        "pk": 493,
         "fields": {
             "name": "darwin",
             "domain": "otierney.net"
@@ -3944,23 +4154,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 492,
+        "pk": 494,
         "fields": {
+            "github": "galexv",
             "name": "galexv",
             "domain": "umich.edu"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 493,
+        "pk": 495,
         "fields": {
+            "github": "egull",
             "name": "egull",
             "domain": "umich.edu"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 494,
+        "pk": 496,
         "fields": {
             "name": "tazz_ben",
             "domain": "ad.wsu.edu"
@@ -3968,7 +4180,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 495,
+        "pk": 497,
         "fields": {
             "name": "ghweber",
             "domain": "lbl.gov"
@@ -3976,7 +4188,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 496,
+        "pk": 498,
         "fields": {
             "name": "FlorianFranzen",
             "domain": "gmail.com"
@@ -3984,7 +4196,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 497,
+        "pk": 499,
         "fields": {
             "name": "fanfarillo.gcc",
             "domain": "gmail.com"
@@ -3992,7 +4204,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 498,
+        "pk": 500,
         "fields": {
             "name": "mashavecher",
             "domain": "yahoo.com"
@@ -4000,7 +4212,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 499,
+        "pk": 501,
         "fields": {
             "name": "gedgy63",
             "domain": "gmail.com"
@@ -4008,7 +4220,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 500,
+        "pk": 502,
         "fields": {
             "name": "cram5431",
             "domain": "gmail.com"
@@ -4016,7 +4228,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 501,
+        "pk": 503,
         "fields": {
             "name": "gamperl",
             "domain": "gmail.com"
@@ -4024,7 +4236,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 502,
+        "pk": 504,
         "fields": {
             "name": "fernando.iazeolla",
             "domain": "gmail.com"
@@ -4032,15 +4244,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 503,
+        "pk": 505,
         "fields": {
+            "github": "bredelings",
             "name": "benjamin.redelings",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 504,
+        "pk": 506,
         "fields": {
             "name": "macports",
             "domain": "thomasfiala.de"
@@ -4048,7 +4261,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 505,
+        "pk": 507,
         "fields": {
             "name": "abush",
             "domain": "fbmc.fcen.uba.ar"
@@ -4056,39 +4269,43 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 506,
+        "pk": 508,
         "fields": {
+            "github": "joefowler",
             "name": "joe.fowler",
             "domain": "nist.gov"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 507,
+        "pk": 509,
         "fields": {
+            "github": "ryanvolz",
             "name": "rvolz",
             "domain": "mit.edu"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 508,
+        "pk": 510,
         "fields": {
+            "github": "jswoboda",
             "name": "swoboj",
             "domain": "mit.edu"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 509,
+        "pk": 511,
         "fields": {
+            "github": "jokuha",
             "name": "jochen",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 510,
+        "pk": 512,
         "fields": {
             "name": "usd-help",
             "domain": "eso.org"
@@ -4096,7 +4313,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 511,
+        "pk": 513,
         "fields": {
             "name": "mg13",
             "domain": "sanger.ac.uk"
@@ -4104,7 +4321,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 512,
+        "pk": 514,
         "fields": {
             "name": "mwilliams256",
             "domain": "gmail.com"
@@ -4112,7 +4329,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 513,
+        "pk": 515,
         "fields": {
             "name": "j.hafey",
             "domain": "gmail.com"
@@ -4120,15 +4337,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 514,
+        "pk": 516,
         "fields": {
+            "github": "emaros",
             "name": "ed.maros",
             "domain": "ligo.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 515,
+        "pk": 517,
         "fields": {
             "name": "opendarwin",
             "domain": "gaige.net"
@@ -4136,31 +4354,34 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 516,
+        "pk": 518,
         "fields": {
+            "github": "smaret",
             "name": "smaret",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 517,
+        "pk": 519,
         "fields": {
+            "github": "bardeau",
             "name": "bardeau",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 518,
+        "pk": 520,
         "fields": {
+            "github": "danieljprice",
             "name": "daniel.price",
             "domain": "monash.edu"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 519,
+        "pk": 521,
         "fields": {
             "name": "rprogers",
             "domain": "uw.edu"
@@ -4168,23 +4389,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 520,
+        "pk": 522,
         "fields": {
+            "github": "johndesanto",
             "name": "jdesanto",
             "domain": "ucsd.edu"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 521,
+        "pk": 523,
         "fields": {
+            "github": "carlesfernandez",
             "name": "carles.fernandez",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 522,
+        "pk": 524,
         "fields": {
             "name": "yeti",
             "domain": "gwyddion.net"
@@ -4192,7 +4415,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 523,
+        "pk": 525,
         "fields": {
             "name": "higginja",
             "domain": "ece.pdx.edu"
@@ -4200,7 +4423,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 524,
+        "pk": 526,
         "fields": {
             "name": "Yogesh.Sharma",
             "domain": "saabusa.com"
@@ -4208,7 +4431,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 525,
+        "pk": 527,
         "fields": {
             "name": "apfeiffer1",
             "domain": "macports.org"
@@ -4216,7 +4439,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 526,
+        "pk": 528,
         "fields": {
             "name": "paf",
             "domain": "keeh.net"
@@ -4224,31 +4447,34 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 527,
+        "pk": 529,
         "fields": {
+            "github": "p-bro",
             "name": "p.bro",
             "domain": "web.de"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 528,
+        "pk": 530,
         "fields": {
+            "github": "ejullo",
             "name": "eric.jullo",
             "domain": "lam.fr"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 529,
+        "pk": 531,
         "fields": {
+            "github": "hamogu",
             "name": "moritz.guenther",
             "domain": "gmx.de"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 530,
+        "pk": 532,
         "fields": {
             "name": "mhough",
             "domain": "mac.com"
@@ -4256,31 +4482,34 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 531,
+        "pk": 533,
         "fields": {
+            "github": "pkgw",
             "name": "peter",
             "domain": "newton.cx"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 532,
+        "pk": 534,
         "fields": {
+            "github": "thiagoveloso",
             "name": "thiagoveloso",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 533,
+        "pk": 535,
         "fields": {
+            "github": "mguthaus",
             "name": "mrg+openram",
             "domain": "ucsc.edu"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 534,
+        "pk": 536,
         "fields": {
             "name": "nightshade",
             "domain": "lists.launchpad.net"
@@ -4288,7 +4517,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 535,
+        "pk": 537,
         "fields": {
             "name": "staffan",
             "domain": "gimaker.se"
@@ -4296,7 +4525,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 536,
+        "pk": 538,
         "fields": {
             "name": "mattoates",
             "domain": "gmail.com"
@@ -4304,7 +4533,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 537,
+        "pk": 539,
         "fields": {
             "name": "sbarbot",
             "domain": "ntu.edu.sg"
@@ -4312,15 +4541,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 538,
+        "pk": 540,
         "fields": {
+            "github": "ducksauz",
             "name": "john",
             "domain": "duksta.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 539,
+        "pk": 541,
         "fields": {
             "name": "rene.rahn",
             "domain": "fu-berlin.de"
@@ -4328,7 +4558,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 540,
+        "pk": 542,
         "fields": {
             "name": "sebastien.maret",
             "domain": "gmail.com"
@@ -4336,7 +4566,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 541,
+        "pk": 543,
         "fields": {
             "name": "mrt5",
             "domain": "mac.com"
@@ -4344,15 +4574,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 542,
+        "pk": 544,
         "fields": {
+            "github": "romendakil",
             "name": "juergen.reuter",
             "domain": "desy.de"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 543,
+        "pk": 545,
         "fields": {
             "name": "whizard",
             "domain": "desy.de"
@@ -4360,23 +4591,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 544,
+        "pk": 546,
         "fields": {
+            "github": "newtonne",
             "name": "newtonne.github",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 545,
-        "fields": {
-            "name": "ricci",
-            "domain": "macports.org"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
-        "pk": 546,
+        "pk": 547,
         "fields": {
             "name": "roberto",
             "domain": "keltia.net"
@@ -4384,15 +4608,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 547,
+        "pk": 548,
         "fields": {
+            "github": "landonf",
             "name": "landonf",
             "domain": "macports.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 548,
+        "pk": 549,
         "fields": {
             "name": "jgilab",
             "domain": "googlemail.com"
@@ -4400,7 +4625,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 549,
+        "pk": 550,
         "fields": {
             "name": "bernhard",
             "domain": "bwalle.de"
@@ -4408,15 +4633,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 550,
+        "pk": 551,
         "fields": {
+            "github": "dottedmag",
             "name": "dottedmag",
             "domain": "dottedmag.net"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 551,
+        "pk": 552,
         "fields": {
             "name": "dennisvd",
             "domain": "nikhef.nl"
@@ -4424,7 +4650,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 552,
+        "pk": 553,
         "fields": {
             "name": "fgp",
             "domain": "phlo.org"
@@ -4432,7 +4658,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 553,
+        "pk": 554,
         "fields": {
             "name": "joel-alexis",
             "domain": "bialkiewicz.fr"
@@ -4440,7 +4666,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 554,
+        "pk": 555,
         "fields": {
             "name": "mat",
             "domain": "phpconsulting.com"
@@ -4448,15 +4674,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 555,
+        "pk": 556,
         "fields": {
+            "github": "lpefferkorn",
             "name": "loic-github",
             "domain": "loicp.eu"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 556,
+        "pk": 557,
         "fields": {
             "name": "okoeroo",
             "domain": "nikhef.nl"
@@ -4464,7 +4691,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 557,
+        "pk": 558,
         "fields": {
             "name": "cforkin",
             "domain": "gmail.com"
@@ -4472,7 +4699,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 558,
+        "pk": 559,
         "fields": {
             "name": "tal",
             "domain": "whatexit.org"
@@ -4480,7 +4707,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 559,
+        "pk": 560,
         "fields": {
             "name": "a.schuster",
             "domain": "yendor.net"
@@ -4488,7 +4715,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 560,
+        "pk": 561,
         "fields": {
             "name": "macports-mgr",
             "domain": "lists.macports.org"
@@ -4496,15 +4723,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 561,
+        "pk": 562,
         "fields": {
+            "github": "tessus",
             "name": "tessarek",
             "domain": "evermeet.cx"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 562,
+        "pk": 563,
         "fields": {
             "name": "matias.piipari",
             "domain": "gmail.com"
@@ -4512,7 +4740,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 563,
+        "pk": 564,
         "fields": {
             "name": "robertoschwald",
             "domain": "googlemail.com"
@@ -4520,7 +4748,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 564,
+        "pk": 565,
         "fields": {
             "name": "simmel",
             "domain": "soy.se"
@@ -4528,7 +4756,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 565,
+        "pk": 566,
         "fields": {
             "name": "0xffea",
             "domain": "googlemail.com"
@@ -4536,7 +4764,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 566,
+        "pk": 567,
         "fields": {
             "name": "reg.macports",
             "domain": "entropy.ch"
@@ -4544,15 +4772,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 567,
+        "pk": 568,
         "fields": {
+            "github": "codesmythe",
             "name": "robgowin",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 568,
+        "pk": 569,
         "fields": {
             "name": "probono",
             "domain": "puredarwin.org"
@@ -4560,15 +4789,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 569,
+        "pk": 570,
         "fields": {
+            "github": "jvirkki",
             "name": "jyri",
             "domain": "virkki.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 570,
+        "pk": 571,
         "fields": {
             "name": "dmankus",
             "domain": "gmail.com"
@@ -4576,7 +4806,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 571,
+        "pk": 572,
         "fields": {
             "name": "harold",
             "domain": "leboulanger.org"
@@ -4584,7 +4814,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 572,
+        "pk": 573,
         "fields": {
             "name": "ryand-macports",
             "domain": "zenspider.com"
@@ -4592,7 +4822,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 573,
+        "pk": 574,
         "fields": {
             "name": "jheiss",
             "domain": "aput.net"
@@ -4600,16 +4830,9 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 574,
-        "fields": {
-            "name": "davidgilman1",
-            "domain": "gmail.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
         "pk": 575,
         "fields": {
+            "github": "glennmatthews",
             "name": "glenn",
             "domain": "e-dad.net"
         }
@@ -4618,21 +4841,13 @@
         "model": "ports.Maintainer",
         "pk": 576,
         "fields": {
-            "name": "saagar",
-            "domain": "saagarjha.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
-        "pk": 577,
-        "fields": {
             "name": "revol",
             "domain": "free.fr"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 578,
+        "pk": 577,
         "fields": {
             "name": "nefar",
             "domain": "hotmail.com"
@@ -4640,23 +4855,25 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 579,
+        "pk": 578,
         "fields": {
+            "github": "nickolaev",
             "name": "nnikolay",
             "domain": "vmware.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 580,
+        "pk": 579,
         "fields": {
+            "github": "patarra",
             "name": "patarra",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 581,
+        "pk": 580,
         "fields": {
             "name": "cofyc.jackson",
             "domain": "gmail.com"
@@ -4664,7 +4881,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 582,
+        "pk": 581,
         "fields": {
             "name": "francois",
             "domain": "goudal.net"
@@ -4672,7 +4889,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 583,
+        "pk": 582,
         "fields": {
             "name": "pivie",
             "domain": "nd.edu"
@@ -4680,15 +4897,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 584,
+        "pk": 583,
         "fields": {
+            "github": "rangeles",
             "name": "ronangeles",
             "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 585,
+        "pk": 584,
         "fields": {
             "name": "johan.ekenberg",
             "domain": "gmail.com"
@@ -4696,7 +4914,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 586,
+        "pk": 585,
         "fields": {
             "name": "creaktive",
             "domain": "gmail.com"
@@ -4704,7 +4922,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 587,
+        "pk": 586,
         "fields": {
             "name": "dev.modprobe",
             "domain": "yahoo.com.mx"
@@ -4712,7 +4930,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 588,
+        "pk": 587,
         "fields": {
             "name": "christoph",
             "domain": "christoph-egger.org"
@@ -4720,8 +4938,16 @@
     },
     {
         "model": "ports.Maintainer",
+        "pk": 588,
+        "fields": {
+            "github": "thenatefisher"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
         "pk": 589,
         "fields": {
+            "github": "rafi",
             "name": "justrafi",
             "domain": "gmail.com"
         }
@@ -4730,6 +4956,7 @@
         "model": "ports.Maintainer",
         "pk": 590,
         "fields": {
+            "github": "belgianbeer",
             "name": "belgianbeer",
             "domain": "aj.admwt.jp"
         }
@@ -4754,6 +4981,7 @@
         "model": "ports.Maintainer",
         "pk": 593,
         "fields": {
+            "github": "brucemiller",
             "name": "bruce.miller",
             "domain": "nist.gov"
         }
@@ -4762,6 +4990,7 @@
         "model": "ports.Maintainer",
         "pk": 594,
         "fields": {
+            "github": "bdesgraupes",
             "name": "bdesgraupes",
             "domain": "users.sourceforge.net"
         }
@@ -4778,13 +5007,20 @@
         "model": "ports.Maintainer",
         "pk": 596,
         "fields": {
+            "github": "StefKKK"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 597,
+        "fields": {
             "name": "julian",
             "domain": "hal-9k.de"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 597,
+        "pk": 598,
         "fields": {
             "name": "thomas+darwinports",
             "domain": "stromberg.org"
@@ -4792,15 +5028,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 598,
+        "pk": 599,
         "fields": {
+            "github": "lemzwerg",
             "name": "wl",
             "domain": "gnu.org"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 599,
+        "pk": 600,
         "fields": {
             "name": "Damien.Pollet",
             "domain": "gmail.com"
@@ -4808,7 +5045,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 600,
+        "pk": 601,
         "fields": {
             "name": "bardellie",
             "domain": "gmail.com"
@@ -4816,7 +5053,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 601,
+        "pk": 602,
         "fields": {
             "name": "cedstrom",
             "domain": "gmail.com"
@@ -4824,7 +5061,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 602,
+        "pk": 603,
         "fields": {
             "name": "qbarnes",
             "domain": "gmail.com"
@@ -4832,7 +5069,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 603,
+        "pk": 604,
         "fields": {
             "name": "iapain",
             "domain": "iapa.in"
@@ -4840,15 +5077,16 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 604,
+        "pk": 605,
         "fields": {
+            "github": "flexpaper",
             "name": "pdf2json",
             "domain": "devaldi.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 605,
+        "pk": 606,
         "fields": {
             "name": "jf",
             "domain": "dockes.org"
@@ -4856,7 +5094,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 606,
+        "pk": 607,
         "fields": {
             "name": "hello",
             "domain": "hryk.info"
@@ -4864,7 +5102,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 607,
+        "pk": 608,
         "fields": {
             "name": "alexandernx",
             "domain": "gmail.com"
@@ -4872,15 +5110,23 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 608,
+        "pk": 609,
         "fields": {
+            "github": "lilca"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 610,
+        "fields": {
+            "github": "TinoDidriksen",
             "name": "consult",
             "domain": "tinodidriksen.com"
         }
     },
     {
         "model": "ports.Maintainer",
-        "pk": 609,
+        "pk": 611,
         "fields": {
             "name": "twic",
             "domain": "urchin.earth.li"
@@ -4888,7 +5134,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 610,
+        "pk": 612,
         "fields": {
             "name": "arjen",
             "domain": "gmx.com"
@@ -4896,7 +5142,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 611,
+        "pk": 613,
         "fields": {
             "name": "vishketan",
             "domain": "yahoo.com"
@@ -4904,7 +5150,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 612,
+        "pk": 614,
         "fields": {
             "name": "michael",
             "domain": "stray-hound.com"
@@ -4912,7 +5158,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 613,
+        "pk": 615,
         "fields": {
             "name": "obrienj",
             "domain": "email.uc.edu"
@@ -4920,7 +5166,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 614,
+        "pk": 616,
         "fields": {
             "name": "girgen",
             "domain": "FreeBSD.org"
@@ -4928,7 +5174,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 615,
+        "pk": 617,
         "fields": {
             "name": "brian",
             "domain": "wikkawiki.org"
@@ -4936,7 +5182,7 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 616,
+        "pk": 618,
         "fields": {
             "name": "cfaerber",
             "domain": "cfaerber.name"
@@ -4944,25 +5190,10 @@
     },
     {
         "model": "ports.Maintainer",
-        "pk": 617,
-        "fields": {
-            "name": "christian.queinnec",
-            "domain": "gmail.com"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
-        "pk": 618,
-        "fields": {
-            "name": "joel.brogniart",
-            "domain": "laposte.fr"
-        }
-    },
-    {
-        "model": "ports.Maintainer",
         "pk": 619,
         "fields": {
-            "name": "julien.barbey",
+            "github": "ChristianQueinnec",
+            "name": "christian.queinnec",
             "domain": "gmail.com"
         }
     },
@@ -4970,15 +5201,17 @@
         "model": "ports.Maintainer",
         "pk": 620,
         "fields": {
-            "name": "matthew.c",
-            "domain": "rogers.com"
+            "github": "nortcele",
+            "name": "joel.brogniart",
+            "domain": "laposte.fr"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 621,
         "fields": {
-            "name": "parker.charles",
+            "github": "sibador",
+            "name": "julien.barbey",
             "domain": "gmail.com"
         }
     },
@@ -4986,25 +5219,34 @@
         "model": "ports.Maintainer",
         "pk": 622,
         "fields": {
-            "name": "emanuele.giaquinta",
-            "domain": "gmail.com"
+            "name": "matthew.c",
+            "domain": "rogers.com"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 623,
         "fields": {
-            "name": "oksmith",
-            "domain": "magma.ca"
+            "github": "technobauble",
+            "name": "parker.charles",
+            "domain": "gmail.com"
         }
     },
     {
         "model": "ports.Maintainer",
         "pk": 624,
         "fields": {
-            "github": "yan12125",
-            "name": "yan12125",
-            "domain": "macports.org"
+            "github": "exg",
+            "name": "emanuele.giaquinta",
+            "domain": "gmail.com"
+        }
+    },
+    {
+        "model": "ports.Maintainer",
+        "pk": 625,
+        "fields": {
+            "name": "oksmith",
+            "domain": "magma.ca"
         }
     }
 ]

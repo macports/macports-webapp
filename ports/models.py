@@ -10,14 +10,11 @@ class MaintainerManager(models.Manager):
 
 
 class Maintainer(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, db_index=True)
     domain = models.CharField(max_length=50)
     github = models.CharField(max_length=50, db_index=True)
 
     objects = MaintainerManager()
-
-    class Meta:
-        unique_together = (('name', 'domain'),)
 
 
 

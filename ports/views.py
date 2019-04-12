@@ -67,17 +67,15 @@ def stats(request):
 
 def stats_portdetail(request, name):
     port = Port.objects.get(name=name)
-    return render(request, 'ports/stats_portdetail.html',{
-        'port':port,
+    return render(request, 'ports/stats_portdetail.html', {
+        'port': port,
     })
 
 def maintainer_detail(request, slug):
-    name = slug.split('__')[0]
-    domain = slug.split('__')[1]
-    ports = Port.objects.filter(maintainers__name=name, maintainers__domain=domain)
-    maintainer = Maintainer.objects.get(name=name,domain=domain)
-    return render(request, 'ports/maintainerdetail.html',{
-        'maintainer':maintainer,
+    ports = Port.objects.filter(maintainers__name=slug)
+    maintainer = Maintainer.objects.get(name=slug)
+    return render(request, 'ports/maintainerdetail.html', {
+        'maintainer': maintainer,
         'ports': ports
     })
 

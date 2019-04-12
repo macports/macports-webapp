@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4828538d-2e7d-4c45-81f6-a5c776fd1605" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/maintainer_fixtures.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MacPorts/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MacPorts/urls.py" afterDir="false" />
+    <list default="true" id="4828538d-2e7d-4c45-81f6-a5c776fd1605" name="Default Changelist" comment="Fix parsing of maintainers and remove maintainer's email">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MacPorts/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/MacPorts/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parsing-scripts/PortIndex.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/parsing-scripts/portindex2fixtures.py" beforeDir="false" afterPath="$PROJECT_DIR$/parsing-scripts/portindex2fixtures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/port_fixtures.json" beforeDir="false" afterPath="$PROJECT_DIR$/port_fixtures.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maintainer_fixtures.json" beforeDir="false" afterPath="$PROJECT_DIR$/maintainer_fixtures.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parsing-scripts/create_maintainers_fixtures.py" beforeDir="false" afterPath="$PROJECT_DIR$/parsing-scripts/create_maintainers_fixtures.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ports/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/ports/migrations/0001_initial.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ports/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ports/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ports/templates/ports/portdetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/ports/templates/ports/portdetail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ports/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ports/views.py" afterDir="false" />
@@ -21,13 +21,19 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="417">
-                <caret line="36" column="3" lean-forward="true" selection-start-line="36" selection-start-column="3" selection-end-line="36" selection-end-column="3" />
-              </first_editor>
-              <second_editor />
+        <entry file="file://$PROJECT_DIR$/parsing-scripts/parse_build_history.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="309">
+              <caret line="113" column="51" selection-start-line="113" selection-start-column="51" selection-end-line="113" selection-end-column="51" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/parsing-scripts/portindex2fixtures.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="16" column="10" lean-forward="true" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -41,6 +47,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/parsing-scripts/parse_build_history.py" />
       </list>
     </option>
   </component>
@@ -53,6 +60,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -60,11 +68,20 @@
               <item name="macports-gsoc-2019-webapp" type="b2602c69:ProjectViewProjectNode" />
               <item name="macports-gsoc-2019-webapp" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="macports-gsoc-2019-webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="macports-gsoc-2019-webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="parsing-scripts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="macports-gsoc-2019-webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="macports-gsoc-2019-webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="ports" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -98,18 +115,35 @@
       <workItem from="1554027087870" duration="243000" />
       <workItem from="1554027755588" duration="49000" />
       <workItem from="1554039867458" duration="28000" />
-      <workItem from="1554990385660" duration="124000" />
+      <workItem from="1554990385660" duration="576000" />
+      <workItem from="1555044995362" duration="627000" />
+      <workItem from="1555092531783" duration="530000" />
     </task>
+    <task id="LOCAL-00001" summary="Add maintainer table and view">
+      <created>1554990571426</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1554990571426</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Add maintainer table and view- 1">
+      <created>1554990604170</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1554990604170</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="444000" />
+    <option name="totallyTimeSpent" value="2053000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26037195" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26752505" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -122,8 +156,8 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32891566" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.92168677" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007153" side_tool="true" weight="0.32891566" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49928468" visible="true" weight="0.22289157" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -135,14 +169,39 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add maintainer table and view" />
+    <MESSAGE value="Add maintainer table and view- 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add maintainer table and view- 1" />
+  </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/maintainer_fixtures.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="417">
-            <caret line="36" column="3" lean-forward="true" selection-start-line="36" selection-start-column="3" selection-end-line="36" selection-end-column="3" />
+            <caret line="36" column="3" selection-start-line="36" selection-start-column="3" selection-end-line="36" selection-end-column="3" />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/parsing-scripts/portindex2json.tcl">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/parsing-scripts/portindex2fixtures.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="10" lean-forward="true" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/parsing-scripts/parse_build_history.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="113" column="51" selection-start-line="113" selection-start-column="51" selection-end-line="113" selection-end-column="51" />
         </state>
       </provider>
     </entry>
