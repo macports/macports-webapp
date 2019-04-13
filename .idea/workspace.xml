@@ -4,12 +4,10 @@
     <list default="true" id="4828538d-2e7d-4c45-81f6-a5c776fd1605" name="Default Changelist" comment="Fix parsing of maintainers and remove maintainer's email">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MacPorts/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/MacPorts/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maintainer_fixtures.json" beforeDir="false" afterPath="$PROJECT_DIR$/maintainer_fixtures.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parsing-scripts/create_maintainers_fixtures.py" beforeDir="false" afterPath="$PROJECT_DIR$/parsing-scripts/create_maintainers_fixtures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ports/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/ports/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ports/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ports/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ports/templates/ports/categorylist.html" beforeDir="false" afterPath="$PROJECT_DIR$/ports/templates/ports/categorylist.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ports/templates/ports/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/ports/templates/ports/layout.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ports/templates/ports/portdetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/ports/templates/ports/portdetail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ports/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ports/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ports/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ports/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,8 +16,11 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/parsing-scripts/parse_build_history.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -30,10 +31,38 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/requirements.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../PycharmProjects/MacPorts/categories.json">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MacPorts/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-4">
+              <caret line="93" column="1" selection-start-line="93" selection-start-column="1" selection-end-line="93" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ports/models.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/parsing-scripts/portindex2fixtures.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="272">
-              <caret line="16" column="10" lean-forward="true" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+              <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -47,6 +76,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/MacPorts/settings.py" />
         <option value="$PROJECT_DIR$/parsing-scripts/parse_build_history.py" />
       </list>
     </option>
@@ -60,13 +90,17 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="macports-gsoc-2019-webapp" type="b2602c69:ProjectViewProjectNode" />
               <item name="macports-gsoc-2019-webapp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="macports-gsoc-2019-webapp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="macports-gsoc-2019-webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="MacPorts" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="macports-gsoc-2019-webapp" type="b2602c69:ProjectViewProjectNode" />
@@ -82,6 +116,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -89,8 +124,14 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="PythonConfigurationType" />
+      </set>
+    </option>
     <option name="ruleStates">
       <list>
         <RuleState>
@@ -101,6 +142,31 @@
         </RuleState>
       </list>
     </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="Python.DjangoServer" factoryName="Django server" nameIsGenerated="true">
+      <module name="macports-gsoc-2019-webapp" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/env/bin/python" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -117,7 +183,9 @@
       <workItem from="1554039867458" duration="28000" />
       <workItem from="1554990385660" duration="576000" />
       <workItem from="1555044995362" duration="627000" />
-      <workItem from="1555092531783" duration="530000" />
+      <workItem from="1555092531783" duration="829000" />
+      <workItem from="1555093655429" duration="238000" />
+      <workItem from="1555155570718" duration="52000" />
     </task>
     <task id="LOCAL-00001" summary="Add maintainer table and view">
       <created>1554990571426</created>
@@ -133,17 +201,24 @@
       <option name="project" value="LOCAL" />
       <updated>1554990604170</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Fix parsing of maintainers and remove maintainer's email">
+      <created>1555093117096</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1555093117096</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2053000" />
+    <option name="totallyTimeSpent" value="2642000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26752505" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2746781" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -159,6 +234,7 @@
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007153" side_tool="true" weight="0.32891566" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49928468" visible="true" weight="0.22289157" />
       <window_info anchor="bottom" id="Python Console" order="12" />
+      <window_info anchor="bottom" id="Run Dashboard" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -172,7 +248,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add maintainer table and view" />
     <MESSAGE value="Add maintainer table and view- 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add maintainer table and view- 1" />
+    <MESSAGE value="Fix parsing of maintainers and remove maintainer's email" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix parsing of maintainers and remove maintainer's email" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/maintainer_fixtures.json">
@@ -188,13 +265,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parsing-scripts/portindex2json.tcl">
+    <entry file="file://$PROJECT_DIR$/parsing-scripts/portindex2json.tcl" />
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../PycharmProjects/MacPorts/categories.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ports/models.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/parsing-scripts/portindex2fixtures.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
-          <caret line="16" column="10" lean-forward="true" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+          <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MacPorts/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4">
+          <caret line="93" column="1" selection-start-line="93" selection-start-column="1" selection-end-line="93" selection-end-column="1" />
         </state>
       </provider>
     </entry>
