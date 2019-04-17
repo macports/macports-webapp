@@ -1,21 +1,12 @@
 from django.db import models
 
 class Category(models.Model):
-    name = models.TextField(primary_key=True)
+    name = models.TextField(primary_key=True, db_index=True)
 
 
-class MaintainerManager(models.Manager):
-    def get_by_natural_key(self, name, domain):
-        return self.get(name=name, domain=domain)
-
-
-class Maintainer(models.Model):
-    name = models.CharField(max_length=50, db_index=True)
-    domain = models.CharField(max_length=50)
-    github = models.CharField(max_length=50, db_index=True)
-
-    objects = MaintainerManager()
-
+class PortManager(models.Manager):
+    def get_by_natural_key(self, name):
+        return self.get(name=name)
 
 
 class Port(models.Model):
@@ -27,23 +18,31 @@ class Port(models.Model):
     platforms = models.TextField(default='')
     categories = models.ManyToManyField(Category, related_name='category', db_index=True)
     long_description = models.TextField(default='')
-    depends_extract = models.TextField(default='')
     version = models.CharField(max_length=100)
-    revision = models.TextField(default='')
-    maintainers = models.ManyToManyField(Maintainer, related_name='maintainer')
+    revision = models.IntegerField(default=2)
     closedmaintainer = models.BooleanField()
     name = models.CharField(max_length=100, db_index=True)
     license = models.CharField(max_length=100)
-    depends_lib = models.TextField(default='')
-    depends_build = models.TextField(default='')
-    installs_libs = models.TextField(default='')
-    depends_fetch = models.TextField(default='')
-    depends_run = models.TextField(default='')
-    conflicts = models.TextField(default='')
-    replaced_by = models.TextField(default='')
-    depends_test = models.TextField(default='')
-    depends_patch = models.TextField(default='')
-    subports = models.TextField(default='')
+    installs_libs = models.BooleanField(default=False)
+    replaced_by = models.CharField(max_length=100)
+
+    objects = PortManager()
+
+
+class Dependency(models.Model):
+    port_name = models.ForeignKey(Port, on_delete=models.CASCADE, related_name="dependent_port", db_index=True)
+    dependencies = models.ManyToManyField(Port, db_index=True)
+    type = models.CharField(max_length=100)
+
+
+class Maintainer(models.Model):
+    name = models.CharField(max_length=50, db_index=True)
+    domain = models.CharField(max_length=50, db_index=True)
+    github = models.CharField(max_length=50, db_index=True)
+    ports = models.ManyToManyField(Port, related_name='maintainer_port', db_index=True)
+
+    objects = PortManager()
+
 
 class BuildHistory(models.Model):
     builder_name = models.CharField(max_length=50, db_index=True)

@@ -26,8 +26,8 @@
                 </tr>
                 <tr>
                     <th scope="row">Maintained By:</th>
-                    <td>{% if port.maintainers.all|length > 0 %}
-                        {% for maintainer in port.maintainers.all %}
+                    <td>{% if maintainers.all|length > 0 %}
+                        {% for maintainer in maintainers %}
                             <a href="/maintainer/{{ maintainer.name }}">{{ maintainer.name }}</a>,
                         {% endfor %}
                     {% else %}
@@ -61,7 +61,13 @@
                 </tr>
                 <tr>
                     <th scope="row">Dependencies:</th>
-                    <td></td>
+                    <td>{% for dependency in dependencies %}
+                            {% for port in dependency.dependencies.all %}
+                                <a href="{% url 'port_detail' port.name %}">{{ port.name }}</a>,
+                            {% endfor %}
+                        {% endfor %}
+
+                        </td>
                 </tr>
             </table>
         </div>

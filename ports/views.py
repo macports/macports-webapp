@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Port, Category, BuildHistory, Maintainer
+from .models import Port, Category, BuildHistory, Maintainer, Dependency
 from bs4 import BeautifulSoup
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import requests
@@ -55,10 +55,12 @@ def letterlist(request, letter):
 
 def portdetail(request, name):
     port = Port.objects.get(name=name)
+    maintainers = Maintainer.objects.filter(ports__name= name)
     build_history = BuildHistory.objects.filter(port_name=name).order_by('-time_start')
     build_hsierra = build_history.filter(builder_name="10.13_x86_64")
     build_mojave = build_history.filter(builder_name="10.14_x86_64")
     build_sierra = build_history.filter(builder_name="10.12_x86_64")
+    dependencies = Dependency.objects.filter(port_name_id=port.id)
 
     status = []
     if build_hsierra:
@@ -70,7 +72,9 @@ def portdetail(request, name):
     return render(request, 'ports/portdetail.html', {
         'port': port,
         'build_history': build_history,
-        'status': status
+        'status': status,
+        'maintainers': maintainers,
+        'dependencies': dependencies
     })
 
 
@@ -86,9 +90,11 @@ def stats_portdetail(request, name):
 
 
 def maintainer_detail(request, slug):
-    all_ports = Port.objects.filter(maintainers__name=slug)
+    maintainers = Maintainer.objects.filter(name=slug)
+    for maintainer in maintainers:
+        all_ports = maintainer.ports.all()
+
     all_ports_num = all_ports.count()
-    maintainer = Maintainer.objects.get(name=slug)
     paginated_ports = Paginator(all_ports, 100)
     page = request.GET.get('page', 1)
     try:
