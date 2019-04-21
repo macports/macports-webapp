@@ -1,11 +1,26 @@
-{% if search_results.count > 0 %}
-{% for port in search_results %}
-    <li class="list-group-item"><a href="/ports/{{ port.name }}">{{ port.name }}</a></li>
-{% endfor %}
+<button type="button" style="color: red; float: right" onclick="cancel_search()">Cancel Search</button>
+{% if results.count > 0 %}
+        <h4>Results for "{{ search_text }}"</h4>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Version</th>
+            <th scope="col">Description</th>
+            <th scope="col">Installations this month</th>
+        </tr>
+        </thead>
+        {% for port in results %}
+            <tr>
+                <td><a href="{% url 'port_detail' port.name %}">{{ port.name }}</a></td>
+                <td>{{ port.version }}</td>
+                <td>{{ port.description }}</td>
+                <td>NA</td>
+            </tr>
+        {% endfor %}
+    </table>
 {% else %}
-    {% if has_input %}
         <div class="alert alert-danger" role="alert">
-            Sorry, no matching ports found.
+            Sorry, no matching ports found for "{{ search_text }}".
         </div>
-    {% endif %}
 {% endif %}

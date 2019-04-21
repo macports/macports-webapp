@@ -1,8 +1,18 @@
 {% extends 'ports/layout.html' %}
 
 {% block content %}<br>
-
-    <div class="row">
+    <form onSubmit="return false">
+            {% csrf_token %}
+        <div class="form-group mb-0">
+            <label class="radio-inline mr-3"><input onclick="switch_search()" type="radio" name="search_by" value="search-by-port-name" checked>Search by port-name</label>
+            <label class="radio-inline"><input onclick="switch_search()" type="radio" name="search_by" value="search-by-description">Search by Description</label>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="search" name="search" placeholder="Search Ports">
+        </div>
+    </form>
+    <br>
+    <div class="row" id="main-content">
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-body">
@@ -27,12 +37,6 @@
             </div>
         </div>
         <div class="col-lg-4">
-            {% csrf_token %}
-            <input type="text" class="form-control" id="search" name="search" placeholder="Search Ports">
-            <ul style="position: absolute; z-index: 999999" class="list-group search-results" id="search-results">
-
-            </ul>
-            <br>
             <div style="background-color: cadetblue;padding: 12px;">
                 <h5 style="color: white;">Top Installations this Month</h5>
             </div>
@@ -48,6 +52,8 @@
             </div>
 
         </div>
+    </div>
+     <div id="filtered_table">
     </div>
 
 

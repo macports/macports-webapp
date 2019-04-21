@@ -7,8 +7,19 @@
 
 {% block content %}
     <br>
+    <form onSubmit="return false">
+            {% csrf_token %}
+        <div class="form-group mb-0">
+            <label class="radio-inline mr-3"><input onclick="switch_search()" type="radio" name="search_by" value="search-by-port-name" checked>Search by port-name</label>
+            <label class="radio-inline"><input onclick="switch_search()" type="radio" name="search_by" value="search-by-description">Search by Description</label>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="search" name="search" placeholder="Search All Ports">
+        </div>
+    </form>
     <span style="display: none" id="port_name">{{ port.name }}</span>
-    {% csrf_token %}
+    <br>
+    <div id="main-content">
     <h3>{{ port.portdir }} | {{ port.name }}</h3>
     <p class="text-secondary">{{ port.description }}</p>
     <a class="btn-warning btn" href="https://github.com/macports/macports-ports/tree/master/{{ port.portdir }}/Portfile"
@@ -72,11 +83,6 @@
             </table>
         </div>
         <div class="col-lg-4">
-            {% csrf_token %}
-            <input type="text" class="form-control" id="search" name="search" placeholder="Search Ports">
-            <ul style="position: absolute; z-index: 999999" class="list-group search-results" id="search-results">
-
-            </ul>
             <br>
             <div class="rounded" style="background-color: cadetblue; padding: 8px">
                 <h4 class="text-white border-bottom">Installation Statistics</h4>
@@ -169,6 +175,9 @@
     </div>
 
     <p class="text-danger">Functionality for Build Reproduciblity will also be here.</p>
+    </div>
+     <div id="filtered_table">
+    </div>
 {% endblock %}
 
 {% block script %}
