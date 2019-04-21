@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Port, Category, BuildHistory, Maintainer, Dependency
 from bs4 import BeautifulSoup
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib.postgres import search
 import requests
 import html5lib
 import ssl
@@ -114,14 +115,16 @@ def maintainer_detail(request, slug):
 def search(request):
     if request.method == 'POST':
         search_text = request.POST['search_text']
-        search_results = Port.objects.filter(name__icontains=search_text)[:10]
-        has_input = True
-    else:
-        search_results = Port.objects.none()
+        search_by = request.POST['search_by']
+        if search_by == "search-by-port-name":
+            results = Port.objects.filter(name__icontains=search_text)[:50]
+        elif search_by == "search-by-description":
+            results = Port.objects.filter(description__search=search_text)[:50]
 
     return render(request, 'ports/search.html', {
-        'search_results': search_results,
-        'has_input': has_input
+        'results': results,
+        'search_text': search_text,
+        'search_by': search_by
     })
 
 
