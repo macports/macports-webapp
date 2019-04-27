@@ -23,20 +23,11 @@ DATABASES = {
  python manage.py migrate
  ```
  
-## Generate Fixtures
- - Required files and parsing scripts can be found in the directory "sample-data".
- - Run portindex2fixtures.py so to generate django fixtures from PortIndex.JSON, new file **port_fixtures.json"** will be saved in the root of the project.
- - Run **parse_build_history.py** to receive a few latest logs from buildbot and save into the database.
- 
-## Populate the database with fixtures
- - You will now have two files in the root containing fixtures for the Categories and Ports Tables.
- - The files are ***categories.json*** and ***port_fixtures.json***
-
-Populate the database by following commands:
-```
-python manage.py loaddata categories.json
-python manage.py loaddata port_fixtures.json
-```
+## Populate Initial Data in the Database
+ - Put the file `portindex.json` in the root of the **project**. To generate this file, you need to run `portindex2json.tcl`.
+ - Run `parsing-scripts/load_initial_data.py` to populate the Ports, Categories and Maintainers tables.
+ - Run `parsing-scipts/load_initial_depends.py` to load the Dependencies table.
+ - Run `parsing-scripts/parse_build_history.py` to fetch few recent builds from the buildbot.
 
 ## Start the Server
 Start the server after running collectstatic

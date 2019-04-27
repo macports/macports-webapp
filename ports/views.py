@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Port, Category, BuildHistory, Maintainer, Dependency
+from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder
 from bs4 import BeautifulSoup
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.postgres import search
@@ -56,26 +56,20 @@ def letterlist(request, letter):
 
 def portdetail(request, name):
     port = Port.objects.get(name=name)
-    maintainers = Maintainer.objects.filter(ports__name= name)
-    build_history = BuildHistory.objects.filter(port_name=name).order_by('-time_start')
-    build_hsierra = build_history.filter(builder_name="10.13_x86_64")
-    build_mojave = build_history.filter(builder_name="10.14_x86_64")
-    build_sierra = build_history.filter(builder_name="10.12_x86_64")
+    maintainers = Maintainer.objects.filter(ports__name=name)
     dependencies = Dependency.objects.filter(port_name_id=port.id)
 
-    status = []
-    if build_hsierra:
-        status.append(build_hsierra[0])
-    if build_mojave:
-        status.append(build_mojave[0])
-    if build_sierra:
-        status.append(build_sierra[0])
+    builders = Builder.objects.values_list('name', flat=True)
+    build_history = {}
+    for builder in builders:
+        build_history[builder] = BuildHistory.objects.filter(builder_name__name=builder, port_name=name).order_by('-time_start')
+    print(build_history)
     return render(request, 'ports/portdetail.html', {
         'port': port,
         'build_history': build_history,
-        'status': status,
         'maintainers': maintainers,
-        'dependencies': dependencies
+        'dependencies': dependencies,
+        'builders_list': builders,
     })
 
 

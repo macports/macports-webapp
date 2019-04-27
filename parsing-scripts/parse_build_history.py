@@ -4,19 +4,14 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "MacPorts.settings")
 import django
 django.setup()
 
-from ports.models import BuildHistory
+from ports.models import BuildHistory, Builder
 import urllib.request
 import ssl
 import json
 import datetime
 
 
-builders = [
-    '10.14_x86_64',
-    '10.13_x86_64',
-    '10.12_x86_64',
-];
-
+builders = Builder.objects.values_list('name', flat=True)
 url_prefix = 'https://build.macports.org'
 
 
@@ -78,13 +73,14 @@ def return_summary(builder_name, build_number, build_data):
 def load_database(data):
     minutes = int(data['buildtime']) // 60
     seconds = int(data['buildtime']) % 60
+    builder = Builder.objects.get(name=data['builder'])
     build = BuildHistory()
     build.port_name = data['name']
     build.status = data['status']
     build.build_id = data['buildnr']
     build.time_start = data['time_start']
     build.time_elapsed = "{} min {} sec".format(minutes, seconds)
-    build.builder_name = data['builder']
+    build.builder_name = builder
     build.build_url = data['url']
     build.watcher_url = data['watcher_url']
     build.watcher_id = data['watcher_id']
@@ -107,7 +103,7 @@ for buildername in builders:
     # fetch the last build first in order to figure out its number (the build itself might not be finished yet)
     last_build_data = get_data_from_url(get_url_json(buildername, -1))
     last_build_number = last_build_data['number']
-    build_number_loaded = BuildHistory.objects.filter(builder_name=buildername).order_by('-build_id')
+    build_number_loaded = BuildHistory.objects.filter(builder_name__name=buildername).order_by('-build_id')
     if build_number_loaded:
         build_in_database = build_number_loaded[0].build_id + 1
     else:
