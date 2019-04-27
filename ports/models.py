@@ -1,7 +1,7 @@
 from django.db import models
 
 class Category(models.Model):
-    name = models.TextField(primary_key=True, db_index=True)
+    name = models.TextField(primary_key=True)
 
 
 class PortManager(models.Manager):
@@ -19,11 +19,10 @@ class Port(models.Model):
     categories = models.ManyToManyField(Category, related_name='category', db_index=True)
     long_description = models.TextField(default='')
     version = models.CharField(max_length=100)
-    revision = models.IntegerField(default=2)
+    revision = models.IntegerField(default=0)
     closedmaintainer = models.BooleanField()
     name = models.CharField(max_length=100, db_index=True)
     license = models.CharField(max_length=100)
-    installs_libs = models.BooleanField(default=False)
     replaced_by = models.CharField(max_length=100)
 
     objects = PortManager()
@@ -39,13 +38,17 @@ class Maintainer(models.Model):
     name = models.CharField(max_length=50, db_index=True)
     domain = models.CharField(max_length=50, db_index=True)
     github = models.CharField(max_length=50, db_index=True)
-    ports = models.ManyToManyField(Port, related_name='maintainer_port', db_index=True)
+    ports = models.ManyToManyField(Port, related_name='maintainers', db_index=True)
 
     objects = PortManager()
 
 
+class Builder(models.Model):
+    name = models.CharField(max_length=100, db_index=True)
+
+
 class BuildHistory(models.Model):
-    builder_name = models.CharField(max_length=50, db_index=True)
+    builder_name = models.ForeignKey(Builder, on_delete=models.CASCADE, db_index=True)
     build_id = models.IntegerField()
     status = models.CharField(max_length=50)
     port_name = models.CharField(max_length=50,db_index=True)

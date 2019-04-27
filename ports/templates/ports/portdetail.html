@@ -103,27 +103,35 @@
     </div><br><br>
     <h4 class="border-bottom">Status</h4>
     <div class="row">
-        {% for os in status %}
+        {% for builder, history in build_history.items %}
             <div class="col-sm-2">
                 <table class="table" style="text-align: center">
                     <thead style="border: none">
                     <tr style="border: none">
-                        <th class="bg-warning">{{ os.builder_name }}</th>
+                        <th class="bg-warning">{{ builder }}</th>
                     </tr>
                     </thead>
                     <tr>
-                        <td style="color: white" class="{% if os.status == "build successful" %}
+                        {% if history.count > 0 %}
+                            {% with history|first as latest_build %}
+                                <td style="color: white" class="{% if latest_build.status == "build successful" %}
                                                         bg-success
                                                     {% else %}
                                                         bg-danger
                                                     {% endif %}">
-                            {% if os.status == "build successful" %}
-                                <h4>OK</h4>
+                                    {% if latest_build.status == "build successful" %}
+                                        <h4>OK</h4>
+                                    {% else %}
+                                       {{ latest_build.status }}<br>
+                                    {% endif %}
+                                    <a href="{{ latest_build.build_url }}">#{{ latest_build.build_id }}</a>
+                                </td>
+                            {% endwith %}
                             {% else %}
-                                {{ os.status }}<br>
-                            {% endif %}
-                            <a href="{{ os.build_url }}">#{{ os.build_id }}</a>
-                        </td>
+                                 <td class="text-light bg-danger">
+                                   No Build History Available for this Builder
+                                 </td>
+                        {% endif %}
                     </tr>
                 </table>
             </div>
@@ -132,12 +140,12 @@
     <h4 class="border-bottom">All Builds:</h4>
     <form>
         <div class="form-inline ">
-            <label for="selectos">Select OS</label><select style="margin-left: 30px;width: 210px;" class="form-control"
-                                                           type="text" id="selectos" name="selectos">
+            <label for="selectos">Select OS</label>
+            <select style="margin-left: 30px;width: 210px;" class="form-control" type="text" id="selectos" name="selectos">
             <option selected value="">All</option>
-            <option value="10.14_x86_64">OS X 10.14</option>
-            <option value="10.13_x86_64">OS X 10.13</option>
-            <option value="10.12_x86_64">OS X 10.12</option>
+            {% for builder in builders_list %}
+                <option value="{{ builder }}">{{ builder }}</option>
+            {% endfor %}
         </select>
         </div>
     </form>
@@ -154,16 +162,17 @@
         </tr>
         </thead>
         <tbody id="build_table">
-        {% for build in build_history %}
+        {% for builder, builds in build_history.items %}
+            {% for build in builds %}
             <tr>
-                <td>{{ build.builder_name }}</td>
+                <td>{{ build.builder_name.name }}</td>
                 <td>{{ build.time_start }}</td>
                 <td>{{ build.time_elapsed }}</td>
                 <td><a href="{{ build.build_url }}">{{ build.build_id }}</a></td>
                 <td><a href="{{ build.watcher_url }}">{{ build.watcher_id }}</a></td>
                 <td>{{ build.status }}</td>
-
             </tr>
+            {% endfor %}
         {% endfor %}
         </tbody>
     </table>
