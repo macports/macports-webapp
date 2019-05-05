@@ -64,22 +64,20 @@ def return_summary(builder_name, build_number, build_data):
     data['status'] = status
     data['builder'] = builder_name
     data['buildnr'] = build_number
-    data['time_start'] = datetime.datetime.fromtimestamp(time_start).strftime('%c')
+    data['time_start'] = time_start
     data['buildtime'] = time_build
 
     return data
 
 
 def load_database(data):
-    minutes = int(data['buildtime']) // 60
-    seconds = int(data['buildtime']) % 60
     builder = Builder.objects.get(name=data['builder'])
     build = BuildHistory()
     build.port_name = data['name']
     build.status = data['status']
     build.build_id = data['buildnr']
     build.time_start = data['time_start']
-    build.time_elapsed = "{} min {} sec".format(minutes, seconds)
+    build.time_elapsed = data['buildtime']
     build.builder_name = builder
     build.build_url = data['url']
     build.watcher_url = data['watcher_url']
