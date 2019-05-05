@@ -1,0 +1,133 @@
+{% extends 'ports/layout.html' %}
+
+{% load staticfiles %}
+{% load unix_to_time %}
+
+{% block content %}
+    <br>
+    <h4>All Builds</h4>
+        <div id="all_builds_table">
+        <form class="form-inline" action="/all_builds/" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="status-filter">Filter Builds: </label>
+                <select onchange="this.form.submit()" class="form-control ml-2" id="status-filter" name="status-filter">
+                    <option value="All Builds" {% if filter_applied %}{% if filter_applied == "All Builds" %}selected{% endif %}{% endif %}>All</option>
+                    <option value="build successful" {% if filter_applied %}{% if filter_applied == "build successful" %}selected{% endif %}{% endif %}>build successful</option>
+                    <option value="failed install-port" {% if filter_applied %}{% if filter_applied == "failed install-port" %}selected{% endif %}{% endif %}>failed install-port</option>
+                    <option value="failed install-dependencies" {% if filter_applied %}{% if filter_applied == "failed install-dependencies" %}selected{% endif %}{% endif %}>failed install-dependencies</option>
+                </select>
+            </div>
+            </form>
+        <br>
+        {% if filter_applied %}
+            <h5>Filter Applied: <span class="text-info">{{ filter_applied }}</span></h5>
+        {% endif %}
+
+        <br>
+        {% if all_builds.has_other_pages %}
+            Page {{ all_builds.number }} of {{ all_builds.paginator.num_pages }} | Showing builds {{ all_builds.start_index }} to
+            {{ all_builds.end_index }}<br><br>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {% if all_builds.has_previous %}
+                        <li class="page-item"><a class="page-link"
+                                                 href="?page={{ all_builds.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+                    {% endif %}
+
+                    {% if all_builds.number|add:'-4' > 1 %}
+                        <li class="page-item"><a class="page-link" href="?page={{ all_builds.number|add:'-5' }}">&hellip;</a>
+                        </li>
+                    {% endif %}
+
+                    {% for i in all_builds.paginator.page_range %}
+                        {% if all_builds.number == i %}
+                            <li class="active page-item"><span class="page-link">{{ i }} <span
+                                    class="sr-only">(current)</span></span></li>
+                        {% elif i > all_builds.number|add:'-5' and i < all_builds.number|add:'5' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if all_builds.paginator.num_pages > all_builds.number|add:'4' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ all_builds.number|add:'5' }}">&hellip;</a>
+                        </li>
+                    {% endif %}
+
+                    {% if all_builds.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ all_builds.next_page_number }}">&raquo;</a>
+                        </li>
+                    {% else %}
+                        <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Port</th>
+                <th scope="col">Builder</th>
+                <th scope="col">Build Number</th>
+                <th scope="col">Start Time</th>
+                <th scope="col">Elapsed Time</th>
+                <th scope="col">Watcher</th>
+                <th scope="col">Build Status</th>
+            </tr>
+            </thead>
+            {% for build in all_builds %}
+                <tr>
+                    <td><a href="/ports/{{ build.port_name }}">{{ build.port_name }}</a></td>
+                    <td>{{ build.builder_name.name }}</td>
+                    <td><a href="{{ build.build_url }}">{{ build.build_id }}</a></td>
+                    <td>{{ build.time_start|unix_to_time|date:"H:i | d M, Y" }} </td>
+                    <td>{{ build.time_elapsed|unix_to_delta }}</td>
+                    <td><a href="{{ build.watcher_url }}">{{ build.watcher_id }}</a></td>
+                    <td class="{% if build.status == 'build successful' %}text-success {% else %} text-danger {% endif %}">{{ build.status }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+        {% if all_builds.has_other_pages %}
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {% if all_builds.has_previous %}
+                        <li class="page-item"><a class="page-link"
+                                                 href="?page={{ all_builds.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+                    {% endif %}
+
+                    {% if all_builds.number|add:'-4' > 1 %}
+                        <li class="page-item"><a class="page-link" href="?page={{ all_builds.number|add:'-5' }}">&hellip;</a>
+                        </li>
+                    {% endif %}
+
+                    {% for i in all_builds.paginator.page_range %}
+                        {% if all_builds.number == i %}
+                            <li class="active page-item"><span class="page-link">{{ i }} <span
+                                    class="sr-only">(current)</span></span></li>
+                        {% elif i > all_builds.number|add:'-5' and i < all_builds.number|add:'5' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if all_builds.paginator.num_pages > all_builds.number|add:'4' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ all_builds.number|add:'5' }}">&hellip;</a>
+                        </li>
+                    {% endif %}
+
+                    {% if all_builds.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ all_builds.next_page_number }}">&raquo;</a>
+                        </li>
+                    {% else %}
+                        <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    </div>
+
+{% endblock %}

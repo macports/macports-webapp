@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder
 from bs4 import BeautifulSoup
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -71,6 +72,35 @@ def portdetail(request, name):
         'dependencies': dependencies,
         'builders_list': builders,
     })
+
+def all_builds_view(request):
+    filter_applied = False
+    if request.method == 'POST':
+        if request.POST['status-filter']:
+            filter_by = request.POST['status-filter']
+            if filter_by == "All Builds":
+                all_builds = BuildHistory.objects.all().order_by('-time_start')
+            else:
+                all_builds = BuildHistory.objects.filter(status=filter_by).order_by('-time_start')
+                filter_applied = filter_by
+        else:
+            return HttpResponse("Something went wrong")
+    else:
+        all_builds = BuildHistory.objects.all().order_by('-time_start')
+    paginated_builds = Paginator(all_builds, 100)
+    page = request.GET.get('page', 1)
+    try:
+        builds = paginated_builds.get_page(page)
+    except PageNotAnInteger:
+        builds = paginated_builds.get_page(1)
+    except EmptyPage:
+        builds = paginated_builds.get_page(paginated_builds.num_pages)
+
+    return render(request, 'ports/all_builds.html', {
+        'all_builds': builds,
+        'filter_applied': filter_applied,
+    })
+
 
 
 def stats(request):
@@ -167,3 +197,4 @@ def category_filter(request):
                 'query': query,
                 'content': "Maintainer",
             })
+

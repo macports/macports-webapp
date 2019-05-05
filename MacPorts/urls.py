@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^statistics/port/(?P<name>[-a-zA-Z0-9_.]+)/$', views.stats_portdetail, name='stats_portdetail'),
     url(r'^maintainer/(?P<slug>[-a-zA-Z0-9_.]+)/$', views.maintainer_detail, name='maintainer_detail'),
     path('ports/', include('ports.urls'), name='Ports-Index'),
+    path('all_builds/', views.all_builds_view),
 ]
