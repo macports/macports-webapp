@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.postgres.fields import JSONField
+
 
 class Category(models.Model):
     name = models.TextField(primary_key=True)
@@ -58,6 +60,16 @@ class BuildHistory(models.Model):
     watcher_id = models.IntegerField()
     watcher_url = models.URLField()
 
+
+# Contains the latest state of the JSON submitted by the mpstats for user
+class User(models.Model):
+    uuid = models.CharField(max_length=36, db_index=True)
+    osx_version = models.CharField(max_length=10)
+    macports_version = models.CharField(max_length=10)
+    xcode_version = models.CharField(max_length=10)
+    os_arch = models.CharField(max_length=10)
+    active_ports = JSONField()
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 

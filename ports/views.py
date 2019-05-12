@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder
+from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
+from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User
 from bs4 import BeautifulSoup
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.contrib.postgres import search
 import requests
-import html5lib
-import ssl
+import json
 
 
 def index(request):
@@ -73,6 +73,7 @@ def portdetail(request, name):
         'builders_list': builders,
     })
 
+
 def all_builds_view(request):
     filter_applied = False
     if request.method == 'POST':
@@ -100,7 +101,6 @@ def all_builds_view(request):
         'all_builds': builds,
         'filter_applied': filter_applied,
     })
-
 
 
 def stats(request):
@@ -136,6 +136,7 @@ def maintainer_detail(request, slug):
     })
 
 
+# Respond to ajax-call triggered by the search box
 def search(request):
     if request.method == 'POST':
         search_text = request.POST['search_text']
@@ -152,6 +153,7 @@ def search(request):
     })
 
 
+# Respond to ajax call for loading tickets
 def tickets(request):
     if request.method == 'POST':
         port_name = request.POST['portname']
@@ -172,6 +174,7 @@ def tickets(request):
         })
 
 
+# Respond to ajax calls for searching within a category
 def category_filter(request):
     if request.method == 'POST':
         if request.POST['content'] == "Category":
@@ -197,4 +200,29 @@ def category_filter(request):
                 'query': query,
                 'content': "Maintainer",
             })
+
+
+# Accept submissions from mpstats and update the users table
+@csrf_exempt
+def stats_submit(request):
+    if request.method == "POST":
+        try:
+            submitted = request.body.decode("utf-8")
+            received_json = json.loads(submitted.split('=')[1])
+
+            user = User()
+            user.uuid = received_json['id']
+            user.osx_version = received_json['os']['osx_version']
+            user.macports_version = received_json['os']['macports_version']
+            user.os_arch = received_json['os']['os_arch']
+            user.xcode_version = received_json['os']['xcode_version']
+            user.active_ports = received_json['active_ports']
+            user.save()
+
+            return HttpResponse("Success")
+
+        except:
+            return HttpResponse("Something went wrong")
+    else:
+        return HttpResponse("Method Not Allowed")
 
