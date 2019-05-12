@@ -21,7 +21,8 @@ from ports import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index , name='Home'),
+    path('', views.index, name='Home'),
+    path('statistics/submit/', views.stats_submit, name='stats_submit'),
     path('statistics/', views.stats, name='stats_home'),
     url(r'^statistics/port/(?P<name>[-a-zA-Z0-9_.]+)/$', views.stats_portdetail, name='stats_portdetail'),
     url(r'^maintainer/(?P<slug>[-a-zA-Z0-9_.]+)/$', views.maintainer_detail, name='maintainer_detail'),
