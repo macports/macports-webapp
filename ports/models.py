@@ -37,9 +37,9 @@ class Dependency(models.Model):
 
 
 class Maintainer(models.Model):
-    name = models.CharField(max_length=50, db_index=True)
-    domain = models.CharField(max_length=50, db_index=True)
-    github = models.CharField(max_length=50, db_index=True)
+    name = models.CharField(max_length=50, db_index=True, null=True)
+    domain = models.CharField(max_length=50, db_index=True, null=True)
+    github = models.CharField(max_length=50, db_index=True, null=True)
     ports = models.ManyToManyField(Port, related_name='maintainers', db_index=True)
 
     objects = PortManager()
