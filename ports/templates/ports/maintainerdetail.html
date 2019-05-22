@@ -8,10 +8,21 @@
 
 {% block content %}
     <br>
-    <h4>{{ maintainer.name }}</h4>
+    {% if maintainers_num > 1 %}
+        <div class="alert alert-warning" role="alert">
+            We found more than 1 maintainers with that query. This happens when the same maintainers uses different
+            email & github combinations in different ports.
+        </div>
+    {% endif %}
+    <br>
+    <h3>{{ maintainer }}</h3>
+    {% if maintainers_num > 1 %}
+        Found {{ maintainers_num }} entries for that {% if github is True %}GitHub Handle{% else %}Email{% endif %}
+    {% endif %}
     <br>
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-6">
+            {% for maintainer in maintainers %}
             <table class="table table-striped">
                 <tr>
                     <th scope="row">Name:</th>
@@ -26,7 +37,8 @@
                         <td>Details Not Provided</td>
                     {% endif %}
                 </tr>
-            </table>
+            </table><hr>
+            {% endfor %}
         </div>
         <div class="col-lg-4">
 
@@ -40,7 +52,7 @@
     <span style="display: none;" id="filter-content">Maintainer</span>
     <br>
     <div id="all_ports_table">
-        <h3>Total {{ all_ports_num }} Ports Maintained By : <em>{{ maintainer.name }}</em></h3>
+        <h3>Total {{ all_ports_num }} Ports Maintained By : <em>{{ maintainer }}</em></h3>
         <form class="form-inline"></form>
 
         {% if ports.has_other_pages %}

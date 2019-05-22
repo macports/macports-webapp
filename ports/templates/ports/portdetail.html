@@ -39,7 +39,11 @@
                     <th scope="row">Maintained By:</th>
                     <td>{% if maintainers.all|length > 0 %}
                         {% for maintainer in maintainers %}
-                            <a href="/maintainer/{{ maintainer.name }}">{{ maintainer.name }}</a>,
+                                {% if maintainer.github %}
+                                    <a href="/maintainer/github/{{ maintainer.github }}">{{ maintainer.github }}</a>,
+                                {% else %}
+                                    <a href="/maintainer/email/{{ maintainer.name }}__{{ maintainer.github }}">{{ maintainer.github }}</a>,
+                                {% endif %}
                         {% endfor %}
                     {% else %}
                         No Maintainers Found

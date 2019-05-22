@@ -6,9 +6,10 @@ import django
 
 django.setup()
 
-from ports.models import Port, Category, Maintainer, Dependency
+from ports.models import Port, Category, Maintainer
+from django.core.exceptions import ObjectDoesNotExist
 
-with open('portindex.json', "r") as file:
+with open('/portindex.json', "r") as file:
     ports = json.load(file)
 
 # Add All the Categories to the Database using bulk_create
@@ -89,103 +90,54 @@ for port in ports:
     except KeyError:
         pass
 
-# Check if the maintainers are already in the database
     try:
         for maintainer in port['maintainers']:
-            temp_maintainer = {}
-            github_repeat = False
-            email_repeat = False
-            github_repeated_at = []
-            email_repeated_at = []
-            if temp_maintainers == []:
-                new_maintainer = Maintainer()
-                try:
-                    new_maintainer.name = maintainer['email']['name']
-                    new_maintainer.domain = maintainer['email']['domain']
-                    temp_maintainer['name'] = maintainer['email']['name']
-                    temp_maintainer['domain'] = maintainer['email']['domain']
-                    email_provided = True
-                except KeyError:
-                    email_provided = False
+            try:
+                name = maintainer['email']['name'].lower()
+                domain = maintainer['email']['domain'].lower()
+                email_provided = True
+            except KeyError:
+                name = None
+                domain = None
+                email_provided = False
 
-                try:
-                    new_maintainer.github = maintainer['github']
-                    temp_maintainer['github'] = maintainer['github']
-                    github_provided = True
-                except KeyError:
-                    github_provided = False
-                new_maintainer.save()
-                new_maintainer.ports.add(new_port)
-                temp_maintainers.append(temp_maintainer)
-                continue
-            i = 0
-            for check_maintainer in temp_maintainers:
-                try:
-                    if maintainer['github'] == check_maintainer['github']:
-                        github_repeat = True
-                        github_repeated_at.append(i)
-                        github_provided = True
-                except KeyError:
-                    github_provided = False
+            try:
+                github = maintainer['github'].lower()
+                github_provided = True
+            except KeyError:
+                github = None
+                github_provided = False
 
+            # Check if the maintainer already exists in Database:
+            if email_provided is True and github_provided is True:
                 try:
-                    if maintainer['email']['name'] == check_maintainer['name'] and maintainer['email']['domain'] == check_maintainer['domain']:
-                        email_repeat = True
-                        email_repeated_at.append(i)
-                        email_provided = True
-                except KeyError:
-                    email_provided = False
-                i = i + 1
-
-            if github_repeat and email_repeat:
-                if bool(set(email_repeated_at).intersection(github_repeated_at)):
-                    repeated_maintainer = Maintainer.objects.filter(github=maintainer['github'], name=maintainer['email']['name'])[0]
-                    repeated_maintainer.ports.add(new_port)
+                    db_maintainer = Maintainer.objects.get(name=name, domain=domain, github=github)
+                    db_maintainer.ports.add(new_port)
                     continue
-                else:
-                    print('Big exception.')
-                    new_maintainer = Maintainer()
-                    try:
-                        new_maintainer.name = maintainer['email']['name']
-                        new_maintainer.domain = maintainer['email']['domain']
-                        temp_maintainer['name'] = maintainer['email']['name']
-                        temp_maintainer['domain'] = maintainer['email']['domain']
-                    except:
-                        pass
-                    try:
-                        new_maintainer.domain = maintainer['github']
-                        temp_maintainer['github'] = maintainer['github']
-                    except:
-                        pass
-                    new_maintainer.save()
-                    temp_maintainers.append(temp_maintainer)
-                    new_maintainer.ports.add(new_port)
-            elif github_repeat and not email_provided:
-                repeated_maintainer = Maintainer.objects.filter(github=maintainer['github'])[0]
-                repeated_maintainer.ports.add(new_port)
-                continue
-            elif email_repeat and not github_provided:
-                repeated_maintainer = Maintainer.objects.filter(name=maintainer['email']['name'], domain=maintainer['email']['domain'])[0]
-                repeated_maintainer.ports.add(new_port)
-                continue
-            else:
-                new_maintainer = Maintainer()
+                except ObjectDoesNotExist:
+                    pass
+            elif email_provided is False and github_provided is True:
+                try:
+                    db_maintainer = Maintainer.objects.get(name__isnull=True, github=github)
+                    db_maintainer.ports.add(new_port)
+                    continue
+                except ObjectDoesNotExist:
+                    pass
+            elif email_provided is True and github_provided is False:
+                try:
+                    db_maintainer = Maintainer.objects.get(name=name, domain=domain, github__isnull=True)
+                    db_maintainer.ports.add(new_port)
+                    continue
+                except ObjectDoesNotExist:
+                    pass
 
-                try:
-                    new_maintainer.name = maintainer['email']['name']
-                    new_maintainer.domain = maintainer['email']['domain']
-                    temp_maintainer['name'] = maintainer['email']['name']
-                    temp_maintainer['domain'] = maintainer['email']['domain']
-                except KeyError:
-                    pass
-                try:
-                    new_maintainer.github = maintainer['github']
-                    temp_maintainer['github'] = maintainer['github']
-                except KeyError:
-                    pass
-                new_maintainer.save()
-                temp_maintainers.append(temp_maintainer)
-                new_maintainer.ports.add(new_port)
+            # If the maintainer was not found in the database already, then only this code will run:
+            new_maintainer = Maintainer()
+            new_maintainer.name = name
+            new_maintainer.domain = domain
+            new_maintainer.github = github
+            new_maintainer.save()
+            new_maintainer.ports.add(new_port)
     except KeyError:
         pass
 
