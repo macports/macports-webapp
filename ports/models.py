@@ -13,19 +13,19 @@ class PortManager(models.Manager):
 
 class Port(models.Model):
     portdir = models.CharField(max_length=100)
-    variants = models.TextField(default='')
-    description = models.TextField(default='')
-    homepage = models.URLField(default='')
-    epoch = models.TextField(default='')
-    platforms = models.TextField(default='')
+    variants = models.TextField(null=True)
+    description = models.TextField(null=True)
+    homepage = models.URLField(null=True)
+    epoch = models.BigIntegerField(null=True)
+    platforms = models.TextField(null=True)
     categories = models.ManyToManyField(Category, related_name='category', db_index=True)
-    long_description = models.TextField(default='')
+    long_description = models.TextField(null=True)
     version = models.CharField(max_length=100)
     revision = models.IntegerField(default=0)
     closedmaintainer = models.BooleanField()
     name = models.CharField(max_length=100, db_index=True)
-    license = models.CharField(max_length=100)
-    replaced_by = models.CharField(max_length=100)
+    license = models.CharField(max_length=100, null=True)
+    replaced_by = models.CharField(max_length=100, null=True)
 
     objects = PortManager()
 
