@@ -8,16 +8,16 @@
 
 {% block content %}
     <br>
-    {% if maintainers_num > 1 %}
+    {% if maintainers.count > 1 %}
         <div class="alert alert-warning" role="alert">
-            We found more than 1 maintainers with that query. This happens when the same maintainers uses different
+            We found more than 1 maintainers with that query. This happens when the same maintainer uses different
             email & github combinations in different ports.
         </div>
     {% endif %}
     <br>
     <h3>{{ maintainer }}</h3>
-    {% if maintainers_num > 1 %}
-        Found {{ maintainers_num }} entries for that {% if github is True %}GitHub Handle{% else %}Email{% endif %}
+    {% if maintainers.count > 1 %}
+        Found {{ maintainers.count }} entries for that {% if github is True %}GitHub Handle{% else %}Email{% endif %}
     {% endif %}
     <br>
     <div class="row">

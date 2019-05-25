@@ -17,16 +17,16 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from django.conf.urls import url
-from ports import views as ports
+from ports import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', ports.index, name='Home'),
-    path('statistics/submit/', ports.stats_submit, name='stats_submit'),
-    path('statistics/', ports.stats, name='stats_home'),
-    url(r'^statistics/port/(?P<name>[-a-zA-Z0-9_.]+)/$', ports.stats_portdetail, name='stats_portdetail'),
-    url(r'^maintainer/github/(?P<github>[-a-zA-Z0-9_.]+)/$', ports.maintainer_detail_github, name='maintainer_detail_github'),
-    url(r'^maintainer/email/(?P<name>[-a-zA-Z0-9_.]+)__(?P<domain>[-a-zA-Z0-9_.]+)/$', ports.maintainer_detail_email, name='maintainer_detail_email'),
+    path('', views.index, name='Home'),
+    path('statistics/submit/', views.stats_submit, name='stats_submit'),
+    path('statistics/', views.stats, name='stats_home'),
+    url(r'^statistics/port/(?P<name>[-a-zA-Z0-9_.]+)/$', views.stats_portdetail, name='stats_portdetail'),
+    url(r'^maintainer/github/(?P<github_handle>[-a-zA-Z0-9_.]+)/$', views.maintainer_detail_github, name='maintainer_detail_github'),
+    url(r'^maintainer/email/(?P<name>[-a-zA-Z0-9_.]+)__(?P<domain>[-a-zA-Z0-9_.]+)/$', views.maintainer_detail_email, name='maintainer_detail_email'),
     path('ports/', include('ports.urls'), name='Ports-Index'),
-    path('all_builds/', ports.all_builds_view),
+    path('all_builds/', views.all_builds_view),
 ]
