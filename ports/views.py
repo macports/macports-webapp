@@ -113,18 +113,15 @@ def stats_portdetail(request, name):
     })
 
 
-def maintainer_detail_github(request, github):
-    maintainers = Maintainer.objects.filter(github=github)
-
+def get_ports_of_maintainers(maintainers, request):
     i = 0
     for maintainer in maintainers:
         if i > 0:
-            all_ports = maintainer.ports.all() | all_ports
+            all_ports = maintainer.ports.all().order_by('id') | all_ports
         else:
-            all_ports = maintainer.ports.all()
+            all_ports = maintainer.ports.all().order_by('id')
         i = i + 1
 
-    maintainers_num = maintainers.count()
     all_ports_num = all_ports.count()
     paginated_ports = Paginator(all_ports, 100)
     page = request.GET.get('page', 1)
@@ -135,44 +132,31 @@ def maintainer_detail_github(request, github):
     except EmptyPage:
         ports = paginated_ports.get_page(paginated_ports.num_pages)
 
+    return ports, all_ports_num
+
+
+def maintainer_detail_github(request, github_handle):
+    maintainers = Maintainer.objects.filter(github=github_handle)
+    ports, all_ports_num = get_ports_of_maintainers(maintainers, request)
+
     return render(request, 'ports/maintainerdetail.html', {
         'maintainers': maintainers,
-        'maintainer': github,
-        'ports': ports,
+        'maintainer': github_handle,
         'all_ports_num': all_ports_num,
-        'maintainers_num': maintainers_num,
+        'ports': ports,
         'github': True,
     })
 
 
 def maintainer_detail_email(request, name, domain):
     maintainers = Maintainer.objects.filter(name=name, domain=domain)
-
-    i = 0
-    for maintainer in maintainers:
-        if i > 0:
-            all_ports = maintainer.ports.all() | all_ports
-        else:
-            all_ports = maintainer.ports.all()
-        i = i + 1
-
-    maintainers_num = maintainers.count()
-    all_ports_num = all_ports.count()
-    paginated_ports = Paginator(all_ports, 100)
-    page = request.GET.get('page', 1)
-    try:
-        ports = paginated_ports.get_page(page)
-    except PageNotAnInteger:
-        ports = paginated_ports.get_page(1)
-    except EmptyPage:
-        ports = paginated_ports.get_page(paginated_ports.num_pages)
+    ports, all_ports_num = get_ports_of_maintainers(maintainers, request)
 
     return render(request, 'ports/maintainerdetail.html', {
         'maintainers': maintainers,
         'maintainer': name,
         'ports': ports,
         'all_ports_num': all_ports_num,
-        'maintainers_num': maintainers_num,
         'github': False
     })
 
