@@ -46,11 +46,11 @@ def load_ports_and_maintainers_table(ports):
             continue
 
         new_port.variants = port.get('variants')
-        new_port.description = port.get('description')
-        new_port.homepage = port.get('homepage')
-        new_port.epoch = port.get('epoch')
+        new_port.description = port.get('description', '')
+        new_port.homepage = port.get('homepage', '')
+        new_port.epoch = port.get('epoch', 0)
         new_port.platforms = port.get('platforms')
-        new_port.long_description = port.get('long_description')
+        new_port.long_description = port.get('long_description', '')
         new_port.revision = port.get('revision', 0)
         new_port.closedmaintainer = port.get('closedmaintainer')
         new_port.license = port.get('license')
@@ -65,52 +65,17 @@ def load_ports_and_maintainers_table(ports):
 
         try:
             for maintainer in port['maintainers']:
-                try:
-                    name = maintainer['email']['name'].lower()
-                    domain = maintainer['email']['domain'].lower()
-                    email_provided = True
-                except KeyError:
-                    name = None
-                    domain = None
-                    email_provided = False
+                name = maintainer.get('email', {}).get('name', '')
+                domain = maintainer.get('email', {}).get('domain', '')
+                github = maintainer.get('github', '')
 
-                try:
-                    github = maintainer['github'].lower()
-                    github_provided = True
-                except KeyError:
-                    github = None
-                    github_provided = False
+                maintainer_object, created = Maintainer.objects.get_or_create(
+                    name=name,
+                    domain=domain,
+                    github=github
+                )
 
-                # Check if the maintainer already exists in Database:
-                if email_provided is True and github_provided is True:
-                    try:
-                        db_maintainer = Maintainer.objects.get(name=name, domain=domain, github=github)
-                        db_maintainer.ports.add(new_port)
-                        continue
-                    except ObjectDoesNotExist:
-                        pass
-                elif email_provided is False and github_provided is True:
-                    try:
-                        db_maintainer = Maintainer.objects.get(name__isnull=True, github=github)
-                        db_maintainer.ports.add(new_port)
-                        continue
-                    except ObjectDoesNotExist:
-                        pass
-                elif email_provided is True and github_provided is False:
-                    try:
-                        db_maintainer = Maintainer.objects.get(name=name, domain=domain, github__isnull=True)
-                        db_maintainer.ports.add(new_port)
-                        continue
-                    except ObjectDoesNotExist:
-                        pass
-
-                # If the maintainer was not found in the database already, then only this code will run:
-                new_maintainer = Maintainer()
-                new_maintainer.name = name
-                new_maintainer.domain = domain
-                new_maintainer.github = github
-                new_maintainer.save()
-                new_maintainer.ports.add(new_port)
+                maintainer_object.ports.add(new_port)
         except KeyError:
             pass
 

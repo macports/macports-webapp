@@ -14,17 +14,17 @@ class PortManager(models.Manager):
 class Port(models.Model):
     portdir = models.CharField(max_length=100)
     variants = models.TextField(null=True)
-    description = models.TextField(null=True)
-    homepage = models.URLField(null=True)
-    epoch = models.BigIntegerField(null=True)
+    description = models.TextField(default='')
+    homepage = models.URLField(default='')
+    epoch = models.BigIntegerField(default=0)
     platforms = models.TextField(null=True)
     categories = models.ManyToManyField(Category, related_name='category', db_index=True)
-    long_description = models.TextField(null=True)
+    long_description = models.TextField(default='')
     version = models.CharField(max_length=100)
     revision = models.IntegerField(default=0)
-    closedmaintainer = models.BooleanField()
+    closedmaintainer = models.BooleanField(default=False)
     name = models.CharField(max_length=100, db_index=True)
-    license = models.CharField(max_length=100, null=True)
+    license = models.CharField(max_length=100, default='')
     replaced_by = models.CharField(max_length=100, null=True)
 
     objects = PortManager()
@@ -37,9 +37,9 @@ class Dependency(models.Model):
 
 
 class Maintainer(models.Model):
-    name = models.CharField(max_length=50, db_index=True, null=True)
-    domain = models.CharField(max_length=50, db_index=True, null=True)
-    github = models.CharField(max_length=50, db_index=True, null=True)
+    name = models.CharField(max_length=50, db_index=True, default='')
+    domain = models.CharField(max_length=50, db_index=True, default='')
+    github = models.CharField(max_length=50, db_index=True, default='')
     ports = models.ManyToManyField(Port, related_name='maintainers', db_index=True)
 
     objects = PortManager()
