@@ -24,8 +24,8 @@ DATABASES = {
  ```
  
 ## Populate Initial Data in the Database
- - Put the file `portindex.json` in the directory `parsing-scripts`. To generate this file, you need to run `portindex2json.tcl`.
- - Run `parsing-scripts/load_initial_data.py` to populate the Ports, Categories and Maintainers tables.
+ - Put the file `portindex.json` in the root of the project. To generate this file, you need to run `portindex2json.tcl`.
+ - Run `python manage.py load` to populate the Ports, Categories and Maintainers tables.
  - Run `parsing-scipts/load_initial_depends.py` to load the Dependencies table.
  - Run `parsing-scripts/parse_build_history.py` to fetch few recent builds from the buildbot.
 
@@ -37,9 +37,3 @@ python manage.py collectstatic
 ```
 python manage.py runserver
 ```
- 
- 
- 
-
-
- 

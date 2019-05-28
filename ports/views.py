@@ -12,7 +12,7 @@ import json
 def index(request):
     alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
                 'V', 'W', 'X', 'Y', 'Z']
-    categories = Category.objects.all()
+    categories = Category.objects.all().order_by('name')
     return render(request, 'ports/index.html', {
         'alphabet': alphabet,
         'categories': categories
