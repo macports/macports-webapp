@@ -26,7 +26,7 @@ DATABASES = {
 ## Populate Initial Data in the Database
  - Put the file `portindex.json` in the root of the project. To generate this file, you need to run `portindex2json.tcl`.
  - Run `python manage.py load` to populate the Ports, Categories and Maintainers tables.
- - Run `parsing-scipts/load_initial_depends.py` to load the Dependencies table.
+ - Run `python manage.py load-dependencies` to load the Dependencies table. This command should be ran only after the ports table has been completely populated from the `portindex.json` file.
  - Run `parsing-scripts/parse_build_history.py` to fetch few recent builds from the buildbot.
 
 ## Start the Server
