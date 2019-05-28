@@ -4,9 +4,8 @@ from parsing_scripts import load_initial_data
 
 class Command(BaseCommand):
 
-    help = "Populates the database with Initial data from portindex.json file"
+    help = "Populates dependencies for ports"
 
     def handle(self, *args, **options):
         ports = load_initial_data.open_portindex_json("portindex.json")
-        load_initial_data.load_categories_table(ports)
-        load_initial_data.load_ports_and_maintainers_table(ports)
+        load_initial_data.load_dependencies_table(ports)
