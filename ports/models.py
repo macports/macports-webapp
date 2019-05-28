@@ -20,7 +20,7 @@ class Port(models.Model):
     platforms = models.TextField(null=True)
     categories = models.ManyToManyField(Category, related_name='category', db_index=True)
     long_description = models.TextField(default='')
-    version = models.CharField(max_length=100)
+    version = models.CharField(max_length=100, default='')
     revision = models.IntegerField(default=0)
     closedmaintainer = models.BooleanField(default=False)
     name = models.CharField(max_length=100, db_index=True)
