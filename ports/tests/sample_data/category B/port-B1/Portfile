@@ -1,0 +1,24 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+PortGroup           xcode 1.0
+version             1.0.0
+
+name                port-B1
+categories          categoryB
+platforms           darwin
+maintainers         {@user}
+license             MIT
+
+description         This is port B1 of categoryB
+long_description \
+                    Just a test port written to test something.
+
+homepage            http://portB1.website/
+
+checksums           rmd160  1846701bae455bd934efe6dc025032f1fc47211e \
+                    sha256  5ed3f3d14d90c6c68980acb688c2d2a44a2eb78581a420951da7861a935db18d
+
+build.dir           ${worksrcpath}/src
+
