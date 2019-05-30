@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User
+from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant
 from bs4 import BeautifulSoup
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import requests
@@ -54,11 +54,30 @@ def letterlist(request, letter):
                       'portscount': portscount
                   })
 
+def variantlist(request, variant):
+    all_objects = Variant.objects.filter(variant=variant)
+    all_objects_count = all_objects.count()
+    paginated_objects = Paginator(all_objects, 100)
+    page = request.GET.get('page', 1)
+    try:
+        objects = paginated_objects.get_page(page)
+    except PageNotAnInteger:
+        objects = paginated_objects.get_page(1)
+    except EmptyPage:
+        objects = paginated_objects.get_page(paginated_objects.num_pages)
+    return render(request, 'ports/variantlist.html', {
+        'objects': objects,
+        'variant': variant,
+        'all_objects_count': all_objects_count
+    })
+
 
 def portdetail(request, name):
     port = Port.objects.get(name=name)
+    id = port.id
     maintainers = Maintainer.objects.filter(ports__name=name)
-    dependencies = Dependency.objects.filter(port_name_id=port.id)
+    dependencies = Dependency.objects.filter(port_name_id=id)
+    variants = Variant.objects.filter(port_id=id)
 
     builders = Builder.objects.values_list('name', flat=True)
     build_history = {}
@@ -69,6 +88,7 @@ def portdetail(request, name):
         'build_history': build_history,
         'maintainers': maintainers,
         'dependencies': dependencies,
+        'variants': variants,
         'builders_list': builders,
     })
 
@@ -219,6 +239,18 @@ def category_filter(request):
             search_in = request.POST['search_in']
 
             filtered_ports = Port.objects.filter(maintainers__name=search_in, name__icontains=query)
+            return render(request, 'ports/filtered_table.html', {
+                'ports': filtered_ports,
+                'search_in': search_in,
+                'query': query,
+                'content': "Maintainer",
+            })
+
+        elif request.POST['content'] == "Variant":
+            query = request.POST['query']
+            search_in = request.POST['search_in']
+
+            filtered_ports = Port.objects.filter(ports__variant__in=search_in)
             return render(request, 'ports/filtered_table.html', {
                 'ports': filtered_ports,
                 'search_in': search_in,

@@ -13,7 +13,6 @@ class PortManager(models.Manager):
 
 class Port(models.Model):
     portdir = models.CharField(max_length=100)
-    variants = models.TextField(null=True)
     description = models.TextField(default='')
     homepage = models.URLField(default='')
     epoch = models.BigIntegerField(default=0)
@@ -31,9 +30,14 @@ class Port(models.Model):
 
 
 class Dependency(models.Model):
-    port_name = models.ForeignKey(Port, on_delete=models.CASCADE, related_name="dependent_port", db_index=True)
+    port_name = models.ForeignKey(Port, on_delete=models.CASCADE, related_name="dependent_port")
     dependencies = models.ManyToManyField(Port, db_index=True)
     type = models.CharField(max_length=100)
+
+
+class Variant(models.Model):
+    port = models.ForeignKey(Port, on_delete=models.CASCADE, related_name='ports')
+    variant = models.CharField(max_length=100, default='')
 
 
 class Maintainer(models.Model):

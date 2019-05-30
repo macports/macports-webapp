@@ -10,6 +10,7 @@ urlpatterns = [
     path('load_tickets/', views.tickets, name='trac_tickets'),
     path('statistics/', views.stats, name='stats_home'),
     path('category/<slug:cat>', views.categorylist, name='category_list'),
+    path('variant/<slug:variant>', views.variantlist, name='variant_list'),
     path('sort-by-letter/<slug:letter>', views.letterlist, name='letter_list'),
     url(r'^(?P<name>[-a-zA-Z0-9_.]+)/$', views.portdetail, name='port_detail'),
 ]

@@ -9,7 +9,7 @@ import django
 
 django.setup()
 
-from ports.models import Port, Maintainer, Category, Dependency
+from ports.models import Port, Maintainer, Category, Dependency, Variant
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -45,7 +45,6 @@ def load_ports_and_maintainers_table(ports):
         except KeyError:
             continue
 
-        new_port.variants = port.get('variants')
         new_port.description = port.get('description', '')
         new_port.homepage = port.get('homepage', '')
         new_port.epoch = port.get('epoch', 0)
@@ -76,6 +75,15 @@ def load_ports_and_maintainers_table(ports):
                 )
 
                 maintainer_object.ports.add(new_port)
+        except KeyError:
+            pass
+
+        try:
+            for variant in port['variants']:
+                variant_object = Variant()
+                variant_object.port = new_port
+                variant_object.variant = variant
+                variant_object.save()
         except KeyError:
             pass
 
