@@ -4,6 +4,8 @@
         <h4>Your search "{{ query }}" in category "{{ search_in }}" matched {{ ports|length }} ports.</h4>
     {% elif content == "Maintainer" %}
         <h4>Your search "{{ query }}" in ports maintained by "{{ search_in }}" matched {{ ports|length }} ports.</h4>
+    {% else %}
+        <h4>Your search {{ query }} matched {{ ports|length }} ports.</h4>
     {% endif %}
     <table class="table table-striped">
         <thead>
@@ -31,6 +33,10 @@
     {% elif content == "Maintainer" %}
         <div class="alert alert-danger" role="alert">
             Sorry, no matching ports found for "{{ query }}" in the ports maintained by "{{ search_in }}".
+        </div>
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+            Sorry, no matching ports found for "{{ query }}" in "{{ search_in }}"
         </div>
     {% endif %}
 {% endif %}

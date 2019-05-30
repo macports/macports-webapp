@@ -57,7 +57,15 @@
                 </tr>
                 <tr>
                     <th scope="row">Variants:</th>
-                    <td>{{ port.variants }}</td>
+                    <td>
+                        {% if variants.count > 0 %}
+                            {% for variant in variants %}
+                                <a href="{% url 'variant_list' variant.variant %}">{{ variant.variant }}</a>,
+                            {% endfor %}
+                        {% else %}
+                            No Information Found for Variants
+                        {% endif %}
+                    </td>
                 </tr>
                 <tr>
                     <th scope="row">License:</th>
