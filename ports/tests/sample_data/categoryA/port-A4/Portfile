@@ -15,3 +15,5 @@ description         This is port A4 of category A
 long_description    Just a test port written to test something.
 
 homepage            http://portA1.website/
+
+depends_fetch       bin:port-C1:port-C1
