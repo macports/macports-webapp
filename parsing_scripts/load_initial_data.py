@@ -51,9 +51,8 @@ def load_ports_and_maintainers_table(ports):
         new_port.platforms = port.get('platforms')
         new_port.long_description = port.get('long_description', '')
         new_port.revision = port.get('revision', 0)
-        new_port.closedmaintainer = port.get('closedmaintainer')
-        new_port.license = port.get('license')
-        new_port.installs_libs = port.get('installs_lib')
+        new_port.closedmaintainer = port.get('closedmaintainer', False)
+        new_port.license = port.get('license', '')
         new_port.replaced_by = port.get('replaced_by')
         new_port.save()
 

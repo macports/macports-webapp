@@ -1,43 +1,5 @@
 [{
     "variants"         : ["universal"],
-    "portdir"          : "category B\/port-B1",
-    "description"      : "This is port B1 of categoryB",
-    "homepage"         : "http:\/\/portB1.website\/",
-    "epoch"            : "0",
-    "platforms"        : "darwin",
-    "name"             : "port-B1",
-    "closedmaintainer" : true,
-    "license"          : "MIT",
-    "maintainers"      : [{
-        "github" : "user"
-    }],
-    "long_description" : "Just a test port written to test something.",
-    "categories"       : ["categoryB"],
-    "version"          : "1.0.0",
-    "revision"         : "0"
-},{
-    "variants"         : ["universal"],
-    "portdir"          : "category C\/port-C1",
-    "description"      : "This is port C1 of categoryC",
-    "homepage"         : "http:\/\/portC1.website\/",
-    "epoch"            : "0",
-    "platforms"        : "darwin",
-    "name"             : "port-C1",
-    "closedmaintainer" : true,
-    "license"          : "MIT",
-    "maintainers"      : [{
-        "email"  : {
-            "domain" : "macports.org",
-            "name"   : "user3"
-        },
-        "github" : "user3"
-    }],
-    "long_description" : "Just a test port written to test something.",
-    "categories"       : ["categoryC"],
-    "version"          : "1.0.0",
-    "revision"         : "0"
-},{
-    "variants"         : ["universal"],
     "portdir"          : "categoryA\/port-A1",
     "description"      : "This is port A1 of category A",
     "homepage"         : "http:\/\/portA1.website\/",
@@ -97,7 +59,7 @@
 },{
     "variants"         : ["universal"],
     "portdir"          : "categoryA\/port-A4",
-    "description"      : "This is port A1 of category A",
+    "description"      : "This is port A4 of category A",
     "homepage"         : "http:\/\/portA1.website\/",
     "epoch"            : "0",
     "platforms"        : "darwin",
@@ -119,7 +81,6 @@
     "variants"         : ["universal"],
     "portdir"          : "categoryA\/port-A5",
     "description"      : "This is port A1 of category A",
-    "homepage"         : "http:\/\/portA1.website\/",
     "epoch"            : "0",
     "platforms"        : "darwin",
     "name"             : "port-A5",
@@ -133,7 +94,44 @@
         "github" : "user2"
     }],
     "long_description" : "Just a test port written to test something.",
+    "version"          : "1.0.0",
     "categories"       : ["categoryA"],
+    "revision"         : "0"
+},{
+    "variants"         : ["universal"],
+    "portdir"          : "categoryB\/port-B1",
+    "description"      : "This is port B1 of categoryB",
+    "epoch"            : "0",
+    "platforms"        : "darwin",
+    "name"             : "port-B1",
+    "closedmaintainer" : true,
+    "license"          : "MIT",
+    "maintainers"      : [{
+        "github" : "user"
+    }],
+    "long_description" : "Just a test port written to test something.",
+    "version"          : "1.0.0",
+    "categories"       : ["categoryB"],
+    "revision"         : "0"
+},{
+    "variants"         : ["universal"],
+    "portdir"          : "categoryC\/port-C1",
+    "description"      : "This is port C1 of categoryC",
+    "homepage"         : "http:\/\/portC1.website\/",
+    "epoch"            : "0",
+    "platforms"        : "darwin",
+    "name"             : "port-C1",
+    "closedmaintainer" : true,
+    "license"          : "MIT",
+    "maintainers"      : [{
+        "email"  : {
+            "domain" : "macports.org",
+            "name"   : "user3"
+        },
+        "github" : "user3"
+    }],
+    "long_description" : "Just a test port written to test something.",
+    "categories"       : ["categoryC"],
     "version"          : "1.0.0",
     "revision"         : "0"
 }]
