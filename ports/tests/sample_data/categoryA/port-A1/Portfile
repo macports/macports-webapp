@@ -15,3 +15,6 @@ description         This is port A1 of category A
 long_description    Just a test port written to test something.
 
 homepage            http://portA1.website/
+
+depends_lib         lib:pq:port-A2 port:port-A3
+depends_fetch       bin:port-A4:port-A4

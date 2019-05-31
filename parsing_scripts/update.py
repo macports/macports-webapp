@@ -18,6 +18,16 @@ def open_portindex_json(path='portindex.json'):
     return ports
 
 
+def open_ports_from_list(list_of_ports, path='portindex.json'):
+    with open(path, "r") as file:
+        all_ports = json.load(file)
+    ports_to_be_updated = []
+    for port in all_ports:
+        if port['name'] in list_of_ports:
+            ports_to_be_updated.append(port)
+    return ports_to_be_updated
+
+
 def full_update_ports(ports):
 
     for port in ports:
