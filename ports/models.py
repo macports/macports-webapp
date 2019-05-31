@@ -34,6 +34,9 @@ class Dependency(models.Model):
     dependencies = models.ManyToManyField(Port, db_index=True)
     type = models.CharField(max_length=100)
 
+    class Meta:
+        unique_together = [['port_name', 'type']]
+
 
 class Variant(models.Model):
     port = models.ForeignKey(Port, on_delete=models.CASCADE, related_name='ports')
@@ -47,6 +50,9 @@ class Maintainer(models.Model):
     ports = models.ManyToManyField(Port, related_name='maintainers', db_index=True)
 
     objects = PortManager()
+
+    class Meta:
+        unique_together = [['name', 'domain', 'github']]
 
 
 class Builder(models.Model):
