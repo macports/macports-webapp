@@ -32,8 +32,7 @@ def full_update_ports(ports):
         port_object.long_description = port.get('long_description', '')
         port_object.revision = port.get('revision', 0)
         port_object.closedmaintainer = port.get('closedmaintainer', False)
-        port_object.license = port.get('license')
-        port_object.installs_libs = port.get('installs_lib')
+        port_object.license = port.get('license', '')
         port_object.replaced_by = port.get('replaced_by')
         port_object.save()
 

@@ -8,29 +8,10 @@ version             1.0.1
 name                port-A2
 categories          categoryA categoryB
 platforms           darwin
-maintainers         {email.com:user}
+maintainers         email.com:user
 license             MIT
 
 description         This is port A2 of categoryA and category B.
-long_description \
-                    Just a test port written to test something.
+long_description    Just a test port written to test something.
 
 homepage            http://portA1.website/
-
-checksums           rmd160  1846701bae455bd635efe6dc025032f1fc47211e \
-                    sha256  5ed3f3d14d90c6c68059acb688c2d2a44a2eb78581a420951da7861a935db18d
-
-build.dir           ${worksrcpath}/src
-
-patchfiles          patch-src-AppKiDo.xcodeproj-project.pbxproj.diff
-
-xcode.configuration Release
-
-xcode.build.settings-append \
-                    SDKROOT_i386=${configure.sdkroot} \
-                    SDKROOT_ppc=${configure.sdkroot}
-
-xcode.destroot.settings-append \
-                    SDKROOT_i386=${configure.sdkroot} \
-                    SDKROOT_ppc=${configure.sdkroot} \
-                    SKIP_INSTALL=NO
