@@ -106,7 +106,7 @@ def load_dependencies_table(ports):
     for port in ports:
         try:
             port_object = Port.objects.get(name__iexact=port['name'])
-            for dependency_type in ["lib", "extract", "run", "patch", "build", "test", "patch", "fetch"]:
+            for dependency_type in ["lib", "extract", "run", "patch", "build", "test", "fetch"]:
                 key = "depends_" + dependency_type
                 if key in port:
                     load_depends(port[key], dependency_type, port_object)

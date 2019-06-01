@@ -5,8 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant
 from bs4 import BeautifulSoup
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-import requests
-import json
+import requests, json, datetime
 
 
 def index(request):
@@ -123,7 +122,17 @@ def all_builds_view(request):
 
 
 def stats(request):
-    return render(request, 'ports/stats.html')
+    current_week = datetime.datetime.today().isocalendar()[1]
+    all_submissions = User.objects.all()
+    total_unique_users = len(set(all_submissions.values_list('uuid', flat=True)))
+    current_week_unique = len(set(all_submissions.filter(updated_at__week=current_week).values_list('uuid', flat=True)))
+    last_week_unique = len(set(all_submissions.filter(updated_at__week=current_week-1).values_list('uuid', flat=True)))
+    return render(request, 'ports/stats.html', {
+        'total_submissions': all_submissions.count(),
+        'unique_users': total_unique_users,
+        'current_week': current_week_unique,
+        'last_week': last_week_unique
+    })
 
 
 def stats_portdetail(request, name):
@@ -273,7 +282,7 @@ def stats_submit(request):
             user.macports_version = received_json['os']['macports_version']
             user.os_arch = received_json['os']['os_arch']
             user.xcode_version = received_json['os']['xcode_version']
-            user.active_ports = received_json['active_ports']
+            user.full_json = received_json
             user.save()
 
             return HttpResponse("Success")
