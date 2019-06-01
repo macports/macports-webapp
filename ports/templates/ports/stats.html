@@ -2,5 +2,30 @@
 
 {% block content %}
     <br><br>
-    Stats will appear here, inspired from : <a href="http://stats.macports.neverpanic.de">http://stats.macports.neverpanic.de</a>
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Property</th>
+      <th scope="col">Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Total number of submissions so far:</th>
+      <td>{{ total_submissions }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Total number of users (ever submitted):</th>
+      <td>{{ unique_users }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Number of users who submitted stats last week:</th>
+      <td>{{ last_week }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Number of users who submitted stats this week:</th>
+      <td>{{ current_week }}</td>
+    </tr>
+  </tbody>
+</table>
 {% endblock %}

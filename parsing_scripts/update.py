@@ -97,7 +97,7 @@ def full_update_dependencies(ports):
                 if key not in port:
                     dependency_object.delete()
 
-            for dependency_type in ["lib", "extract", "run", "patch", "build", "test", "patch", "fetch"]:
+            for dependency_type in ["lib", "extract", "run", "patch", "build", "test", "fetch"]:
                 key = "depends_" + dependency_type
                 if key in port:
                     obj, created = Dependency.objects.get_or_create(port_name_id=port_object.id, type=dependency_type)

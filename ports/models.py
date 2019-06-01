@@ -78,7 +78,7 @@ class User(models.Model):
     macports_version = models.CharField(max_length=10)
     xcode_version = models.CharField(max_length=10)
     os_arch = models.CharField(max_length=10)
-    active_ports = JSONField()
+    full_json = JSONField()
     updated_at = models.DateTimeField(auto_now=True)
 
 
