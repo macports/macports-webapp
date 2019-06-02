@@ -80,9 +80,3 @@ class User(models.Model):
     os_arch = models.CharField(max_length=10)
     full_json = JSONField()
     updated_at = models.DateTimeField(auto_now=True)
-
-
-
-
-
-

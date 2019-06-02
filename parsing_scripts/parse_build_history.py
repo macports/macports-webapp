@@ -101,23 +101,22 @@ def add_to_summary(data):
     fulldata[data['name']][data['builder']].append(data)
 
 
-for buildername in builders:
-    print()
-    # fetch the last build first in order to figure out its number (the build itself might not be finished yet)
-    last_build_data = get_data_from_url(get_url_json(buildername, -1))
-    last_build_number = last_build_data['number']
-    build_number_loaded = BuildHistory.objects.filter(builder_name__name=buildername).order_by('-build_id')
-    if build_number_loaded:
-        build_in_database = build_number_loaded[0].build_id + 1
-    else:
-        build_in_database = last_build_number - 200
+def fetch():
+    for buildername in builders:
+        print()
+        # fetch the last build first in order to figure out its number (the build itself might not be finished yet)
+        last_build_data = get_data_from_url(get_url_json(buildername, -1))
+        last_build_number = last_build_data['number']
+        build_number_loaded = BuildHistory.objects.filter(builder_name__name=buildername).order_by('-build_id')
+        if build_number_loaded:
+            build_in_database = build_number_loaded[0].build_id + 1
+        else:
+            build_in_database = last_build_number - 200
 
-    # lets start with the latest four builds
+        # lets start with the latest four builds
 
-    for build_number in range(build_in_database, last_build_number):
-        build_data = get_data_from_url(get_url_json(buildername, build_number))
-        build_data_summary = return_summary(buildername, build_number, build_data)
-        add_to_summary(build_data_summary)
-        load_database(build_data_summary)
-
-
+        for build_number in range(build_in_database, last_build_number):
+            build_data = get_data_from_url(get_url_json(buildername, build_number))
+            build_data_summary = return_summary(buildername, build_number, build_data)
+            add_to_summary(build_data_summary)
+            load_database(build_data_summary)
