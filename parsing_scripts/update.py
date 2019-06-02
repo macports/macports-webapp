@@ -1,15 +1,17 @@
-import os, json, sys
+import os
+import json
+import sys
+
+import django
+
+from ports.models import Port, Maintainer, Category, Dependency, Variant
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'MacPorts.settings'
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "MacPorts.settings")
 
-import django
-
 django.setup()
-
-from ports.models import Port, Maintainer, Category, Dependency, Variant
 
 
 def open_portindex_json(path='portindex.json'):

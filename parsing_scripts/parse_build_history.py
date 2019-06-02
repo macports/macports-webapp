@@ -1,14 +1,19 @@
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "MacPorts.settings")
-
-import django
-django.setup()
-
-from ports.models import BuildHistory, Builder
 import urllib.request
 import ssl
 import json
-import datetime
+import sys
+
+import django
+
+from ports.models import BuildHistory, Builder
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
+os.environ['DJANGO_SETTINGS_MODULE'] = 'MacPorts.settings'
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "MacPorts.settings")
+
+django.setup()
 
 
 builders = Builder.objects.values_list('name', flat=True)

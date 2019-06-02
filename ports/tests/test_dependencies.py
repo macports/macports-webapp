@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
+
 from ports.models import Dependency
 from parsing_scripts import load_initial_data, update
 

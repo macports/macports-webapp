@@ -1,5 +1,6 @@
-from django.core.management.base import BaseCommand, CommandError
 import os
+
+from django.core.management.base import BaseCommand
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WORKING_DIR = os.path.join(BASE_DIR, "..", "tests", "sample_data")
