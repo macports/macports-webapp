@@ -127,9 +127,9 @@ def all_builds_view(request):
 def stats(request):
     current_week = datetime.datetime.today().isocalendar()[1]
     all_submissions = User.objects.all()
-    total_unique_users = len(set(all_submissions.values_list('uuid', flat=True)))
-    current_week_unique = len(set(all_submissions.filter(updated_at__week=current_week).values_list('uuid', flat=True)))
-    last_week_unique = len(set(all_submissions.filter(updated_at__week=current_week-1).values_list('uuid', flat=True)))
+    total_unique_users = all_submissions.distinct('uuid').count()
+    current_week_unique = all_submissions.filter(updated_at__week=current_week).distinct('uuid').count()
+    last_week_unique = all_submissions.filter(updated_at__week=current_week-1).distinct('uuid').count()
     return render(request, 'ports/stats.html', {
         'total_submissions': all_submissions.count(),
         'unique_users': total_unique_users,
