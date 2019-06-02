@@ -1,11 +1,14 @@
+import requests
+import json
+import datetime
+
+from bs4 import BeautifulSoup
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.core.exceptions import ObjectDoesNotExist
-from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant
-from bs4 import BeautifulSoup
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-import requests, json, datetime
+
+from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant
 
 
 def index(request):
