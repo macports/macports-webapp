@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^maintainer/github/(?P<github_handle>[-a-zA-Z0-9_.]+)/$', views.maintainer_detail_github, name='maintainer_detail_github'),
     url(r'^maintainer/email/(?P<name>[-a-zA-Z0-9_.]+)__(?P<domain>[-a-zA-Z0-9_.]+)/$', views.maintainer_detail_email, name='maintainer_detail_email'),
     path('ports/', include('ports.urls'), name='Ports-Index'),
-    path('all_builds/', views.all_builds_view),
+    path('all_builds/', views.all_builds_view, name='all_builds'),
+    path('update/', views.update_api, name='update_api')
 ]
