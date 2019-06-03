@@ -10,8 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/ajax-search.js' %}"></script>
     {% block head_scripts %}
     {% endblock %}
@@ -19,10 +19,10 @@
     <title>Ports | MacPorts</title>
 </head>
 <body>
-<div class="container">
-<nav class="navbar navbar-expand-lg navbar-light" style="padding: 0 8px 0 8px;background-color: cadetblue">
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm">
+    <div class="container">
+    <a class="navbar-brand" href="/"><img width="120px" src="{% static 'images/macports-logo.png' %}" class="img-fluid"></a>
 
-    <a class="navbar-brand" href="/">Demo App</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -33,7 +33,7 @@
             <li class="nav-item topnav-li active">
                 <a class="nav-link topnav-a" href="/">Ports <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item topnav-li active">
+            <li class="nav-item topnav-li">
                 <a class="nav-link topnav-a" href="/all_builds/">All Builds</a>
             </li>
             <li class="nav-item topnav-li" style="border: 0;">
@@ -41,9 +41,8 @@
             </li>
         </ul>
     </div>
-
+    </div>
 </nav>
-</div>
 <div class="container">
     {% block content %}
     {% endblock %}

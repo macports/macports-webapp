@@ -2,14 +2,10 @@ body{
     padding: 0;
 }
 
-.topnav-li{
-    border-right: black solid 1px;
-}
-
-.topnav-li:hover {
-    background-color: #047AFB !important;
-}
-
-.topnav-a{
-    color: white !important;
+.grid-container {
+  display: grid;
+  justify-content: space-evenly;
+  grid-template-columns: auto auto auto auto; /*Make the grid smaller than the container*/
+  grid-gap: 8px;
+  padding: 8px;
 }
