@@ -1,8 +1,9 @@
 {% extends 'ports/layout.html' %}
 
-{% block content %}<br>
-    <form onSubmit="return false">
-            {% csrf_token %}
+{% block content %}
+    <br>
+    <form onSubmit="return false" class="shadow-sm p-3 rounded">
+        {% csrf_token %}
         <div class="form-group mb-0">
             <label class="radio-inline mr-3"><input onclick="switch_search()" type="radio" name="search_by" value="search-by-port-name" checked>Search by port-name</label>
             <label class="radio-inline"><input onclick="switch_search()" type="radio" name="search_by" value="search-by-description">Search by Description</label>
@@ -12,20 +13,19 @@
         </div>
     </form>
     <br>
-    <div class="row" id="main-content">
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="border-bottom">Browse By Categories</h6>
-                    <p>
-                        {% for cat in categories %}
-                        <a href="/ports/category/{{ cat.name }}">{{ cat.name }}</a> |
-                        {% endfor %}
-                    </p>
+    <div class="container" id="main-content">
+        <div class="row">
+        <div class="col-lg-8 shadow-sm pt-2">
+            <h3 class="text-secondary border-bottom border-secondary">Browse By Categories</h3>
+                <div class="grid-container">
+                    {% for cat in categories %}
+                    <div>
+                        <a href="{% url 'category_list' cat.name %}">{{ cat.name }}</a>
+                    </div>
+                    {% endfor %}
                 </div>
-            </div>
             <br>
-            <div class="card">
+            <div class="card border-0">
                 <div class="card-body">
                     <h6 class="border-bottom">Browse Ports Alphabetically</h6>
                     <p>
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <div style="background-color: cadetblue;padding: 12px;">
+            <div class="bg-secondary" style="padding: 12px;">
                 <h5 style="color: white;">Top Installations this Month</h5>
             </div>
             <div class="border" style="padding: 12px">
@@ -50,10 +50,11 @@
                 </ul>
                 <a href="/statistics">Continue to Detailed Stats</a>
             </div>
-
+        </div>
         </div>
     </div>
-     <div id="filtered_table">
+
+    <div id="filtered_table">
     </div>
 
 
