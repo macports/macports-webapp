@@ -1,3 +1,4 @@
+import os
 import requests
 import json
 import datetime
@@ -9,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant
+from parsing_scripts import update
 
 
 def index(request):
@@ -276,8 +278,7 @@ def category_filter(request):
 def stats_submit(request):
     if request.method == "POST":
         try:
-            submitted = request.body.decode("utf-8")
-            received_json = json.loads(submitted.split('=')[1])
+            received_json = json.loads(request.POST.get('submission[data]'))
 
             user = User()
             user.uuid = received_json['id']
@@ -294,3 +295,24 @@ def stats_submit(request):
             return HttpResponse("Something went wrong")
     else:
         return HttpResponse("Method Not Allowed")
+
+
+@csrf_exempt
+def update_api(request):
+    if request.method == 'POST':
+        key = request.POST.get('key')
+        print(key)
+        if key == os.environ['UPDATE_API_KEY']:
+            try:
+                received_json = json.loads(request.POST.get('ports'))
+                update.full_update_ports(received_json)
+                update.full_update_dependencies(received_json)
+                return HttpResponse("Updating successful")
+            except:
+                return HttpResponse("Failed to parse the JSON")
+
+        else:
+            return HttpResponse("Authentication failed. Invalid Key")
+
+    else:
+        return HttpResponse('Method not allowed')
