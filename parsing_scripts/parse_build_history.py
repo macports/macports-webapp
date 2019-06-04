@@ -55,12 +55,10 @@ def return_summary(builder_name, build_number, build_data):
     properties = get_build_properties(build_data)
     port_name = properties['portname']
     status = ' '.join(build_data['text'])
-    steps = get_build_steps(build_data)
     time_start = build_data['times'][0]
     time_build = -1
     if status == 'build successful':
-        step_install = steps['install-port']
-        time_build = float(step_install['times'][1]) - float(step_install['times'][0])
+        time_build = float(build_data['times'][1]) - float(build_data['times'][0])
 
     data['name'] = port_name
     data['url'] = get_url_build(builder_name, build_number)

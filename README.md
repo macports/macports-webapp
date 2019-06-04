@@ -27,7 +27,7 @@ DATABASES = {
  - Put the file `portindex.json` in the root of the project. To generate this file, you need to run `portindex2json.tcl`.
  - Run `python manage.py load` to populate the Ports, Categories and Maintainers tables.
  - Run `python manage.py load-dependencies` to load the Dependencies table. This command should be ran only after the ports table has been completely populated from the `portindex.json` file.
- - Run `parsing-scripts/parse_build_history.py` to fetch few recent builds from the buildbot.
+ - Run `python manage.py fetch-build-history` to fetch few recent builds from the buildbot.
 
 ## Start the Server
 Start the server after running collectstatic
