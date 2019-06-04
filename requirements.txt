@@ -7,6 +7,7 @@ chardet==3.0.4
 cryptography==2.6.1
 DateTime==4.3
 Django==2.1.7
+django-filter==2.1.0
 gunicorn==19.9.0
 html5lib==1.0.1
 idna==2.8

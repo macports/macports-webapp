@@ -3,8 +3,10 @@ import urllib.request
 import ssl
 import json
 import sys
+import datetime
 
 import django
+from django.utils import timezone
 
 from ports.models import BuildHistory, Builder
 
@@ -67,8 +69,8 @@ def return_summary(builder_name, build_number, build_data):
     data['status'] = status
     data['builder'] = builder_name
     data['buildnr'] = build_number
-    data['time_start'] = time_start
-    data['buildtime'] = time_build
+    data['time_start'] = str(datetime.datetime.fromtimestamp(int(float(time_start)), tz=timezone.utc))
+    data['buildtime'] = str(datetime.timedelta(seconds=int(float(time_build)))) if time_build is not -1 else None
 
     return data
 

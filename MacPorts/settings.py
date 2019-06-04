@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'ports',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
