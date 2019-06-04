@@ -30,13 +30,13 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item topnav-li active">
+            <li class="nav-item topnav-li {% if request.path == "/" %}active{% endif %}">
                 <a class="nav-link topnav-a" href="/">Ports <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item topnav-li">
-                <a class="nav-link topnav-a" href="/all_builds/">All Builds</a>
+            <li class="nav-item topnav-li {% if request.path == "/all_builds/" %}active{% endif %}">
+                <a class="nav-link topnav-a" href="/all_builds">All Builds</a>
             </li>
-            <li class="nav-item topnav-li" style="border: 0;">
+            <li class="nav-item topnav-li {% if request.path == "/statistics/" %}active{% endif %}" style="border: 0;">
                 <a class="nav-link topnav-a" href="/statistics">Statistics</a>
             </li>
         </ul>

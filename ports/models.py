@@ -62,10 +62,10 @@ class Builder(models.Model):
 class BuildHistory(models.Model):
     builder_name = models.ForeignKey(Builder, on_delete=models.CASCADE, db_index=True)
     build_id = models.IntegerField()
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, db_index=True)
     port_name = models.CharField(max_length=50,db_index=True)
-    time_start = models.CharField(max_length=50)
-    time_elapsed = models.CharField(max_length=50)
+    time_start = models.DateTimeField(db_index=True)
+    time_elapsed = models.TimeField(null=True)
     build_url = models.URLField(default='')
     watcher_id = models.IntegerField()
     watcher_url = models.URLField()

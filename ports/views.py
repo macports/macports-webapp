@@ -11,6 +11,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant
 from parsing_scripts import update
+from .filters import BuildHistoryFilter
 
 
 def index(request):
@@ -58,6 +59,7 @@ def letterlist(request, letter):
                       'portscount': portscount
                   })
 
+
 def variantlist(request, variant):
     all_objects = Variant.objects.filter(variant=variant)
     all_objects_count = all_objects.count()
@@ -98,32 +100,36 @@ def portdetail(request, name):
 
 
 def all_builds_view(request):
-    filter_applied = False
-    if request.method == 'POST':
-        if request.POST['status-filter']:
-            filter_by = request.POST['status-filter']
-            if filter_by == "All Builds":
-                all_builds = BuildHistory.objects.all().order_by('-time_start')
-            else:
-                all_builds = BuildHistory.objects.filter(status=filter_by).order_by('-time_start')
-                filter_applied = filter_by
-        else:
-            return HttpResponse("Something went wrong")
-    else:
-        all_builds = BuildHistory.objects.all().order_by('-time_start')
-    paginated_builds = Paginator(all_builds, 100)
-    page = request.GET.get('page', 1)
-    try:
-        builds = paginated_builds.get_page(page)
-    except PageNotAnInteger:
-        builds = paginated_builds.get_page(1)
-    except EmptyPage:
-        builds = paginated_builds.get_page(paginated_builds.num_pages)
+    builders = Builder.objects.all().values_list('name', flat=True)
 
     return render(request, 'ports/all_builds.html', {
-        'all_builds': builds,
-        'filter_applied': filter_applied,
+        'builders': builders,
     })
+
+
+def all_builds_filter(request):
+    if request.method == 'POST':
+        builder = request.POST['builder_name__name']
+        status = request.POST['status']
+        page = request.POST['page']
+
+        builds = BuildHistoryFilter(request.POST, queryset=BuildHistory.objects.all().order_by('-time_start')).qs
+
+        paginated_builds = Paginator(builds, 100)
+        try:
+            result = paginated_builds.get_page(page)
+        except PageNotAnInteger:
+            result = paginated_builds.get_page(1)
+        except EmptyPage:
+            result = paginated_builds.get_page(paginated_builds.num_pages)
+
+        return render(request, 'ports/builds_filtered_table.html', {
+            'builds': result,
+            'builder': builder,
+            'status': status
+        })
+    else:
+        return HttpResponse("Method not allowed")
 
 
 def stats(request):
