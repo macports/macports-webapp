@@ -11,7 +11,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant
 from parsing_scripts import update
-from .filters import BuildHistoryFilter
+from .filters import BuildHistoryFilter, PortFilterByMultiple
 
 
 def index(request):
@@ -206,16 +206,13 @@ def search(request):
     if request.method == 'POST':
         search_text = request.POST['search_text']
         search_by = request.POST['search_by']
-        if search_by == "search-by-port-name":
-            results = Port.objects.filter(name__icontains=search_text)[:50]
-        elif search_by == "search-by-description":
-            results = Port.objects.filter(description__search=search_text)[:50]
+        results = PortFilterByMultiple(request.POST, queryset=Port.objects.all()).qs[:50]
 
-    return render(request, 'ports/search.html', {
-        'results': results,
-        'search_text': search_text,
-        'search_by': search_by
-    })
+        return render(request, 'ports/search.html', {
+            'results': results,
+            'search_text': search_text,
+            'search_by': search_by
+        })
 
 
 # Respond to ajax call for loading tickets
@@ -240,43 +237,33 @@ def tickets(request):
 
 
 # Respond to ajax calls for searching within a category
-def category_filter(request):
+def search_ports_in_category(request):
     if request.method == 'POST':
-        if request.POST['content'] == "Category":
-            query = request.POST['query']
-            search_in = request.POST['search_in']
+        query = request.POST['name']
+        search_in = request.POST['categories__name']
 
-            filtered_ports = Port.objects.filter(categories__name=search_in, name__icontains=query)
-            return render(request, 'ports/filtered_table.html', {
-                'ports': filtered_ports,
-                'search_in': search_in,
-                'query': query,
-                'content': "Category"
+        filtered_ports = PortFilterByMultiple(request.POST, queryset=Port.objects.all()).qs[:50]
+        return render(request, 'ports/filtered_table.html', {
+            'ports': filtered_ports,
+            'query': query,
+            'search_in': search_in,
+            'content': "Category"
             })
 
-        elif request.POST['content'] == "Maintainer":
-            query = request.POST['query']
-            search_in = request.POST['search_in']
 
-            filtered_ports = Port.objects.filter(maintainers__name=search_in, name__icontains=query)
-            return render(request, 'ports/filtered_table.html', {
-                'ports': filtered_ports,
-                'search_in': search_in,
-                'query': query,
-                'content': "Maintainer",
-            })
+# Respond to ajax calls for searching within a maintainer
+def search_ports_in_maintainer(request):
+    if request.method == 'POST':
+        query = request.POST['name']
+        search_in = request.POST['maintainers__name']
 
-        elif request.POST['content'] == "Variant":
-            query = request.POST['query']
-            search_in = request.POST['search_in']
-
-            filtered_ports = Port.objects.filter(ports__variant__in=search_in)
-            return render(request, 'ports/filtered_table.html', {
-                'ports': filtered_ports,
-                'search_in': search_in,
-                'query': query,
-                'content': "Maintainer",
-            })
+        filtered_ports = PortFilterByMultiple(request.POST, queryset=Port.objects.all()).qs[:50]
+        return render(request, 'ports/filtered_table.html', {
+            'ports': filtered_ports,
+            'query': query,
+            'search_in': search_in,
+            'content': "Maintainer"
+        })
 
 
 # Accept submissions from mpstats and update the users table
