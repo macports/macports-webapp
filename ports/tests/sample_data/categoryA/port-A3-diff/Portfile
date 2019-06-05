@@ -5,13 +5,13 @@ PortGroup           github 1.0
 PortGroup           xcode 1.0
 version             1.0.0
 
-name                port-A3
+name                port-A3-diff
 categories          categoryA
 platforms           darwin
 maintainers         @user
 license             MIT
 
-description         This is port A3 of categoryA
+description         This is port-A3-diff of categoryA
 long_description    Just a test port written to test something.
 
 homepage            http://portA1.website/

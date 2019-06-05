@@ -11,7 +11,7 @@ platforms           darwin
 maintainers         {email.com:user2 @user}
 license             MIT
 
-description         This is port A4 of category A
+description         This is port A4 of categoryA
 long_description    Just a test port written to test something.
 
 homepage            http://portA1.website/
