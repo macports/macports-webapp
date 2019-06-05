@@ -11,7 +11,7 @@ platforms           darwin
 maintainers         {email.com:user @user2}
 license             MIT
 
-description         This is port A1 of category A
+description         This is port A1 of categoryA
 long_description    Just a test port written to test something.
 
 depends_run         port:port-A1 port:port-A4

@@ -2,12 +2,12 @@
     "variants"         : ["universal"],
     "portdir"          : "categoryA\/port-A1",
     "depends_fetch"    : ["bin:port-A4:port-A4"],
-    "description"      : "This is port A1 of category A",
+    "description"      : "This is port A1 of categoryA",
     "homepage"         : "http:\/\/portA1.website\/",
     "epoch"            : "0",
     "platforms"        : "darwin",
     "name"             : "port-A1",
-    "depends_lib"      : ["lib:pq:port-A2","port:port-A3"],
+    "depends_lib"      : ["lib:pq:port-A2","port:port-A3-diff"],
     "closedmaintainer" : true,
     "long_description" : "Just a test port written to test something.",
     "license"          : "MIT",
@@ -18,7 +18,7 @@
         },
         "github" : "user"
     }],
-    "categories"       : ["category","A"],
+    "categories"       : ["categoryA"],
     "version"          : "1.0.0",
     "revision"         : "0"
 },{
@@ -43,12 +43,12 @@
     "revision"         : "0"
 },{
     "variants"         : ["universal"],
-    "portdir"          : "categoryA\/port-A3",
-    "description"      : "This is port A3 of categoryA",
+    "portdir"          : "categoryA\/port-A3-diff",
+    "description"      : "This is port-A3-diff of categoryA",
     "homepage"         : "http:\/\/portA1.website\/",
     "epoch"            : "0",
     "platforms"        : "darwin",
-    "name"             : "port-A3",
+    "name"             : "port-A3-diff",
     "closedmaintainer" : true,
     "license"          : "MIT",
     "maintainers"      : [{
@@ -62,7 +62,7 @@
     "variants"         : ["universal"],
     "portdir"          : "categoryA\/port-A4",
     "depends_fetch"    : ["bin:port-C1:port-C1"],
-    "description"      : "This is port A4 of category A",
+    "description"      : "This is port A4 of categoryA",
     "homepage"         : "http:\/\/portA1.website\/",
     "epoch"            : "0",
     "platforms"        : "darwin",
@@ -83,7 +83,7 @@
 },{
     "variants"         : ["universal"],
     "portdir"          : "categoryA\/port-A5",
-    "description"      : "This is port A1 of category A",
+    "description"      : "This is port A1 of categoryA",
     "depends_run"      : ["port:port-A1","port:port-A4"],
     "epoch"            : "0",
     "platforms"        : "darwin",

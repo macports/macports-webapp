@@ -52,4 +52,4 @@ class TestMaintainers(TestCase):
         port = Port.objects.get(name="port-A1")
         self.assertEquals(port.maintainers.count(), 2)
         self.assertEquals(Maintainer.objects.all().count(), 7)
-        self.assertEquals(Port.objects.get(name="port-A3").maintainers.count(), 1)
+        self.assertEquals(Port.objects.get(name="port-A3-diff").maintainers.count(), 1)
