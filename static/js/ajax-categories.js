@@ -1,15 +1,14 @@
 $(function () {
-    $('#category_filter').keyup(function () {
-        if ($('#category_filter').val()) {
+    $('#filter').keyup(function () {
+        if ($('#filter').val()) {
             $('#filtered_table').show();
             $('#all_ports_table').hide();
             $.ajax({
                 type: 'POST',
-                url: '/ports/filter/',
+                url: '/ports/filter/category/',
                 data: {
-                    'query': $('#category_filter').val(),
-                    'search_in': $('#search_in').text(),
-                    'content': $('#filter-content').text(),
+                    'name': $('#filter').val(),
+                    'categories__name': $('#categories__name').text(),
                     'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
                 },
                 success: searchSuccess,

@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block head_scripts %}
-    <script src="{% static 'js/ajax-filter.js' %}"></script>
+    <script src="{% static 'js/ajax-maintainers.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -15,7 +15,7 @@
         </div>
     {% endif %}
     <br>
-    <h3>{{ maintainer }}</h3>
+    <h3 id="maintainers__name">{{ maintainer }}</h3>
     {% if maintainers.count > 1 %}
         Found {{ maintainers.count }} entries for that {% if github is True %}GitHub Handle{% else %}Email{% endif %}
     {% endif %}
@@ -46,10 +46,8 @@
     </div>
     <br>
     {% csrf_token %}
-    <input type="text" class="form-control" id="category_filter" name="category_filter"
-           placeholder="Search Ports by '{{ maintainer.name }}'">
-    <span style="display: none" id="search_in">{{ maintainer.name }}</span>
-    <span style="display: none;" id="filter-content">Maintainer</span>
+    <input type="text" class="form-control" id="filter" name="filter"
+           placeholder="Search Ports by '{{ maintainer }}'">
     <br>
     <div id="all_ports_table">
         <h3>Total {{ all_ports_num }} Ports Maintained By : <em>{{ maintainer }}</em></h3>

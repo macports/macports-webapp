@@ -2,19 +2,17 @@
 {% load staticfiles %}
 
 {% block head_scripts %}
-    <script src="{% static 'js/ajax-filter.js' %}"></script>
+    <script src="{% static 'js/ajax-categories.js' %}"></script>
 {% endblock %}
 
 {% block content %}
     <br>
     {% csrf_token %}
-    <input type="text" class="form-control" id="category_filter" name="category_filter"
+    <input type="text" class="form-control" id="filter" name="filter"
            placeholder="Search Ports in category '{{ category }}'">
-    <span style="display: none" id="search_in">{{ category }}</span>
-    <span style="display: none;" id="filter-content">Category</span>
     <br>
     <div id="all_ports_table">
-        <h5>Total {{ portscount }} Port(s) in Category: {{ category }}</h5>
+        <h5>Total {{ portscount }} Port(s) in Category: <span id="categories__name">{{ category }}</span></h5>
         {% if ports.has_other_pages %}
             Page {{ ports.number }} of {{ ports.paginator.num_pages }} | Showing ports {{ ports.start_index }} to
             {{ ports.end_index }}<br><br>
