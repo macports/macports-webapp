@@ -24,9 +24,9 @@ DATABASES = {
  ```
  
 ## Populate Initial Data in the Database
- - Put the file `portindex.json` in the root of the project. To generate this file, you need to run `portindex2json.tcl`.
- - Run `python manage.py load` to populate the Ports, Categories and Maintainers tables.
- - Run `python manage.py load-dependencies` to load the Dependencies table. This command should be ran only after the ports table has been completely populated from the `portindex.json` file.
+ - Put the file `portindex.json` or `<filename>` in the root of the project. To generate this file, you need to run `portindex2json.tcl`.
+ - Run `python manage.py load <filename>` to populate the Ports, Categories and Maintainers tables. If you do not supply `<filename>`, the default `portindex.json` will be used.
+ - Run `python manage.py load-dependencies <filename>` to load the Dependencies table. This command should be ran only after the ports table has been completely populated from the `load` (previous) command.
  - Run `python manage.py fetch-build-history` to fetch few recent builds from the buildbot.
 
 ## Start the Server
@@ -37,3 +37,9 @@ python manage.py collectstatic
 ```
 python manage.py runserver
 ```
+
+## Updating the Database
+- Put the new json file in the root of the project.
+- Run `python manage.py update <filename>` to update the database.
+
+If you do not supply `<filename>` then the default `portindex.json` will be used. This command supports both differential and full updates, depending upon the nature of the JSON file provided to it.
