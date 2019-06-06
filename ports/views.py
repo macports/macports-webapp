@@ -111,6 +111,7 @@ def all_builds_filter(request):
     if request.method == 'POST':
         builder = request.POST['builder_name__name']
         status = request.POST['status']
+        port_name = request.POST['port_name']
         page = request.POST['page']
 
         builds = BuildHistoryFilter(request.POST, queryset=BuildHistory.objects.all().order_by('-time_start')).qs
@@ -126,7 +127,8 @@ def all_builds_filter(request):
         return render(request, 'ports/builds_filtered_table.html', {
             'builds': result,
             'builder': builder,
-            'status': status
+            'status': status,
+            'port_name': port_name,
         })
     else:
         return HttpResponse("Method not allowed")

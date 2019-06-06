@@ -4,6 +4,8 @@ from .models import BuildHistory, Port
 
 
 class BuildHistoryFilter(django_filters.FilterSet):
+    port_name = django_filters.CharFilter(lookup_expr='icontains')
+
     class Meta:
         model = BuildHistory
         fields = ['builder_name__name', 'status']

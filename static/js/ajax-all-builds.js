@@ -5,6 +5,7 @@ function runAjax(page) {
             data: {
                 'builder_name__name': $('#builder-filter').val(),
                 'status': $('#status-filter').val(),
+                'port_name': $('#name-filter').val(),
                 'page': page,
                 'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
             },
@@ -24,6 +25,12 @@ $(function () {
 
 $(function () {
     $('.filter').ready(function () {
+        runAjax(1)
+    });
+});
+
+$(function () {
+    $('#name-filter').keyup(function () {
         runAjax(1)
     });
 });
