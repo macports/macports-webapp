@@ -1,4 +1,4 @@
-<h4 class="text-secondary">Showing {% if status == "" %} <ins>All Builds</ins> {% else %}builds with status: <ins>{{ status }}</ins>{% endif %} on <ins>{% if builder == "" %}All Builders {% else %}{{ builder }}{% endif %}</ins></h4>
+<h4 class="text-secondary">Showing {% if port_name != '' %}results for <i>"{{ port_name }}"</i> in {% endif %}{% if status == "" %} <ins>All Builds</ins> {% else %}builds with status: <ins>{{ status }}</ins>{% endif %} on <ins>{% if builder == "" %}All Builders {% else %}{{ builder }}{% endif %}</ins></h4>
 
 {% if builds.has_other_pages %}
             Page {{ builds.number }} of {{ builds.paginator.num_pages }} | Showing builds {{ builds.start_index }} to

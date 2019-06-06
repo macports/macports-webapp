@@ -11,28 +11,31 @@
 {% block content %}
     <br>
     <h4>Builds</h4>
-            {% csrf_token %}
-        <div class="row">
-            <div class="col-lg-4">
-                    <label for="status-filter">Filter based on Status: </label>
-                    <select class="form-control ml-2 filter" id="status-filter" name="status-filter">
-                        <option value="" >All</option>
-                        <option value="build successful">build successful</option>
-                        <option value="failed install-port">failed install-port</option>
-                        <option value="failed install-dependencies">failed install-dependencies</option>
-                    </select>
-                </div>
-            <div class="col-lg-4">
-                    <label for="builder-filter">Filter based on builder: </label>
-                    <select class="form-control ml-2 filter" id="builder-filter" name="builder-filter">
-                        <option value="">All</option>
-                        {% for builder in builders %}
-                        <option value="{{ builder }}">{{ builder }}</option>
-                        {% endfor %}
-                    </select>
-            </div>
+    {% csrf_token %}
+    <input type="text" class="form-control" id="name-filter" name="name-filter"
+           placeholder="Filter by port name">
+    <br>
+    <div class="row">
+        <div class="col-lg-4">
+            <label for="status-filter">Filter based on Status: </label>
+            <select class="form-control ml-2 filter" id="status-filter" name="status-filter">
+                <option value="">All</option>
+                <option value="build successful">build successful</option>
+                <option value="failed install-port">failed install-port</option>
+                <option value="failed install-dependencies">failed install-dependencies</option>
+            </select>
         </div>
-        <br>
+        <div class="col-lg-4">
+            <label for="builder-filter">Filter based on builder: </label>
+            <select class="form-control ml-2 filter" id="builder-filter" name="builder-filter">
+                <option value="">All</option>
+                {% for builder in builders %}
+                    <option value="{{ builder }}">{{ builder }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <br>
     <div id="all_builds_table">
     </div>
 
