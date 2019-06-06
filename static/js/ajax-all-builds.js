@@ -1,7 +1,7 @@
 function runAjax(page) {
     $.ajax({
             type: 'POST',
-            url: '/all_builds/filter/',
+            url: '/ports/all_builds/filter/',
             data: {
                 'builder_name__name': $('#builder-filter').val(),
                 'status': $('#status-filter').val(),

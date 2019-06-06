@@ -19,15 +19,22 @@ from django.conf.urls import url
 from ports import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.index, name='Home'),
+    path('', views.index, name='home'),
     path('statistics/submit/', views.stats_submit, name='stats_submit'),
     path('statistics/', views.stats, name='stats_home'),
     url(r'^statistics/port/(?P<name>[-a-zA-Z0-9_.]+)/$', views.stats_portdetail, name='stats_portdetail'),
     url(r'^maintainer/github/(?P<github_handle>[-a-zA-Z0-9_.]+)/$', views.maintainer_detail_github, name='maintainer_detail_github'),
     url(r'^maintainer/email/(?P<name>[-a-zA-Z0-9_.]+)__(?P<domain>[-a-zA-Z0-9_.]+)/$', views.maintainer_detail_email, name='maintainer_detail_email'),
-    path('ports/', include('ports.urls'), name='Ports-Index'),
-    path('all_builds/filter/', views.all_builds_filter),
-    path('all_builds/', views.all_builds_view, name='all_builds'),
+    path('port/', include('ports.urls'), name='port-index'),
+    path('ports/', views.index, name='ports-index'),
+    path('ports/search/', views.search, name='ports_search'),
+    path('ports/filter/maintainer/', views.search_ports_in_maintainer, name='search_ports_in_maintainer'),
+    path('ports/filter/category/', views.search_ports_in_category, name='search_ports_in_category'),
+    path('ports/load_tickets/', views.tickets, name='trac_tickets'),
+    path('ports/category/<slug:cat>', views.categorylist, name='category_list'),
+    path('ports/variant/<slug:variant>', views.variantlist, name='variant_list'),
+    path('ports/sort-by-letter/<slug:letter>', views.letterlist, name='letter_list'),
+    path('ports/all_builds/filter/', views.all_builds_filter),
+    path('ports/all_builds/', views.all_builds_view, name='all_builds'),
     path('update/', views.update_api, name='update_api')
 ]
