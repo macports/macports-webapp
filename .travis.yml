@@ -1,0 +1,38 @@
+language: python
+python:
+  - "3.6"
+  - "3.7"
+dist: xenial
+# setup environment
+env:
+  matrix:
+    - DJANGO_VERSION=2.1.7
+    - DJANGO_VERSION=2.2
+  global:
+    - DJANGO_SETTINGS_MODULE='MacPorts.settings'
+    - DB_HOST=localhost
+    - DB_PASSWORD=
+    - DB_NAME=mp
+    - DB_USER=postgres
+    - SECRET_KEY=thISkEyisUsedForTravis
+# install dependencies
+install:
+  - pip install -r requirements.txt
+
+# run test scripts
+script:
+  - python manage.py makemigrations
+  - python manage.py migrate
+  - python manage.py collectstatic
+  - python manage.py test
+  - coverage run --source=. manage.py test ports
+  - coverage report
+
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database mp;' -U postgres
+
+addons:
+  postgresql: "10"
