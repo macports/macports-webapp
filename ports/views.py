@@ -215,6 +215,8 @@ def search(request):
             'search_text': search_text,
             'search_by': search_by
         })
+    else:
+        return HttpResponse("Method not allowed")
 
 
 # Respond to ajax call for loading tickets
@@ -236,6 +238,8 @@ def tickets(request):
             'portname': port_name,
             'tickets': all_tickets,
         })
+    else:
+        return HttpResponse("Method not allowed")
 
 
 # Respond to ajax calls for searching within a category
@@ -251,6 +255,8 @@ def search_ports_in_category(request):
             'search_in': search_in,
             'content': "Category"
             })
+    else:
+        return HttpResponse("Method not allowed")
 
 
 # Respond to ajax calls for searching within a maintainer
@@ -266,6 +272,8 @@ def search_ports_in_maintainer(request):
             'search_in': search_in,
             'content': "Maintainer"
         })
+    else:
+        return HttpResponse("Method not allowed")
 
 
 # Accept submissions from mpstats and update the users table
@@ -308,6 +316,5 @@ def update_api(request):
 
         else:
             return HttpResponse("Authentication failed. Invalid Key")
-
     else:
         return HttpResponse('Method not allowed')
