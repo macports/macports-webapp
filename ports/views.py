@@ -1,16 +1,16 @@
 import os
-import requests
 import json
 import datetime
 
+import requests
 from bs4 import BeautifulSoup
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant
 from parsing_scripts import update
+from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant
 from .filters import BuildHistoryFilter, PortFilterByMultiple
 
 
@@ -80,10 +80,10 @@ def variantlist(request, variant):
 
 def portdetail(request, name):
     port = Port.objects.get(name=name)
-    id = port.id
+    port_id = port.id
     maintainers = Maintainer.objects.filter(ports__name=name)
-    dependencies = Dependency.objects.filter(port_name_id=id)
-    variants = Variant.objects.filter(port_id=id)
+    dependencies = Dependency.objects.filter(port_name_id=port_id)
+    variants = Variant.objects.filter(port_id=port_id)
 
     builders = Builder.objects.values_list('name', flat=True)
     build_history = {}
@@ -222,8 +222,8 @@ def tickets(request):
     if request.method == 'POST':
         port_name = request.POST['portname']
         URL = "https://trac.macports.org/query?status=!closed&port=~{}".format(port_name)
-        r = requests.get(URL)
-        Soup = BeautifulSoup(r.content, 'html5lib')
+        response = requests.get(URL)
+        Soup = BeautifulSoup(response.content, 'html5lib')
         all_tickets = []
         for row in Soup.findAll('tr', attrs={'class': 'prio2'}):
             srow = row.find('td', attrs={'class': 'summary'})
