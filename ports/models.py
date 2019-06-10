@@ -80,3 +80,16 @@ class User(models.Model):
     os_arch = models.CharField(max_length=10)
     full_json = JSONField()
     updated_at = models.DateTimeField(auto_now=True)
+
+    def get_year(self):
+        return self.updated_at.year
+
+    def get_month(self):
+        return self.updated_at.month
+
+
+class OSDistribution(models.Model):
+    osx_version = models.CharField(max_length=20, db_index=True)
+    month = models.IntegerField(db_index=True)
+    year = models.IntegerField(db_index=True)
+    users = models.ManyToManyField(User, related_name='users')

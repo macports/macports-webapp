@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from parsing_scripts import update
-from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant
+from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant, OSDistribution
 from .filters import BuildHistoryFilter, PortFilterByMultiple
 
 
@@ -140,11 +140,17 @@ def stats(request):
     total_unique_users = all_submissions.distinct('uuid').count()
     current_week_unique = all_submissions.filter(updated_at__week=current_week).distinct('uuid').count()
     last_week_unique = all_submissions.filter(updated_at__week=current_week-1).distinct('uuid').count()
+
+    os_dict = {}
+    for os_obj in OSDistribution.objects.filter(month=datetime.datetime.now().month, year=datetime.datetime.now().year):
+        os_dict[os_obj.osx_version] = os_obj.users.distinct('uuid').count()
+
     return render(request, 'ports/stats.html', {
         'total_submissions': all_submissions.count(),
         'unique_users': total_unique_users,
         'current_week': current_week_unique,
-        'last_week': last_week_unique
+        'last_week': last_week_unique,
+        'os_dict': os_dict
     })
 
 
@@ -277,6 +283,19 @@ def search_ports_in_maintainer(request):
 
 
 # Accept submissions from mpstats and update the users table
+def populate_os_table(user_obj):
+    os = user_obj.osx_version
+    month = user_obj.updated_at.month
+    year = user_obj.updated_at.year
+    os_obj, created = OSDistribution.objects.get_or_create(
+        osx_version=os,
+        month=month,
+        year=year,
+    )
+    os_obj.users.add(user_obj)
+    return
+
+
 @csrf_exempt
 def stats_submit(request):
     if request.method == "POST":
@@ -291,6 +310,7 @@ def stats_submit(request):
             user.xcode_version = received_json['os']['xcode_version']
             user.full_json = received_json
             user.save()
+            populate_os_table(user)
 
             return HttpResponse("Success")
 

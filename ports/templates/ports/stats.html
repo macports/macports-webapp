@@ -1,5 +1,44 @@
 {% extends 'ports/layout.html' %}
 
+{% block head_scripts %}
+<!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'OSX Version');
+        data.addColumn('number', 'Users');
+        data.addRows([
+            {% for version, users in os_dict.items %}
+          ['{{ version }}', {{ users }}],
+            {% endfor %}
+        ]);
+
+        // Set chart options
+        var options = {'title':'OS Distribution',
+                       'width':500,
+                       'height':400};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+
+{% endblock %}
+
 {% block content %}
     <br><br>
     <table class="table">
@@ -15,17 +54,31 @@
       <td>{{ total_submissions }}</td>
     </tr>
     <tr>
-      <th scope="row">Total number of users (ever submitted):</th>
+      <th scope="row">Total number of unique users (ever submitted):</th>
       <td>{{ unique_users }}</td>
     </tr>
     <tr>
-      <th scope="row">Number of users who submitted stats last week:</th>
+      <th scope="row">Number of unique users who submitted stats last week:</th>
       <td>{{ last_week }}</td>
     </tr>
     <tr>
-      <th scope="row">Number of users who submitted stats this week:</th>
+      <th scope="row">Number of unique users who submitted stats this week:</th>
       <td>{{ current_week }}</td>
     </tr>
   </tbody>
 </table>
+    <br>
+    <hr>
+<div class="row">
+    <div class="col-lg-6 text-center">
+        <div id="chart_div"></div>
+    </div>
+    <div class="col-lg-6 text-center">
+        <br>
+        <h5>What does this chart show?</h5>
+        <p>This chart shows the distribution of <b>OSX Version</b> vs the <b>number of unique users</b> for the month
+            ongoing month.
+        </p>
+    </div>
+</div>
 {% endblock %}

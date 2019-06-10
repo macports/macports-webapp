@@ -109,7 +109,7 @@ def fetch():
         if build_number_loaded:
             build_in_database = build_number_loaded[0].build_id + 1
         else:
-            build_in_database = last_build_number - 200
+            build_in_database = last_build_number - 9999
 
         # lets start with the latest four builds
 
