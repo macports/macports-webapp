@@ -58,9 +58,7 @@ def return_summary(builder_name, build_number, build_data):
     port_name = properties['portname']
     status = ' '.join(build_data['text'])
     time_start = build_data['times'][0]
-    time_build = -1
-    if status == 'build successful':
-        time_build = float(build_data['times'][1]) - float(build_data['times'][0])
+    time_build = float(build_data['times'][1]) - float(build_data['times'][0])
 
     data['name'] = port_name
     data['url'] = get_url_build(builder_name, build_number)
