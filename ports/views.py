@@ -78,18 +78,28 @@ def variantlist(request, variant):
     })
 
 
+# Views for port-detail page START
 def portdetail(request, name):
     port = Port.objects.get(name=name)
+    return render(request, 'ports/portdetail.html', {
+        'port': port,
+    })
+
+
+def portdetail_summary(request):
+    portname = request.GET['portname']
+    port = Port.objects.get(name=portname)
     port_id = port.id
-    maintainers = Maintainer.objects.filter(ports__name=name)
+    maintainers = Maintainer.objects.filter(ports__name=portname)
     dependencies = Dependency.objects.filter(port_name_id=port_id)
     variants = Variant.objects.filter(port_id=port_id)
 
     builders = Builder.objects.values_list('name', flat=True)
     build_history = {}
     for builder in builders:
-        build_history[builder] = BuildHistory.objects.filter(builder_name__name=builder, port_name=name).order_by('-time_start')
-    return render(request, 'ports/portdetail.html', {
+        build_history[builder] = BuildHistory.objects.filter(builder_name__name=builder, port_name=portname).order_by(
+            '-time_start')
+    return render(request, 'ports/port-detail/summary.html', {
         'port': port,
         'build_history': build_history,
         'maintainers': maintainers,
@@ -97,6 +107,14 @@ def portdetail(request, name):
         'variants': variants,
         'builders_list': builders,
     })
+
+
+def portdetail_build_information(request):
+    return HttpResponse("To Be Added Soon")
+
+
+def portdetail_stats(request):
+    return HttpResponse("To Be Added Soon")
 
 
 def all_builds_view(request):

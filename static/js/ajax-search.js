@@ -1,4 +1,4 @@
-function ajaxCall() {
+function ajaxCallSearch() {
     var data = {};
     data[$("input[name=search_by]:checked").val()] = $('#search').val();
     data['csrfmiddlewaretoken'] = $("input[name=csrfmiddlewaretoken]").val();
@@ -26,7 +26,7 @@ function ajaxCall() {
 
 $(function () {
     $('#search').keyup(function () {
-        ajaxCall()
+        ajaxCallSearch()
     });
 });
 
