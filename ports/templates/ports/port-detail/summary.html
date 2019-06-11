@@ -89,7 +89,7 @@
                 <div class="p-2">
                     <h6>{% for builder, latest_build in latest_builds.items %}
                         {% if latest_build %}
-                                <a target="_blank" href="{{ latest_build.build_url }}"><span class="badge {% if latest_build.status == "build successful" %}
+                                <a target="_blank" href="https://build.macports.org/builders/ports-{{ builder }}-builder/builds/{{ latest_build.build_id }}""><span class="badge {% if latest_build.status == "build successful" %}
                                                         badge-success
                                                     {% else %}
                                                         badge-danger

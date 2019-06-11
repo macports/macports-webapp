@@ -1,5 +1,4 @@
 {% csrf_token %}
-{% if builds.count > 0 %}
 <div class="row">
     <div class="col-lg-4">
         <label for="status-filter">Filter based on Status: </label>
@@ -22,6 +21,7 @@
     </div>
 </div>
 <br><br>
+{% if builds|length > 0 %}
 <h4 class="text-secondary">Showing {% if status == "" %} <ins>All Builds</ins> {% else %}builds with status: <ins>{{ status }}</ins>{% endif %} on <ins>{% if builder == "" %}All Builders {% else %}{{ builder }}{% endif %}</ins></h4>
 
 {% if builds.has_other_pages %}
@@ -77,17 +77,17 @@
     {% for build in builds %}
         <tr>
             <td>{{ build.builder_name.name }}</td>
-            <td><a target="_blank" href="{{ build.build_url }}">{{ build.build_id }}</a></td>
-            <td>{{ build.time_start }} </td>
+            <td><a target="_blank" href="https://build.macports.org/builders/ports-{{ build.builder_name.name }}-builder/builds/{{ build.build_id }}">{{ build.build_id }}</a></td>
+            <td>{{ build.time_start|date:"Y-m-d" }}  {{ build.time_start|time:"G:i:s" }} </td>
             <td>{{ build.time_elapsed|time:"H:i:s" }}</td>
-            <td><a target="_blank" href="{{ build.watcher_url }}">{{ build.watcher_id }}</a></td>
+            <td><a target="_blank" href="https://build.macports.org/builders/ports-{{ build.builder_name.name }}-watcher/builds/{{ build.watcher_id }}">{{ build.watcher_id }}</a></td>
             <td class="{% if build.status == 'build successful' %}text-success {% else %} text-danger {% endif %}">{{ build.status }}</td>
         </tr>
     {% endfor %}
 </table>
 {% else %}
 <div class="text-center container" style="max-width: 700px;">
-    <h5>No build history is available with us right now.</h5>
+    <h5>No build history is available for that selection right now.</h5>
     <p>This does not mean that there is anything wrong with builds. It is just that the app does not have
         any records in its database. It may be caused by a failure to fetch the history in time.</p>
 </div>
