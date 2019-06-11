@@ -39,10 +39,9 @@ function ajaxCall(url) {
         });
 }
 
-function tabClick(e) {
+function tabClick(e, slug) {
     $('.active').removeClass("active");
     $(e).addClass("active");
-    var slug = $(e).attr('id');
     ajaxCall("/port/ajax-call/" + slug)
 }
 

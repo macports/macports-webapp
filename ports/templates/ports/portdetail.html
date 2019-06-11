@@ -17,20 +17,20 @@
             <input type="text" class="form-control" id="search" name="search" placeholder="Search All Ports">
         </div>
     </form>
-    <span style="display: none" id="port_name">{{ port.name }}</span>
+    <span style="display: none" id="port_name">{{ port }}</span>
     <br>
     <div id="main-content">
 
     <!-- Tabs Start -->
         <ul class="nav nav-tabs" id="tabs">
             <li class="nav-item">
-                <a href="javascript:void(0);" id="summary" class="nav-link active" onclick="tabClick(this)">Summary</a>
+                <a href="javascript:void(0);" class="nav-link active" onclick="tabClick(this, 'summary')">Summary</a>
             </li>
             <li class="nav-item">
-                <a href="javascript:void(0);" id="builds" class="nav-link" onclick="tabClick(this)">Build Information</a>
+                <a href="javascript:void(0);" class="nav-link" onclick="tabClick(this, 'builds')">Build Information</a>
             </li>
             <li class="nav-item">
-                <a href="javascript:void(0);" id="stats" class="nav-link" onclick="tabClick(this)">Installation Stats</a>
+                <a href="javascript:void(0);" class="nav-link" onclick="tabClick(this, 'stats')">Installation Stats</a>
             </li>
         </ul>
         <br>
@@ -40,11 +40,7 @@
             <img src="{% static 'images/giphy.gif' %}">
         </div>
         <br>
-        <div class="border-secondary border rounded container p-2" style="background-color: floralwhite">
-            <h5>Open Tickets for {{ port.name }} from trac.macports.org</h5>
-        <div id="trac_tickets"></div>
         </div>
-    </div>
     <div id="filtered_table">
     </div>
 

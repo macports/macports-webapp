@@ -80,33 +80,36 @@ def variantlist(request, variant):
 
 # Views for port-detail page START
 def portdetail(request, name):
-    port = Port.objects.get(name=name)
+    port = name
     return render(request, 'ports/portdetail.html', {
         'port': port,
     })
 
 
 def portdetail_summary(request):
-    portname = request.GET['portname']
-    port = Port.objects.get(name=portname)
-    port_id = port.id
-    maintainers = Maintainer.objects.filter(ports__name=portname)
-    dependencies = Dependency.objects.filter(port_name_id=port_id)
-    variants = Variant.objects.filter(port_id=port_id)
+    try:
+        portname = request.GET['portname']
+        port = Port.objects.get(name=portname)
+        port_id = port.id
+        maintainers = Maintainer.objects.filter(ports__name=portname)
+        dependencies = Dependency.objects.filter(port_name_id=port_id)
+        variants = Variant.objects.filter(port_id=port_id)
 
-    builders = Builder.objects.values_list('name', flat=True)
-    build_history = {}
-    for builder in builders:
-        build_history[builder] = BuildHistory.objects.filter(builder_name__name=builder, port_name=portname).order_by(
-            '-time_start')
-    return render(request, 'ports/port-detail/summary.html', {
-        'port': port,
-        'build_history': build_history,
-        'maintainers': maintainers,
-        'dependencies': dependencies,
-        'variants': variants,
-        'builders_list': builders,
-    })
+        builders = Builder.objects.values_list('name', flat=True)
+        latest_builds = {}
+        for builder in builders:
+            latest_builds[builder] = BuildHistory.objects.filter(builder_name__name=builder, port_name=portname).order_by(
+                '-time_start').first()
+        return render(request, 'ports/port-detail/summary.html', {
+            'port': port,
+            'latest_builds': latest_builds,
+            'maintainers': maintainers,
+            'dependencies': dependencies,
+            'variants': variants,
+            'builders_list': builders,
+        })
+    except Port.DoesNotExist:
+        return HttpResponse("<br><br><h3>Sorry, the port you requested was not found.</h3><br>")
 
 
 def portdetail_build_information(request):
