@@ -1,5 +1,6 @@
 function runAjax(page) {
-    $.ajax({
+    var currentBuildFilter = null;
+    currentBuildFilter = $.ajax({
             type: 'POST',
             url: '/ports/all_builds/filter/',
             data: {
@@ -11,7 +12,10 @@ function runAjax(page) {
             },
             success: filterSuccess,
             beforeSend: function () {
-                $('#all_builds_table').html("Loading...")
+                $('#all_builds_table').html("Loading...");
+                if(currentBuildFilter != null) {
+                    currentBuildFilter.abort();
+                }
             },
             dataType: 'html'
         });
