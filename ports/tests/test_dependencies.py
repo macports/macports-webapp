@@ -17,7 +17,7 @@ class TestDependencies(TestCase):
 
     def test_dependencies_fetched(self):
         client = Client()
-        response = client.get(reverse('port_detail', kwargs={'name': 'port-A1'}))
+        response = client.get(reverse('port_detail_summary'), data={'portname': 'port-A1'})
         dependencies = response.context['dependencies']
         self.assertEquals(dependencies.get(type='lib').dependencies.all().count(), 2)
         total_dependencies = []
