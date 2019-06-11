@@ -87,19 +87,19 @@
             <div class="rounded bg-light shadow-lg" style="padding: 8px">
                 <h5 class="border-bottom">Port Health</h5>
                 <div class="p-2">
-                    {% for builder, latest_build in latest_builds.items %}
+                    <h6>{% for builder, latest_build in latest_builds.items %}
                         {% if latest_build %}
-                               <h6> <span class="badge {% if latest_build.status == "build successful" %}
+                                <span class="badge {% if latest_build.status == "build successful" %}
                                                         badge-success
                                                     {% else %}
                                                         badge-danger
                                                     {% endif %}">{{ builder }}</span>
-                               </h6>
+
                         {% else %}
-                            <h6><span class="badge badge-secondary">{{ builder }}</span> </h6>
+                            <span class="badge badge-secondary">{{ builder }}</span>
 
                         {% endif %}
-                    {% endfor %}
+                    {% endfor %}</h6>
                 </div>
             </div>
         </div>
