@@ -17,7 +17,7 @@
             <input type="text" class="form-control" id="search" name="search" placeholder="Search All Ports">
         </div>
     </form>
-    <span style="display: none" id="port_name">{{ port }}</span>
+    <span style="display: none" id="port_name">{{ portname }}</span>
     <br>
     <div id="main-content">
 
@@ -50,16 +50,4 @@
 {% endblock %}
 
 {% block script %}
-    <script>
-        $("#selectos").change(function () {
-            if ($("#selectos").val() == "") {
-            }
-            var value = $(this).val().toLowerCase();
-
-            $("#build_table tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-
-        }).change();
-    </script>
 {% endblock %}

@@ -63,3 +63,37 @@ function showTickets(data, textStatus, jqXHR) {
     $('#display-box').html(data);
     $('#loading-image').hide();
 }
+
+//Build History
+function buildHistoryAjax(page) {
+    var currentRequestBuild = null;
+
+    currentRequestBuild= $.ajax({
+        type: 'GET',
+        url: '/port/ajax-call/builds/',
+        data: {
+            'builder_name__name': $('#builder-filter').val(),
+            'status': $('#status-filter').val(),
+            'portname': $('#port_name').text(),
+            'page': page,
+            'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+        },
+        success: display,
+        beforeSend: function () {
+                $('#display-box').html("");
+                $('#loading-image').show();
+                if(currentRequestBuild != null) {
+                    currentRequestBuild.abort();
+                }
+            },
+        dataType: 'html'
+    });
+}
+
+function filterBuilds() {
+    buildHistoryAjax(1);
+}
+
+function changePage(page) {
+    buildHistoryAjax(page);
+}

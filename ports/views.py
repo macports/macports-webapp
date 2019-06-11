@@ -11,7 +11,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from parsing_scripts import update
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant, OSDistribution
-from .filters import BuildHistoryFilter, PortFilterByMultiple
+from .filters import BuildHistoryFilter, PortFilterByMultiple, BuildHistoryFilterForPort
 
 
 def index(request):
@@ -80,9 +80,9 @@ def variantlist(request, variant):
 
 # Views for port-detail page START
 def portdetail(request, name):
-    port = name
+    portname = name
     return render(request, 'ports/portdetail.html', {
-        'port': port,
+        'portname': portname,
     })
 
 
@@ -95,7 +95,7 @@ def portdetail_summary(request):
         dependencies = Dependency.objects.filter(port_name_id=port_id)
         variants = Variant.objects.filter(port_id=port_id)
 
-        builders = Builder.objects.values_list('name', flat=True)
+        builders = Builder.objects.order_by('-name').values_list('name', flat=True)
         latest_builds = {}
         for builder in builders:
             latest_builds[builder] = BuildHistory.objects.filter(builder_name__name=builder, port_name=portname).order_by(
@@ -113,7 +113,30 @@ def portdetail_summary(request):
 
 
 def portdetail_build_information(request):
-    return HttpResponse("To Be Added Soon")
+    try:
+        portname = request.GET['portname']
+        port = Port.objects.get(name=portname)
+        status = request.GET.get('status', '')
+        builder = request.GET.get('builder_name__name', '')
+        page = request.GET.get('page', 1)
+        builders = Builder.objects.order_by('-name').values_list('name', flat=True)
+        builds = BuildHistoryFilterForPort(request.GET, queryset=BuildHistory.objects.filter(port_name__iexact=portname)).qs
+        paginated_builds = Paginator(builds, 100)
+        try:
+            result = paginated_builds.get_page(page)
+        except PageNotAnInteger:
+            result = paginated_builds.get_page(1)
+        except EmptyPage:
+            result = paginated_builds.get_page(paginated_builds.num_pages)
+
+        return render(request, 'ports/port-detail/build_information.html', {
+            'builds': result,
+            'builder': builder,
+            'builders': builders,
+            'status': status,
+        })
+    except Port.DoesNotExist:
+        return HttpResponse("<br><br><h3>Sorry, the port you requested was not found.</h3><br>")
 
 
 def portdetail_stats(request):
@@ -123,8 +146,11 @@ def portdetail_stats(request):
 def all_builds_view(request):
     builders = Builder.objects.all().values_list('name', flat=True)
 
+    builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().order_by('-time_start')).qs
+
     return render(request, 'ports/all_builds.html', {
         'builders': builders,
+        'builds': builds
     })
 
 
