@@ -1,5 +1,6 @@
 function ajaxCallSearch() {
     var data = {};
+    var currentSearchRequest = null;
     data[$("input[name=search_by]:checked").val()] = $('#search').val();
     data['csrfmiddlewaretoken'] = $("input[name=csrfmiddlewaretoken]").val();
     data['search_by'] = $("input[name=search_by]:checked").val();
@@ -8,13 +9,16 @@ function ajaxCallSearch() {
     if ($('#search').val()) {
             $('#filtered_table').show();
             $('#main-content').hide();
-            $.ajax({
+            currentSearchRequest = $.ajax({
                 type: 'POST',
                 url: '/ports/search/',
                 data: data,
                 success: searchSuccess,
                 beforeSend: function () {
-                    $('#filtered_table').html("Searching ...")
+                    $('#filtered_table').html("Searching ...");
+                    if(currentSearchRequest != null) {
+                        currentSearchRequest.abort();
+                    }
                 },
                 dataType: 'html'
             });
