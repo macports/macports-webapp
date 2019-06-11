@@ -54,7 +54,7 @@
     </thead>
     {% for build in builds %}
         <tr>
-            <td><a href="/ports/{{ build.port_name }}">{{ build.port_name }}</a></td>
+            <td><a href="{% url 'port_detail' build.port_name %}">{{ build.port_name }}</a></td>
             <td>{{ build.builder_name.name }}</td>
             <td><a target="_blank" href="{{ build.build_url }}">{{ build.build_id }}</a></td>
             <td>{{ build.time_start }} </td>
