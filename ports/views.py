@@ -171,7 +171,7 @@ def all_builds_filter(request):
         except EmptyPage:
             result = paginated_builds.get_page(paginated_builds.num_pages)
 
-        return render(request, 'ports/builds_filtered_table.html', {
+        return render(request, 'ports/ajax-filters/builds_filtered_table.html', {
             'builds': result,
             'builder': builder,
             'status': status,
@@ -259,13 +259,13 @@ def maintainer_detail_email(request, name, domain):
 # Respond to ajax-call triggered by the search box
 def search(request):
     if request.method == 'POST':
-        search_text = request.POST['search_text']
+        query = request.POST['search_text']
         search_by = request.POST['search_by']
-        results = PortFilterByMultiple(request.POST, queryset=Port.objects.all()).qs[:50]
+        ports = PortFilterByMultiple(request.POST, queryset=Port.objects.all()).qs[:50]
 
-        return render(request, 'ports/search.html', {
-            'results': results,
-            'search_text': search_text,
+        return render(request, 'ports/ajax-filters/filtered_table.html', {
+            'ports': ports,
+            'query': query,
             'search_by': search_by
         })
     else:
@@ -287,7 +287,7 @@ def tickets(request):
             ticket['title'] = srow.a.text
             all_tickets.append(ticket)
 
-        return render(request, 'ports/tickets.html', {
+        return render(request, 'ports/ajax-filters/tickets.html', {
             'portname': port_name,
             'tickets': all_tickets,
         })
@@ -302,7 +302,7 @@ def search_ports_in_category(request):
         search_in = request.POST['categories__name']
 
         filtered_ports = PortFilterByMultiple(request.POST, queryset=Port.objects.all()).qs[:50]
-        return render(request, 'ports/filtered_table.html', {
+        return render(request, 'ports/ajax-filters/filtered_table.html', {
             'ports': filtered_ports,
             'query': query,
             'search_in': search_in,
@@ -319,7 +319,7 @@ def search_ports_in_maintainer(request):
         search_in = request.POST['maintainers__name']
 
         filtered_ports = PortFilterByMultiple(request.POST, queryset=Port.objects.all()).qs[:50]
-        return render(request, 'ports/filtered_table.html', {
+        return render(request, 'ports/ajax-filters/filtered_table.html', {
             'ports': filtered_ports,
             'query': query,
             'search_in': search_in,

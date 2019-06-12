@@ -5,7 +5,7 @@
     {% elif content == "Maintainer" %}
         <h4>Your search "{{ query }}" in ports maintained by "{{ search_in }}" matched {{ ports|length }} ports.</h4>
     {% else %}
-        <h4>Your search {{ query }} matched {{ ports|length }} ports.</h4>
+        <h4>Showing results for "{{ query }}".</h4>
     {% endif %}
     <table class="table table-striped">
         <thead>
@@ -36,7 +36,7 @@
         </div>
     {% else %}
         <div class="alert alert-danger" role="alert">
-            Sorry, no matching ports found for "{{ query }}" in "{{ search_in }}"
+            Sorry, no matching ports found for "{{ query }}"
         </div>
     {% endif %}
 {% endif %}
