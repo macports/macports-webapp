@@ -17,7 +17,7 @@
         <label for="builder-filter">Filter based on builder: </label>
         <select onchange="filterBuilds()" class="form-control ml-2 filter" id="builder-filter" name="builder-filter">
             <option value="">All</option>
-            {% for builder_option in builders %}
+            {% for builder_option in builders_list %}
                 <option value="{{ builder_option }}" {%  if builder == builder_option %}selected{% endif %}>{{ builder_option }}</option>
             {% endfor %}
         </select>

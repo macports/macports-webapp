@@ -1,6 +1,7 @@
 import os
 import json
 import datetime
+from distutils.version import LooseVersion
 
 import requests
 from bs4 import BeautifulSoup
@@ -95,7 +96,8 @@ def portdetail_summary(request):
         dependencies = Dependency.objects.filter(port_name_id=port_id)
         variants = Variant.objects.filter(port_id=port_id)
 
-        builders = Builder.objects.order_by('-name').values_list('name', flat=True)
+        builders = list(Builder.objects.all().values_list('name', flat=True))
+        builders.sort(key=LooseVersion, reverse=True)
         latest_builds = {}
         for builder in builders:
             latest_builds[builder] = BuildHistory.objects.filter(builder_name__name=builder, port_name=portname).order_by(
@@ -119,8 +121,9 @@ def portdetail_build_information(request):
         status = request.GET.get('status', '')
         builder = request.GET.get('builder_name__name', '')
         page = request.GET.get('page', 1)
-        builders = Builder.objects.order_by('-name').values_list('name', flat=True)
-        builds = BuildHistoryFilterForPort(request.GET, queryset=BuildHistory.objects.filter(port_name__iexact=portname)).qs
+        builders = list(Builder.objects.all().values_list('name', flat=True))
+        builders.sort(key=LooseVersion, reverse=True)
+        builds = BuildHistoryFilterForPort(request.GET, queryset=BuildHistory.objects.filter(port_name__iexact=portname).order_by('-time_start')).qs
         paginated_builds = Paginator(builds, 100)
         try:
             result = paginated_builds.get_page(page)
@@ -132,7 +135,7 @@ def portdetail_build_information(request):
         return render(request, 'ports/port-detail/build_information.html', {
             'builds': result,
             'builder': builder,
-            'builders': builders,
+            'builders_list': builders,
             'status': status,
         })
     except Port.DoesNotExist:
@@ -144,7 +147,8 @@ def portdetail_stats(request):
 
 
 def all_builds_view(request):
-    builders = Builder.objects.all().values_list('name', flat=True)
+    builders = list(Builder.objects.all().values_list('name', flat=True))
+    builders.sort(key=LooseVersion, reverse=True)
 
     builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().order_by('-time_start')).qs
 
