@@ -6,10 +6,13 @@ from parsing_scripts import load_initial_data, update
 
 class TestExceptions(TestCase):
     def setUp(self):
+        self.client = Client()
+
+    @classmethod
+    def setUpTestData(cls):
         ports = load_initial_data.open_portindex_json("ports/tests/sample_data/portindex.json")
         load_initial_data.load_categories_table(ports)
         load_initial_data.load_ports_and_maintainers_table(ports)
-        self.client = Client()
 
     def test_400(self):
         response = self.client.get('/testingA404')

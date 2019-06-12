@@ -7,6 +7,10 @@ from parsing_scripts import load_initial_data, update
 
 class TestDependencies(TestCase):
     def setUp(self):
+        self.client = Client()
+
+    @classmethod
+    def setUpTestData(cls):
         ports = load_initial_data.open_portindex_json("ports/tests/sample_data/portindex.json")
         load_initial_data.load_categories_table(ports)
         load_initial_data.load_ports_and_maintainers_table(ports)
@@ -16,13 +20,12 @@ class TestDependencies(TestCase):
         self.assertEquals(Dependency.objects.all().count(), 4)
 
     def test_dependencies_fetched(self):
-        client = Client()
-        response = client.get(reverse('port_detail_summary'), data={'portname': 'port-A1'})
+        response = self.client.get(reverse('port_detail_summary'), data={'portname': 'port-A1'})
         dependencies = response.context['dependencies']
         self.assertEquals(dependencies.get(type='lib').dependencies.all().count(), 2)
         total_dependencies = []
-        for type in dependencies:
-            for dependency in type.dependencies.all():
+        for d_type in dependencies:
+            for dependency in d_type.dependencies.all():
                 total_dependencies.append(dependency)
         self.assertEquals(len(total_dependencies), 3)
 
