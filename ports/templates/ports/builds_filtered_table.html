@@ -1,4 +1,5 @@
 {% load url_generate %}
+{% load format_names %}
 
 <h4 class="text-secondary">Showing {% if port_name != '' %}results for <i>"{{ port_name }}"</i> in {% endif %}{% if status == "" %} <ins>All Builds</ins> {% else %}builds with status: <ins>{{ status }}</ins>{% endif %} on <ins>{% if builder == "" %}All Builders {% else %}{{ builder }}{% endif %}</ins></h4>
 
@@ -57,7 +58,7 @@
     {% for build in builds %}
         <tr>
             <td><a href="{% url 'port_detail' build.port_name %}">{{ build.port_name }}</a></td>
-            <td>{{ build.builder_name.name }}</td>
+            <td>{{ build.builder_name.name|os_version }}</td>
             <td><a target="_blank" href="{% build_url build.builder_name.name build.build_id %}">{{ build.build_id }}</a></td>
             <td>{{ build.time_start|date:"Y-m-d" }}  {{ build.time_start|time:"G:i:s" }} </td>
             <td>{{ build.time_elapsed|time:"H:i:s" }}</td>

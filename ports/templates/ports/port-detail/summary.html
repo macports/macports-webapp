@@ -1,3 +1,5 @@
+{% load format_names %}
+
 <h3>{{ port.portdir }} | {{ port.name }}</h3>
     <p class="text-secondary">{{ port.description }}</p>
     <br>
@@ -93,10 +95,10 @@
                                                         badge-success
                                                     {% else %}
                                                         badge-danger
-                                                    {% endif %}">{{ builder }}</span></a>
+                                                    {% endif %}">{{ builder|os_version }}</span></a>
 
                         {% else %}
-                            <span class="badge badge-secondary">{{ builder }}</span>
+                            <span class="badge badge-secondary">{{ builder|os_version }}</span>
 
                         {% endif %}
                     {% endfor %}</h6>
