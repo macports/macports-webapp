@@ -66,9 +66,7 @@ class BuildHistory(models.Model):
     port_name = models.CharField(max_length=50, db_index=True)
     time_start = models.DateTimeField(db_index=True)
     time_elapsed = models.TimeField(null=True)
-    build_url = models.URLField(default='')
     watcher_id = models.IntegerField()
-    watcher_url = models.URLField()
 
 
 # Contains the latest state of the JSON submitted by the mpstats for user
