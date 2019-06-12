@@ -26,22 +26,26 @@ def index(request):
 
 
 def categorylist(request, cat):
-    all_ports = Port.objects.filter(categories__name=cat).order_by('id')
-    portscount = all_ports.count()
-    paginated_ports = Paginator(all_ports, 100)
-    page = request.GET.get('page', 1)
     try:
-        ports = paginated_ports.get_page(page)
-    except PageNotAnInteger:
-        ports = paginated_ports.get_page(1)
-    except EmptyPage:
-        ports = paginated_ports.get_page(paginated_ports.num_pages)
-    return render(request, 'ports/categorylist.html',
-                  {
-                      'ports': ports,
-                      'portscount': portscount,
-                      'category': cat
-                  })
+        category = Category.objects.get(name__iexact=cat)
+        all_ports = Port.objects.filter(categories__name=cat).order_by('id')
+        portscount = all_ports.count()
+        paginated_ports = Paginator(all_ports, 100)
+        page = request.GET.get('page', 1)
+        try:
+            ports = paginated_ports.get_page(page)
+        except PageNotAnInteger:
+            ports = paginated_ports.get_page(1)
+        except EmptyPage:
+            ports = paginated_ports.get_page(paginated_ports.num_pages)
+        return render(request, 'ports/categorylist.html',
+                      {
+                          'ports': ports,
+                          'portscount': portscount,
+                          'category': cat
+                      })
+    except Category.DoesNotExist:
+        return render(request, 'ports/exceptions/category_not_found.html')
 
 
 def letterlist(request, letter):
@@ -111,12 +115,12 @@ def portdetail_summary(request):
             'builders_list': builders,
         })
     except Port.DoesNotExist:
-        return HttpResponse("<br><br><h3>Sorry, the port you requested was not found.</h3><br>")
+        return render(request, 'ports/exceptions/port_not_found.html')
 
 
 def portdetail_build_information(request):
     try:
-        portname = request.GET['portname']
+        portname = request.GET.get('portname')
         port = Port.objects.get(name=portname)
         status = request.GET.get('status', '')
         builder = request.GET.get('builder_name__name', '')
@@ -139,7 +143,7 @@ def portdetail_build_information(request):
             'status': status,
         })
     except Port.DoesNotExist:
-        return HttpResponse("<br><br><h3>Sorry, the port you requested was not found.</h3><br>")
+        return render(request, 'ports/exceptions/port_not_found.html')
 
 
 def portdetail_stats(request):
