@@ -91,3 +91,8 @@ class OSDistribution(models.Model):
     month = models.IntegerField(db_index=True)
     year = models.IntegerField(db_index=True)
     users = models.ManyToManyField(User, related_name='users')
+
+
+class Commit(models.Model):
+    hash = models.CharField(max_length=50)
+    updated_at = models.DateTimeField(auto_now=True)
