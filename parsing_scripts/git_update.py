@@ -22,7 +22,7 @@ def clone_repo():
         os.system("git clone https://github.com/macports/macports-ports.git")
 
 
-def get_list_of_changed_ports(new_hash, old_hash):
+def get_list_of_changed_ports(new_hash=False, old_hash=False):
     if os.path.isdir('macports-ports'):
 
         # cd to the macports-ports directory
@@ -40,14 +40,14 @@ def get_list_of_changed_ports(new_hash, old_hash):
                 old_hash = subprocess.run(['git', 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
         # Pull from macports-ports
-        os.system('git pull')
+        os.system('git pull &> /dev/null')
 
         # Get new hash
         if new_hash is False:
             new_hash = subprocess.run(['git', 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
         # find the range of commits to loop over
-        range = str(old_hash).strip() + "..." + str(new_hash).strip()
+        range = str(old_hash).strip() + "^.." + str(new_hash).strip()
 
         changed_paths = subprocess.run(['git', 'diff', '--name-only', range], stdout=subprocess.PIPE).stdout.decode('utf-8')
         s = io.StringIO(changed_paths)
@@ -57,10 +57,9 @@ def get_list_of_changed_ports(new_hash, old_hash):
             if portname not in updated_ports:
                 updated_ports.append(portname)
 
-        print(updated_ports)
-
         # Add the new hash to the database
         Commit.objects.create(hash=new_hash)
+        os.chdir(BASE_DIR)
         return updated_ports
     else:
         clone_repo()
