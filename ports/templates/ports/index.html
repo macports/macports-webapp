@@ -24,17 +24,7 @@
                     </div>
                     {% endfor %}
                 </div>
-            <br>
-            <div class="card border-0">
-                <div class="card-body">
-                    <h6 class="border-bottom">Browse Ports Alphabetically</h6>
-                    <p>
-                        {% for letter in alphabet %}
-                        <a href="{% url 'letter_list' letter %}">{{ letter }}</a> |
-                        {% endfor %}
-                    </p>
-                </div>
-            </div>
+        <br>
         </div>
         <div class="col-lg-4">
             <div class="bg-secondary" style="padding: 12px;">

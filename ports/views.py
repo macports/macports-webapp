@@ -16,11 +16,8 @@ from .filters import BuildHistoryFilter, PortFilterByMultiple, BuildHistoryFilte
 
 
 def index(request):
-    alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-                'V', 'W', 'X', 'Y', 'Z']
     categories = Category.objects.all().order_by('name')
     return render(request, 'ports/index.html', {
-        'alphabet': alphabet,
         'categories': categories
     })
 
@@ -46,23 +43,6 @@ def categorylist(request, cat):
                       })
     except Category.DoesNotExist:
         return render(request, 'ports/exceptions/category_not_found.html')
-
-
-def letterlist(request, letter):
-    ports = Port.objects.all()
-    sortedports = []
-    for port in ports:
-        firstletter = list(port.name)[0]
-        if firstletter.casefold() == letter.casefold():
-            sortedports.append(port)
-    portscount = len(sortedports)
-
-    return render(request, 'ports/letterlist.html',
-                  {
-                      'ports': sortedports,
-                      'letter': letter.upper(),
-                      'portscount': portscount
-                  })
 
 
 def variantlist(request, variant):

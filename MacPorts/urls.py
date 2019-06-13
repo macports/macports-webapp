@@ -33,7 +33,6 @@ urlpatterns = [
     path('ports/load_tickets/', views.tickets, name='trac_tickets'),
     path('ports/category/<slug:cat>', views.categorylist, name='category_list'),
     path('ports/variant/<slug:variant>', views.variantlist, name='variant_list'),
-    path('ports/sort-by-letter/<slug:letter>', views.letterlist, name='letter_list'),
     path('ports/all_builds/filter/', views.all_builds_filter, name='all_builds_filter'),
     path('ports/all_builds/', views.all_builds_view, name='all_builds'),
     path('update/', views.update_api, name='update_api')
