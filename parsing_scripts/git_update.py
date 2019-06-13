@@ -63,4 +63,4 @@ def get_list_of_changed_ports(new_hash=False, old_hash=False):
         return updated_ports
     else:
         clone_repo()
-        get_list_of_changed_ports()
+        get_list_of_changed_ports(new_hash, old_hash)
