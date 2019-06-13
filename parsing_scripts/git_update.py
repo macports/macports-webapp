@@ -22,29 +22,29 @@ def clone_repo():
         os.system("git clone https://github.com/macports/macports-ports.git")
 
 
-def get_list_of_changed_ports():
+def get_list_of_changed_ports(new_hash, old_hash):
     if os.path.isdir('macports-ports'):
 
         # cd to the macports-ports directory
         REPO_DIR = os.path.join(BASE_DIR, 'macports-ports')
         os.chdir(REPO_DIR)
 
-        old_hash = subprocess.run(['git', 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
-
-
-        #Check if database also is at old_hash:
-        # old_hash_in_database = Commit.objects.all().order_by('-updated_at').first()
-        # if old_hash_in_database.hash == old_hash:
-        #    print("Database and old hash are at same level.")
-        # else:
-        #     print("Database and the old hash are not at same commit.")
-
+        # If old_hash is not provided by the user
+        if old_hash is False:
+            try:
+                # Try to fetch the most recent hash from database
+                old_hash_object = Commit.objects.all().order_by('-updated_at').first()
+                old_hash = old_hash_object.hash
+            except AttributeError:
+                # If database is empty, use the current HEAD
+                old_hash = subprocess.run(['git', 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
         # Pull from macports-ports
         os.system('git pull')
 
         # Get new hash
-        new_hash = subprocess.run(['git', 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+        if new_hash is False:
+            new_hash = subprocess.run(['git', 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
         # find the range of commits to loop over
         range = str(old_hash).strip() + "..." + str(new_hash).strip()
@@ -61,6 +61,7 @@ def get_list_of_changed_ports():
 
         # Add the new hash to the database
         Commit.objects.create(hash=new_hash)
+        return updated_ports
     else:
         clone_repo()
         get_list_of_changed_ports()
