@@ -21,19 +21,19 @@ class TestDependencies(TestCase):
         load_initial_data.load_dependencies_table(ports)
 
     def test_search(self):
-        response1 = self.client.post(reverse('ports_search'), data={
+        response1 = self.client.get(reverse('ports_search'), data={
             'search_by': 'name',
             'name': 'port',
             'search_text': 'port'
         })
 
-        response2 = self.client.post(reverse('ports_search'), data={
+        response2 = self.client.get(reverse('ports_search'), data={
             'search_by': 'description',
             'description': 'categoryA',
             'search_text': 'categoryA'
         })
 
-        response3 = self.client.post(reverse('ports_search'), data={
+        response3 = self.client.get(reverse('ports_search'), data={
             'search_by': 'name',
             'name': 'port-A5',
             'search_text': 'port-A5'
@@ -44,7 +44,7 @@ class TestDependencies(TestCase):
         self.assertEquals(response3.context['ports'].count(), 1)
 
     def test_search_in_category(self):
-        response = self.client.post(reverse('search_ports_in_category'), data={
+        response = self.client.get(reverse('search_ports_in_category'), data={
             'name': 'port-A3',
             'categories__name': 'categoryA',
         })
@@ -52,7 +52,7 @@ class TestDependencies(TestCase):
         self.assertEquals(response.context['ports'].count(), 1)
 
     def test_search_in_maintainer(self):
-        response = self.client.post(reverse('search_ports_in_maintainer'), data={
+        response = self.client.get(reverse('search_ports_in_maintainer'), data={
             'name': 'port-A',
             'maintainers__name': 'user',
         })
