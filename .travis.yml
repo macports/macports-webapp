@@ -17,7 +17,8 @@ env:
     - SECRET_KEY=thISkEyisUsedForTravis
 # install dependencies
 install:
-  - pip install -r requirements.txt
+  - pip install -q Django==$DJANGO_VERSION
+  - pip install -q -r requirements.txt
 
 # run test scripts
 script:
