@@ -84,8 +84,7 @@ def portdetail_summary(request):
         builders.sort(key=LooseVersion, reverse=True)
         latest_builds = {}
         for builder in builders:
-            latest_builds[builder] = BuildHistory.objects.filter(builder_name__name=builder, port_name=portname).order_by(
-                '-time_start').first()
+            latest_builds[builder] = BuildHistory.objects.filter(builder_name__name=builder, port_name=portname).order_by('-time_start').first()
         return render(request, 'ports/port-detail/summary.html', {
             'port': port,
             'latest_builds': latest_builds,
@@ -171,7 +170,7 @@ def stats(request):
     all_submissions = User.objects.all()
     total_unique_users = all_submissions.distinct('uuid').count()
     current_week_unique = all_submissions.filter(updated_at__week=current_week).distinct('uuid').count()
-    last_week_unique = all_submissions.filter(updated_at__week=current_week-1).distinct('uuid').count()
+    last_week_unique = all_submissions.filter(updated_at__week=current_week - 1).distinct('uuid').count()
 
     os_dict = {}
     for os_obj in OSDistribution.objects.filter(month=datetime.datetime.now().month, year=datetime.datetime.now().year):
