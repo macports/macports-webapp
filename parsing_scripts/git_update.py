@@ -84,8 +84,8 @@ def get_list_of_changed_ports(new_hash=False, old_hash=False, root=BASE_DIR):
             print("Cleaning current tree and cloning new repo.")
             shutil.rmtree('macports-ports')
             clone_repo()
-            get_list_of_changed_ports(new_hash, old_hash, root)
+            return get_list_of_changed_ports(new_hash, old_hash, root)
     else:
         print('macports-ports directory not found. Cloning into')
         clone_repo()
-        get_list_of_changed_ports(new_hash, old_hash, root)
+        return get_list_of_changed_ports(new_hash, old_hash, root)

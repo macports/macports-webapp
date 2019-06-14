@@ -27,3 +27,11 @@ class TestGitUpdates(TestCase):
                                                      TEST_REPO_PARENT
                                                      )
         self.assertEquals(ports, ['nomad', 'terraform'])
+
+    def test_broken_repo(self):
+        broken_repo_parent = os.path.join(TEST_REPO_PARENT, 'broken_directory')
+        ports = git_update.get_list_of_changed_ports("7646d61853154b9dc523e3d0382960aea562e7ab",
+                                                     "ee0fc9c4ca59685f33628fc41c6946920869ab71",
+                                                     broken_repo_parent
+                                                     )
+        self.assertEquals(ports, ['ideviceinstaller', 'OpenBLAS', 'nomad'])
