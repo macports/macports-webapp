@@ -17,6 +17,5 @@ class Command(BaseCommand):
                             help="Not recommended. Helps you provide a commit from which update should start")
 
     def handle(self, *args, **options):
-        git_update.clone_repo()
         git_update.get_list_of_changed_ports(options['new'], options['old'])
 
