@@ -10,7 +10,7 @@ function ajaxCallSearch() {
             $('#filtered_table').show();
             $('#main-content').hide();
             currentSearchRequest = $.ajax({
-                type: 'POST',
+                type: 'GET',
                 url: '/ports/search/',
                 data: data,
                 success: searchSuccess,

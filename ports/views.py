@@ -243,18 +243,15 @@ def maintainer_detail_email(request, name, domain):
 
 # Respond to ajax-call triggered by the search box
 def search(request):
-    if request.method == 'POST':
-        query = request.POST['search_text']
-        search_by = request.POST['search_by']
-        ports = PortFilterByMultiple(request.POST, queryset=Port.objects.all()).qs[:50]
+    query = request.GET.get('search_text', '')
+    search_by = request.GET.get('search_by', '')
+    ports = PortFilterByMultiple(request.GET, queryset=Port.objects.all()).qs[:50]
 
-        return render(request, 'ports/ajax-filters/filtered_table.html', {
-            'ports': ports,
-            'query': query,
-            'search_by': search_by
-        })
-    else:
-        return HttpResponse("Method not allowed")
+    return render(request, 'ports/ajax-filters/filtered_table.html', {
+        'ports': ports,
+        'query': query,
+        'search_by': search_by
+    })
 
 
 # Respond to ajax call for loading tickets
@@ -279,41 +276,35 @@ def tickets(request):
 
 # Respond to ajax calls for searching within a category
 def search_ports_in_category(request):
-    if request.method == 'POST':
-        query = request.POST['name']
-        search_in = request.POST['categories__name']
+    query = request.GET.get('name')
+    search_in = request.GET.get('categories__name')
 
-        filtered_ports = PortFilterByMultiple(request.POST, queryset=Port.objects.all()).qs[:50]
-        return render(request, 'ports/ajax-filters/filtered_table.html', {
-            'ports': filtered_ports,
-            'query': query,
-            'search_in': search_in,
-            'content': "Category"
-            })
-    else:
-        return HttpResponse("Method not allowed")
+    filtered_ports = PortFilterByMultiple(request.GET, queryset=Port.objects.all()).qs[:50]
+    return render(request, 'ports/ajax-filters/filtered_table.html', {
+        'ports': filtered_ports,
+        'query': query,
+        'search_in': search_in,
+        'content': "Category"
+    })
 
 
 # Respond to ajax calls for searching within a maintainer
 def search_ports_in_maintainer(request):
-    if request.method == 'POST':
-        query = request.POST['name']
-        search_in = request.POST['maintainers__name']
+    query = request.GET.get('name', '')
+    search_in = request.GET.get('maintainers__name', '')
 
-        filtered_ports = PortFilterByMultiple(request.POST, queryset=Port.objects.all()).qs[:50]
-        return render(request, 'ports/ajax-filters/filtered_table.html', {
-            'ports': filtered_ports,
-            'query': query,
-            'search_in': search_in,
-            'content': "Maintainer"
-        })
-    else:
-        return HttpResponse("Method not allowed")
+    filtered_ports = PortFilterByMultiple(request.GET, queryset=Port.objects.all()).qs[:50]
+    return render(request, 'ports/ajax-filters/filtered_table.html', {
+        'ports': filtered_ports,
+        'query': query,
+        'search_in': search_in,
+        'content': "Maintainer"
+    })
 
 
 def search_ports_in_variant(request):
-    query = request.GET.get('name')
-    search_in = request.GET.get('variant')
+    query = request.GET.get('name', '')
+    search_in = request.GET.get('variant', '')
 
     filtered_ports = Variant.objects.filter(variant=search_in, port__name__icontains=query)
     return render(request, 'ports/ajax-filters/filtered_table.html', {
@@ -322,6 +313,7 @@ def search_ports_in_variant(request):
         'search_in': search_in,
         'content': "Variant"
     })
+
 
 # Accept submissions from mpstats and update the users table
 def populate_os_table(user_obj):

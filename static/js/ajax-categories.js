@@ -4,7 +4,7 @@ $(function () {
             $('#filtered_table').show();
             $('#all_ports_table').hide();
             $.ajax({
-                type: 'POST',
+                type: 'GET',
                 url: '/ports/filter/category/',
                 data: {
                     'name': $('#filter').val(),
