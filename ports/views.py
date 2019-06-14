@@ -311,6 +311,18 @@ def search_ports_in_maintainer(request):
         return HttpResponse("Method not allowed")
 
 
+def search_ports_in_variant(request):
+    query = request.GET.get('name')
+    search_in = request.GET.get('variant')
+
+    filtered_ports = Variant.objects.filter(variant=search_in, port__name__icontains=query)
+    return render(request, 'ports/ajax-filters/filtered_table.html', {
+        'ports': filtered_ports,
+        'query': query,
+        'search_in': search_in,
+        'content': "Variant"
+    })
+
 # Accept submissions from mpstats and update the users table
 def populate_os_table(user_obj):
     os = user_obj.osx_version

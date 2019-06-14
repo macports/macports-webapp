@@ -4,9 +4,35 @@
         <h4>Your search "{{ query }}" in category "{{ search_in }}" matched {{ ports|length }} ports.</h4>
     {% elif content == "Maintainer" %}
         <h4>Your search "{{ query }}" in ports maintained by "{{ search_in }}" matched {{ ports|length }} ports.</h4>
+    {% elif content == "Variant" %}
+        <h4>Your search "{{ query }}" in variant "{{ search_in }}" matched {{ ports|length }} ports.</h4>
     {% else %}
         <h4>Showing results for "{{ query }}".</h4>
     {% endif %}
+
+
+
+    {% if content == "Variant" %}
+        <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Version</th>
+            <th scope="col">Description</th>
+            <th scope="col">Installations this month</th>
+        </tr>
+        </thead>
+        {% for port in ports %}
+            <tr>
+                <td><a href="{% url 'port_detail' port.port.name %}">{{ port.port.name }}</a></td>
+                <td>{{ port.port.version }}</td>
+                <td>{{ port.port.description }}</td>
+                <td>NA</td>
+            </tr>
+        {% endfor %}
+    </table>
+        {% else %}
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -25,6 +51,7 @@
             </tr>
         {% endfor %}
     </table>
+        {% endif %}
 {% else %}
     {% if content == "Category" %}
         <div class="alert alert-danger" role="alert">
@@ -33,6 +60,10 @@
     {% elif content == "Maintainer" %}
         <div class="alert alert-danger" role="alert">
             Sorry, no matching ports found for "{{ query }}" in the ports maintained by "{{ search_in }}".
+        </div>
+    {% elif content == "Variant" %}
+        <div class="alert alert-danger" role="alert">
+            Sorry, no matching ports found for "{{ query }}" in the variant "{{ search_in }}".
         </div>
     {% else %}
         <div class="alert alert-danger" role="alert">

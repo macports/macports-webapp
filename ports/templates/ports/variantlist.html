@@ -2,13 +2,13 @@
 {% load staticfiles %}
 
 {% block head_scripts %}
-    <script src="{% static 'js/ajax-filter.js' %}"></script>
+    <script src="{% static 'js/ajax-variants.js' %}"></script>
 {% endblock %}
 
 {% block content %}
     <br>
     {% csrf_token %}
-    <input type="text" class="form-control" id="category_filter" name="category_filter"
+    <input type="text" class="form-control" id="filter" name="filter"
            placeholder="Search Ports with variant '{{ variant }}'">
     <span style="display: none" id="search_in">{{ variant }}</span>
     <span style="display: none;" id="filter-content">Variant</span>

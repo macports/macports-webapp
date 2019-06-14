@@ -30,6 +30,7 @@ urlpatterns = [
     path('ports/search/', views.search, name='ports_search'),
     path('ports/filter/maintainer/', views.search_ports_in_maintainer, name='search_ports_in_maintainer'),
     path('ports/filter/category/', views.search_ports_in_category, name='search_ports_in_category'),
+    path('ports/filter/variant/', views.search_ports_in_variant, name='search_ports_in_variant'),
     path('ports/load_tickets/', views.tickets, name='trac_tickets'),
     path('ports/category/<slug:cat>', views.categorylist, name='category_list'),
     path('ports/variant/<slug:variant>', views.variantlist, name='variant_list'),
