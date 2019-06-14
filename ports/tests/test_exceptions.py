@@ -1,7 +1,12 @@
+import os
+
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from parsing_scripts import load_initial_data, update
+from parsing_scripts import load_initial_data
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+JSON_FILE = os.path.join(BASE_DIR, 'tests', 'sample_data', 'portindex.json')
 
 
 class TestExceptions(TestCase):
@@ -10,7 +15,7 @@ class TestExceptions(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        ports = load_initial_data.open_portindex_json("ports/tests/sample_data/portindex.json")
+        ports = load_initial_data.open_portindex_json(JSON_FILE)
         load_initial_data.load_categories_table(ports)
         load_initial_data.load_ports_and_maintainers_table(ports)
 
