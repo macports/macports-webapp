@@ -259,25 +259,22 @@ def search(request):
 
 # Respond to ajax call for loading tickets
 def tickets(request):
-    if request.method == 'POST':
-        port_name = request.POST['portname']
-        URL = "https://trac.macports.org/query?status=!closed&port=~{}".format(port_name)
-        response = requests.get(URL)
-        Soup = BeautifulSoup(response.content, 'html5lib')
-        all_tickets = []
-        for row in Soup.findAll('tr', attrs={'class': 'prio2'}):
-            srow = row.find('td', attrs={'class': 'summary'})
-            ticket = {}
-            ticket['url'] = srow.a['href']
-            ticket['title'] = srow.a.text
-            all_tickets.append(ticket)
+    port_name = request.GET.get('portname')
+    URL = "https://trac.macports.org/query?status=!closed&port=~{}".format(port_name)
+    response = requests.get(URL)
+    Soup = BeautifulSoup(response.content, 'html5lib')
+    all_tickets = []
+    for row in Soup.findAll('tr', attrs={'class': 'prio2'}):
+        srow = row.find('td', attrs={'class': 'summary'})
+        ticket = {}
+        ticket['url'] = srow.a['href']
+        ticket['title'] = srow.a.text
+        all_tickets.append(ticket)
 
-        return render(request, 'ports/ajax-filters/tickets.html', {
-            'portname': port_name,
-            'tickets': all_tickets,
-        })
-    else:
-        return HttpResponse("Method not allowed")
+    return render(request, 'ports/ajax-filters/tickets.html', {
+        'portname': port_name,
+        'tickets': all_tickets,
+    })
 
 
 # Respond to ajax calls for searching within a category

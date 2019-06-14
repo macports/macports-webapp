@@ -44,7 +44,7 @@ function loadTickets(e) {
     $('.active').removeClass("active");
     $(e).addClass("active");
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         url: '/ports/load_tickets/',
         data: {
             'portname': $('#port_name').text(),
