@@ -79,7 +79,7 @@ def get_list_of_changed_ports(new_hash=False, old_hash=False, root=BASE_DIR):
             return updated_ports
 
         except OSError:
-            os.chdir(BASE_DIR)
+            os.chdir(root)
             print("macports-ports repository has some error")
             print("Cleaning current tree and cloning new repo.")
             shutil.rmtree('macports-ports')
