@@ -143,30 +143,27 @@ def all_builds_view(request):
 
 
 def all_builds_filter(request):
-    if request.method == 'POST':
-        builder = request.POST['builder_name__name']
-        status = request.POST['status']
-        port_name = request.POST['port_name']
-        page = request.POST['page']
+    builder = request.GET.get('builder_name__name')
+    status = request.GET.get('status')
+    port_name = request.GET.get('port_name')
+    page = request.GET.get('page')
 
-        builds = BuildHistoryFilter(request.POST, queryset=BuildHistory.objects.all().order_by('-time_start')).qs
+    builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().order_by('-time_start')).qs
 
-        paginated_builds = Paginator(builds, 100)
-        try:
-            result = paginated_builds.get_page(page)
-        except PageNotAnInteger:
-            result = paginated_builds.get_page(1)
-        except EmptyPage:
-            result = paginated_builds.get_page(paginated_builds.num_pages)
+    paginated_builds = Paginator(builds, 100)
+    try:
+        result = paginated_builds.get_page(page)
+    except PageNotAnInteger:
+        result = paginated_builds.get_page(1)
+    except EmptyPage:
+        result = paginated_builds.get_page(paginated_builds.num_pages)
 
-        return render(request, 'ports/ajax-filters/builds_filtered_table.html', {
-            'builds': result,
-            'builder': builder,
-            'status': status,
-            'port_name': port_name,
-        })
-    else:
-        return HttpResponse("Method not allowed")
+    return render(request, 'ports/ajax-filters/builds_filtered_table.html', {
+        'builds': result,
+        'builder': builder,
+        'status': status,
+        'port_name': port_name,
+    })
 
 
 def stats(request):
