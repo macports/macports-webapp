@@ -26,16 +26,12 @@ class TestExceptions(TestCase):
         self.assertTemplateUsed(response, template_name='404.html')
 
     def test_port_not_found(self):
-        response_summary = self.client.get(reverse('port_detail_summary'), data={
-            'portname': 'Port.DoesNotExist'
-        })
+        response = self.client.get(reverse('port_detail', kwargs={
+            'name': 'testingA404.'
+        }))
 
-        response_builds = self.client.get(reverse('port_detail_builds'), data={
-            'portname': 'Port.DoesNotExist'
-        })
-
-        self.assertTemplateUsed(response_summary, template_name='ports/exceptions/port_not_found.html')
-        self.assertTemplateUsed(response_builds, template_name='ports/exceptions/port_not_found.html')
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, template_name='ports/exceptions/port_not_found.html')
 
     def test_category_not_found(self):
         response = self.client.get(reverse('category_list', kwargs={
