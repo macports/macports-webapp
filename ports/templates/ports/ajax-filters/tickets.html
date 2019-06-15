@@ -1,3 +1,4 @@
+<span style="display: none;" id="tickets-count-returned">{{ tickets|length }}</span>
 {% if tickets|length > 0 %}
     <table class="table table-striped">
         {% for ticket in tickets %}
@@ -12,4 +13,3 @@
         No Tickets Found
     </div>
 {% endif %}
-

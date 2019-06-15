@@ -25,12 +25,15 @@ function tabClick(e, slug) {
     $('.active').removeClass("active");
     $(e).addClass("active");
     ajaxCall("/port/ajax-call/" + slug)
+    $('#tickets-box').hide();
 }
 
 
 $(function () {
     $('#search').ready(function () {
         ajaxCall("/port/ajax-call/summary")
+        loadTickets();
+        $('#tickets-box').hide()
     });
 });
 
@@ -40,9 +43,7 @@ function display(data, textStatus, jqXHR) {
 }
 
 //Load Trac Tickets
-function loadTickets(e) {
-    $('.active').removeClass("active");
-    $(e).addClass("active");
+function loadTickets() {
     $.ajax({
         type: 'GET',
         url: '/ports/load_tickets/',
@@ -50,7 +51,7 @@ function loadTickets(e) {
             'portname': $('#port_name').text(),
             'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
         },
-        success: showTickets,
+        success: receiveTickets,
         beforeSend: function () {
             $('#display-box').html("");
             $('#loading-image').show();
@@ -59,9 +60,18 @@ function loadTickets(e) {
     });
 };
 
-function showTickets(data, textStatus, jqXHR) {
-    $('#display-box').html(data);
-    $('#loading-image').hide();
+function receiveTickets(data, textStatus, jqXHR) {
+    $('#tickets-box').html(data);
+    var count = $('#tickets-count-returned').text();
+    $('#tickets-count').html(count)
+}
+
+function showTickets(e) {
+    $('.active').removeClass("active");
+    $(e).addClass("active");
+    $('#display-box').html("");
+    $('#tickets-box').show();
+    
 }
 
 //Build History
