@@ -103,31 +103,29 @@ def portdetail_summary(request):
 
 
 def portdetail_build_information(request):
+    portname = request.GET.get('portname')
+    status = request.GET.get('status', '')
+    builder = request.GET.get('builder_name__name', '')
+    page = request.GET.get('page', 1)
+    builders = list(Builder.objects.all().values_list('name', flat=True))
+    builders.sort(key=LooseVersion, reverse=True)
+    builds = BuildHistoryFilterForPort(request.GET,
+                                       queryset=BuildHistory.objects.filter(port_name__iexact=portname).order_by(
+                                           '-time_start')).qs
+    paginated_builds = Paginator(builds, 100)
     try:
-        portname = request.GET.get('portname')
-        port = Port.objects.get(name=portname)
-        status = request.GET.get('status', '')
-        builder = request.GET.get('builder_name__name', '')
-        page = request.GET.get('page', 1)
-        builders = list(Builder.objects.all().values_list('name', flat=True))
-        builders.sort(key=LooseVersion, reverse=True)
-        builds = BuildHistoryFilterForPort(request.GET, queryset=BuildHistory.objects.filter(port_name__iexact=portname).order_by('-time_start')).qs
-        paginated_builds = Paginator(builds, 100)
-        try:
-            result = paginated_builds.get_page(page)
-        except PageNotAnInteger:
-            result = paginated_builds.get_page(1)
-        except EmptyPage:
-            result = paginated_builds.get_page(paginated_builds.num_pages)
+        result = paginated_builds.get_page(page)
+    except PageNotAnInteger:
+        result = paginated_builds.get_page(1)
+    except EmptyPage:
+        result = paginated_builds.get_page(paginated_builds.num_pages)
 
-        return render(request, 'ports/port-detail/build_information.html', {
-            'builds': result,
-            'builder': builder,
-            'builders_list': builders,
-            'status': status,
-        })
-    except Port.DoesNotExist:
-        return render(request, 'ports/exceptions/port_not_found.html')
+    return render(request, 'ports/port-detail/build_information.html', {
+        'builds': result,
+        'builder': builder,
+        'builders_list': builders,
+        'status': status,
+    })
 
 
 def portdetail_stats(request):
