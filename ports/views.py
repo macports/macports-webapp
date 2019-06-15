@@ -265,9 +265,11 @@ def tickets(request):
     all_tickets = []
     for row in Soup.findAll('tr', attrs={'class': 'prio2'}):
         srow = row.find('td', attrs={'class': 'summary'})
+        idrow = row.find('td', attrs={'class': 'id'})
         ticket = {}
         ticket['url'] = srow.a['href']
         ticket['title'] = srow.a.text
+        ticket['id'] = idrow.a.text
         all_tickets.append(ticket)
 
     return render(request, 'ports/ajax-filters/tickets.html', {

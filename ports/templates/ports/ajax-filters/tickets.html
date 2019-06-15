@@ -3,8 +3,8 @@
     <table class="table table-striped">
         {% for ticket in tickets %}
             <tr>
+                <td><a target="_blank" href="https://trac.macports.org{{ ticket.url }}">{{ ticket.id }}</a></td>
                 <td>{{ ticket.title }}</td>
-                <td><a target="_blank" href="https://trac.macports.org{{ ticket.url }}">View On Trac</a></td>
             </tr>
         {% endfor %}
     </table>
