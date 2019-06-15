@@ -45,5 +45,5 @@ function cancel_search() {
 }
 
 function switch_search() {
-    ajaxCall()
+    ajaxCallSearch()
 }
