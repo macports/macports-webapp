@@ -65,36 +65,41 @@ def variantlist(request, variant):
 
 # Views for port-detail page START
 def portdetail(request, name):
-    portname = name
-    return render(request, 'ports/portdetail.html', {
-        'portname': portname,
-    })
+    try:
+        builders = list(Builder.objects.all().values_list('name', flat=True))
+        builders.sort(key=LooseVersion, reverse=True)
+        latest_builds = {}
+        for builder in builders:
+            latest_builds[builder] = BuildHistory.objects.filter(builder_name__name=builder,
+                                                                 port_name=name).order_by('-time_start').first()
+        req_port = Port.objects.get(name__iexact=name)
+        return render(request, 'ports/portdetail.html', {
+            'req_port': req_port,
+            'latest_builds': latest_builds,
+        })
+    except Port.DoesNotExist:
+        return render(request, 'ports/exceptions/port_not_found.html', {
+            'name': name
+        })
 
 
 def portdetail_summary(request):
     try:
-        portname = request.GET['portname']
+        portname = request.GET.get('portname')
         port = Port.objects.get(name=portname)
         port_id = port.id
         maintainers = Maintainer.objects.filter(ports__name=portname)
         dependencies = Dependency.objects.filter(port_name_id=port_id)
         variants = Variant.objects.filter(port_id=port_id)
 
-        builders = list(Builder.objects.all().values_list('name', flat=True))
-        builders.sort(key=LooseVersion, reverse=True)
-        latest_builds = {}
-        for builder in builders:
-            latest_builds[builder] = BuildHistory.objects.filter(builder_name__name=builder, port_name=portname).order_by('-time_start').first()
         return render(request, 'ports/port-detail/summary.html', {
             'port': port,
-            'latest_builds': latest_builds,
             'maintainers': maintainers,
             'dependencies': dependencies,
             'variants': variants,
-            'builders_list': builders,
         })
     except Port.DoesNotExist:
-        return render(request, 'ports/exceptions/port_not_found.html')
+        return HttpResponse("Visit /port/port-name/ if you are looking for ports.")
 
 
 def portdetail_build_information(request):

@@ -1,5 +1,9 @@
+{% extends 'ports/layout.html' %}
+
+{% block content %}
 <br><br>
 <div class="text-center">
-    <h3>Sorry, the port you requested was not found.</h3>
+    <h3>Sorry, we could not find any port for "{{ name }}".</h3>
     <p>If you think a port is missing, please report.</p>
 </div>
+{% endblock %}

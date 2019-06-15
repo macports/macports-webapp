@@ -1,7 +1,4 @@
 {% load format_names %}
-
-<h3>{{ port.portdir }} | {{ port.name }}</h3>
-    <p class="text-secondary">{{ port.description }}</p>
     <br>
     <div class="row">
         <div class="col-lg-8">
@@ -74,10 +71,13 @@
             </table>
         </div>
         <div class="col-lg-4">
-            <a class="btn-warning btn" href="https://github.com/macports/macports-ports/tree/master/{{ port.portdir }}/Portfile"
-               target="_blank">View on Github</a><br><br>
-            <div class="rounded bg-light shadow-lg" style="padding: 8px">
-                <h5 class="border-bottom">Quick Stats for {{ port.name }}</h5>
+            <div class="rounded border" style="padding: 8px;">
+                <h6 class="text-center">{{ port.portdir }}</h6>
+                <p class="text-center text-secondary">{{ port.long_description }}</p>
+            </div>
+            <br>
+            <div class="rounded border" style="padding: 8px">
+                <h5>Quick Stats for {{ port.name }}</h5>
                 <ul class="list-group">
                     <li class="list-group-item">Rank (last 4 weeks): <strong class="float-right">542</strong></li>
                     <li class="list-group-item">Total Installations (last 4 weeks): <strong class="float-right">37</strong></li>
@@ -85,30 +85,5 @@
                         Statistics for {{ port.name }}</a></li>
                 </ul>
             </div>
-            <br>
-            <div class="rounded bg-light shadow-lg" style="padding: 8px">
-                <h5 class="border-bottom">Port Health</h5>
-                <div class="p-2">
-                    <h6>{% for builder, latest_build in latest_builds.items %}
-                        {% if latest_build %}
-                                <a target="_blank" href="https://build.macports.org/builders/ports-{{ builder }}-builder/builds/{{ latest_build.build_id }}""><span class="badge {% if latest_build.status == "build successful" %}
-                                                        badge-success
-                                                    {% else %}
-                                                        badge-danger
-                                                    {% endif %}">{{ builder|os_version }}</span></a>
-
-                        {% else %}
-                            <span class="badge badge-secondary">{{ builder|os_version }}</span>
-
-                        {% endif %}
-                    {% endfor %}</h6>
-                </div>
-            </div>
         </div>
-    </div><br>
-    <div class="card">
-        <div class="card-body">
-            {{ port.long_description }}
-        </div>
-    </div><br>
-    <div id="trac_tickets"></div>
+    </div>
