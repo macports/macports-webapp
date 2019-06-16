@@ -1,6 +1,8 @@
 {% extends 'ports/layout.html' %}
 
 {% load staticfiles %}
+{% load format_names %}
+{% load i18n %}
 
 {% block head_scripts %}
     <script src="{% static 'js/ajax-maintainers.js' %}"></script>
@@ -93,24 +95,36 @@
                 </ul>
             </nav>
         {% endif %}
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Version</th>
-                <th scope="col">Description</th>
-                <th scope="col">Installations this month</th>
-            </tr>
-            </thead>
-            {% for port in ports %}
-                <tr>
-                    <td><a href="{% url 'port_detail' port.name %}">{{ port.name }}</a></td>
-                    <td>{{ port.version }}</td>
-                    <td>{{ port.description }}</td>
-                    <td>NA</td>
-                </tr>
+    {% regroup ports by portdir as main_ports %}
+    <div class="row border-top border-bottom">
+        <div class="col-sm-1 p-2 border-left"></div>
+        <div class="col-sm-3 p-2 border-left"><b>Name</b></div>
+        <div class="col-sm-2 p-2 border-left"><b>Version</b></div>
+        <div class="col-sm-6 p-2 border-left border-right"><b>Description</b></div>
+    </div>
+    <div>
+        {% for port in main_ports %}
+                    {% for sub_port in port.list %}
+                {% with sub_port.portdir|split:"/" as names %}
+                    {% if names|index:1 == sub_port.name %}
+                    <div class="row border-bottom mt-3 border-top bg-light">
+                        <div class="col-sm-1 border-left p-0">{% if port.list|length > 1 %}<button class="border-0 bg-transparent" style="width: 100%;height: 100%" data-toggle="collapse" data-target=".{{ names|index:1|cut:'.' }}">&#8680;</button>{% endif %}</div>
+                        <div class="col-sm-3 p-2 border-left"><a href="{% url 'port_detail' sub_port.name %}">{{ sub_port.name }}</a></div>
+                        <div class="col-sm-2 p-2 border-left">{{ sub_port.version }}</div>
+                        <div class="col-sm-6 p-2 border-left border-right">{{ sub_port.description }}</div>
+                    </div>
+                {% else %}
+                    <div class="row collapse show text-secondary {{ names|index:1|cut:'.' }} border-bottom">
+                        <div class="col-sm-1 p-2 border-left"></div>
+                        <div class="col-sm-3 p-2 border-left"><a href="{% url 'port_detail' sub_port.name %}">{{ sub_port.name }}</a></div>
+                        <div class="col-sm-2 p-2 border-left">{{ sub_port.version }}</div>
+                        <div class="col-sm-6 p-2 border-left border-right">{{ sub_port.description }}</div>
+                    </div>
+                {% endif %}
+                {% endwith %}
             {% endfor %}
-        </table>
+        {% endfor %}
+    </div>
         <br>
         {% if ports.has_other_pages %}
             <nav aria-label="Page navigation">
