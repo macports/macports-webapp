@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ports.models import Port, Maintainer, Variant, Category
+from ports.models import Port, Maintainer, Variant, BuildHistory, Builder
 
 
 class MaintainerSerialiser(serializers.ModelSerializer):
@@ -27,3 +27,17 @@ class PortSerialiser(serializers.ModelSerializer):
         qs = Variant.objects.filter(port=obj)
         variants = VariantSerialiser(qs, many=True, read_only=True, context=self.context).data
         return variants
+
+
+class BuilderSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Builder
+        fields = ('name', )
+
+
+class BuildHistorySerialiser(serializers.ModelSerializer):
+    builder_name = BuilderSerialiser(read_only=True)
+
+    class Meta:
+        model = BuildHistory
+        fields = ('builder_name', 'build_id', 'status', 'time_start', 'time_elapsed', 'watcher_id')
