@@ -46,7 +46,6 @@ def get_list_of_changed_ports(new_hash=False, old_hash=False, root=BASE_DIR):
             if old_hash is False:
                 try:
                     # Try to fetch the most recent hash from database
-                    # Try to fetch the most recent hash from database
                     old_hash_object = Commit.objects.all().order_by('-updated_at').first()
                     old_hash = old_hash_object.hash
                 except AttributeError:
@@ -61,7 +60,7 @@ def get_list_of_changed_ports(new_hash=False, old_hash=False, root=BASE_DIR):
             if new_hash is False:
                 new_hash = subprocess.run(['git', 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
-            # find the range of commits to loop over
+            # Generate the range of commits to find updated paths
             range = str(old_hash).strip() + "^.." + str(new_hash).strip()
 
             changed_paths = subprocess.run(['git', 'diff', '--name-only', range], stdout=subprocess.PIPE).stdout.decode(
