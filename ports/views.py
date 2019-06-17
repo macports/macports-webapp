@@ -136,11 +136,8 @@ def all_builds_view(request):
     builders = list(Builder.objects.all().values_list('name', flat=True))
     builders.sort(key=LooseVersion, reverse=True)
 
-    builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().order_by('-time_start')).qs
-
     return render(request, 'ports/all_builds.html', {
         'builders': builders,
-        'builds': builds
     })
 
 
