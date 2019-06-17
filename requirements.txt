@@ -9,6 +9,7 @@ coverage==4.0.3
 cryptography==2.6.1
 DateTime==4.3
 Django==2.1.7
+django-cors-headers==3.0.2
 django-filter==2.1.0
 djangorestframework==3.9.4
 filelock==3.0.12
