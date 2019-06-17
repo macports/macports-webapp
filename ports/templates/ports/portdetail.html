@@ -1,6 +1,7 @@
 {% extends 'ports/layout.html' %}
 {% load staticfiles %}
 {% load format_names %}
+{% load url_generate %}
 
 {% block head_scripts %}
     <script src="{% static 'js/ajax-port-detail.js' %}"></script>
@@ -30,7 +31,7 @@
                 {% for builder, latest_build in latest_builds.items %}
                     {% if latest_build %}
                         <a target="_blank"
-                           href="https://build.macports.org/builders/ports-{{ builder }}-builder/builds/{{ latest_build.build_id }}"><span class="mr-1 badge {% if latest_build.status == "build successful" %}
+                           href="{% build_url builder latest_build.build_id %}"><span class="mr-1 badge {% if latest_build.status == "build successful" %}
                                                         badge-success
                                                     {% else %}
                                                         badge-danger
