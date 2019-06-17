@@ -13,7 +13,8 @@
                 </tr>
                 <tr>
                     <th scope="row">Maintained By:</th>
-                    <td>{% if maintainers.all|length > 0 %}
+                    <td>
+                        {% if maintainers.all|length > 0 %}
                         {% for maintainer in maintainers %}
                                 {% if maintainer.github %}
                                     <a href="/maintainer/github/{{ maintainer.github }}">{{ maintainer.github }}</a>,
@@ -21,10 +22,9 @@
                                     <a href="/maintainer/email/{{ maintainer.name }}__{{ maintainer.github }}">{{ maintainer.github }}</a>,
                                 {% endif %}
                         {% endfor %}
-                    {% else %}
-                        No Maintainers Found
-                    {% endif %}
-
+                        {% else %}
+                            No Maintainers Found
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>
@@ -53,20 +53,21 @@
                 </tr>
                 <tr>
                     <th scope="row">Categories:</th>
-                    <td>{% for cat in port.categories.all %}
-                        <a href="{% url 'category_list' cat.name %}">{{ cat.name }}</a>,
-                    {% endfor %}
+                    <td>
+                        {% for cat in port.categories.all %}
+                            <a href="{% url 'category_list' cat.name %}">{{ cat.name }}</a>,
+                        {% endfor %}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row">Dependencies:</th>
-                    <td>{% for dependency in dependencies %}
+                    <td>
+                        {% for dependency in dependencies %}
                             {% for port in dependency.dependencies.all %}
                                 <a href="{% url 'port_detail' port.name %}">{{ port.name }}</a>,
                             {% endfor %}
                         {% endfor %}
-
-                        </td>
+                    </td>
                 </tr>
             </table>
         </div>
