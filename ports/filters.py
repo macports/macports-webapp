@@ -12,14 +12,6 @@ class BuildHistoryFilter(django_filters.FilterSet):
         fields = ['builder_name__name']
 
 
-class BuildHistoryFilterForPort(django_filters.FilterSet):
-    status = django_filters.CharFilter(lookup_expr='contains')
-
-    class Meta:
-        model = BuildHistory
-        fields = ['builder_name__name']
-
-
 class PortFilterByMultiple(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr='icontains')
     description = django_filters.CharFilter(lookup_expr='search')

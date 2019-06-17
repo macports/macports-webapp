@@ -6,7 +6,7 @@ function ajaxCall(url) {
             type: 'GET',
             url: url,
             data: {
-                'portname': $('#port_name').text(),
+                'port_name': $('#port_name').text(),
                 'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
             },
             success: display,
@@ -48,7 +48,7 @@ function loadTickets() {
         type: 'GET',
         url: '/ports/load_tickets/',
         data: {
-            'portname': $('#port_name').text(),
+            'port_name': $('#port_name').text(),
             'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
         },
         success: receiveTickets,
@@ -84,7 +84,7 @@ function buildHistoryAjax(page) {
         data: {
             'builder_name__name': $('#builder-filter').val(),
             'status': $('#status-filter').val(),
-            'portname': $('#port_name').text(),
+            'port_name': $('#port_name').text(),
             'page': page,
             'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
         },

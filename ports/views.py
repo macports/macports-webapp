@@ -12,7 +12,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from parsing_scripts import update
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant, OSDistribution
-from .filters import BuildHistoryFilter, PortFilterByMultiple, BuildHistoryFilterForPort
+from .filters import BuildHistoryFilter, PortFilterByMultiple
 
 
 def index(request):
@@ -85,10 +85,10 @@ def portdetail(request, name):
 
 def portdetail_summary(request):
     try:
-        portname = request.GET.get('portname')
-        port = Port.objects.get(name=portname)
+        port_name = request.GET.get('port_name')
+        port = Port.objects.get(name=port_name)
         port_id = port.id
-        maintainers = Maintainer.objects.filter(ports__name=portname)
+        maintainers = Maintainer.objects.filter(ports__name=port_name)
         dependencies = Dependency.objects.filter(port_name_id=port_id)
         variants = Variant.objects.filter(port_id=port_id)
 
@@ -103,15 +103,12 @@ def portdetail_summary(request):
 
 
 def portdetail_build_information(request):
-    portname = request.GET.get('portname')
     status = request.GET.get('status', '')
     builder = request.GET.get('builder_name__name', '')
     page = request.GET.get('page', 1)
     builders = list(Builder.objects.all().values_list('name', flat=True))
     builders.sort(key=LooseVersion, reverse=True)
-    builds = BuildHistoryFilterForPort(request.GET,
-                                       queryset=BuildHistory.objects.filter(port_name__iexact=portname).order_by(
-                                           '-time_start')).qs
+    builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().order_by('-time_start')).qs
     paginated_builds = Paginator(builds, 100)
     try:
         result = paginated_builds.get_page(page)
@@ -255,7 +252,7 @@ def search(request):
 
 # Respond to ajax call for loading tickets
 def tickets(request):
-    port_name = request.GET.get('portname')
+    port_name = request.GET.get('port_name')
     URL = "https://trac.macports.org/query?status=!closed&port=~{}".format(port_name)
     response = requests.get(URL)
     Soup = BeautifulSoup(response.content, 'html5lib')
