@@ -28,3 +28,8 @@ def fetch_port_build_history(request, portname):
         builds = BuildHistory.objects.filter(port_name__iexact=portname).order_by('-time_start')
         serialiser = BuildHistorySerialiser(builds, many=True)
         return JsonResponse(serialiser.data, safe=False)
+    else:
+        response = dict()
+        response['message'] = "Method Not Allowed"
+        response['status_code'] = 405
+        return JsonResponse(response)
