@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from ports.models import Port, BuildHistory
-from .serialisers import PortSerialiser, BuildHistorySerialiser
+from .serialisers import PortSerialiser, BuildHistorySerialiser, PortListSerialiser
 
 @csrf_exempt
 def fetch_port(request, name):
@@ -27,6 +27,18 @@ def fetch_port_build_history(request, portname):
     if request.method == 'GET':
         builds = BuildHistory.objects.filter(port_name__iexact=portname).order_by('-time_start')
         serialiser = BuildHistorySerialiser(builds, many=True)
+        return JsonResponse(serialiser.data, safe=False)
+    else:
+        response = dict()
+        response['message'] = "Method Not Allowed"
+        response['status_code'] = 405
+        return JsonResponse(response)
+
+
+def fetch_portnames_of_category(request, category):
+    if request.method == 'GET':
+        ports = Port.objects.filter(categories__name__iexact=category).only('name')
+        serialiser = PortListSerialiser(ports, many=True)
         return JsonResponse(serialiser.data, safe=False)
     else:
         response = dict()

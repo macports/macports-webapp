@@ -41,3 +41,9 @@ class BuildHistorySerialiser(serializers.ModelSerializer):
     class Meta:
         model = BuildHistory
         fields = ('builder_name', 'build_id', 'status', 'time_start', 'time_elapsed', 'watcher_id')
+
+
+class PortListSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Port
+        fields = ('name', )
