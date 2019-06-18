@@ -144,7 +144,14 @@ def all_builds_filter(request):
     port_name = request.GET.get('port_name')
     page = request.GET.get('page')
 
-    builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().order_by('-time_start')).qs
+    if status == 'unresolved':
+        all_latest_builds = BuildHistoryFilter({
+            'builder_name__name': builder,
+            'port_name': port_name,
+        }, queryset=BuildHistory.objects.all().order_by('port_name', 'builder_name', '-build_id').distinct('port_name', 'builder_name')).qs
+        builds = all_latest_builds.filter(status__icontains='failed')
+    else:
+        builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().order_by('-time_start')).qs
 
     paginated_builds = Paginator(builds, 100)
     try:
