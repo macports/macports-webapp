@@ -3,7 +3,7 @@ import os
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from parsing_scripts import load_initial_data
+from ports.models import Port
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JSON_FILE = os.path.join(BASE_DIR, 'tests', 'sample_data', 'portindex.json')
@@ -15,10 +15,10 @@ class TestURLs(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        ports = load_initial_data.open_portindex_json(JSON_FILE)
-        load_initial_data.load_categories_table(ports)
-        load_initial_data.load_ports_and_maintainers_table(ports)
-        load_initial_data.load_dependencies_table(ports)
+        ports = Port.Load().open_portindex_json(JSON_FILE)
+        Port.Load().load_categories_table(ports)
+        Port.Load().load_ports_and_maintainers_table(ports)
+        Port.Load().load_dependencies_table(ports)
 
     def test_home(self):
         response = self.client.get(reverse('home'))
