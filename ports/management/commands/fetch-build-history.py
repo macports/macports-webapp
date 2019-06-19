@@ -1,7 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from parsing_scripts import parse_build_history
-
 from ports.models import BuildHistory
 
 
