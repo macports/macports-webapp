@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from parsing_scripts import update
+from ports.models import Port
 
 
 class Command(BaseCommand):
@@ -12,9 +12,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            ports = update.open_portindex_json(options['path'])
-            update.full_update_ports(ports)
-            update.full_update_dependencies(ports)
+            ports = Port.Update().open_portindex_json(options['path'])
+            Port.Update().full_update_ports(ports)
+            Port.Update().full_update_dependencies(ports)
         except FileNotFoundError:
             raise CommandError('"{}" not found. Make sure "{}" is a valid JSON file and is in the root of the project'.format(
                 options['path'], options['path']
