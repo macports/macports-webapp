@@ -4,6 +4,12 @@ from django.views.decorators.csrf import csrf_exempt
 from ports.models import Port, BuildHistory
 from .serialisers import PortSerialiser, BuildHistorySerialiser, PortListSerialiser
 
+ERROR405 = {
+    'message': 'Method Not Allowed',
+    'status_code': 405
+}
+
+
 @csrf_exempt
 def fetch_port(request, name):
     if request.method == 'GET':
@@ -17,10 +23,7 @@ def fetch_port(request, name):
             response['status_code'] = 200
             return JsonResponse(response)
     else:
-        response = dict()
-        response['message'] = "Method Not Allowed"
-        response['status_code'] = 405
-        return JsonResponse(response)
+        return JsonResponse(ERROR405)
 
 
 def fetch_port_build_history(request, portname):
@@ -29,10 +32,7 @@ def fetch_port_build_history(request, portname):
         serialiser = BuildHistorySerialiser(builds, many=True)
         return JsonResponse(serialiser.data, safe=False)
     else:
-        response = dict()
-        response['message'] = "Method Not Allowed"
-        response['status_code'] = 405
-        return JsonResponse(response)
+        return JsonResponse(ERROR405)
 
 
 def fetch_portnames_of_category(request, category):
@@ -41,7 +41,4 @@ def fetch_portnames_of_category(request, category):
         serialiser = PortListSerialiser(ports, many=True)
         return JsonResponse(serialiser.data, safe=False)
     else:
-        response = dict()
-        response['message'] = "Method Not Allowed"
-        response['status_code'] = 405
-        return JsonResponse(response)
+        return JsonResponse(ERROR405)
