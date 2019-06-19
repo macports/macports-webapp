@@ -1,3 +1,5 @@
+import datetime
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -38,6 +40,27 @@ def fetch_port_build_history(request, portname):
 def fetch_portnames_of_category(request, category):
     if request.method == 'GET':
         ports = Port.objects.filter(categories__name__iexact=category).only('name')
+        serialiser = PortListSerialiser(ports, many=True)
+        return JsonResponse(serialiser.data, safe=False)
+    else:
+        return JsonResponse(ERROR405)
+
+
+def fetch_total_number_of_ports(request):
+    if request.method == 'GET':
+        count = Port.objects.all().count()
+        response = {
+            'count': count,
+            'time': datetime.datetime.now()
+        }
+        return JsonResponse(response)
+
+
+def fetch_paginated_ports(request, page_size, page_num):
+    if request.method == 'GET':
+        start = page_size * (page_num - 1)
+        end = page_size * page_num
+        ports = Port.objects.all().order_by('name').only('name')[start:end]
         serialiser = PortListSerialiser(ports, many=True)
         return JsonResponse(serialiser.data, safe=False)
     else:
