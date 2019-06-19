@@ -273,11 +273,20 @@ class Builder(models.Model):
 class BuildHistory(models.Model):
     builder_name = models.ForeignKey(Builder, on_delete=models.CASCADE, db_index=True)
     build_id = models.IntegerField()
-    status = models.CharField(max_length=50, db_index=True)
-    port_name = models.CharField(max_length=50, db_index=True)
-    time_start = models.DateTimeField(db_index=True)
+    status = models.CharField(max_length=50)
+    port_name = models.CharField(max_length=50)
+    time_start = models.DateTimeField()
     time_elapsed = models.TimeField(null=True)
     watcher_id = models.IntegerField()
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['port_name', 'builder_name', '-build_id']),
+            models.Index(fields=['port_name', 'status', 'builder_name']),
+            models.Index(fields=['-time_start']),
+            models.Index(fields=['port_name']),
+            models.Index(fields=['status'])
+        ]
 
     class Populate:
         builders = Builder.objects.values_list('name', flat=True)
