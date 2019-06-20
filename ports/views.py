@@ -148,13 +148,13 @@ def all_builds_filter(request):
         all_latest_builds = BuildHistoryFilter({
             'builder_name__name': builder,
             'port_name': port_name,
-        }, queryset=BuildHistory.objects.filter().order_by('port_name', 'builder_name', '-build_id').distinct('port_name', 'builder_name')).qs
+        }, queryset=BuildHistory.objects.filter().select_related('builder_name').order_by('port_name', 'builder_name', '-build_id').distinct('port_name', 'builder_name')).qs
         builds = []
         for build in all_latest_builds.iterator(chunk_size=2000):
             if 'failed' in build.status:
                 builds.append(build)
     else:
-        builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().order_by('-time_start')).qs
+        builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().select_related('builder_name').order_by('-time_start')).qs
 
     paginated_builds = Paginator(builds, 100)
     try:
