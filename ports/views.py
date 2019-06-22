@@ -109,7 +109,7 @@ def portdetail_build_information(request):
     page = request.GET.get('page', 1)
     builders = list(Builder.objects.all().values_list('name', flat=True))
     builders.sort(key=LooseVersion, reverse=True)
-    builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().order_by('-time_start')).qs
+    builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().select_related('builder_name').order_by('-time_start')).qs
     paginated_builds = Paginator(builds, 100)
     try:
         result = paginated_builds.get_page(page)
