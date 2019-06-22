@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Subquery
 
 from parsing_scripts import update
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant, OSDistribution
@@ -145,14 +146,11 @@ def all_builds_filter(request):
     page = request.GET.get('page')
 
     if status == 'unresolved':
-        all_latest_builds = BuildHistoryFilter({
+        all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name', '-build_id').distinct('port_name', 'builder_name')
+        builds = BuildHistoryFilter({
             'builder_name__name': builder,
             'port_name': port_name,
-        }, queryset=BuildHistory.objects.filter().select_related('builder_name').order_by('port_name', 'builder_name', '-build_id').distinct('port_name', 'builder_name')).qs
-        builds = []
-        for build in all_latest_builds.iterator(chunk_size=2000):
-            if 'failed' in build.status:
-                builds.append(build)
+        }, queryset=BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), status__icontains='failed').select_related('builder_name').order_by('-time_start')).qs
     else:
         builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().select_related('builder_name').order_by('-time_start')).qs
 
