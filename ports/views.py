@@ -47,7 +47,7 @@ def categorylist(request, cat):
 
 
 def variantlist(request, variant):
-    all_objects = Variant.objects.filter(variant=variant)
+    all_objects = Variant.objects.filter(variant=variant).select_related('port')
     all_objects_count = all_objects.count()
     paginated_objects = Paginator(all_objects, 100)
     page = request.GET.get('page', 1)
