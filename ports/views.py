@@ -133,9 +133,11 @@ def portdetail_stats(request):
 def all_builds_view(request):
     builders = list(Builder.objects.all().values_list('name', flat=True))
     builders.sort(key=LooseVersion, reverse=True)
+    jump_to_page = request.GET.get('page', 1)
 
     return render(request, 'ports/all_builds.html', {
         'builders': builders,
+        'jump_to_page': jump_to_page
     })
 
 

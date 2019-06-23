@@ -30,7 +30,7 @@ $(function () {
 
 $(function () {
     $('.filter').ready(function () {
-        runAjax(1)
+        runAjax($('#jump_to_page').text())
     });
 });
 
