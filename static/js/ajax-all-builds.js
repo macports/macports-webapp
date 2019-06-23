@@ -1,4 +1,4 @@
-function runAjax(page) {
+function runAllBuildsAjax(page) {
     var currentBuildFilter = null;
     currentBuildFilter = $.ajax({
             type: 'GET',
@@ -24,24 +24,24 @@ function runAjax(page) {
 
 $(function () {
     $('.filter').on('change', function () {
-        runAjax(1)
+        runAllBuildsAjax(1)
     });
 });
 
 $(function () {
     $('.filter').ready(function () {
-        runAjax($('#jump_to_page').text())
+        runAllBuildsAjax($('#jump_to_page').text())
     });
 });
 
 $(function () {
     $('#name-filter').keyup(function () {
-        runAjax(1)
+        runAllBuildsAjax(1)
     });
 });
 
 function changePage(page) {
-    runAjax(page)
+    runAllBuildsAjax(page)
 };
 
 function filterSuccess(data, textStatus, jqXHR) {
