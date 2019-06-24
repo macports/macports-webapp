@@ -37,5 +37,6 @@ urlpatterns = [
     path('ports/all_builds/filter/', views.all_builds_filter, name='all_builds_filter'),
     path('ports/all_builds/', views.all_builds_view, name='all_builds'),
     path('update/', views.update_api, name='update_api'),
-    path('api/v1/', include('api_v1.urls'))
+    path('api/v1/', include('api_v1.urls')),
+    url(r'^silk/', include('silk.urls', namespace='silk'))
 ]
