@@ -8,4 +8,4 @@ class Command(BaseCommand):
     help = "Populates the database with Initial data from portindex.json file"
 
     def handle(self, *args, **options):
-        BuildHistory.Populate().fetch()
+        BuildHistory.populate()

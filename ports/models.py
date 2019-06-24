@@ -289,45 +289,46 @@ class BuildHistory(models.Model):
             models.Index(fields=['status'])
         ]
 
-    class Populate:
+    @classmethod
+    def populate(cls):
         builders = Builder.objects.values_list('name', flat=True)
         url_prefix = 'https://build.macports.org'
 
-        def get_url_json(self, builder_name, build_number):
-            return '{}/json/builders/ports-{}-builder/builds/{}'.format(self.url_prefix, builder_name, build_number)
+        def get_url_json(builder_name, build_number):
+            return '{}/json/builders/ports-{}-builder/builds/{}'.format(url_prefix, builder_name, build_number)
 
-        def get_url_build(self, builder_name, build_number):
-            return '{}/builders/ports-{}-builder/builds/{}'.format(self.url_prefix, builder_name, build_number)
+        def get_url_build(builder_name, build_number):
+            return '{}/builders/ports-{}-builder/builds/{}'.format(url_prefix, builder_name, build_number)
 
-        def get_data_from_url(self, url):
+        def get_data_from_url(url):
             gcontext = ssl.SSLContext()
             with urllib.request.urlopen(url, context=gcontext) as u:
                 data = json.loads(u.read().decode())
             return data
 
-        def get_build_properties(self, array):
+        def get_build_properties(array):
             properties = {}
             for prop in array['properties']:
                 properties[prop[0]] = prop[1]
             return properties
 
-        def get_build_steps(self, array):
+        def get_build_steps(array):
             steps = {}
             for step in array['steps']:
                 steps[step['name']] = step
             return steps
 
-        def return_summary(self, builder_name, build_number, build_data):
+        def return_summary(builder_name, build_number, build_data):
             data = {}
 
-            properties = self.get_build_properties(build_data)
+            properties = get_build_properties(build_data)
             port_name = properties['portname']
             status = ' '.join(build_data['text'])
             time_start = build_data['times'][0]
             time_build = float(build_data['times'][1]) - float(build_data['times'][0])
 
             data['name'] = port_name
-            data['url'] = self.get_url_build(builder_name, build_number)
+            data['url'] = get_url_build(builder_name, build_number)
             data['watcher_id'] = properties['triggered_by'].split('/')[6]
             data['watcher_url'] = properties['triggered_by']
             data['status'] = status
@@ -339,7 +340,7 @@ class BuildHistory(models.Model):
 
             return data
 
-        def load_database(self, data):
+        def load_database(data):
             builder = Builder.objects.get(name=data['builder'])
             build = BuildHistory()
             build.port_name = data['name']
@@ -355,31 +356,30 @@ class BuildHistory(models.Model):
 
         fulldata = {}
 
-        def add_to_summary(self, data):
-            if not data['name'] in self.fulldata:
-                self.fulldata[data['name']] = {}
-            if not data['builder'] in self.fulldata[data['name']]:
-                self.fulldata[data['name']][data['builder']] = []
-            self.fulldata[data['name']][data['builder']].append(data)
+        def add_to_summary(data):
+            if not data['name'] in fulldata:
+                fulldata[data['name']] = {}
+            if not data['builder'] in fulldata[data['name']]:
+                fulldata[data['name']][data['builder']] = []
+            fulldata[data['name']][data['builder']].append(data)
 
-        def fetch(self):
-            for buildername in self.builders:
-                print()
+        for buildername in builders:
+            print()
 
-                # fetch the last build first in order to figure out its number
-                last_build_data = self.get_data_from_url(self.get_url_json(buildername, -1))
-                last_build_number = last_build_data['number']
-                build_number_loaded = BuildHistory.objects.filter(builder_name__name=buildername).order_by('-build_id')
-                if build_number_loaded:
-                    build_in_database = build_number_loaded[0].build_id + 1
-                else:
-                    build_in_database = last_build_number - 9999
+            # fetch the last build first in order to figure out its number
+            last_build_data = get_data_from_url(get_url_json(buildername, -1))
+            last_build_number = last_build_data['number']
+            build_number_loaded = BuildHistory.objects.filter(builder_name__name=buildername).order_by('-build_id')
+            if build_number_loaded:
+                build_in_database = build_number_loaded[0].build_id + 1
+            else:
+                build_in_database = last_build_number - 9999
 
-                for build_number in range(build_in_database, last_build_number):
-                    build_data = self.get_data_from_url(self.get_url_json(buildername, build_number))
-                    build_data_summary = self.return_summary(buildername, build_number, build_data)
-                    self.add_to_summary(build_data_summary)
-                    self.load_database(build_data_summary)
+            for build_number in range(build_in_database, last_build_number):
+                build_data = get_data_from_url(get_url_json(buildername, build_number))
+                build_data_summary = return_summary(buildername, build_number, build_data)
+                add_to_summary(build_data_summary)
+                load_database(build_data_summary)
 
 
 # Contains the latest state of the JSON submitted by the mpstats for user
