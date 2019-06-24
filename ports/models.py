@@ -274,7 +274,7 @@ class BuildHistory(models.Model):
     builder_name = models.ForeignKey(Builder, on_delete=models.CASCADE, db_index=True)
     build_id = models.IntegerField()
     status = models.CharField(max_length=50)
-    port_name = models.CharField(max_length=50)
+    port_name = models.CharField(max_length=100)
     time_start = models.DateTimeField()
     time_elapsed = models.TimeField(null=True)
     watcher_id = models.IntegerField()
