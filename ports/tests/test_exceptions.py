@@ -15,9 +15,7 @@ class TestExceptions(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        ports = Port.Load().open_portindex_json(JSON_FILE)
-        Port.Load().load_categories_table(ports)
-        Port.Load().load_ports_and_maintainers_table(ports)
+        Port.load(JSON_FILE)
 
     def test_400(self):
         response = self.client.get('/testingA404')

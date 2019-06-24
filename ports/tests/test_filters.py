@@ -15,10 +15,7 @@ class TestDependencies(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        ports = Port.Load().open_portindex_json(JSON_FILE)
-        Port.Load().load_categories_table(ports)
-        Port.Load().load_ports_and_maintainers_table(ports)
-        Port.Load().load_dependencies_table(ports)
+        Port.load(JSON_FILE)
 
     def test_search(self):
         response1 = self.client.get(reverse('ports_search'), data={

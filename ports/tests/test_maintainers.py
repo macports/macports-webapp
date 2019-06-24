@@ -15,9 +15,7 @@ class TestMaintainers(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        ports = Port.Load().open_portindex_json(JSON_FILE)
-        Port.Load().load_categories_table(ports)
-        Port.Load().load_ports_and_maintainers_table(ports)
+        Port.load(JSON_FILE)
 
     def test_unique_entries_created(self):
         self.assertEquals(Maintainer.objects.count(), 6, "Failed to create unique entities for maintainers")
@@ -54,7 +52,7 @@ class TestMaintainers(TestCase):
                 }
             ]
         }]
-        Port.Update().full_update_ports(updated_port)
+        Port.update(updated_port)
         port = Port.objects.get(name="port-A1")
         self.assertEquals(port.maintainers.count(), 2)
         self.assertEquals(Maintainer.objects.all().count(), 7)
