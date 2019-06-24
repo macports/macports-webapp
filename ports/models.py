@@ -142,13 +142,14 @@ class Port(models.Model):
             load_ports_and_maintainers_table(ports)
             load_dependencies_table(ports)
 
-    class Update:
-        def open_portindex_json(self, path='portindex.json'):
+    @classmethod
+    def update(cls, data, is_json=True):
+        def open_portindex_json(path):
             with open(path, "r") as file:
                 ports = json.load(file)
             return ports
 
-        def open_ports_from_list(self, list_of_ports, path='portindex.json'):
+        def open_ports_from_list(list_of_ports, path='portindex.json'):
             with open(path, "r") as file:
                 all_ports = json.load(file)
             ports_to_be_updated = []
@@ -157,7 +158,7 @@ class Port(models.Model):
                     ports_to_be_updated.append(port)
             return ports_to_be_updated
 
-        def full_update_ports(self, ports):
+        def full_update_ports(ports):
 
             for port in ports:
                 port_object, port_created = Port.objects.get_or_create(name=port['name'])
@@ -212,7 +213,7 @@ class Port(models.Model):
                 except KeyError:
                     pass
 
-        def full_update_dependencies(self, ports):
+        def full_update_dependencies(ports):
 
             for port in ports:
                 try:
@@ -248,6 +249,19 @@ class Port(models.Model):
                 except Port.DoesNotExist:
                     print(
                         "Failed to update depencies for {}. Port does not exist in the database.".format(port['name']))
+
+        if isinstance(data, str):
+            if is_json:
+                ports = open_portindex_json(data)
+                full_update_ports(ports)
+                full_update_dependencies(ports)
+            else:
+                ports = open_ports_from_list(data)
+                full_update_ports(ports)
+                full_update_dependencies(ports)
+        elif isinstance(data, list):
+            full_update_ports(data)
+            full_update_dependencies(data)
 
 
 class Dependency(models.Model):
