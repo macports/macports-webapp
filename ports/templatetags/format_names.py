@@ -5,8 +5,7 @@ register = template.Library()
 
 @register.filter('os_version')
 def trim_builder_name(builder_name):
-    first_trim = builder_name.replace('_x86_64', '')
-    return first_trim.replace('_legacy', '')
+    return builder_name.replace('_x86_64', '').replace('_legacy', '')
 
 
 @register.filter('split')
