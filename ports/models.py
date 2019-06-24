@@ -33,14 +33,15 @@ class Port(models.Model):
 
     objects = PortManager()
 
-    class Load:
-        def open_portindex_json(self, path):
+    @classmethod
+    def load(cls, data):
+        def open_portindex_json(path):
             with open(path, "r") as file:
                 ports = json.load(file)
             return ports
 
         # Add All the Categories to the Database using bulk_create
-        def load_categories_table(self, ports):
+        def load_categories_table(ports):
             categories = set()
             for port in ports:
                 try:
@@ -52,7 +53,7 @@ class Port(models.Model):
             Category.objects.bulk_create(batch)
             return
 
-        def load_ports_and_maintainers_table(self, ports):
+        def load_ports_and_maintainers_table(ports):
             for port in ports:
 
                 # Add Ports to the Database One-by-One
@@ -105,7 +106,7 @@ class Port(models.Model):
                 except KeyError:
                     pass
 
-        def load_dependencies_table(self, ports):
+        def load_dependencies_table(ports):
 
             def load_depends(list_of_dependencies, type_of_dependency, port):
                 dependency = Dependency()
@@ -131,6 +132,15 @@ class Port(models.Model):
 
                 except Port.DoesNotExist:
                     print("Failed to update dependencies for {}. Port not found in database.".format(port['name']))
+        if isinstance(data, list):
+            load_ports_and_maintainers_table(data)
+            load_categories_table(data)
+            load_dependencies_table(data)
+        elif isinstance(data, str):
+            ports = open_portindex_json(data)
+            load_categories_table(ports)
+            load_ports_and_maintainers_table(ports)
+            load_dependencies_table(ports)
 
     class Update:
         def open_portindex_json(self, path='portindex.json'):

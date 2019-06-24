@@ -12,10 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            ports = Port.Load().open_portindex_json(options['path'])
-            Port.Load().load_categories_table(ports)
-            Port.Load().load_ports_and_maintainers_table(ports)
-            Port.Load().load_dependencies_table(ports)
+            Port.load(options['path'])
         except FileNotFoundError:
             raise CommandError('"{}" not found. Make sure "{}" is a valid JSON file and is in the root of the project'.format(
                 options['path'], options['path']
