@@ -7,6 +7,8 @@
     <script src="{% static 'js/ajax-port-detail.js' %}"></script>
 {% endblock %}
 
+{% block title %}{{ req_port.name }}- Port |{% endblock %}
+
 {% block content %}
     <br>
     <form onSubmit="return false">

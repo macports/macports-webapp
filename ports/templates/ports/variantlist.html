@@ -5,6 +5,8 @@
     <script src="{% static 'js/ajax-variants.js' %}"></script>
 {% endblock %}
 
+{% block title %}{{ variant }} Variant |{% endblock %}
+
 {% block content %}
     <br>
     {% csrf_token %}

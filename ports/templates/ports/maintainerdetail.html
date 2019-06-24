@@ -8,6 +8,8 @@
     <script src="{% static 'js/ajax-maintainers.js' %}"></script>
 {% endblock %}
 
+{% block title %}{{ maintainer }}: Maintainer |{% endblock %}
+
 {% block content %}
     <br>
     {% if maintainers.count > 1 %}

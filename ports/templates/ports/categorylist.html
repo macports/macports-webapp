@@ -5,6 +5,8 @@
     <script src="{% static 'js/ajax-categories.js' %}"></script>
 {% endblock %}
 
+{% block title %}{{ category }}- Category |{% endblock %}
+
 {% block content %}
     <br>
     {% csrf_token %}
