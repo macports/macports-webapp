@@ -27,7 +27,7 @@
         <div class="rounded bg-light border border-secondary" style="padding: 8px">
         <h4>{{ req_port.name }}</h4>
         <p class="text-secondary">{{ req_port.description }}</p>
-        <p class="float-right"><a class="btn-warning btn" href="https://github.com/macports/macports-ports/tree/master/{{ port.portdir }}/Portfile"
+        <p class="float-right"><a class="btn-warning btn" href="https://github.com/macports/macports-ports/tree/master/{{ req_port.portdir }}/Portfile"
                target="_blank">View on Github</a><br><br></p>
             <h5>Port Health:
                 {% for builder, latest_build in latest_builds.items %}
