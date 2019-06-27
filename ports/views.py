@@ -67,13 +67,17 @@ def variantlist(request, variant):
 # Views for port-detail page START
 def portdetail(request, name):
     try:
+        req_port = Port.objects.get(name__iexact=name)
+
+        all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name', '-build_id').distinct('port_name', 'builder_name')
+        port_latest_builds = list(BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), port_name__iexact=name).values('builder_name__name', 'build_id', 'status'))
+
         builders = list(Builder.objects.all().values_list('name', flat=True))
+
         builders.sort(key=LooseVersion, reverse=True)
         latest_builds = {}
         for builder in builders:
-            latest_builds[builder] = BuildHistory.objects.filter(builder_name__name=builder,
-                                                                 port_name=name).order_by('-time_start').first()
-        req_port = Port.objects.get(name__iexact=name)
+            latest_builds[builder] = next((item for item in port_latest_builds if item['builder_name__name'] == builder), False)
         return render(request, 'ports/portdetail.html', {
             'req_port': req_port,
             'latest_builds': latest_builds,
