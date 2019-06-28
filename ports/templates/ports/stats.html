@@ -21,8 +21,8 @@
         data.addColumn('string', 'OSX Version');
         data.addColumn('number', 'Users');
         data.addRows([
-            {% for version, users in os_dict.items %}
-          ['{{ version }}', {{ users }}],
+            {% for os in os_distribution %}
+          ['{{ os.os_version }}', {{ os.num }}],
             {% endfor %}
         ]);
 
@@ -83,4 +83,21 @@
         </p>
     </div>
 </div>
+    <br>
+    <h4>Ports with highest installations in last 30 days (Top 50)</h4>
+    <p>Currently, this does not consider if a port was requested or not.</p>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Port</th>
+            <th scope="col">Installations</th>
+        </tr>
+        </thead>
+        {% for port in port_distribution %}
+            <tr>
+                <td><a href="{% url 'port_detail' port.port%}">{{ port.port }}</a></td>
+                <td>{{ port.num }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

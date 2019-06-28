@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Subquery
+from django.db.models import Subquery, Count
 
 from parsing_scripts import update
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant, OSDistribution, Submission, PortInstallation
@@ -182,21 +182,23 @@ def all_builds_filter(request):
 
 def stats(request):
     current_week = datetime.datetime.today().isocalendar()[1]
-    all_submissions = User.objects.all()
-    total_unique_users = all_submissions.distinct('uuid').count()
-    current_week_unique = all_submissions.filter(updated_at__week=current_week).distinct('uuid').count()
-    last_week_unique = all_submissions.filter(updated_at__week=current_week - 1).distinct('uuid').count()
+    all_submissions = Submission.objects.all()
+    total_unique_users = all_submissions.distinct('user').count()
+    current_week_unique = all_submissions.filter(timestamp__week=current_week).distinct('user').count()
+    last_week_unique = all_submissions.filter(timestamp__week=current_week - 1).distinct('user').count()
 
-    os_dict = {}
-    for os_obj in OSDistribution.objects.filter(month=datetime.datetime.now().month, year=datetime.datetime.now().year):
-        os_dict[os_obj.osx_version] = os_obj.users.distinct('uuid').count()
+    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now()-datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
+    os_distribution = Submission.objects.filter(id__in=Subquery(submissions_unique.values('id'))).values('os_version').annotate(num=Count('os_version'))
+
+    port_distribution = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_unique.values('id'))).values('port').annotate(num=Count('port')).order_by('-num')[:50]
 
     return render(request, 'ports/stats.html', {
         'total_submissions': all_submissions.count(),
         'unique_users': total_unique_users,
         'current_week': current_week_unique,
         'last_week': last_week_unique,
-        'os_dict': os_dict
+        'os_distribution': os_distribution,
+        'port_distribution': port_distribution
     })
 
 
@@ -340,7 +342,7 @@ def stats_submit(request):
             received_json = json.loads(request.POST.get('submission[data]'))
 
             Submission.populate(received_json)
-            PortInstallation.populate(received_json['active_json'])
+            PortInstallation.populate(received_json['active_ports'])
 
             return HttpResponse("Success")
 
