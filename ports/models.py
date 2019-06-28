@@ -453,12 +453,12 @@ class Submission(models.Model):
         uuid_obj, created = UUID.objects.get_or_create(uuid=json_object['id'])
         sub = Submission()
         sub.user = uuid_obj
-        sub.os_version = json_object['osx_version']
-        sub.xcode_version = json_object['xcode_version']
-        sub.os_arch = json_object['os_arch']
-        sub.macports_version = json_object['macports_version']
+        sub.os_version = json_object['os']['osx_version']
+        sub.xcode_version = json_object['os']['xcode_version']
+        sub.os_arch = json_object['os']['os_arch']
+        sub.macports_version = json_object['os']['macports_version']
         sub.save()
-        return
+        return sub.id
 
 
 class PortInstallation(models.Model):
@@ -484,3 +484,4 @@ class PortInstallation(models.Model):
             obj.requested = True if port.get('requested') is "true" else False
             ports.append(obj)
         PortInstallation.objects.bulk_create(ports)
+        return
