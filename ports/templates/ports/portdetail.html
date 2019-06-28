@@ -24,6 +24,15 @@
     <span style="display: none" id="port_name">{{ req_port.name }}</span>
     <br>
     <div id="main-content">
+
+    <!-- Obsolete port warning start-->
+    {% if req_port.replaced_by %}
+        <div class="alert alert-warning" role="alert">
+            This port is obsolete. It has been replaced by <a href="{% url 'port_detail' req_port.replaced_by %}">{{ req_port.replaced_by }}</a>.
+        </div>
+    {% endif %}
+    <!-- Obsolete port warning end-->
+
         <div class="rounded bg-light border border-secondary" style="padding: 8px">
         <h4>{{ req_port.name }}</h4>
         <p class="text-secondary">{{ req_port.description }}</p>
