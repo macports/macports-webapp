@@ -110,10 +110,14 @@ def portdetail_summary(request):
 def portdetail_build_information(request):
     status = request.GET.get('status', '')
     builder = request.GET.get('builder_name__name', '')
+    port_name = request.GET.get('port_name', '')
     page = request.GET.get('page', 1)
     builders = list(Builder.objects.all().values_list('name', flat=True))
     builders.sort(key=LooseVersion, reverse=True)
-    builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().select_related('builder_name').order_by('-time_start')).qs
+    builds = BuildHistoryFilter({
+        'builder_name__name': builder,
+        'status': status,
+    }, queryset=BuildHistory.objects.filter(port_name__iexact=port_name).select_related('builder_name').order_by('-time_start')).qs
     paginated_builds = Paginator(builds, 100)
     try:
         result = paginated_builds.get_page(page)
