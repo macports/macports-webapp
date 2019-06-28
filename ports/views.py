@@ -12,7 +12,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery
 
 from parsing_scripts import update
-from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant, OSDistribution
+from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant, OSDistribution, Submission, PortInstallation
 from .filters import BuildHistoryFilter, PortFilterByMultiple
 
 
@@ -333,35 +333,14 @@ def search_ports_in_variant(request):
     })
 
 
-# Accept submissions from mpstats and update the users table
-def populate_os_table(user_obj):
-    os = user_obj.osx_version
-    month = user_obj.updated_at.month
-    year = user_obj.updated_at.year
-    os_obj, created = OSDistribution.objects.get_or_create(
-        osx_version=os,
-        month=month,
-        year=year,
-    )
-    os_obj.users.add(user_obj)
-    return
-
-
 @csrf_exempt
 def stats_submit(request):
     if request.method == "POST":
         try:
             received_json = json.loads(request.POST.get('submission[data]'))
 
-            user = User()
-            user.uuid = received_json['id']
-            user.osx_version = received_json['os']['osx_version']
-            user.macports_version = received_json['os']['macports_version']
-            user.os_arch = received_json['os']['os_arch']
-            user.xcode_version = received_json['os']['xcode_version']
-            user.full_json = received_json
-            user.save()
-            populate_os_table(user)
+            Submission.populate(received_json)
+            PortInstallation.populate(received_json['active_json'])
 
             return HttpResponse("Success")
 
