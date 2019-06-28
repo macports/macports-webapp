@@ -469,7 +469,7 @@ class PortInstallation(models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields=['submission_id']),
+            models.Index(fields=['submission']),
             models.Index(fields=['port'])
         ]
 
