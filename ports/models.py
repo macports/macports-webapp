@@ -284,11 +284,15 @@ class Port(models.Model):
 
 class Dependency(models.Model):
     port_name = models.ForeignKey(Port, on_delete=models.CASCADE, related_name="dependent_port")
-    dependencies = models.ManyToManyField(Port, db_index=True)
+    dependencies = models.ManyToManyField(Port)
     type = models.CharField(max_length=100)
 
     class Meta:
         unique_together = [['port_name', 'type']]
+
+        indexes = [
+            models.Index(fields=['port_name'])
+        ]
 
 
 class Variant(models.Model):
@@ -297,15 +301,20 @@ class Variant(models.Model):
 
 
 class Maintainer(models.Model):
-    name = models.CharField(max_length=50, db_index=True, default='')
-    domain = models.CharField(max_length=50, db_index=True, default='')
-    github = models.CharField(max_length=50, db_index=True, default='')
-    ports = models.ManyToManyField(Port, related_name='maintainers', db_index=True)
+    name = models.CharField(max_length=50, default='')
+    domain = models.CharField(max_length=50, default='')
+    github = models.CharField(max_length=50, default='')
+    ports = models.ManyToManyField(Port, related_name='maintainers')
 
     objects = PortManager()
 
     class Meta:
         unique_together = [['name', 'domain', 'github']]
+
+        indexes = [
+            models.Index(fields=['github']),
+            models.Index(fields=['name', 'domain'])
+        ]
 
 
 class Builder(models.Model):
@@ -313,7 +322,7 @@ class Builder(models.Model):
 
 
 class BuildHistory(models.Model):
-    builder_name = models.ForeignKey(Builder, on_delete=models.CASCADE, db_index=True)
+    builder_name = models.ForeignKey(Builder, on_delete=models.CASCADE)
     build_id = models.IntegerField()
     status = models.CharField(max_length=50)
     port_name = models.CharField(max_length=100)
@@ -328,7 +337,8 @@ class BuildHistory(models.Model):
             models.Index(fields=['port_name', 'builder_name']),
             models.Index(fields=['-time_start']),
             models.Index(fields=['port_name']),
-            models.Index(fields=['status'])
+            models.Index(fields=['status']),
+            models.Index(fields=['builder_name'])
         ]
 
     @classmethod
