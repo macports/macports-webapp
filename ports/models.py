@@ -364,12 +364,6 @@ class BuildHistory(models.Model):
                 properties[prop[0]] = prop[1]
             return properties
 
-        def get_build_steps(array):
-            steps = {}
-            for step in array['steps']:
-                steps[step['name']] = step
-            return steps
-
         def return_summary(builder_name, build_number, build_data):
             data = {}
 
