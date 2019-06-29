@@ -2,6 +2,7 @@ import urllib.request
 import ssl
 import json
 import datetime
+import os
 
 from django.db import models
 from django.contrib.postgres.fields import JSONField
@@ -250,18 +251,35 @@ class Port(models.Model):
                     print(
                         "Failed to update depencies for {}. Port does not exist in the database.".format(port['name']))
 
+        # Takes in a list of JSON objects and runs the updates
+        def run_updates(ports):
+            full_update_ports(ports)
+            full_update_dependencies(ports)
+
+        # Block to find type of passed "data" and run updates accordingly
+        # ============ START ============
+
+        # If the passed object is a valid path, open it and parse the JSON objects
         if isinstance(data, str):
-            if is_json:
+            if os.path.exists(data):
                 ports = open_portindex_json(data)
-                full_update_ports(ports)
-                full_update_dependencies(ports)
+                run_updates(ports)
+            else:
+                print('File "{}" not found.'.format(data))
+
+        # If the passed object is a list
+        elif isinstance(data, list):
+            # If the passed list contains JSON objects, run the updates directly
+            if is_json:
+                full_update_ports(data)
+                full_update_dependencies(data)
+
+            # If the passed list contains names of ports, first fetch corresponding JSON objects then run the updates
             else:
                 ports = open_ports_from_list(data)
-                full_update_ports(ports)
-                full_update_dependencies(ports)
-        elif isinstance(data, list):
-            full_update_ports(data)
-            full_update_dependencies(data)
+                run_updates(ports)
+
+        # ============ END ==============
 
 
 class Dependency(models.Model):
