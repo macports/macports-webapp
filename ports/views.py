@@ -11,7 +11,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery, Count
 
-from parsing_scripts import update
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant, OSDistribution, Submission, PortInstallation
 from .filters import BuildHistoryFilter, PortFilterByMultiple
 
