@@ -29,16 +29,15 @@
         <br>
         </div>
         <div class="col-lg-4">
-            <div class="bg-secondary" style="padding: 12px;">
-                <h5 style="color: white;">Top Installations this Month</h5>
+            <div class="bg-secondary pl-2 pt-1">
+                <h5 style="color: white;">Top Installations</h5>
+                <p class="text-light">Requested ports in last 30 days</p>
             </div>
             <div class="border" style="padding: 12px">
                 <ul>
-                    <li><a href="{% url 'port_detail' 'AppHack' %}"> AppHack </a><span class="float-right">32</span> </li>
-                    <li>mpstats <span class="float-right">27</span> </li>
-                    <li>HermesApp <span class="float-right">15</span> </li>
-                    <li>IcyJuice <span class="float-right">12</span> </li>
-                    <li>random <span class="float-right">9</span> </li>
+                    {% for top_port in top_ports %}
+                    <li><a href="{% url 'port_detail' top_port.port %}">{{ top_port.port }}</a><span class="float-right">{{ top_port.num }}</span> </li>
+                    {% endfor %}
                 </ul>
                 <a href="/statistics">Continue to Detailed Stats</a>
             </div>
