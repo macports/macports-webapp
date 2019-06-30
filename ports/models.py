@@ -501,7 +501,7 @@ class PortInstallation(models.Model):
             obj.submission_id = submission_id
             obj.port = port['name']
             obj.version = port['version']
-            obj.requested = True if port.get('requested') is "true" else False
+            obj.requested = True if port.get('requested') == "true" else False
             ports.append(obj)
         PortInstallation.objects.bulk_create(ports)
         return
