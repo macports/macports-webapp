@@ -19,7 +19,7 @@
         // Create the data table.
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'OSX Version');
-        data.addColumn('number', 'Users');
+        data.addColumn('number', 'Number of Users');
         data.addRows([
             {% for os in os_distribution %}
           ['{{ os.os_version }}', {{ os.num }}],
@@ -28,7 +28,7 @@
 
         // Set chart options
         var options = {'title':'OS Distribution',
-                       'width':500,
+                       'width':650,
                        'height':400};
 
         // Instantiate and draw our chart, passing in some options.
@@ -71,17 +71,12 @@
 </table>
     <br>
     <hr>
-<div class="row">
-    <div class="col-lg-6 text-center">
-        <div id="chart_div"></div>
-    </div>
-    <div class="col-lg-6 text-center">
-        <br>
-        <h5>What does this chart show?</h5>
-        <p>This chart shows the distribution of <b>OSX Version</b> vs the <b>number of unique users</b> for the
-            ongoing month.
-        </p>
-    </div>
+<div class="container text-center" style="width: 650px;">
+    <div id="chart_div"></div>
+    <h5>What does this chart show?</h5>
+    <p>This chart shows the distribution of <b>OSX Version</b> vs the <b>number of unique users</b> for the
+        ongoing month.
+    </p>
 </div>
     <br>
     <h4>Ports with highest installations in last 30 days (Top 50)</h4>
