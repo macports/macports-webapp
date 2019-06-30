@@ -271,9 +271,7 @@ class Port(models.Model):
         elif isinstance(data, list):
             # If the passed list contains JSON objects, run the updates directly
             if is_json:
-                full_update_ports(data)
-                full_update_dependencies(data)
-
+                run_updates(data)
             # If the passed list contains names of ports, first fetch corresponding JSON objects then run the updates
             else:
                 ports = open_ports_from_list(data)
