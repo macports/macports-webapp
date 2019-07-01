@@ -78,10 +78,9 @@
             </div>
             <br>
             <div class="rounded border" style="padding: 8px">
-                <h5>Quick Stats for {{ port.name }}</h5>
+                <h6>For last 30 days</h6>
                 <ul class="list-group">
-                    <li class="list-group-item">Rank (last 4 weeks): <strong class="float-right">542</strong></li>
-                    <li class="list-group-item">Total Installations (last 4 weeks): <strong class="float-right">37</strong></li>
+                    <li class="list-group-item">Requested Installations:<strong class="float-right">{{ requested_count.num }}</strong></li>
                     <li class="list-group-item"><a href="javascript:void(0);" onclick="tabClick(this, 'stats')">View Detailed
                         Statistics for {{ port.name }}</a></li>
                 </ul>
