@@ -218,13 +218,6 @@ def stats(request):
     })
 
 
-def stats_portdetail(request, name):
-    port = Port.objects.get(name=name)
-    return render(request, 'ports/stats_portdetail.html', {
-        'port': port,
-    })
-
-
 def get_ports_of_maintainers(maintainers, request):
     i = 0
     for maintainer in maintainers:
