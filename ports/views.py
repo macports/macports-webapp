@@ -368,8 +368,7 @@ def update_api(request):
         if key == os.environ['UPDATE_API_KEY']:
             try:
                 received_json = json.loads(request.POST.get('ports'))
-                update.full_update_ports(received_json)
-                update.full_update_dependencies(received_json)
+                Port.update(received_json)
                 return HttpResponse("Updating successful")
             except:
                 return HttpResponse("Failed to parse the JSON")
