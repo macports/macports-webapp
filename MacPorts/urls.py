@@ -22,7 +22,6 @@ urlpatterns = [
     path('', views.index, name='home'),
     path('statistics/submit/', views.stats_submit, name='stats_submit'),
     path('statistics/', views.stats, name='stats_home'),
-    url(r'^statistics/port/(?P<name>[-a-zA-Z0-9_.]+)/$', views.stats_portdetail, name='stats_portdetail'),
     url(r'^maintainer/github/(?P<github_handle>[-a-zA-Z0-9_.]+)/$', views.maintainer_detail_github, name='maintainer_detail_github'),
     url(r'^maintainer/email/(?P<name>[-a-zA-Z0-9_.]+)__(?P<domain>[-a-zA-Z0-9_.]+)/$', views.maintainer_detail_email, name='maintainer_detail_email'),
     path('port/', include('ports.urls'), name='port-index'),
