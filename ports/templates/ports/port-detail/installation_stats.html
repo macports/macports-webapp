@@ -1,14 +1,14 @@
 {% csrf_token %}
 <br><br>
-{% if total_count.num > 0 %}
+{% if total_count.port__count > 0 %}
 <table class="table table-striped">
     <tr>
         <th scope="row">Total Installations in last 30 days</th>
-        <td>{{ total_count.num }}</td>
+        <td>{{ total_count.port__count }}</td>
     </tr>
     <tr>
         <th scope="row">Requested Installations in last 30 days</th>
-        <td>{{ requested_count.num }}</td>
+        <td>{{ requested_count.port__count }}</td>
     </tr>
 </table>
 {% else %}
