@@ -18,7 +18,7 @@ from .filters import BuildHistoryFilter, PortFilterByMultiple
 def index(request):
     categories = Category.objects.all().order_by('name')
 
-    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now() - datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
+    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
     top_ports = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_unique.values('id')), requested=True).exclude(port__exact='mpstats-gsoc').values('port').annotate(num=Count('port')).order_by('-num')[:5]
 
     return render(request, 'ports/index.html', {
@@ -145,7 +145,7 @@ def portdetail_build_information(request):
 def portdetail_stats(request):
     port_name = request.GET.get('port_name')
     port = Port.objects.get(name__iexact=port_name)
-    submissions_last_30_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now() - datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
+    submissions_last_30_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
     requested_count = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id')), requested=True, port__exact=port_name).values('port').annotate(num=Count('port')).first()
     total_count = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id')), port__exact=port_name).values('port').annotate(num=Count('port')).first()
     return render(request, 'ports/port-detail/installation_stats.html', {
@@ -203,7 +203,7 @@ def stats(request):
     current_week_unique = all_submissions.filter(timestamp__week=current_week).distinct('user').count()
     last_week_unique = all_submissions.filter(timestamp__week=current_week - 1).distinct('user').count()
 
-    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now()-datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
+    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
     os_distribution = Submission.objects.filter(id__in=Subquery(submissions_unique.values('id'))).values('os_version').annotate(num=Count('os_version'))
 
     port_distribution = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_unique.values('id'))).values('port').annotate(num=Count('port')).order_by('-num')[:50]
