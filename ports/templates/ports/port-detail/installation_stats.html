@@ -1,0 +1,20 @@
+{% csrf_token %}
+<br><br>
+{% if total_count.num > 0 %}
+<table class="table table-striped">
+    <tr>
+        <th scope="row">Total Installations in last 30 days</th>
+        <td>{{ total_count.num }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Requested Installations in last 30 days</th>
+        <td>{{ requested_count.num }}</td>
+    </tr>
+</table>
+{% else %}
+<div class="text-center container" style="max-width: 700px;">
+    <h5>No stats have been submitted for this port yet</h5>
+    <p>You may visit <a href="{% url 'stats_home' %}">statistics</a> page to have an overall look at the submitted
+    statistics.</p>
+</div>
+{% endif %}
