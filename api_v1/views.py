@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from ports.models import Port, BuildHistory
-from .serialisers import PortSerialiser, BuildHistorySerialiser, PortListSerialiser
+from .serializers import PortSerializer, BuildHistorySerializer, PortListSerializer
 
 ERROR405 = {
     'message': 'Method Not Allowed',
@@ -17,8 +17,8 @@ def fetch_port(request, name):
     if request.method == 'GET':
         try:
             port = Port.objects.get(name__iexact=name)
-            serialiser = PortSerialiser(port, context={'request': request})
-            return JsonResponse(serialiser.data, safe=False)
+            serializer = PortSerializer(port, context={'request': request})
+            return JsonResponse(serializer.data, safe=False)
         except Port.DoesNotExist:
             response = dict()
             response['message'] = "Requested port does not exist"
@@ -31,8 +31,8 @@ def fetch_port(request, name):
 def fetch_port_build_history(request, portname):
     if request.method == 'GET':
         builds = BuildHistory.objects.filter(port_name__iexact=portname).order_by('-time_start')
-        serialiser = BuildHistorySerialiser(builds, many=True)
-        return JsonResponse(serialiser.data, safe=False)
+        serializer = BuildHistorySerializer(builds, many=True)
+        return JsonResponse(serializer.data, safe=False)
     else:
         return JsonResponse(ERROR405)
 
@@ -40,8 +40,8 @@ def fetch_port_build_history(request, portname):
 def fetch_portnames_of_category(request, category):
     if request.method == 'GET':
         ports = Port.objects.filter(categories__name__iexact=category).only('name')
-        serialiser = PortListSerialiser(ports, many=True)
-        return JsonResponse(serialiser.data, safe=False)
+        serializer = PortListSerializer(ports, many=True)
+        return JsonResponse(serializer.data, safe=False)
     else:
         return JsonResponse(ERROR405)
 
@@ -61,7 +61,7 @@ def fetch_paginated_ports(request, page_size, page_num):
         start = page_size * (page_num - 1)
         end = page_size * page_num
         ports = Port.objects.all().order_by('name').only('name')[start:end]
-        serialiser = PortListSerialiser(ports, many=True)
-        return JsonResponse(serialiser.data, safe=False)
+        serializer = PortListSerializer(ports, many=True)
+        return JsonResponse(serializer.data, safe=False)
     else:
         return JsonResponse(ERROR405)
