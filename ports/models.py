@@ -459,7 +459,7 @@ class Submission(models.Model):
     xcode_version = models.CharField(max_length=10)
     os_arch = models.CharField(max_length=20)
     macports_version = models.CharField(max_length=10)
-    timestamp = models.DateTimeField(auto_now=True)
+    timestamp = models.DateTimeField()
 
     class Meta:
         indexes = [
@@ -469,7 +469,7 @@ class Submission(models.Model):
         ]
 
     @classmethod
-    def populate(cls, json_object):
+    def populate(cls, json_object, timestamp):
         uuid_obj, created = UUID.objects.get_or_create(uuid=json_object['id'])
         sub = Submission()
         sub.user = uuid_obj
@@ -477,6 +477,7 @@ class Submission(models.Model):
         sub.xcode_version = json_object['os']['xcode_version']
         sub.os_arch = json_object['os']['os_arch']
         sub.macports_version = json_object['os']['macports_version']
+        sub.timestamp = timestamp
         sub.save()
         return sub.id
 
