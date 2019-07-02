@@ -150,9 +150,11 @@ def portdetail_stats(request):
     submissions_last_30_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
     requested_count = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id')), requested=True, port__iexact=port_name).values('port').aggregate(Count('port'))
     total_count = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id')), port__iexact=port_name).values('port').aggregate(Count('port'))
+    version_distribution = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id')), port__iexact=port_name).values('version').annotate(num=Count('version'))
     return render(request, 'ports/port-detail/installation_stats.html', {
         'requested_count': requested_count,
-        'total_count': total_count
+        'total_count': total_count,
+        'version_distribution': version_distribution
     })
 
 
