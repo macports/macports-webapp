@@ -80,7 +80,9 @@
             <div class="rounded border" style="padding: 8px">
                 <h6>For last 30 days</h6>
                 <ul class="list-group">
-                    <li class="list-group-item">Requested Installations:<strong class="float-right">{{ requested_count.port__count }}</strong></li>
+                    <li class="list-group-item">Requested Installations:<strong class="float-right">
+                        {{ requested_count.port__count }}</strong></li>
+                    <li class="list-group-item">Total Installations:<strong class="float-right">{{ total_count.port__count }}</strong></li>
                     <li class="list-group-item"><a href="javascript:void(0);" onclick="tabClick(this, 'stats')">View Detailed
                         Statistics for {{ port.name }}</a></li>
                 </ul>
