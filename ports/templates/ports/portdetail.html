@@ -59,16 +59,16 @@
     <!-- Tabs Start -->
         <ul class="nav nav-tabs" id="tabs">
             <li class="nav-item">
-                <a href="javascript:void(0);" class="nav-link active" onclick="tabClick(this, 'summary')">Summary</a>
+                <a href="javascript:void(0);" id="summary" class="nav-link active" onclick="tabClick(this, 'summary')">Summary</a>
             </li>
             <li class="nav-item">
-                <a href="javascript:void(0);" class="nav-link" onclick="tabClick(this, 'builds')">Build Information</a>
+                <a href="javascript:void(0);" id="build-history" class="nav-link" onclick="tabClick(this, 'builds')">Build Information</a>
             </li>
             <li class="nav-item">
-                <a href="javascript:void(0);" class="nav-link" onclick="tabClick(this, 'stats')">Installation Stats</a>
+                <a href="javascript:void(0);" id="stats" class="nav-link" onclick="tabClick(this, 'stats')">Installation Stats</a>
             </li>
             <li class="nav-item">
-                <a href="javascript:void(0);" class="nav-link" onclick="showTickets(this)">
+                <a href="javascript:void(0);" id="tickets" class="nav-link" onclick="showTickets(this)">
                     Trac Tickets <span id="tickets-count" class="badge badge-light border border-secondary"></span>
                 </a>
             </li>
@@ -89,4 +89,11 @@
 {% endblock %}
 
 {% block script %}
+    <script>
+    var tabsArray = ["summary", "stats", "builds", "tickets"];
+    if (jQuery.inArray({{ tab }}, tabsArray !== -1)) {
+        $('#{{ tab }}').trigger("click");
+    }
+    </script>
+
 {% endblock %}

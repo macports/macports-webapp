@@ -72,6 +72,7 @@ def variantlist(request, variant):
 def portdetail(request, name):
     try:
         req_port = Port.objects.get(name__iexact=name)
+        tab = request.GET.get('tab', "summary")
 
         all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name', '-build_id').distinct('port_name', 'builder_name')
         port_latest_builds = list(BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), port_name__iexact=name).values('builder_name__name', 'build_id', 'status'))
@@ -85,6 +86,7 @@ def portdetail(request, name):
         return render(request, 'ports/portdetail.html', {
             'req_port': req_port,
             'latest_builds': latest_builds,
+            'tab': tab
         })
     except Port.DoesNotExist:
         return render(request, 'ports/exceptions/port_not_found.html', {

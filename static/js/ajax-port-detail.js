@@ -26,14 +26,13 @@ function tabClick(e, slug) {
     $(e).addClass("active");
     ajaxCall("/port/ajax-call/" + slug)
     $('#tickets-box').hide();
+    history.pushState(null, null, "?tab=" + slug)
 }
-
 
 $(function () {
     $('#search').ready(function () {
-        ajaxCall("/port/ajax-call/summary")
         loadTickets();
-        $('#tickets-box').hide()
+        $('#tickets-box').hide();
     });
 });
 
@@ -71,6 +70,7 @@ function showTickets(e) {
     $(e).addClass("active");
     $('#display-box').html("");
     $('#tickets-box').show();
+    history.pushState(null, null, "?tab=tickets")
     
 }
 
