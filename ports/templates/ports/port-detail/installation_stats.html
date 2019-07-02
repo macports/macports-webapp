@@ -1,17 +1,33 @@
+<br>
 {% if total_count.port__count > 0 %}
-<table class="table table-striped">
-    <tr>
-        <th scope="row">Total Installations in last 30 days</th>
-        <td>{{ total_count.port__count }}</td>
-    </tr>
-    <tr>
-        <th scope="row">Requested Installations in last 30 days</th>
-        <td>{{ requested_count.port__count }}</td>
-    </tr>
-</table>
+    <div class="row">
+        <div class="col-lg-5 border p-2">
+            <h5>Quick stats for last 30 days</h5>
+            <table class="table table-striped border">
+                <tr>
+                    <th scope="row">Total Installations</th>
+                    <td>{{ total_count.port__count }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Requested Installations</th>
+                    <td>{{ requested_count.port__count }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Most Installed Version</th>
+                    <td><strong>{{ version_distribution.first.version }}</strong> : {{ version_distribution.first.num }} user(s)</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-lg-7 p-2 border">
+            <h6>Installations by Version (last 30 days)</h6>
+            <div style="width: 100%;height: 100%" id="version-chart"></div>
+        </div>
+    </div>
     <br>
-    <h6>Installations by Version (last 30 days)</h6>
-    <div id="version-chart"></div>
+    <hr>
+    <h5>Port installations by month</h5>
+    <div style="width: 100%;height: 100%" id="month-chart"></div>
+    <br>
 {% else %}
 <div class="text-center container" style="max-width: 700px;">
     <h5>No stats have been submitted for this port yet</h5>
@@ -43,12 +59,41 @@
         ]);
 
         // Set chart options
-        var options = {'title':'Version Distribution for Last 30 days',
-                       'width':650,
-                       'height':400};
+        var options = {'title':'Version Distribution for Last 30 days'};
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.ColumnChart(document.getElementById('version-chart'));
+        chart.draw(data, options);
+      }
+    </script>
+<script type="text/javascript">
+
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Month');
+        data.addColumn('number', 'Number of Users');
+        data.addRows([
+            {% for i in installation_by_month %}
+          ['{{ i.month|date:"M Y" }}', {{ i.num }}],
+            {% endfor %}
+        ]);
+
+        // Set chart options
+        var options = {'title':'Installations by month'};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.LineChart(document.getElementById('month-chart'));
         chart.draw(data, options);
       }
     </script>
