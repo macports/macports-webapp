@@ -25,7 +25,7 @@
     </div>
 
     <br><br>
-    <h4 class="border-bottom">Port installations by month</h4>
+    <h4 class="border-bottom">Port installations by month <span style="font-size:12px"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#monthlyInstallationsHelp">Learn More</button></span> </h4>
     <div class="chart" id="month-chart"></div>
     <br>
 {% else %}
@@ -36,11 +36,9 @@
 </div>
 {% endif %}
 
-<!-- Modal -->
+<!--Help Modals -->
 <div id="currentStatsHelp" class="modal fade" role="dialog">
   <div class="modal-dialog">
-
-    <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">What do "Current Stats" Display?</h4>
@@ -57,6 +55,30 @@
     </div>
 
   </div>
+</div>
+<div id="monthlyInstallationsHelp" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">How are monthly installations calculated?</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>For each month, a user is considered to have the port installed, if in anyone of the submissions
+                    made by the user in that month- the port is present.</p>
+                <p>Suppose a user makes 4 submissions in a given month, and in any one or more than one submissions the
+                    port is present- then it is counted as an installation for that month.<br><strong> You may see different results when
+                    compare with the "Current Stats" section, because for current stats only the 4th submission (the latest one) will be counted,
+                    but in monthly installations, the scenario of submissions over the month is considered.</strong>
+                </p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 
