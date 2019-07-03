@@ -9,3 +9,8 @@ body{
   grid-gap: 8px;
   padding: 8px;
 }
+
+.chart {
+  width: 100% !important;
+  min-height: 300px !important;
+}
