@@ -150,6 +150,8 @@ def portdetail_build_information(request):
 def portdetail_stats(request):
     port_name = request.GET.get('port_name')
     port = Port.objects.get(name__iexact=port_name)
+
+    # Section for calculation of current stats
     submissions_last_30_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
     installations_last_30_days = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id')), port__iexact=port_name)
     requested_count = installations_last_30_days.filter(requested=True).values('port').aggregate(Count('port'))
@@ -157,13 +159,16 @@ def portdetail_stats(request):
     version_distribution = installations_last_30_days.values('version').annotate(num=Count('version')).order_by('-num')
     os_distribution = installations_last_30_days.values('submission__os_version').annotate(num=Count('submission__os_version')).order_by('-num')
 
-    installation_by_month = PortInstallation.objects.filter(port__iexact=port_name).annotate(month=TruncMonth('submission__timestamp')).values('month', 'port').annotate(num=Count('submission__user', distinct=True))[:12]
+    installation_by_month = PortInstallation.objects.filter(port__iexact=port_name).annotate(month=TruncMonth('submission__timestamp')).values('month').annotate(num=Count('submission__user', distinct=True))[:12]
+    version_by_month = PortInstallation.objects.filter(port__iexact=port_name).annotate(month=TruncMonth('submission__timestamp')).values('month', 'version').annotate(num=Count('submission__user', distinct=True))[:12]
+
     return render(request, 'ports/port-detail/installation_stats.html', {
         'requested_count': requested_count,
         'total_count': total_count,
         'version_distribution': version_distribution,
         'installation_by_month': installation_by_month,
-        'os_ditribution': os_distribution
+        'os_ditribution': os_distribution,
+        'version_by_month': version_by_month
     })
 
 
