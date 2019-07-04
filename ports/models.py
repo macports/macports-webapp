@@ -454,6 +454,8 @@ class Submission(models.Model):
             models.Index(fields=['timestamp']),
             models.Index(fields=['user']),
             models.Index(fields=['user', '-timestamp']),
+            models.Index(fields=['user', 'timestamp']),
+            models.Index(fields=['os_version']),
         ]
 
     @classmethod
