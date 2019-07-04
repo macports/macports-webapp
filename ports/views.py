@@ -221,18 +221,29 @@ def stats(request):
     current_week_unique = all_submissions.filter(timestamp__week=current_week).distinct('user').count()
     last_week_unique = all_submissions.filter(timestamp__week=current_week - 1).distinct('user').count()
 
-    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
-    os_distribution = Submission.objects.filter(id__in=Subquery(submissions_unique.values('id'))).values('os_version').annotate(num=Count('os_version'))
+    # Number of unique users vs month
+    users_by_month = Submission.objects.annotate(month=TruncMonth('timestamp')).values('month').annotate(num=Count('user_id', distinct=True))[:12]
 
-    port_distribution = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_unique.values('id'))).values('port').annotate(num=Count('port')).order_by('-num')[:50]
+    # System Stats for Current Users
+    submissions_last_30_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
+    submissions_unique = Submission.objects.filter(id__in=Subquery(submissions_last_30_days.values('id')))
+    macports_distribution = submissions_unique.values('macports_version').annotate(num=Count('macports_version'))
+    os_distribution = submissions_unique.values('os_version').annotate(num=Count('os_version'))
+    xcode_distribution = submissions_unique.values('xcode_version').annotate(num=Count('xcode_version'))
+    port_distribution = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id'))).values('port').annotate(num=Count('port')).order_by('-num').exclude(port__iexact='mpstats-gsoc')[:50]
+    req_port_distribution = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id')), requested=True).values('port').annotate(num=Count('port')).order_by('-num')[:50]
 
     return render(request, 'ports/stats.html', {
         'total_submissions': all_submissions.count(),
         'unique_users': total_unique_users,
         'current_week': current_week_unique,
         'last_week': last_week_unique,
+        'users_by_month': users_by_month,
         'os_distribution': os_distribution,
-        'port_distribution': port_distribution
+        'port_distribution': port_distribution,
+        'macports_distribution': macports_distribution,
+        'xcode_distribution': xcode_distribution,
+        'req_port_distribution': req_port_distribution
     })
 
 
