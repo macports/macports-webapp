@@ -14,3 +14,10 @@ body{
   width: 100% !important;
   min-height: 300px !important;
 }
+
+.tab-content > .tab-pane:not(.active),
+.pill-content > .pill-pane:not(.active) {
+    display: block;
+    height: 0;
+    overflow-y: hidden;
+}
