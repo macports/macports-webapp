@@ -19,14 +19,14 @@ env:
 install:
   - pip install -q Django==$DJANGO_VERSION
   - pip install -q -r requirements.txt
+  - pip install codecov
 
 # run test scripts
 script:
   - python manage.py makemigrations
   - python manage.py migrate
   - python manage.py collectstatic
-  - python manage.py test
-  - coverage run --source=. manage.py test ports
+  - coverage run --source=. manage.py test
   - coverage report
 
 services:
@@ -37,3 +37,6 @@ before_script:
 
 addons:
   postgresql: "10"
+
+after_success:
+  - codecov
