@@ -15,30 +15,33 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "MacPorts.settings")
 
 django.setup()
 
+REPO = "macports-ports"
+REPO_URL = "https://github.com/macports/macports-ports.git"
+
 
 def clone_repo():
-    if os.path.isdir('macports-ports'):
+    if os.path.isdir(REPO):
         return
     else:
-        os.system("git clone https://github.com/macports/macports-ports.git")
+        os.system("git clone %s" % REPO_URL)
 
 
 def get_list_of_changed_ports(new_hash=False, old_hash=False, root=BASE_DIR):
     os.chdir(root)
 
-    if os.path.isdir('macports-ports'):
-        print('macports-ports directory found')
+    if os.path.isdir(REPO):
+        print('{} directory found'.format(REPO))
 
         # cd into the macports-ports directory
-        REPO_DIR = os.path.join(root, 'macports-ports')
+        REPO_DIR = os.path.join(root, REPO)
         os.chdir(REPO_DIR)
 
         # Check if the repository is healthy.
         try:
             remote = subprocess.run(['git', 'config', '--get', 'remote.origin.url'],
                                     stdout=subprocess.PIPE).stdout.decode('utf-8').strip()
-            if remote == "https://github.com/macports/macports-ports.git":
-                print("The macports-ports repo is healthy.")
+            if remote == REPO_URL:
+                print("The {} repo is healthy.".format(REPO))
             else:
                 raise OSError
 
@@ -79,12 +82,12 @@ def get_list_of_changed_ports(new_hash=False, old_hash=False, root=BASE_DIR):
 
         except OSError:
             os.chdir(root)
-            print("macports-ports repository has some error")
+            print("{} repository has some error".format(REPO))
             print("Cleaning current tree and cloning new repo.")
-            shutil.rmtree('macports-ports')
+            shutil.rmtree(REPO)
             clone_repo()
             return get_list_of_changed_ports(new_hash, old_hash, root)
     else:
-        print('macports-ports directory not found. Cloning into')
+        print('{} directory not found. Cloning into'.format(REPO))
         clone_repo()
         return get_list_of_changed_ports(new_hash, old_hash, root)
