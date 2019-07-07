@@ -133,15 +133,19 @@ class Port(models.Model):
 
                 except Port.DoesNotExist:
                     print("Failed to update dependencies for {}. Port not found in database.".format(port['name']))
-        if isinstance(data, list):
-            load_ports_and_maintainers_table(data)
-            load_categories_table(data)
-            load_dependencies_table(data)
-        elif isinstance(data, str):
-            ports = open_portindex_json(data)
+
+        def populate(ports):
             load_categories_table(ports)
             load_ports_and_maintainers_table(ports)
             load_dependencies_table(ports)
+
+        # If list of JSON objects in passed, start populating
+        if isinstance(data, list):
+            populate(data)
+        # If a path to JSON file is provided, open the file and then start populating
+        elif isinstance(data, str):
+            ports = open_portindex_json(data)
+            populate(ports)
 
     @classmethod
     def update(cls, data, is_json=True):
