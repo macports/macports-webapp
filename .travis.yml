@@ -18,7 +18,7 @@ env:
 # install dependencies
 install:
   - pip install -q Django==$DJANGO_VERSION
-  - pip install -q -r requirements.txt
+  - pip install -q -r app/requirements.txt
   - pip install codecov
 
 # run test scripts
@@ -34,6 +34,7 @@ services:
 
 before_script:
   - psql -c 'create database mp;' -U postgres
+  - cd app
 
 addons:
   postgresql: "10"
