@@ -1,4 +1,42 @@
-## Setup the Database
+# Running the App
+The repository contains Docker configuration which can be used out of the box, however, the app can be run without using
+the docker container. Both way are discussed below:
+
+## 1. Run inside Docker Container
+It is the recommended way, the Docker Image of the app is pre-configured to run the migrations, populate the database and
+run cron jobs to update.
+
+The image can be built locally or can be pulled from Docker Hub:
+
+```
+docker pull arjunsalyan/macports-webapp
+```
+or build the image
+```
+docker build -t macports-webapp .
+```
+
+After the image has been build or pulled, run it using an an env file that contains environment variables. Create a file
+`env` in the root of the project and supply the following information.
+
+**env**: *(Contains environment variables)*
+```
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+DB_HOST=
+SECRET_KEY=
+```
+
+Now run the image:
+```
+docker run -d -p 80:80 --env-file=env macports-webapp
+```
+
+
+## 2. Run Without Docker
+The `/app` directory is a standalone Django-app which can be run normally like any other django application.
+### Setup the Database
 Enter your database credentials in MacPorts/settings.py
 
 ```
@@ -13,7 +51,7 @@ DATABASES = {
     }
 }
 ```
-## Make Migrations
+### Make Migrations
  - Make migrations
  ```
  python manage.py makemigrations
@@ -23,13 +61,12 @@ DATABASES = {
  python manage.py migrate
  ```
  
-## Populate Initial Data in the Database
+### Populate Initial Data in the Database
  - Put the file `portindex.json` or `<filename>` in the root of the project. To generate this file, you need to run `portindex2json.tcl`.
  - Run `python manage.py load <filename>` to populate the Ports, Categories and Maintainers tables. If you do not supply `<filename>`, the default `portindex.json` will be used.
- - Run `python manage.py load-dependencies <filename>` to load the Dependencies table. This command should be ran only after the ports table has been completely populated from the `load` (previous) command.
  - Run `python manage.py fetch-build-history` to fetch few recent builds from the buildbot.
 
-## Start the Server
+### Start the Server
 Start the server after running collectstatic
 ```
 python manage.py collectstatic
@@ -38,7 +75,7 @@ python manage.py collectstatic
 python manage.py runserver
 ```
 
-## Updating the Database
+### Updating the Database
 - Put the new json file in the root of the project.
 - Run `python manage.py update <filename>` to update the database.
 
