@@ -1,0 +1,4 @@
+SHELL=/bin/bash
+BASH_ENV=/code/cron.env
+
+0 * * * * root python3 /code/app/manage.py fetch-build-history >> /var/log/buildhistorycron.log
