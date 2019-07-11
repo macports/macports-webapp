@@ -30,7 +30,7 @@ COPY config/supervisor.conf /etc/supervisor/conf.d/
 COPY app/requirements.txt /code/app/
 RUN pip3 install -r /code/app/requirements.txt
 
-RUN touch /var/log/cron.log
+RUN touch /var/log/buildhistorycron.log
 
 # Setup cron
 COPY config/crons /etc/cron.d/crons
