@@ -313,3 +313,8 @@ class Maintainer(models.Model):
             models.Index(fields=['github']),
             models.Index(fields=['name', 'domain'])
         ]
+
+
+class Commit(models.Model):
+    hash = models.CharField(max_length=50)
+    updated_at = models.DateTimeField(auto_now=True)
