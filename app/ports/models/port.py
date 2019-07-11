@@ -35,7 +35,7 @@ class Port(models.Model):
         def open_portindex_json(path):
             with open(path, "r") as file:
                 ports = json.load(file)
-            return ports
+            return ports['ports']
 
         # Add All the Categories to the Database using bulk_create
         def load_categories_table(ports):
@@ -148,13 +148,13 @@ class Port(models.Model):
         def open_portindex_json(path):
             with open(path, "r") as file:
                 ports = json.load(file)
-            return ports
+            return ports['ports']
 
         def open_ports_from_list(list_of_ports, path='portindex.json'):
             with open(path, "r") as file:
                 all_ports = json.load(file)
             ports_to_be_updated = []
-            for port in all_ports:
+            for port in data['ports']:
                 if port['name'] in list_of_ports:
                     ports_to_be_updated.append(port)
             return ports_to_be_updated
