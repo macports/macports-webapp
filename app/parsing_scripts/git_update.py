@@ -75,8 +75,6 @@ def get_list_of_changed_ports(new_hash=False, old_hash=False, root=BASE_DIR):
                 if portname not in updated_ports:
                     updated_ports.append(portname)
 
-            # Add the new hash to the database
-            Commit.objects.create(hash=new_hash)
             os.chdir(BASE_DIR)
             return updated_ports
 
