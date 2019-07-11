@@ -33,7 +33,7 @@ class Port(models.Model):
     @classmethod
     def load(cls, data):
         def open_portindex_json(path):
-            with open(path, "r") as file:
+            with open(path, "r", encoding='utf-8') as file:
                 ports = json.load(file)
             return ports['ports']
 
@@ -146,13 +146,13 @@ class Port(models.Model):
     @classmethod
     def update(cls, data, is_json=True):
         def open_portindex_json(path):
-            with open(path, "r") as file:
+            with open(path, "r", encoding='utf-8') as file:
                 ports = json.load(file)
             return ports['ports']
 
         def open_ports_from_list(list_of_ports, path='portindex.json'):
-            with open(path, "r") as file:
-                all_ports = json.load(file)
+            with open(path, "r", encoding='utf-8') as file:
+                data = json.load(file)
             ports_to_be_updated = []
             for port in data['ports']:
                 if port['name'] in list_of_ports:

@@ -33,7 +33,7 @@ class Command(BaseCommand):
         Port.update(ports_to_be_updated, is_json=False)
 
         # Open the file
-        with open(JSON_FILE, "r") as file:
+        with open(JSON_FILE, "r", encoding='utf-8') as file:
             data = json.load(file)
 
         # Write commit hash to database

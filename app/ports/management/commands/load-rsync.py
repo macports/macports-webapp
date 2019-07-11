@@ -18,7 +18,7 @@ class Command(BaseCommand):
         subprocess.call(['/usr/bin/rsync', RSYNC, JSON_FILE])
 
         # Open the file
-        with open(JSON_FILE, "r") as file:
+        with open(JSON_FILE, "r", encoding='utf-8') as file:
             data = json.load(file)
 
         Port.load(data['ports'])
