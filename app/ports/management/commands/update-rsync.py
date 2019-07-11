@@ -24,17 +24,20 @@ class Command(BaseCommand):
                             help="Not recommended. Helps you provide a commit from which update should start")
 
     def handle(self, *args, **options):
-        ports_to_be_updated = git_update.get_list_of_changed_ports(options['new'], options['old'])
-
         # fetch from rsync
         subprocess.call(['/usr/bin/rsync', RSYNC, JSON_FILE])
-
-        # Run updates
-        Port.update(ports_to_be_updated, is_json=False)
 
         # Open the file
         with open(JSON_FILE, "r", encoding='utf-8') as file:
             data = json.load(file)
+
+        if options['new'] is False:
+            ports_to_be_updated = git_update.get_list_of_changed_ports(data['info']['commit'], False)
+        else:
+            ports_to_be_updated = git_update.get_list_of_changed_ports(options['new'], options['old'])
+
+        # Run updates
+        Port.update(ports_to_be_updated, False)
 
         # Write commit hash to database
         if options['new'] is False:
