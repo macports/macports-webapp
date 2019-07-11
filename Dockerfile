@@ -13,7 +13,7 @@ RUN apt-get update && \
         nginx \
         cron \
         supervisor && \
-        pip3 install -U pip setuptools && \
+    pip3 install -U pip setuptools && \
     rm -rf /var/lib/apt/lists/*
 
 # install uwsgi now because it takes a little while
@@ -40,4 +40,4 @@ RUN chmod 0644 /etc/cron.d/crons
 COPY . /code/
 
 EXPOSE 80
-CMD ["supervisord", "-n"]
+CMD ["/usr/bin/supervisord", "-n"]
