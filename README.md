@@ -3,8 +3,8 @@ The repository contains Docker configuration which can be used out of the box, h
 the docker container. Both way are discussed below:
 
 ## 1. Run inside Docker Container
-It is the recommended way, the Docker Image of the app is pre-configured to run the migrations, populate the database and
-run cron jobs to update.
+It is the recommended way, the Docker Image of the app is pre-configured to run the `migrations` and `collectstatic`.
+However, the `load` command to populate the database and the crons need to be run manually.
 
 The image can be built locally or can be pulled from Docker Hub:
 
@@ -33,6 +33,16 @@ Now run the image:
 docker run -d -p 80:80 --env-file=env macports-webapp
 ```
 
+To start the cron jobs:
+
+```
+docker exec <container-id> supervisorctl start cron
+```
+All other commands supported by the app can be run using:
+```
+docker exec <container-id> [command]
+```
+where example of [command] may be: `python3 /code/app/manage.py load`.
 
 ## 2. Run Without Docker
 The `/app` directory is a standalone Django-app which can be run normally like any other django application.
