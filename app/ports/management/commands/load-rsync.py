@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Fetch from rsync
-        subprocess.call(['rsync', RSYNC, JSON_FILE])
+        subprocess.call(['/usr/bin/rsync', RSYNC, JSON_FILE])
 
         # Open the file
         with open(JSON_FILE, "r") as file:

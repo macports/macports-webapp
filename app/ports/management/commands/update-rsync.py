@@ -27,7 +27,7 @@ class Command(BaseCommand):
         ports_to_be_updated = git_update.get_list_of_changed_ports(options['new'], options['old'])
 
         # fetch from rsync
-        subprocess.call(['rsync', RSYNC, JSON_FILE])
+        subprocess.call(['/usr/bin/rsync', RSYNC, JSON_FILE])
 
         # Run updates
         Port.update(ports_to_be_updated, is_json=False)
