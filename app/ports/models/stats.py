@@ -19,11 +19,6 @@ class OSDistribution(models.Model):
     users = models.ManyToManyField(User, related_name='users')
 
 
-class Commit(models.Model):
-    hash = models.CharField(max_length=50)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
 class UUID(models.Model):
     uuid = models.CharField(max_length=36, db_index=True)
 
