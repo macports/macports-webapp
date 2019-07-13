@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery, Count
-from django.db.models.functions import TruncMonth
+from django.db.models.functions import TruncMonth, Lower
 
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant, OSDistribution, Submission, PortInstallation
 from .filters import BuildHistoryFilter, PortFilterByMultiple
@@ -31,7 +31,7 @@ def index(request):
 def categorylist(request, cat):
     try:
         category = Category.objects.get(name__iexact=cat)
-        all_ports = Port.objects.filter(categories__name=cat).order_by('id')
+        all_ports = Port.objects.filter(categories__name=cat).order_by(Lower('name'))
         portscount = all_ports.count()
         paginated_ports = Paginator(all_ports, 100)
         page = request.GET.get('page', 1)
