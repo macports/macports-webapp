@@ -12,6 +12,7 @@ RUN apt-get update && \
         python3-pip \
         nginx \
         cron \
+        rsync \
         supervisor && \
     pip3 install -U pip setuptools && \
     rm -rf /var/lib/apt/lists/*
