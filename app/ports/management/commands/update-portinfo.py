@@ -38,7 +38,7 @@ class Command(BaseCommand):
         # Using the received list of port names, find related JSON objects
         ports_to_be_updated_json = []
         for port in data['ports']:
-            if port['name'] in ports_to_be_updated:
+            if port['name'].lower() in ports_to_be_updated:
                 ports_to_be_updated_json.append(port)
 
         # Run updates

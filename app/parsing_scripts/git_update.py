@@ -72,7 +72,7 @@ def get_list_of_changed_ports(new_hash=False, old_hash=False, root=BASE_DIR):
             for line in s:
                 portname = line.split('/')[1]
                 if portname not in updated_ports:
-                    updated_ports.append(portname)
+                    updated_ports.append(portname.lower())
 
             os.chdir(BASE_DIR)
             return updated_ports
