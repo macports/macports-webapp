@@ -30,6 +30,7 @@ class Port(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     license = models.CharField(max_length=100, default='')
     replaced_by = models.CharField(max_length=100, null=True)
+    active = models.BooleanField(default=True)
 
     objects = PortManager()
 
@@ -190,6 +191,7 @@ class Port(models.Model):
                 port_object.closedmaintainer = port.get('closedmaintainer', False)
                 port_object.license = port.get('license', '')
                 port_object.replaced_by = port.get('replaced_by')
+                port_object.active = True
                 port_object.save()
 
                 try:
@@ -293,6 +295,16 @@ class Port(models.Model):
                 run_updates(ports)
 
         # ============ END ==============
+
+    @classmethod
+    def mark_deleted(cls, list_of_ports):
+        for portname in list_of_ports:
+            try:
+                port_object = Port.objects.get(name__iexact=portname)
+                port_object.active = False
+                port_object.save()
+            except Port.DoesNotExist:
+                pass
 
 
 class Dependency(models.Model):

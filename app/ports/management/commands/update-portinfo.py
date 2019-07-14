@@ -37,12 +37,23 @@ class Command(BaseCommand):
 
         # Using the received list of port names, find related JSON objects
         ports_to_be_updated_json = []
+        portnames_found_in_portindex = []
         for port in data['ports']:
             if port['name'].lower() in ports_to_be_updated:
                 ports_to_be_updated_json.append(port)
+                portnames_found_in_portindex.append(port['name'].lower())
+
+        # Find deleted ports
+        deleted_ports = []
+        for portname in ports_to_be_updated:
+            if portname.lower() not in portnames_found_in_portindex:
+                deleted_ports.append(portname.lower())
 
         # Run updates
         Port.update(ports_to_be_updated_json)
+
+        # Mark deleted ports
+        Port.mark_deleted(deleted_ports)
 
         # Write the commit hash into database
         if LastPortIndexUpdate.objects.count() > 0:
