@@ -1,141 +1,143 @@
-[{
-    "variants"         : ["universal"],
-    "portdir"          : "categoryA\/port-A1",
-    "depends_fetch"    : ["bin:port-A4:port-A4"],
-    "description"      : "This is port A1 of categoryA",
-    "homepage"         : "http:\/\/portA1.website\/",
-    "epoch"            : "0",
-    "platforms"        : "darwin",
-    "name"             : "port-A1",
-    "depends_lib"      : ["lib:pq:port-A2","port:port-A3-diff"],
-    "closedmaintainer" : true,
-    "long_description" : "Just a test port written to test something.",
-    "license"          : "MIT",
-    "maintainers"      : [{
-        "email"  : {
-            "domain" : "email.com",
-            "name"   : "user"
-        },
-        "github" : "user"
-    }],
-    "categories"       : ["categoryA"],
-    "version"          : "1.0.0",
-    "revision"         : "0"
-},{
-    "variants"         : ["universal"],
-    "portdir"          : "categoryA\/port-A2",
-    "description"      : "This is port A2 of categoryA and category B.",
-    "homepage"         : "http:\/\/portA1.website\/",
-    "epoch"            : "0",
-    "platforms"        : "darwin",
-    "name"             : "port-A2",
-    "closedmaintainer" : true,
-    "license"          : "MIT",
-    "maintainers"      : [{
-        "email" : {
-            "domain" : "email.com",
-            "name"   : "user"
-        }
-    }],
-    "long_description" : "Just a test port written to test something.",
-    "categories"       : ["categoryA","categoryB"],
-    "version"          : "1.0.1",
-    "revision"         : "0"
-},{
-    "variants"         : ["universal"],
-    "portdir"          : "categoryA\/port-A3-diff",
-    "description"      : "This is port-A3-diff of categoryA",
-    "homepage"         : "http:\/\/portA1.website\/",
-    "epoch"            : "0",
-    "platforms"        : "darwin",
-    "name"             : "port-A3-diff",
-    "closedmaintainer" : true,
-    "license"          : "MIT",
-    "maintainers"      : [{
-        "github" : "user"
-    }],
-    "long_description" : "Just a test port written to test something.",
-    "categories"       : ["categoryA"],
-    "version"          : "1.0.0",
-    "revision"         : "0"
-},{
-    "variants"         : ["universal"],
-    "portdir"          : "categoryA\/port-A4",
-    "depends_fetch"    : ["bin:port-C1:port-C1"],
-    "description"      : "This is port A4 of categoryA",
-    "homepage"         : "http:\/\/portA1.website\/",
-    "epoch"            : "0",
-    "platforms"        : "darwin",
-    "name"             : "port-A4",
-    "closedmaintainer" : true,
-    "license"          : "MIT",
-    "maintainers"      : [{
-        "email"  : {
-            "domain" : "email.com",
-            "name"   : "user2"
-        },
-        "github" : "user"
-    }],
-    "long_description" : "Just a test port written to test something.",
-    "categories"       : ["categoryA"],
-    "version"          : "1.0.0",
-    "revision"         : "0"
-},{
-    "variants"         : ["universal"],
-    "portdir"          : "categoryA\/port-A5",
-    "description"      : "This is port A1 of categoryA",
-    "depends_run"      : ["port:port-A1","port:port-A4"],
-    "epoch"            : "0",
-    "platforms"        : "darwin",
-    "name"             : "port-A5",
-    "closedmaintainer" : true,
-    "license"          : "MIT",
-    "maintainers"      : [{
-        "email"  : {
-            "domain" : "email.com",
-            "name"   : "user"
-        },
-        "github" : "user2"
-    }],
-    "long_description" : "Just a test port written to test something.",
-    "categories"       : ["categoryA"],
-    "version"          : "1.0.0",
-    "revision"         : "0"
-},{
-    "variants"         : ["universal"],
-    "portdir"          : "categoryB\/port-B1",
-    "description"      : "This is port B1 of categoryB",
-    "epoch"            : "0",
-    "platforms"        : "darwin",
-    "name"             : "port-B1",
-    "closedmaintainer" : true,
-    "license"          : "MIT",
-    "maintainers"      : [{
-        "github" : "user"
-    }],
-    "long_description" : "Just a test port written to test something.",
-    "version"          : "1.0.0",
-    "categories"       : ["categoryB"],
-    "revision"         : "0"
-},{
-    "variants"         : ["universal"],
-    "portdir"          : "categoryC\/port-C1",
-    "description"      : "This is port C1 of categoryC",
-    "homepage"         : "http:\/\/portC1.website\/",
-    "epoch"            : "0",
-    "platforms"        : "darwin",
-    "name"             : "port-C1",
-    "closedmaintainer" : true,
-    "license"          : "MIT",
-    "maintainers"      : [{
-        "email"  : {
-            "domain" : "macports.org",
-            "name"   : "user3"
-        },
-        "github" : "user3"
-    }],
-    "long_description" : "Just a test port written to test something.",
-    "categories"       : ["categoryC"],
-    "version"          : "1.0.0",
-    "revision"         : "0"
-}]
+{
+    "ports" : [{
+        "variants"         : ["universal"],
+        "portdir"          : "categoryA\/port-A1",
+        "depends_fetch"    : ["bin:port-A4:port-A4"],
+        "description"      : "This is port A1 of categoryA",
+        "homepage"         : "http:\/\/portA1.website\/",
+        "epoch"            : "0",
+        "platforms"        : "darwin",
+        "name"             : "port-A1",
+        "depends_lib"      : ["lib:pq:port-A2","port:port-A3-diff"],
+        "closedmaintainer" : true,
+        "long_description" : "Just a test port written to test something.",
+        "license"          : "MIT",
+        "maintainers"      : [{
+            "email"  : {
+                "domain" : "email.com",
+                "name"   : "user"
+            },
+            "github" : "user"
+        }],
+        "categories"       : ["categoryA"],
+        "version"          : "1.0.0",
+        "revision"         : "0"
+    },{
+        "variants"         : ["universal"],
+        "portdir"          : "categoryA\/port-A2",
+        "description"      : "This is port A2 of categoryA and category B.",
+        "homepage"         : "http:\/\/portA1.website\/",
+        "epoch"            : "0",
+        "platforms"        : "darwin",
+        "name"             : "port-A2",
+        "closedmaintainer" : true,
+        "license"          : "MIT",
+        "maintainers"      : [{
+            "email" : {
+                "domain" : "email.com",
+                "name"   : "user"
+            }
+        }],
+        "long_description" : "Just a test port written to test something.",
+        "categories"       : ["categoryA","categoryB"],
+        "version"          : "1.0.1",
+        "revision"         : "0"
+    },{
+        "variants"         : ["universal"],
+        "portdir"          : "categoryA\/port-A3-diff",
+        "description"      : "This is port-A3-diff of categoryA",
+        "homepage"         : "http:\/\/portA1.website\/",
+        "epoch"            : "0",
+        "platforms"        : "darwin",
+        "name"             : "port-A3-diff",
+        "closedmaintainer" : true,
+        "license"          : "MIT",
+        "maintainers"      : [{
+            "github" : "user"
+        }],
+        "long_description" : "Just a test port written to test something.",
+        "categories"       : ["categoryA"],
+        "version"          : "1.0.0",
+        "revision"         : "0"
+    },{
+        "variants"         : ["universal"],
+        "portdir"          : "categoryA\/port-A4",
+        "depends_fetch"    : ["bin:port-C1:port-C1"],
+        "description"      : "This is port A4 of categoryA",
+        "homepage"         : "http:\/\/portA1.website\/",
+        "epoch"            : "0",
+        "platforms"        : "darwin",
+        "name"             : "port-A4",
+        "closedmaintainer" : true,
+        "license"          : "MIT",
+        "maintainers"      : [{
+            "email"  : {
+                "domain" : "email.com",
+                "name"   : "user2"
+            },
+            "github" : "user"
+        }],
+        "long_description" : "Just a test port written to test something.",
+        "categories"       : ["categoryA"],
+        "version"          : "1.0.0",
+        "revision"         : "0"
+    },{
+        "variants"         : ["universal"],
+        "portdir"          : "categoryA\/port-A5",
+        "description"      : "This is port A1 of categoryA",
+        "depends_run"      : ["port:port-A1","port:port-A4"],
+        "epoch"            : "0",
+        "platforms"        : "darwin",
+        "name"             : "port-A5",
+        "closedmaintainer" : true,
+        "license"          : "MIT",
+        "maintainers"      : [{
+            "email"  : {
+                "domain" : "email.com",
+                "name"   : "user"
+            },
+            "github" : "user2"
+        }],
+        "long_description" : "Just a test port written to test something.",
+        "categories"       : ["categoryA"],
+        "version"          : "1.0.0",
+        "revision"         : "0"
+    },{
+        "variants"         : ["universal"],
+        "portdir"          : "categoryB\/port-B1",
+        "description"      : "This is port B1 of categoryB",
+        "epoch"            : "0",
+        "platforms"        : "darwin",
+        "name"             : "port-B1",
+        "closedmaintainer" : true,
+        "license"          : "MIT",
+        "maintainers"      : [{
+            "github" : "user"
+        }],
+        "long_description" : "Just a test port written to test something.",
+        "version"          : "1.0.0",
+        "categories"       : ["categoryB"],
+        "revision"         : "0"
+    },{
+        "variants"         : ["universal"],
+        "portdir"          : "categoryC\/port-C1",
+        "description"      : "This is port C1 of categoryC",
+        "homepage"         : "http:\/\/portC1.website\/",
+        "epoch"            : "0",
+        "platforms"        : "darwin",
+        "name"             : "port-C1",
+        "closedmaintainer" : true,
+        "license"          : "MIT",
+        "maintainers"      : [{
+            "email"  : {
+                "domain" : "macports.org",
+                "name"   : "user3"
+            },
+            "github" : "user3"
+        }],
+        "long_description" : "Just a test port written to test something.",
+        "categories"       : ["categoryC"],
+        "version"          : "1.0.0",
+        "revision"         : "0"
+    }]
+}
