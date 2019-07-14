@@ -81,19 +81,20 @@
         // instantiates the pie chart, passes in the data and
         // draws it.
         function drawChart() {
+            {% regroup xcode_distribution|dictsort:"xcode_version" by xcode_version as xcode_parent %}
+            {% regroup xcode_distribution by os_version as os_parent %}
 
             // Create the data table.
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'XCode Version');
-            data.addColumn('number', 'Number of Users');
-            data.addRows([
-                {% for i in xcode_distribution %}
-                    ['{{ i.xcode_version }}', {{ i.num }}],
-                {% endfor %}
-            ]);
+        var data = google.visualization.arrayToDataTable([
+        ['OS Version', {% for version in xcode_parent %}'Xcode {{ version.grouper }}', {% endfor %} { role: 'annotation' } ],
+            {% for os in os_parent %}
+            ['OSX: {{ os.grouper }}', {% for version in xcode_parent %}{% for i in os.list %}{% if i.xcode_version == version.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
+            {% endfor %}
+      ]);
 
             // Set chart options
-            var options = {'title': 'XCode Distribution'};
+            var options = {'title': 'XCode Distribution',
+                            isStacked: true,};
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('xcode-chart'));
