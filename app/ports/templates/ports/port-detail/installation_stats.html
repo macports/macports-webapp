@@ -193,7 +193,7 @@
       // draws it.
       function drawChart() {
           {% regroup version_by_month by version as version_parent %}
-          {% regroup version_by_month by month as month_parent %}
+          {% regroup version_by_month|dictsort:"month" by month|date:"M Y" as month_parent %}
         // Create the data table.
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'month');
@@ -203,7 +203,7 @@
 
           data.addRows([
               {% for i in month_parent %}
-              ['{{ i.grouper|date:"M Y" }}', {% for version in version_parent %}{% for month in i.list %}{% if month.version == version.grouper %}{{ month.num }}{% endif %}{% endfor %}, {% endfor %}],
+              ['{{ i.grouper }}', {% for version in version_parent %}{% for month in i.list %}{% if month.version == version.grouper %}{{ month.num }}{% endif %}{% endfor %}, {% endfor %}],
           {% endfor %}
         ]);
 
