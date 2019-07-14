@@ -7,4 +7,4 @@ JSON_FILE = os.path.join(os.path.abspath(os.path.dirname(__name__)), 'portindex.
 
 # configuration for repository to find updated ports
 REPO = "macports-ports"
-REPO_URL = "https://github.com/macports/macports-ports.git"
+REPO_URL = "https://github.com/macports/" + REPO + ".git"
