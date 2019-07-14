@@ -1,7 +1,10 @@
 import json
 import os
+import subprocess
 
 from django.db import models
+
+import MacPorts.config as config
 
 
 class Category(models.Model):
@@ -29,6 +32,18 @@ class Port(models.Model):
     replaced_by = models.CharField(max_length=100, null=True)
 
     objects = PortManager()
+
+    class RsyncHandler:
+        @staticmethod
+        def sync():
+            subprocess.call([config.RSYNC, config.RSYNC_SOURCE, config.JSON_FILE])
+            return
+
+        @staticmethod
+        def open_file():
+            with open(config.JSON_FILE, "r", encoding='utf-8') as file:
+                data = json.load(file)
+            return data
 
     @classmethod
     def load(cls, data):
