@@ -45,13 +45,14 @@ def get_list_of_changed_ports(new_hash=False, old_hash=False, root=BASE_DIR):
 
             # If old_hash is not provided by the user
             if old_hash is False:
-                try:
-                    # Try to fetch the most recent hash from database
-                    old_hash_object = Commit.objects.all().order_by('-updated_at').first()
-                    old_hash = old_hash_object.hash
-                except AttributeError:
-                    # If database is empty, use the current HEAD
-                    old_hash = subprocess.run(['git', 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode(
+
+                # If the database has old commit, use it for old_hash
+                if LastPortIndexUpdate.objects.count() > 0:
+                    old_hash_object = LastPortIndexUpdate.objects.all().first()
+                    old_hash = old_hash_object.git_commit_hash
+                else:
+                    # If database is empty, use the first commit
+                    old_hash = subprocess.run(['git', 'rev-list', 'HEAD', '|', 'tail', '-n', '1'], stdout=subprocess.PIPE).stdout.decode(
                             'utf-8')
 
             # Pull from macports-ports
