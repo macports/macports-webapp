@@ -79,7 +79,7 @@
         </div>
         <div id="tickets-box">
         </div>
-        <div id="loading-image" class="container text-center" style="height: 500px">
+        <div id="loading-image" class="container text-center" style="height: 500px; display: none">
             <img src="{% static 'images/giphy.gif' %}">
         </div>
         <br>
@@ -94,6 +94,7 @@
     var tabsArray = ["summary", "stats", "builds", "tickets"];
     if (jQuery.inArray({{ tab }}, tabsArray !== -1)) {
         $('#{{ tab }}').trigger("click");
+        loadTickets();
     }
     </script>
 

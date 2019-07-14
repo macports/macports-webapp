@@ -29,13 +29,6 @@ function tabClick(e, slug) {
     history.pushState(null, null, "?tab=" + slug)
 }
 
-$(function () {
-    $('#search').ready(function () {
-        loadTickets();
-        $('#tickets-box').hide();
-    });
-});
-
 function display(data, textStatus, jqXHR) {
     $('#display-box').html(data);
     $('#loading-image').hide();
@@ -52,8 +45,7 @@ function loadTickets() {
         },
         success: receiveTickets,
         beforeSend: function () {
-            $('#display-box').html("");
-            $('#loading-image').show();
+            $('#tickets-box').html("Please wait while tickets are fetched from Trac");
         },
         dataType: 'html'
     });
@@ -62,7 +54,7 @@ function loadTickets() {
 function receiveTickets(data, textStatus, jqXHR) {
     $('#tickets-box').html(data);
     var count = $('#tickets-count-returned').text();
-    $('#tickets-count').html(count)
+    $('#tickets-count').html(count);
 }
 
 function showTickets(e) {
