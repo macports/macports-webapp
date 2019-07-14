@@ -6,7 +6,8 @@ import shutil
 
 import django
 
-from ports.models import Commit
+from ports.models import LastPortIndexUpdate
+import MacPorts.config as config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
@@ -15,33 +16,30 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "MacPorts.settings")
 
 django.setup()
 
-REPO = "macports-ports"
-REPO_URL = "https://github.com/macports/macports-ports.git"
-
 
 def clone_repo():
-    if os.path.isdir(REPO):
+    if os.path.isdir(config.REPO):
         return
     else:
-        os.system("git clone %s" % REPO_URL)
+        os.system("git clone %s" % config.REPO_URL)
 
 
 def get_list_of_changed_ports(new_hash=False, old_hash=False, root=BASE_DIR):
     os.chdir(root)
 
-    if os.path.isdir(REPO):
-        print('{} directory found'.format(REPO))
+    if os.path.isdir(config.REPO):
+        print('{} directory found'.format(config.REPO))
 
         # cd into the macports-ports directory
-        REPO_DIR = os.path.join(root, REPO)
+        REPO_DIR = os.path.join(root, config.REPO)
         os.chdir(REPO_DIR)
 
         # Check if the repository is healthy.
         try:
             remote = subprocess.run(['git', 'config', '--get', 'remote.origin.url'],
                                     stdout=subprocess.PIPE).stdout.decode('utf-8').strip()
-            if remote == REPO_URL:
-                print("The {} repo is healthy.".format(REPO))
+            if remote == config.REPO_URL:
+                print("The {} repo is healthy.".format(config.REPO))
             else:
                 raise OSError
 
@@ -75,19 +73,17 @@ def get_list_of_changed_ports(new_hash=False, old_hash=False, root=BASE_DIR):
                 if portname not in updated_ports:
                     updated_ports.append(portname)
 
-            # Add the new hash to the database
-            Commit.objects.create(hash=new_hash)
             os.chdir(BASE_DIR)
             return updated_ports
 
         except OSError:
             os.chdir(root)
-            print("{} repository has some error".format(REPO))
+            print("{} repository has some error".format(config.REPO))
             print("Cleaning current tree and cloning new repo.")
-            shutil.rmtree(REPO)
+            shutil.rmtree(config.REPO)
             clone_repo()
             return get_list_of_changed_ports(new_hash, old_hash, root)
     else:
-        print('{} directory not found. Cloning into'.format(REPO))
+        print('{} directory not found. Cloning into'.format(config.REPO))
         clone_repo()
         return get_list_of_changed_ports(new_hash, old_hash, root)
