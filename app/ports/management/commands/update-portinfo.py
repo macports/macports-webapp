@@ -54,9 +54,4 @@ class Command(BaseCommand):
         Port.update(ports_to_be_updated_json)
 
         # Write the commit hash into database
-        if LastPortIndexUpdate.objects.count() > 0:
-            last_commit = LastPortIndexUpdate.objects.all().first()
-            last_commit.git_commit_hash = data['info']['commit']
-            last_commit.save()
-        else:
-            LastPortIndexUpdate.objects.create(git_commit_hash=data['info']['commit'])
+        LastPortIndexUpdate.update_or_create_first_object(data['info']['commit'])
