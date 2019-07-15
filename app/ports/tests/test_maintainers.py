@@ -25,14 +25,14 @@ class TestMaintainers(TestCase):
         maintainers_returned = response.context['maintainers']
         num_of_ports = response.context['all_ports_num']
         self.assertEquals(maintainers_returned.count(), 3)
-        self.assertEquals(num_of_ports, 4)
+        self.assertEquals(num_of_ports, 5)
 
     def test_fetch_using_email(self):
         response = self.client.get(reverse('maintainer_detail_email', kwargs={'name': 'user', 'domain': 'email.com'}))
         maintainers_returned = response.context['maintainers']
         num_of_ports = response.context['all_ports_num']
         self.assertEquals(maintainers_returned.count(), 3)
-        self.assertEquals(num_of_ports, 3)
+        self.assertEquals(num_of_ports, 4)
 
     def test_maintainers_updated(self):
         updated_port = [{

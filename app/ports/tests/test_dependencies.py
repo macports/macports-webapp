@@ -18,7 +18,7 @@ class TestDependencies(TestCase):
         Port.load(JSON_FILE)
 
     def test_rows_created(self):
-        self.assertEquals(Dependency.objects.all().count(), 4)
+        self.assertEquals(Dependency.objects.all().count(), 6)
 
     def test_dependencies_fetched(self):
         response = self.client.get(reverse('port_detail_summary'), data={'port_name': 'port-A1'})

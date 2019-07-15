@@ -36,8 +36,8 @@ class TestDependencies(TestCase):
             'search_text': 'port-A5'
         })
 
-        self.assertEquals(response1.context['ports'].count(), 7)
-        self.assertEquals(response2.context['ports'].count(), 5)
+        self.assertEquals(response1.context['ports'].count(), 8)
+        self.assertEquals(response2.context['ports'].count(), 6)
         self.assertEquals(response3.context['ports'].count(), 1)
 
     def test_search_in_category(self):
@@ -54,5 +54,5 @@ class TestDependencies(TestCase):
             'maintainers__name': 'user',
         })
 
-        self.assertEquals(response.context['ports'].count(), 3)
+        self.assertEquals(response.context['ports'].count(), 4)
 
