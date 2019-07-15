@@ -18,3 +18,5 @@ homepage            http://portA1.website/
 
 depends_lib         lib:pq:port-A2 port:port-A3-diff
 depends_fetch       bin:port-A4:port-A4
+
+subport             port-A1-subport {}

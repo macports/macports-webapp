@@ -1,6 +1,7 @@
 {
     "ports" : [{
         "variants"         : ["universal"],
+        "subports"         : "port-A1-subport",
         "portdir"          : "categoryA\/port-A1",
         "depends_fetch"    : ["bin:port-A4:port-A4"],
         "description"      : "This is port A1 of categoryA",
@@ -8,6 +9,29 @@
         "epoch"            : "0",
         "platforms"        : "darwin",
         "name"             : "port-A1",
+        "depends_lib"      : ["lib:pq:port-A2","port:port-A3-diff"],
+        "closedmaintainer" : true,
+        "maintainers"      : [{
+            "email"  : {
+                "domain" : "email.com",
+                "name"   : "user"
+            },
+            "github" : "user"
+        }],
+        "long_description" : "Just a test port written to test something.",
+        "license"          : "MIT",
+        "categories"       : ["categoryA"],
+        "version"          : "1.0.0",
+        "revision"         : "0"
+    },{
+        "variants"         : ["universal"],
+        "portdir"          : "categoryA\/port-A1",
+        "depends_fetch"    : ["bin:port-A4:port-A4"],
+        "description"      : "This is port A1 of categoryA",
+        "homepage"         : "http:\/\/portA1.website\/",
+        "epoch"            : "0",
+        "platforms"        : "darwin",
+        "name"             : "port-A1-subport",
         "depends_lib"      : ["lib:pq:port-A2","port:port-A3-diff"],
         "closedmaintainer" : true,
         "long_description" : "Just a test port written to test something.",
