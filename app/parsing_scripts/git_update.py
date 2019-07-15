@@ -7,9 +7,9 @@ import shutil
 import django
 
 from ports.models import LastPortIndexUpdate
-import MacPorts.config as config
+from MacPorts import config
+from MacPorts.settings import BASE_DIR
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'MacPorts.settings'
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "MacPorts.settings")
@@ -18,54 +18,50 @@ django.setup()
 
 
 def clone_repo():
-    if os.path.isdir(config.REPO):
+    os.chdir(config.DATA_DIR)
+    if os.path.isdir(config.MACPORTS_PORTS_DIR):
         return
     else:
-        os.system("git clone %s" % config.REPO_URL)
+        subprocess.run([config.GIT, 'clone', config.MACPORTS_PORTS_URL])
 
 
-def get_list_of_changed_ports(new_hash=False, old_hash=False, root=BASE_DIR):
-    os.chdir(root)
+def get_list_of_changed_ports(new_hash=False, old_hash=False):
+    if os.path.isdir(config.MACPORTS_PORTS_DIR):
+        print('{} directory found'.format(config.MACPORTS_PORTS))
 
-    if os.path.isdir(config.REPO):
-        print('{} directory found'.format(config.REPO))
-
-        # cd into the macports-ports directory
-        REPO_DIR = os.path.join(root, config.REPO)
-        os.chdir(REPO_DIR)
+        # cd into the repository
+        os.chdir(config.MACPORTS_PORTS_DIR)
 
         # Check if the repository is healthy.
         try:
-            remote = subprocess.run(['git', 'config', '--get', 'remote.origin.url'],
+            remote = subprocess.run([config.GIT, 'config', '--get', 'remote.origin.url'],
                                     stdout=subprocess.PIPE).stdout.decode('utf-8').strip()
-            if remote == config.REPO_URL:
-                print("The {} repo is healthy.".format(config.REPO))
+            if remote == config.MACPORTS_PORTS_URL:
+                print("The {} repo is healthy.".format(config.MACPORTS_PORTS))
             else:
                 raise OSError
 
             # If old_hash is not provided by the user
             if old_hash is False:
-
                 # If the database has old commit, use it for old_hash
-                if LastPortIndexUpdate.objects.count() > 0:
-                    old_hash_object = LastPortIndexUpdate.objects.all().first()
-                    old_hash = old_hash_object.git_commit_hash
-                else:
+                old_hash_object = LastPortIndexUpdate.objects.all().first()
+                if old_hash_object is None:
                     # If database is empty, use the first commit
-                    old_hash = subprocess.run(['git', 'rev-list', 'HEAD', '|', 'tail', '-n', '1'], stdout=subprocess.PIPE).stdout.decode(
-                            'utf-8')
+                    old_hash = subprocess.run([config.GIT, 'rev-list', 'HEAD', '|', 'tail', '-n', '1'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+                else:
+                    old_hash = old_hash_object.git_commit_hash
 
             # Pull from macports-ports
-            subprocess.call(['git', 'pull'])
+            subprocess.call([config.GIT, 'pull'])
 
             # Get new hash if not provided
             if new_hash is False:
-                new_hash = subprocess.run(['git', 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+                new_hash = subprocess.run([config.GIT, 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
             # Generate the range of commits to find updated paths
             range = str(old_hash).strip() + "^.." + str(new_hash).strip()
 
-            changed_paths = subprocess.run(['git', 'diff', '--name-only', range], stdout=subprocess.PIPE).stdout.decode(
+            changed_paths = subprocess.run([config.GIT, 'diff', '--name-only', range], stdout=subprocess.PIPE).stdout.decode(
                 'utf-8')
             s = io.StringIO(changed_paths)
             updated_ports = []
@@ -75,16 +71,17 @@ def get_list_of_changed_ports(new_hash=False, old_hash=False, root=BASE_DIR):
                     updated_ports.append(portname.lower())
 
             os.chdir(BASE_DIR)
+            print(updated_ports)
             return updated_ports
 
         except OSError:
-            os.chdir(root)
-            print("{} repository has some error".format(config.REPO))
+            os.chdir(config.DATA_DIR)
+            print("{} repository has some error".format(config.MACPORTS_PORTS))
             print("Cleaning current tree and cloning new repo.")
-            shutil.rmtree(config.REPO)
+            shutil.rmtree(config.MACPORTS_PORTS_DIR)
             clone_repo()
-            return get_list_of_changed_ports(new_hash, old_hash, root)
+            return get_list_of_changed_ports(new_hash, old_hash)
     else:
-        print('{} directory not found. Cloning into'.format(config.REPO))
+        print('{} directory not found. Cloning into'.format(config.MACPORTS_PORTS))
         clone_repo()
-        return get_list_of_changed_ports(new_hash, old_hash, root)
+        return get_list_of_changed_ports(new_hash, old_hash)

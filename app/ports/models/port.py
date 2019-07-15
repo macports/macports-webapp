@@ -37,12 +37,12 @@ class Port(models.Model):
     class RsyncHandler:
         @staticmethod
         def sync():
-            subprocess.call([config.RSYNC, config.RSYNC_SOURCE, config.JSON_FILE])
+            subprocess.call([config.RSYNC, config.PORTINDEX_SOURCE, config.PORTINDEX_JSON])
             return
 
         @staticmethod
         def open_file():
-            with open(config.JSON_FILE, "r", encoding='utf-8') as file:
+            with open(config.PORTINDEX_JSON, "r", encoding='utf-8') as file:
                 data = json.load(file)
             return data
 
@@ -345,3 +345,12 @@ class Maintainer(models.Model):
 class LastPortIndexUpdate(models.Model):
     git_commit_hash = models.CharField(max_length=50)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @classmethod
+    def update_or_create_first_object(cls, commit_hash):
+        first_object = LastPortIndexUpdate.objects.all().first()
+        if first_object is None:
+            LastPortIndexUpdate.objects.create(git_commit_hash=commit_hash)
+        else:
+            first_object.git_commit_hash = commit_hash
+            first_object.save()
