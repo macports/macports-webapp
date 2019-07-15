@@ -63,9 +63,11 @@
                     <th scope="row">Dependencies:</th>
                     <td>
                         {% for dependency in dependencies %}
+                            <strong>{{ dependency.type }}:</strong>
                             {% for port in dependency.dependencies.all %}
                                 <a href="{% url 'port_detail' port.name %}">{{ port.name }}</a>,
                             {% endfor %}
+                            <br>
                         {% endfor %}
                     </td>
                 </tr>
