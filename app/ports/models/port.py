@@ -297,14 +297,12 @@ class Port(models.Model):
         # ============ END ==============
 
     @classmethod
-    def mark_deleted(cls, list_of_ports):
-        for portname in list_of_ports:
-            try:
-                port_object = Port.objects.get(name__iexact=portname)
-                port_object.active = False
-                port_object.save()
-            except Port.DoesNotExist:
-                pass
+    def mark_deleted(cls, dict_of_portdirs):
+        for portdir in dict_of_portdirs:
+            for port in Port.objects.filter(portdir__iexact=portdir).only('portdir', 'name', 'active'):
+                if port not in dict_of_portdirs[portdir]:
+                    port.active = False
+                    port.save()
 
 
 class Dependency(models.Model):

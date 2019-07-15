@@ -33,27 +33,25 @@ class Command(BaseCommand):
 
         # Using the range of commits, find the list of ports which have been updated
         # options['old'] will be false if no argument is provided
-        ports_to_be_updated = git_update.get_list_of_changed_ports(new_hash, options['old'])
+        updated_portdirs = git_update.get_list_of_changed_ports(new_hash, options['old'])
 
         # Using the received list of port names, find related JSON objects
         ports_to_be_updated_json = []
-        portnames_found_in_portindex = []
+        found_ports_tree = {}
         for port in data['ports']:
-            if port['name'].lower() in ports_to_be_updated:
+            portdir = port['portdir'].lower()
+            portname = port['name'].lower()
+            if portdir in updated_portdirs:
                 ports_to_be_updated_json.append(port)
-                portnames_found_in_portindex.append(port['name'].lower())
+                if found_ports_tree.get(portdir) is None:
+                    found_ports_tree[portdir] = {}
+                found_ports_tree[portdir][portname] = True
 
-        # Find deleted ports
-        deleted_ports = []
-        for portname in ports_to_be_updated:
-            if portname.lower() not in portnames_found_in_portindex:
-                deleted_ports.append(portname.lower())
+        # Mark deleted ports
+        Port.mark_deleted(found_ports_tree)
 
         # Run updates
         Port.update(ports_to_be_updated_json)
-
-        # Mark deleted ports
-        Port.mark_deleted(deleted_ports)
 
         # Write the commit hash into database
         if LastPortIndexUpdate.objects.count() > 0:
