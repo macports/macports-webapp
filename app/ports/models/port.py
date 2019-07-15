@@ -260,7 +260,7 @@ class Port(models.Model):
                                 except Port.DoesNotExist:
                                     print("Failed to append {} as a dependency to {}. Not Found.".format(
                                         depends.rsplit(':', 1)[-1],
-                                        port.name))
+                                        port['name']))
                             obj.save()
                             obj.dependencies.add(*dependencies)
 
