@@ -60,11 +60,18 @@
                     </td>
                 </tr>
                 <tr>
+                    <th scope="row">Dependency of:</th>
+                    <td>{% for dependent in dependents %}
+                        <a href="{% url 'port_detail' dependent.port_name.name %}">{{ dependent.port_name.name }}</a>{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
                     <td scope="row" colspan="2"><strong>Depends On:</strong><br>
                             {% for dependency in dependencies %}
                                 <div class="row">
                             <div class="col-3 text-center">{{ dependency.type }}:</div>
-                             <div class="col-9 pl-5">
+                             <div class="col-9">
                             {% for port in dependency.dependencies.all %}
                                 <a href="{% url 'port_detail' port.name %}">{{ port.name }}</a>{% if not forloop.last %},{% endif %}
                             {% endfor %}
