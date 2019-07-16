@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Subquery, Count
+from django.db.models import Subquery, Count, Case, IntegerField, When
 from django.db.models.functions import TruncMonth, Lower
 
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant, OSDistribution, Submission, PortInstallation
@@ -250,6 +250,31 @@ def stats(request):
         'macports_distribution': macports_distribution,
         'xcode_distribution': xcode_distribution,
         'req_port_distribution': req_port_distribution
+    })
+
+
+def all_ports_stats(request):
+    return render(request, 'ports/all_ports_stats.html', {
+    })
+
+
+def all_ports_stats_filter(request):
+    days = int(request.GET.get('days', 30))
+    order_by = str(request.GET.get('order_by', '-total_count'))
+
+    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=days)).order_by('user', '-timestamp').distinct('user')
+    installations = PortInstallation.objects.order_by('port').filter(submission_id__in=Subquery(submissions_unique.values('id'))).values('port').annotate(total_count=Count('port')).annotate(req_count=Count(Case(When(requested=True, then=1), output_field=IntegerField()))).exclude(port__iexact='mpstats-gsoc').order_by(order_by, 'port')
+    paginated_obj = Paginator(installations, 100)
+    page = request.GET.get('page', 1)
+    try:
+        installs = paginated_obj.get_page(page)
+    except PageNotAnInteger:
+        installs = paginated_obj.get_page(1)
+    except EmptyPage:
+        installs = paginated_obj.get_page(paginated_obj.num_pages)
+
+    return render(request, 'ports/ajax-filters/all_ports_stats_table.html', {
+        'installs': installs
     })
 
 
