@@ -17,9 +17,9 @@
                         {% if maintainers.all|length > 0 %}
                         {% for maintainer in maintainers %}
                                 {% if maintainer.github %}
-                                    <a href="/maintainer/github/{{ maintainer.github }}">{{ maintainer.github }}</a>,
+                                    <a href="/maintainer/github/{{ maintainer.github }}">{{ maintainer.github }}</a>{% if not forloop.last %},{% endif %}
                                 {% else %}
-                                    <a href="/maintainer/email/{{ maintainer.name }}__{{ maintainer.github }}">{{ maintainer.github }}</a>,
+                                    <a href="/maintainer/email/{{ maintainer.name }}__{{ maintainer.domain }}">{{ maintainer.name }}</a>{% if not forloop.last %},{% endif %}
                                 {% endif %}
                         {% endfor %}
                         {% else %}
@@ -36,7 +36,7 @@
                     <td>
                         {% if variants.count > 0 %}
                             {% for variant in variants %}
-                                <a href="{% url 'variant_list' variant.variant %}">{{ variant.variant }}</a>,
+                                <a href="{% url 'variant_list' variant.variant %}">{{ variant.variant }}</a>{% if not forloop.last %},{% endif %}
                             {% endfor %}
                         {% else %}
                             -
@@ -55,7 +55,7 @@
                     <th scope="row">Categories:</th>
                     <td>
                         {% for cat in port.categories.all %}
-                            <a href="{% url 'category_list' cat.name %}">{{ cat.name }}</a>,
+                            <a href="{% url 'category_list' cat.name %}">{{ cat.name }}</a>{% if not forloop.last %},{% endif %}
                         {% endfor %}
                     </td>
                 </tr>
@@ -65,7 +65,7 @@
                         {% for dependency in dependencies %}
                             <strong>{{ dependency.type }}:</strong>
                             {% for port in dependency.dependencies.all %}
-                                <a href="{% url 'port_detail' port.name %}">{{ port.name }}</a>,
+                                <a href="{% url 'port_detail' port.name %}">{{ port.name }}</a>{% if not forloop.last %},{% endif %}
                             {% endfor %}
                             <br>
                         {% endfor %}
