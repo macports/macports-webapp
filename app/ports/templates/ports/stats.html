@@ -87,9 +87,9 @@
 
             // Create the data table.
         var data = google.visualization.arrayToDataTable([
-        ['OS Version', {% for version in xcode_parent %}'Xcode {{ version.grouper }}', {% endfor %} { role: 'annotation' } ],
+        ['OS Version', {% for version in xcode_parent %}'{{ version.grouper }}', {% endfor %} { role: 'annotation' } ],
             {% for os in os_parent %}
-            ['OSX: {{ os.grouper }}', {% for version in xcode_parent %}{% for i in os.list %}{% if i.xcode_version == version.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
+            ['OS: {{ os.grouper }}', {% for version in xcode_parent %}{% for i in os.list %}{% if i.xcode_version == version.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
             {% endfor %}
       ]);
 
