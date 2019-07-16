@@ -44,7 +44,7 @@
 {% for port in installs %}
     <div class="row">
         <div class="col-sm-6 col-xs-6 p-1 border-left border-bottom">
-            {{ port.port }}
+            <a href="{% url 'port_detail' port.port %}">{{ port.port }}</a>
         </div>
         <div class="col-sm-3 col-xs-3 p-1 border-left border-bottom">
             {{ port.total_count }}
