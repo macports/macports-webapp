@@ -1,4 +1,5 @@
 {% extends 'ports/layout.html' %}
+{% load sort_version %}
 
 {% block head_scripts %}
     <!--Load the AJAX API-->
@@ -81,7 +82,7 @@
         // instantiates the pie chart, passes in the data and
         // draws it.
         function drawChart() {
-            {% regroup xcode_distribution|dictsort:"xcode_version" by xcode_version as xcode_parent %}
+            {% regroup xcode_distribution|sortxcode by xcode_version as xcode_parent %}
             {% regroup xcode_distribution by os_version as os_parent %}
 
             // Create the data table.
