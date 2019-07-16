@@ -1,4 +1,4 @@
-function runPortsSortAjax(page, order_by, days=30) {
+function runPortsSortAjax(page, order_by, days, search_by) {
     var currentSortAjaxRequest = null;
     currentSortAjaxRequest = $.ajax({
             type: 'GET',
@@ -7,6 +7,7 @@ function runPortsSortAjax(page, order_by, days=30) {
                 'page': page,
                 'order_by': order_by,
                 'days': days,
+                'search_by': search_by,
                 'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
             },
             success: portsSortAjaxSuccess,
@@ -27,9 +28,17 @@ function portsSortAjaxSuccess(data, textStatus, jqXHR) {
     $('#loading-image').hide();
 }
 
+function getPageState() {
+    var order_by = $('.btn-info').attr('id');
+    var days = $('#days-filter').val();
+    var search_by = $('#search-by').val();
+    return {order_by:order_by, days:days, search_by:search_by}
+}
+
 $(function () {
     $('#table-header').ready(function () {
-        runPortsSortAjax(1, '-total_count', 30)
+        var state = getPageState();
+        runPortsSortAjax(1, state.order_by, state.days, state.search_by);
     });
 });
 
@@ -39,19 +48,25 @@ function sort(e) {
     $('.btn-info').removeClass('btn-info');
     $(e).addClass('btn-info');
     var days = $('#days-filter').val();
-    runPortsSortAjax(1, order_by, days);
+    var search_by = $('#search-by').val();
+    runPortsSortAjax(1, order_by, days, search_by);
 }
 
 function changePage(page) {
-    var order_by = $('.btn-info').attr('id');
-    var days = $('#days-filter').val();
-    runPortsSortAjax(page, order_by, days);
+    var state = getPageState();
+    runPortsSortAjax(page, state.order_by, state.days, state.search_by);
 }
 
 $(function () {
     $('#days-filter').on('change', function () {
-        var order_by = $('.btn-info').attr('id');
-        var days = $('#days-filter').val();
-        runPortsSortAjax(1, order_by, days);
+       var state = getPageState();
+       runPortsSortAjax(1, state.order_by, state.days, state.search_by);
+    });
+});
+
+$(function () {
+    $('#search-by').keyup(function () {
+        var state = getPageState();
+        runPortsSortAjax(1, state.order_by, state.days, state.search_by);
     });
 });
