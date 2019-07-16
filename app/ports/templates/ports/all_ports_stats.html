@@ -8,11 +8,10 @@
 
 {% block content %}
     <br>
+    {% csrf_token %}
+    <input type="text" class="form-control" id="search-by" name="search-by" placeholder="Filter by port name">
     <br>
-<div id="navigation">
-
-</div>
-<form class="form-inline">
+    <form class="form-inline">
     <label class="form-inline" for="days-filter">Showing data for users who submitted stats in last: </label>
     <select class="form-control form-inline ml-2" id="days-filter" name="days-filter">
         <option value="7">7 days</option>
@@ -22,6 +21,10 @@
         <option value="365">365 days</option>
     </select>
 </form>
+    <br>
+<div id="navigation">
+
+</div>
     <br>
 <div class="container">
 <div class="row" id="table-header">

@@ -261,9 +261,10 @@ def all_ports_stats(request):
 def all_ports_stats_filter(request):
     days = int(request.GET.get('days', 30))
     order_by = str(request.GET.get('order_by', '-total_count'))
+    search_by = str(request.GET.get('search_by', ''))
 
     submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=days)).order_by('user', '-timestamp').distinct('user')
-    installations = PortInstallation.objects.order_by('port').filter(submission_id__in=Subquery(submissions_unique.values('id'))).values('port').annotate(total_count=Count('port')).annotate(req_count=Count(Case(When(requested=True, then=1), output_field=IntegerField()))).exclude(port__iexact='mpstats-gsoc').order_by(order_by, 'port')
+    installations = PortInstallation.objects.order_by('port').filter(submission_id__in=Subquery(submissions_unique.values('id'))).values('port').annotate(total_count=Count('port')).annotate(req_count=Count(Case(When(requested=True, then=1), output_field=IntegerField()))).exclude(port__iexact='mpstats-gsoc').order_by(order_by, 'port').filter(port__icontains=search_by)
     paginated_obj = Paginator(installations, 100)
     page = request.GET.get('page', 1)
     try:
@@ -274,7 +275,8 @@ def all_ports_stats_filter(request):
         installs = paginated_obj.get_page(paginated_obj.num_pages)
 
     return render(request, 'ports/ajax-filters/all_ports_stats_table.html', {
-        'installs': installs
+        'installs': installs,
+        'search_by': search_by
     })
 
 
