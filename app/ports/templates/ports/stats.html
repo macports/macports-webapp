@@ -175,7 +175,7 @@
                         {% for port in port_distribution %}
                             <tr>
                                 <td><a href="{% url 'port_detail' port.port %}">{{ port.port }}</a></td>
-                                <td>{{ port.num }}</td>
+                                <td class="text-right">{{ port.num }}</td>
                             </tr>
                         {% endfor %}
                     </table>
@@ -192,7 +192,7 @@
                         {% for port in req_port_distribution %}
                             <tr>
                                 <td><a href="{% url 'port_detail' port.port %}">{{ port.port }}</a></td>
-                                <td>{{ port.num }}</td>
+                                <td class="text-right">{{ port.num }}</td>
                             </tr>
                         {% endfor %}
                     </table>
