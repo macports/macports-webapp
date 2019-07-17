@@ -12,7 +12,7 @@
                     <td>{{ port.version }}</td>
                 </tr>
                 <tr>
-                    <th scope="row">Maintained By:</th>
+                    <th scope="row">Maintained by:</th>
                     <td>
                         {% if maintainers.all|length > 0 %}
                         {% for maintainer in maintainers %}
@@ -60,7 +60,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td scope="row"><strong>Depends On:</strong><br>
+                    <td scope="row"><strong>Depends on:</strong><br>
                     </td>
                     <td>{% if not dependencies|length > 0 %}-{% endif %}</td>
                 </tr>
@@ -104,8 +104,8 @@
                     <li class="list-group-item">Requested Installations:<strong class="float-right">
                         {{ requested_count.port__count }}</strong></li>
                     <li class="list-group-item">Total Installations:<strong class="float-right">{{ total_count.port__count }}</strong></li>
-                    <li class="list-group-item"><a href="javascript:void(0);" onclick="tabClick(this, 'stats')">View Detailed
-                        Statistics for {{ port.name }}</a></li>
+                    <li class="list-group-item"><a href="javascript:void(0);" onclick="tabClick(this, 'stats')">View detailed
+                        statistics for {{ port.name }}</a></li>
                 </ul>
             </div>
         </div>
