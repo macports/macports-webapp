@@ -18,15 +18,15 @@
                 </tr>
             </table>
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-6">
             <div class="chart" id="os-chart"></div>
         </div>
-        <div class="col-lg-7">
+        <div class="col-lg-6">
             <div class="chart" id="version-chart"></div>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-6">
             <div class="chart" id="xcode-chart"></div>
         </div>
     </div>
@@ -117,7 +117,7 @@
         ]);
 
         // Set chart options
-        var options = {'title':'Version Distribution for current users'};
+        var options = {'title':'Port Versions'};
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.ColumnChart(document.getElementById('version-chart'));
@@ -148,7 +148,14 @@
         ]);
 
         // Set chart options
-        var options = {'title':'Installations by month'};
+        var options = {
+            'title':'Installations by month',
+            vAxis: {
+                viewWindow: {
+                    min:0
+                }
+            }
+        };
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.LineChart(document.getElementById('month-chart'));
@@ -169,18 +176,24 @@
       // draws it.
       function drawChart() {
 
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'OS');
-        data.addColumn('number', 'Number of Users');
-        data.addRows([
-            {% for i in os_ditribution %}
-          ['{{ i.submission__os_version }}', {{ i.num }}],
-            {% endfor %}
-        ]);
+          // Create the data table.
+          {% regroup os_distribution by submission__os_version as os_chart_os_version_parent %}
+          {% regroup os_distribution|dictsort:"submission__os_arch" by submission__os_arch as os_chart_os_arch_parent %}
 
-        // Set chart options
-        var options = {'title':'OS Distribution for current users'};
+          // Create the data table.
+          var data = google.visualization.arrayToDataTable([
+              ['OS Version', {% for os_arch in os_chart_os_arch_parent %}'{{ os_arch.grouper }}', {% endfor %} {role: 'annotation'}],
+              {% for os_version in os_chart_os_version_parent %}
+                  ['OS: {{ os_version.grouper }}', {% for os_arch in os_chart_os_arch_parent %}{% for i in os_version.list %}{% if i.submission__os_arch == os_arch.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
+              {% endfor %}
+          ]);
+
+          // Set chart options
+        var options = {
+            'title':'OS Version and Architectures',
+            isStacked: true
+
+                };
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.ColumnChart(document.getElementById('os-chart'));
@@ -215,7 +228,14 @@
         ]);
 
         // Set chart options
-        var options = {'title':'User vs Version for each month'};
+        var options = {
+            'title':'User vs Version for each month',
+            vAxis: {
+                viewWindow: {
+                    min:0
+                }
+            }
+        };
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.LineChart(document.getElementById('version-month-chart'));
@@ -247,7 +267,7 @@
       ]);
 
             // Set chart options
-            var options = {'title': 'XCode Distribution',
+            var options = {'title': 'XCode Versions',
                             isStacked: true,};
 
             // Instantiate and draw our chart, passing in some options.
