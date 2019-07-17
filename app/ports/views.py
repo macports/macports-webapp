@@ -160,9 +160,9 @@ def portdetail_stats(request):
     total_count = installations_last_30_days.values('port').aggregate(Count('port'))
     version_distribution = installations_last_30_days.values('version').annotate(num=Count('version')).order_by('-num')
     os_distribution_unsorted = list(installations_last_30_days.values('submission__os_version').annotate(num=Count('submission__os_version')).order_by('-num'))
-    os_distribution = sorted(os_distribution_unsorted, key=lambda x: int(x['submission__os_version'].replace(".", '')), reverse=True)
+    os_distribution = sorted(os_distribution_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
     xcode_distribution_unsorted = list(installations_last_30_days.values('submission__xcode_version', 'submission__os_version').annotate(num=Count('submission__user_id', distinct=True)))
-    xcode_distribution = sorted(xcode_distribution_unsorted, key=lambda x: int(x['submission__os_version'].replace(".", '')), reverse=True)
+    xcode_distribution = sorted(xcode_distribution_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
 
     installation_by_month = PortInstallation.objects.filter(port__iexact=port_name).annotate(month=TruncMonth('submission__timestamp')).values('month').annotate(num=Count('submission__user', distinct=True))[:12]
     version_by_month = PortInstallation.objects.filter(port__iexact=port_name).annotate(month=TruncMonth('submission__timestamp')).values('month', 'version').annotate(num=Count('submission__user', distinct=True))[:12]
@@ -237,7 +237,7 @@ def stats(request):
     os_distribution_unsorted = list(submissions_unique.values('os_version').annotate(num=Count('os_version')))
     os_distribution = sorted(os_distribution_unsorted, key=lambda x: int(x['os_version'].replace(".", '')), reverse=True)
     xcode_distribution_unsorted = list(submissions_unique.values('xcode_version', 'os_version').annotate(num=Count('user_id', distinct=True)))
-    xcode_distribution = sorted(xcode_distribution_unsorted, key=lambda x: int(x['os_version'].replace(".", '')), reverse=True)
+    xcode_distribution = sorted(xcode_distribution_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
     port_distribution = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id'))).values('port').annotate(num=Count('port')).order_by('-num').exclude(port__iexact='mpstats-gsoc')[:50]
     req_port_distribution = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id')), requested=True).values('port').annotate(num=Count('port')).order_by('-num')[:50]
 
