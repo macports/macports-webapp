@@ -21,3 +21,18 @@ body{
     height: 0;
     overflow-y: hidden;
 }
+
+.order_by_1{
+    background-color: #38610B;
+    color: white;
+}
+
+.order_by_2{
+    background-color: #A9F5A9;
+    color: white;
+}
+
+.order_by_3{
+    background-color: #E0F8E0;
+    color: white;
+}
