@@ -276,7 +276,6 @@ def all_ports_stats_filter(request):
         .filter(port__icontains=search_by)\
         .extra(select={'port': 'lower(port)'})\
         .order_by(order_by_1, order_by_2, order_by_3)
-    print(installations)
     paginated_obj = Paginator(installations, 100)
     page = request.GET.get('page', 1)
     try:
