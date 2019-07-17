@@ -103,7 +103,7 @@ def portdetail_summary(request):
         maintainers = Maintainer.objects.filter(ports__name=port_name)
         dependencies = Dependency.objects.filter(port_name_id=port_id)
         dependents = Dependency.objects.filter(dependencies__name__iexact=port_name).select_related('port_name').order_by(Lower('port_name__name'))
-        variants = Variant.objects.filter(port_id=port_id)
+        variants = Variant.objects.filter(port_id=port_id).order_by(Lower('variant'))
 
         submissions_last_30_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
         requested_count = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id')), requested=True, port__iexact=port_name).values('port').aggregate(Count('port'))
