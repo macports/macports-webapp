@@ -17,19 +17,21 @@
         // draws it.
         function drawChart() {
 
+            {% regroup os_distribution by os_version as os_chart_os_version_parent %}
+            {% regroup os_distribution|dictsort:"os_arch" by os_arch as os_chart_os_arch_parent %}
+
             // Create the data table.
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'OSX Version');
-            data.addColumn('number', 'Number of Users');
-            data.addRows([
-                {% for os in os_distribution %}
-                    ['{{ os.os_version }}', {{ os.num }}],
+            var data = google.visualization.arrayToDataTable([
+            ['OS Version', {% for os_arch in os_chart_os_arch_parent %}'{{ os_arch.grouper }}', {% endfor %} { role: 'annotation' } ],
+                {% for os_version in os_chart_os_version_parent %}
+                ['OS: {{ os_version.grouper }}', {% for os_arch in os_chart_os_arch_parent %}{% for i in os_version.list %}{% if i.os_arch == os_arch.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
                 {% endfor %}
             ]);
 
             // Set chart options
             var options = {
-                'title': 'OS Distribution'
+                'title': 'OS Versions and Architectures',
+                isStacked: true,
             };
 
             // Instantiate and draw our chart, passing in some options.
@@ -91,7 +93,7 @@
             {% for os in os_parent %}
             ['OS: {{ os.grouper }}', {% for version in xcode_parent %}{% for i in os.list %}{% if i.xcode_version == version.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
             {% endfor %}
-      ]);
+        ]);
 
             // Set chart options
             var options = {'title': 'XCode Distribution',
