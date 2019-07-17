@@ -234,10 +234,10 @@ def stats(request):
     submissions_last_30_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
     submissions_unique = Submission.objects.filter(id__in=Subquery(submissions_last_30_days.values('id')))
     macports_distribution = submissions_unique.values('macports_version').annotate(num=Count('macports_version'))
-    os_distribution_unsorted = list(submissions_unique.values('os_version').annotate(num=Count('os_version')))
+    os_distribution_unsorted = list(submissions_unique.values('os_version', 'os_arch').annotate(num=Count('user_id', distinct=True)))
     os_distribution = sorted(os_distribution_unsorted, key=lambda x: int(x['os_version'].replace(".", '')), reverse=True)
     xcode_distribution_unsorted = list(submissions_unique.values('xcode_version', 'os_version').annotate(num=Count('user_id', distinct=True)))
-    xcode_distribution = sorted(xcode_distribution_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
+    xcode_distribution = sorted(xcode_distribution_unsorted, key=lambda x: (tuple(int(i) for i in x['os_version'].split('.'))), reverse=True)
     port_distribution = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id'))).values('port').annotate(num=Count('port')).order_by('-num').exclude(port__iexact='mpstats-gsoc')[:50]
     req_port_distribution = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id')), requested=True).values('port').annotate(num=Count('port')).order_by('-num')[:50]
 
