@@ -159,7 +159,7 @@ def portdetail_stats(request):
     requested_count = installations_last_30_days.filter(requested=True).values('port').aggregate(Count('port'))
     total_count = installations_last_30_days.values('port').aggregate(Count('port'))
     version_distribution = installations_last_30_days.values('version').annotate(num=Count('version')).order_by('-num')
-    os_distribution_unsorted = list(installations_last_30_days.values('submission__os_version').annotate(num=Count('submission__os_version')).order_by('-num'))
+    os_distribution_unsorted = list(installations_last_30_days.values('submission__os_version', 'submission__os_arch').annotate(num=Count('submission__user_id', distinct=True)).order_by('-num'))
     os_distribution = sorted(os_distribution_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
     xcode_distribution_unsorted = list(installations_last_30_days.values('submission__xcode_version', 'submission__os_version').annotate(num=Count('submission__user_id', distinct=True)))
     xcode_distribution = sorted(xcode_distribution_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
@@ -172,7 +172,7 @@ def portdetail_stats(request):
         'total_count': total_count,
         'version_distribution': version_distribution,
         'installation_by_month': installation_by_month,
-        'os_ditribution': os_distribution,
+        'os_distribution': os_distribution,
         'xcode_distribution': xcode_distribution,
         'version_by_month': version_by_month
     })
