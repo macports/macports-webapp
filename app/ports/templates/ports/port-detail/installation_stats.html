@@ -92,62 +92,45 @@
 
 
 
-
+    <!-- PORT VERSION CHART -->
     <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
 
-      // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
+        function drawChart() {
 
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Version');
+            data.addColumn('number', 'Number of Users');
+            data.addRows([
+                {% for version in version_distribution %}
+                ['{{ version.version }}', {{ version.num }}],
+                {% endfor %}
+            ]);
 
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
-
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Version');
-        data.addColumn('number', 'Number of Users');
-        data.addRows([
-            {% for version in version_distribution %}
-          ['{{ version.version }}', {{ version.num }}],
-            {% endfor %}
-        ]);
-
-        // Set chart options
         var options = {'title':'Port Versions'};
 
-        // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.ColumnChart(document.getElementById('version-chart'));
         chart.draw(data, options);
       }
     </script>
-<script type="text/javascript">
 
-      // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
+    <!-- INSTALLATIONS BY MONTH -->
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
 
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChart);
 
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
-
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Month');
-        data.addColumn('number', 'Number of Users');
-        data.addRows([
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Month');
+            data.addColumn('number', 'Number of Users');
+            data.addRows([
             {% for i in installation_by_month %}
-          ['{{ i.month|date:"M Y" }}', {{ i.num }}],
+            ['{{ i.month|date:"M Y" }}', {{ i.num }}],
             {% endfor %}
         ]);
 
-        // Set chart options
         var options = {
             'title':'Installations by month',
             vAxis: {
@@ -157,77 +140,58 @@
             }
         };
 
-        // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.LineChart(document.getElementById('month-chart'));
         chart.draw(data, options);
       }
     </script>
 
-<script type="text/javascript">
+    <!-- OS VERSIONS AND ARCHITECTURES -->
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            {% regroup os_distribution by submission__os_version as os_chart_os_version_parent %}
+            {% regroup os_distribution|dictsort:"submission__os_arch" by submission__os_arch as os_chart_os_arch_parent %}
 
-      // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
+            var data = google.visualization.arrayToDataTable([
+                ['OS Version', {% for os_arch in os_chart_os_arch_parent %}'{{ os_arch.grouper }}', {% endfor %} {role: 'annotation'}],
+                {% for os_version in os_chart_os_version_parent %}
+                    ['OS: {{ os_version.grouper }}', {% for os_arch in os_chart_os_arch_parent %}{% for i in os_version.list %}{% if i.submission__os_arch == os_arch.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
+                {% endfor %}
+            ]);
 
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
-
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
-
-          // Create the data table.
-          {% regroup os_distribution by submission__os_version as os_chart_os_version_parent %}
-          {% regroup os_distribution|dictsort:"submission__os_arch" by submission__os_arch as os_chart_os_arch_parent %}
-
-          // Create the data table.
-          var data = google.visualization.arrayToDataTable([
-              ['OS Version', {% for os_arch in os_chart_os_arch_parent %}'{{ os_arch.grouper }}', {% endfor %} {role: 'annotation'}],
-              {% for os_version in os_chart_os_version_parent %}
-                  ['OS: {{ os_version.grouper }}', {% for os_arch in os_chart_os_arch_parent %}{% for i in os_version.list %}{% if i.submission__os_arch == os_arch.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
-              {% endfor %}
-          ]);
-
-          // Set chart options
         var options = {
             'title':'OS Version and Architectures',
             isStacked: true
+        };
 
-                };
-
-        // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.ColumnChart(document.getElementById('os-chart'));
         chart.draw(data, options);
       }
     </script>
-<script type="text/javascript">
 
-      // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
+    <!-- VERSION BY MONTH -->
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
 
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChart);
 
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
-          {% regroup version_by_month by version as version_parent %}
-          {% regroup version_by_month|dictsort:"month" by month|date:"M Y" as month_parent %}
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'month');
-        {% for version in version_parent %}
-        data.addColumn('number', '{{ version.grouper }}');
-        {% endfor %}
+        function drawChart() {
+            {% regroup version_by_month by version as version_parent %}
+            {% regroup version_by_month|dictsort:"month" by month|date:"M Y" as month_parent %}
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+                data.addColumn('string', 'month');
+            {% for version in version_parent %}
+                data.addColumn('number', '{{ version.grouper }}');
+            {% endfor %}
 
           data.addRows([
               {% for i in month_parent %}
-              ['{{ i.grouper }}', {% for version in version_parent %}{% for month in i.list %}{% if month.version == version.grouper %}{{ month.num }}{% endif %}{% endfor %}, {% endfor %}],
-          {% endfor %}
+                ['{{ i.grouper }}', {% for version in version_parent %}{% for month in i.list %}{% if month.version == version.grouper %}{{ month.num }}{% endif %}{% endfor %}, {% endfor %}],
+              {% endfor %}
         ]);
 
-        // Set chart options
         var options = {
             'title':'User vs Version for each month',
             vAxis: {
@@ -237,41 +201,34 @@
             }
         };
 
-        // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.LineChart(document.getElementById('version-month-chart'));
         chart.draw(data, options);
       }
     </script>
 
+    <!-- XCODE VERSIONS -->
     <script type="text/javascript">
-
-        // Load the Visualization API and the corechart package.
         google.charts.load('current', {'packages': ['corechart']});
 
-        // Set a callback to run when the Google Visualization API is loaded.
         google.charts.setOnLoadCallback(drawChart);
 
-        // Callback that creates and populates a data table,
-        // instantiates the pie chart, passes in the data and
-        // draws it.
         function drawChart() {
             {% regroup xcode_distribution|sortversion:"submission__xcode_version" by submission__xcode_version as xcode_parent %}
             {% regroup xcode_distribution by submission__os_version as os_parent %}
 
-            // Create the data table.
-        var data = google.visualization.arrayToDataTable([
-        ['OS Version', {% for version in xcode_parent %}'{{ version.grouper }}', {% endfor %} { role: 'annotation' } ],
-            {% for os in os_parent %}
-            ['OS: {{ os.grouper }}', {% for version in xcode_parent %}{% for i in os.list %}{% if i.submission__xcode_version == version.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
-            {% endfor %}
-      ]);
+            var data = google.visualization.arrayToDataTable([
+                ['OS Version', {% for version in xcode_parent %}'{{ version.grouper }}', {% endfor %} { role: 'annotation' } ],
+                {% for os in os_parent %}
+                    ['OS: {{ os.grouper }}', {% for version in xcode_parent %}{% for i in os.list %}{% if i.submission__xcode_version == version.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
+                {% endfor %}
+        ]);
 
-            // Set chart options
-            var options = {'title': 'XCode Versions',
-                            isStacked: true,};
+        var options = {
+            'title': 'XCode Versions',
+            isStacked: true
+            };
 
-            // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.ColumnChart(document.getElementById('xcode-chart'));
-            chart.draw(data, options);
+        var chart = new google.visualization.ColumnChart(document.getElementById('xcode-chart'));
+        chart.draw(data, options);
         }
     </script>
