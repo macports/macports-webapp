@@ -5,6 +5,8 @@ import datetime
 
 from django.db import models
 
+from MacPorts.config import BUILDERS_JSON_URL
+
 
 class Builder(models.Model):
     name = models.CharField(max_length=100, db_index=True)
@@ -103,3 +105,23 @@ class BuildHistory(models.Model):
                 build_data = get_data_from_url(get_url_json(buildername, build_number))
                 build_data_summary = return_summary(buildername, build_number, build_data)
                 load_database(build_data_summary)
+
+    @classmethod
+    def populate_builders(cls):
+        gcontext = ssl.SSLContext()
+        with urllib.request.urlopen(BUILDERS_JSON_URL, context=gcontext) as u:
+            data = json.loads(u.read().decode())
+
+        builders = []
+        for key in data:
+            if not key.split('-')[0] == 'ports':
+                continue
+
+            if not key.split('-')[2] == 'builder':
+                continue
+
+            if not len(data[key]['cachedBuilds']) > 0:
+                continue
+
+            builders.append(Builder(name=key.split('-')[1]))
+        Builder.objects.bulk_create(builders)

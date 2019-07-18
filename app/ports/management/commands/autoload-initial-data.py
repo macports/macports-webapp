@@ -28,4 +28,7 @@ class Command(BaseCommand):
             last_commit.git_commit_hash = data['info']['commit']
             last_commit.save()
 
+        # Load the builders
+        BuildHistory.populate_builders()
+
         print("Initial Data Loaded Successfully.")

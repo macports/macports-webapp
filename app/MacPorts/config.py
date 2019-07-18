@@ -17,3 +17,6 @@ PORTINDEX_JSON = os.path.join(DATA_DIR, "portindex.json")
 MACPORTS_PORTS = "macports-ports"
 MACPORTS_PORTS_DIR = os.path.join(DATA_DIR, "macports-ports")
 MACPORTS_PORTS_URL = "https://github.com/macports/macports-ports.git"
+
+# configuration for fetching builders
+BUILDERS_JSON_URL = "https://build.macports.org/json/builders/"
