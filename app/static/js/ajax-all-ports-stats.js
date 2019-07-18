@@ -1,3 +1,9 @@
+function pageStateToURL(days, first, second, third) {
+    var expr = "?days=" + days + "&first=" + first + "&second=" + second + "&third=" + third;
+    history.pushState(null, null, expr)
+
+}
+
 function runPortsSortAjax(page, order_by_1, order_by_2, order_by_3, days, search_by) {
     var currentSortAjaxRequest = null;
     currentSortAjaxRequest = $.ajax({
@@ -16,6 +22,7 @@ function runPortsSortAjax(page, order_by_1, order_by_2, order_by_3, days, search
             beforeSend: function () {
                 $('#list-of-ports').html('');
                 $('#loading-image').show();
+                pageStateToURL(days, order_by_1, order_by_2, order_by_3);
                 if(currentSortAjaxRequest != null) {
                     currentSortAjaxRequest.abort();
                 }

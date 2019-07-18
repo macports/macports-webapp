@@ -32,15 +32,15 @@
 <div class="row" id="table-header">
     <div class="col-6 border-left border-top border-bottom text-center">
         <strong>Port</strong>
-        <button id="port" onclick="sort(this)" class="btn btn-sm order_by_3 ml-3">&#9650;</button><button id="-port" onclick="sort(this)" class="btn btn-sm">&#9660;</button>
+        <button id="port" onclick="sort(this)" class="btn btn-sm ml-3">&#9650;</button><button id="-port" onclick="sort(this)" class="btn btn-sm">&#9660;</button>
     </div>
     <div class="col-3 pr-4 border-left border-top border-bottom text-center">
         <strong>Total</strong>
-        <button id="total_count" onclick="sort(this)" class="btn btn-sm ml-3">&#9650;</button><button id="-total_count" onclick="sort(this)" class="btn btn-sm order_by_2">&#9660;</button>
+        <button id="total_count" onclick="sort(this)" class="btn btn-sm ml-3">&#9650;</button><button id="-total_count" onclick="sort(this)" class="btn btn-sm">&#9660;</button>
     </div>
     <div class="col-3 pr-4 border-left border-top border-bottom border-right text-center">
         <strong>Requested</strong>
-        <button id="req_count" onclick="sort(this)" class="btn btn-sm ml-3">&#9650;</button><button id="-req_count" onclick="sort(this)" class="btn btn-sm order_by_1">&#9660;</button>
+        <button id="req_count" onclick="sort(this)" class="btn btn-sm ml-3">&#9650;</button><button id="-req_count" onclick="sort(this)" class="btn btn-sm">&#9660;</button>
     </div>
 </div>
 <div id="loading-image" class="container text-center" style="height: 500px; display: none">
@@ -50,5 +50,15 @@
 
 </div>
 </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+    $('#{{ first }}').addClass('order_by_1');
+    $('#{{ second }}').addClass('order_by_2');
+    $('#{{ third }}').addClass('order_by_3');
+    $('#days-filter').val({{ days }});
+    </script>
 
 {% endblock %}
