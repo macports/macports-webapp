@@ -1,6 +1,7 @@
 import os
 import json
 import datetime
+import itertools
 from distutils.version import LooseVersion
 
 import requests
@@ -256,7 +257,29 @@ def stats(request):
 
 
 def all_ports_stats(request):
+    days = int(request.GET.get('days', 30))
+    first = request.GET.get('first', '-total_count')
+    second = request.GET.get('second', '-req_count')
+    third = request.GET.get('third', 'port')
+    values = [first, second, third]
+    acceptable_values = ['port', '-port', 'total_count', '-total_count', '-req_count', 'req_count']
+    acceptable_days = [7, 30, 90, 180, 365]
+
+    if days not in acceptable_days:
+        return HttpResponse("'days' key must have an integer value from the list: {}".format(acceptable_days))
+
+    for i in values:
+        if i not in acceptable_values:
+            return HttpResponse("'{}' is an invalid value to sort. Allowed values: {}".format(acceptable_values))
+
+    for i, j in itertools.combinations(values, 2):
+        if i.replace('-', '') == j.replace('-', ''):
+            return HttpResponse("'{}' and '{}' refer to the same column.".format(i, j))
     return render(request, 'ports/all_ports_stats.html', {
+        'days': days,
+        'first': first,
+        'second': second,
+        'third': third,
     })
 
 
