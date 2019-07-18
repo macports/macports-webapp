@@ -30,14 +30,14 @@ mentored by the [MacPorts](https://www.macports.org) organisation.
 ___
 
 # Running the App
-The repository contains Docker configuration which can be used out of the box, however, the app can be run without using
-the docker container. Both way are discussed below:
+The repository contains Docker configuration which can be used to build docker image, however, the app can be run without using
+the docker container. Both ways are discussed below:
 
 ## 1. Run inside Docker Container
 It is the recommended way, the Docker Image of the app is pre-configured to run the `migrations` and `collectstatic`.
-However, the `load` command to populate the database and the crons need to be run manually.
+However, the commands to populate the database with initial data and start the cron jobs need to be run manually.
 
-The image can be built locally or can be pulled from Docker Hub:
+The image can be pulled from Docker Hub or can be built locally:
 
 ```
 docker pull arjunsalyan/macports-webapp
@@ -49,7 +49,7 @@ or build the image
 docker build -t macports-webapp .
 ```
 
-After the image has been built or pulled, run it using an an env file that contains environment variables. Create a file
+After the image has been built or pulled, run it using an env file that contains environment variables. Create a file
 `env` in the root of the project and supply the information as shown in the format below. A sample `env` file is
 supplied in the root of the repository: `env.sample`, you may rename it to `env` and insert the values to the variables.
 
@@ -60,26 +60,49 @@ DB_NAME=
 DB_USER=
 DB_PASSWORD=
 DB_HOST=
-DB_PORT= [default:'5432']
+DB_PORT= [default: '5432']
 SECRET_KEY=
 ```
+**NOTE**: *If you want to connect to a database running on your host machine, then use `host.docker.internal` instead of
+`localhost` in the variable `DB_HOST`.*
 
-Now run the image:
-
-```
-docker run -d -p 80:80 --env-file=env macports-webapp
-```
-
-To start the cron jobs:
+1. Now run the image:
 
 ```
-docker exec <container-id> supervisorctl start cron
+docker run -d -p 80:80 --env-file=env --name=macports-webapp macports-webapp
 ```
+and visit `127.0.0.1:80` to see if everything looks fine. Sometimes, it may take 10-15 seconds for the site to display
+the layout properly because `migrations` and `collectstatic` commands are running in the background. There will not be any
+contents in the site because the database is empty, but it should load up nicely with empty sections.
+
+2. Populate the database with initial data using the command:
+
+```
+docker exec macports-webapp python3 /code/app/manage.py autoload-initial-data
+```
+
+This command should be run only on an empty database. It fetches the latest `PortIndex.json` file from rsync server and
+populates an empty database.
+
+After starting the command, take a break. The process can take quiet a while, generally it should finish within 30 minutes
+but can vary based on the connection between your database and app.
+
+3. Start the cron jobs (only after the previous command finishes):
+
+```
+docker exec macports-webapp supervisorctl start cron
+```
+
+This would start two cron jobs:
+1. Fetch build history once every hour by using app's command: `python3 manage.py fetch-build-history`
+2. Run updates on the portindex every three hours, command: `python3 manage.py update-portinfo`
+
+After you see the message: `cron: started`, your app is ready. It would automatically keep itself updated.
 
 All other commands supported by the app can be run using:
 
 ```
-docker exec <container-id> [command]
+docker exec macports-webapp [command]
 ```
 
 ## 2. Run Without Docker
