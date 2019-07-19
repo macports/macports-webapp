@@ -21,8 +21,8 @@ from ports import views
 urlpatterns = [
     path('', views.index, name='home'),
     path('statistics/submit/', views.stats_submit, name='stats_submit'),
-    path('statistics/ports/', views.all_ports_stats, name='all_ports_stats'),
-    path('statistics/ports/filter/', views.all_ports_stats_filter, name='all_ports_stats_filter'),
+    path('statistics/ports/', views.stats_port_installations, name='stats_port_installations'),
+    path('statistics/ports/filter/', views.stats_port_installations_filter, name='stats_port_installations_filter'),
     path('statistics/', views.stats, name='stats_home'),
     url(r'^maintainer/github/(?P<github_handle>[-a-zA-Z0-9_.]+)/$', views.maintainer_detail_github, name='maintainer_detail_github'),
     url(r'^maintainer/email/(?P<name>[-a-zA-Z0-9_.]+)__(?P<domain>[-a-zA-Z0-9_.]+)/$', views.maintainer_detail_email, name='maintainer_detail_email'),
