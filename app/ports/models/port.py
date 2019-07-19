@@ -160,20 +160,11 @@ class Port(models.Model):
             populate(ports)
 
     @classmethod
-    def update(cls, data, is_json=True):
+    def update(cls, data):
         def open_portindex_json(path):
             with open(path, "r", encoding='utf-8') as file:
                 data = json.load(file)
             return data['ports']
-
-        def open_ports_from_list(list_of_ports, path='portindex.json'):
-            with open(path, "r", encoding='utf-8') as file:
-                data = json.load(file)
-            ports_to_be_updated = []
-            for port in data['ports']:
-                if port['name'] in list_of_ports:
-                    ports_to_be_updated.append(port)
-            return ports_to_be_updated
 
         def full_update_ports(ports):
 
@@ -276,7 +267,7 @@ class Port(models.Model):
         # Block to find type of passed "data" and run updates accordingly
         # ============ START ============
 
-        # If the passed object is a valid path, open it and parse the JSON objects
+        # If a valid path is passed, open it and parse the JSON objects
         if isinstance(data, str):
             if os.path.exists(data):
                 ports = open_portindex_json(data)
@@ -284,15 +275,9 @@ class Port(models.Model):
             else:
                 print('File "{}" not found.'.format(data))
 
-        # If the passed object is a list
+        # If a list is passed, run the updates directly
         elif isinstance(data, list):
-            # If the passed list contains JSON objects, run the updates directly
-            if is_json:
-                run_updates(data)
-            # If the passed list contains names of ports, first fetch corresponding JSON objects then run the updates
-            else:
-                ports = open_ports_from_list(data)
-                run_updates(ports)
+            run_updates(data)
 
         # ============ END ==============
 
