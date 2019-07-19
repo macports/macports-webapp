@@ -222,6 +222,12 @@ def all_builds_filter(request):
 
 
 def stats(request):
+    days = request.GET.get('days', 30)
+    try:
+        if int(days) not in [7, 30, 90, 180, 365]:
+            return HttpResponse("'days' received an invalid value.")
+    except ValueError:
+            return HttpResponse("'days' must be an integer.")
     current_week = datetime.datetime.today().isocalendar()[1]
     all_submissions = Submission.objects.all()
     total_unique_users = all_submissions.distinct('user').count()
@@ -232,15 +238,13 @@ def stats(request):
     users_by_month = Submission.objects.annotate(month=TruncMonth('timestamp')).values('month').annotate(num=Count('user_id', distinct=True))[:12]
 
     # System Stats for Current Users
-    submissions_last_30_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
-    submissions_unique = Submission.objects.filter(id__in=Subquery(submissions_last_30_days.values('id')))
+    submissions_last_x_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=int(days))).order_by('user', '-timestamp').distinct('user')
+    submissions_unique = Submission.objects.filter(id__in=Subquery(submissions_last_x_days.values('id')))
     macports_distribution = submissions_unique.values('macports_version').annotate(num=Count('macports_version'))
     os_distribution_unsorted = list(submissions_unique.values('os_version', 'os_arch').annotate(num=Count('user_id', distinct=True)))
     os_distribution = sorted(os_distribution_unsorted, key=lambda x: int(x['os_version'].replace(".", '')), reverse=True)
     xcode_distribution_unsorted = list(submissions_unique.values('xcode_version', 'os_version').annotate(num=Count('user_id', distinct=True)))
     xcode_distribution = sorted(xcode_distribution_unsorted, key=lambda x: (tuple(int(i) for i in x['os_version'].split('.'))), reverse=True)
-    port_distribution = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id'))).values('port').annotate(num=Count('port')).order_by('-num').exclude(port__iexact='mpstats-gsoc')[:50]
-    req_port_distribution = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id')), requested=True).values('port').annotate(num=Count('port')).order_by('-num')[:50]
 
     return render(request, 'ports/stats.html', {
         'total_submissions': all_submissions.count(),
@@ -249,10 +253,9 @@ def stats(request):
         'last_week': last_week_unique,
         'users_by_month': users_by_month,
         'os_distribution': os_distribution,
-        'port_distribution': port_distribution,
         'macports_distribution': macports_distribution,
         'xcode_distribution': xcode_distribution,
-        'req_port_distribution': req_port_distribution
+        'days': int(days)
     })
 
 
