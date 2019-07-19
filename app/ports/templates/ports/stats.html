@@ -155,7 +155,7 @@
     <hr>
     <br>
     {% csrf_token %}
-    <form class="form-inline justify-content-center" method="get" action="{% url 'stats_home' %}">
+    <form class="form-inline justify-content-center" method="get" action="{% url 'stats_home' %}#os-chart">
         <label for="days"><h5>The charts below show stats for users who made submissions in last: </h5></label>
         <select onchange="this.form.submit()" class="form-control ml-2" name="days" id="days">
             <option class="format-option" value="7" >7 Days</option>
