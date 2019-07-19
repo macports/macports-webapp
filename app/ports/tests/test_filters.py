@@ -4,9 +4,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 
 from ports.models import Port
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-JSON_FILE = os.path.join(BASE_DIR, 'tests', 'sample_data', 'portindex.json')
+from MacPorts.config import TEST_PORTINDEX_JSON
 
 
 class TestDependencies(TestCase):
@@ -15,7 +13,7 @@ class TestDependencies(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        Port.load(JSON_FILE)
+        Port.load(TEST_PORTINDEX_JSON)
 
     def test_search(self):
         response1 = self.client.get(reverse('ports_search'), data={

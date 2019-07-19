@@ -4,9 +4,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 
 from ports.models import Maintainer, Port
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-JSON_FILE = os.path.join(BASE_DIR, 'tests', 'sample_data', 'portindex.json')
+from MacPorts.config import TEST_PORTINDEX_JSON
 
 
 class TestMaintainers(TestCase):
@@ -15,7 +13,7 @@ class TestMaintainers(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        Port.load(JSON_FILE)
+        Port.load(TEST_PORTINDEX_JSON)
 
     def test_unique_entries_created(self):
         self.assertEquals(Maintainer.objects.count(), 6, "Failed to create unique entities for maintainers")

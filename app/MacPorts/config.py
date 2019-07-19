@@ -20,3 +20,6 @@ MACPORTS_PORTS_URL = "https://github.com/macports/macports-ports.git"
 
 # configuration for fetching builders
 BUILDERS_JSON_URL = "https://build.macports.org/json/builders/"
+
+# configuration for tests
+TEST_PORTINDEX_JSON = os.path.join(BASE_DIR, 'ports', 'tests', 'sample_data', 'portindex.json')

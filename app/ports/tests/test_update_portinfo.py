@@ -4,15 +4,13 @@ from django.test import TestCase
 from django.core.management import call_command
 
 from ports.models import Port
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-JSON_FILE = os.path.join(BASE_DIR, 'tests', 'sample_data', 'portindex.json')
+from MacPorts.config import TEST_PORTINDEX_JSON
 
 
 class TestUpdatePortinfo(TestCase):
     @classmethod
     def setUpTestData(cls):
-        Port.load(JSON_FILE)
+        Port.load(TEST_PORTINDEX_JSON)
 
     def test_updates(self):
         call_command('update-portinfo', '3c6f37828d091670e7b9a2676757b2e468ee3d52', 'cb7086953124c73ffb616e955653176e3c4be02c')
