@@ -259,7 +259,7 @@ def stats(request):
     })
 
 
-def all_ports_stats(request):
+def stats_port_installations(request):
     days = int(request.GET.get('days', 30))
     first = request.GET.get('first', '-total_count')
     second = request.GET.get('second', '-req_count')
@@ -278,7 +278,7 @@ def all_ports_stats(request):
     for i, j in itertools.combinations(values, 2):
         if i.replace('-', '') == j.replace('-', ''):
             return HttpResponse("'{}' and '{}' refer to the same column.".format(i, j))
-    return render(request, 'ports/all_ports_stats.html', {
+    return render(request, 'ports/stats_port_installations.html', {
         'days': days,
         'first': first,
         'second': second,
@@ -286,7 +286,7 @@ def all_ports_stats(request):
     })
 
 
-def all_ports_stats_filter(request):
+def stats_port_installations_filter(request):
     days = int(request.GET.get('days', 30))
     order_by_1 = str(request.GET.get('order_by_1', '-total_count'))
     order_by_2 = str(request.GET.get('order_by_2', '-req_count'))
@@ -311,7 +311,7 @@ def all_ports_stats_filter(request):
     except EmptyPage:
         installs = paginated_obj.get_page(paginated_obj.num_pages)
 
-    return render(request, 'ports/ajax-filters/all_ports_stats_table.html', {
+    return render(request, 'ports/ajax-filters/port_installations_table.html', {
         'installs': installs,
         'search_by': search_by
     })
