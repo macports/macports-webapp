@@ -1,10 +1,12 @@
 import os
+import subprocess
+import json
 
 from django.core.management.base import BaseCommand
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-WORKING_DIR = os.path.join(BASE_DIR, "..", "tests", "sample_data")
-os.chdir(WORKING_DIR)
+from MacPorts.config import TEST_SAMPLE_DATA, PORTINDEX2JSON, TEST_PORTINDEX_JSON, TCLSH
+
+os.chdir(TEST_SAMPLE_DATA)
 
 
 class Command(BaseCommand):
@@ -13,4 +15,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         os.system("portindex")
-        os.system("tclsh portindex2json.tcl portindex > portindex.json")
+        os.system("{} {} portindex > {}".format(TCLSH, PORTINDEX2JSON, TEST_PORTINDEX_JSON))
