@@ -151,18 +151,28 @@ def portdetail_build_information(request):
 
 
 def portdetail_stats(request):
+    days = request.GET.get('days', 30)
+    days_ago = request.GET.get('days_ago', 0)
+    try:
+        days = int(days)
+        days_ago = int(days_ago)
+    except ValueError:
+        return HttpResponse("'days' and 'days-ago' must be integer.")
     port_name = request.GET.get('port_name')
     port = Port.objects.get(name__iexact=port_name)
 
+    end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days_ago)
+    start_date = end_date - datetime.timedelta(days=days)
+
     # Section for calculation of current stats
-    submissions_last_30_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
-    installations_last_30_days = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id')), port__iexact=port_name)
-    requested_count = installations_last_30_days.filter(requested=True).values('port').aggregate(Count('port'))
-    total_count = installations_last_30_days.values('port').aggregate(Count('port'))
-    version_distribution = installations_last_30_days.values('version').annotate(num=Count('version')).order_by('-num')
-    os_distribution_unsorted = list(installations_last_30_days.values('submission__os_version', 'submission__os_arch').annotate(num=Count('submission__user_id', distinct=True)).order_by('-num'))
+    submissions_last_x_days = Submission.objects.filter(timestamp__range=[start_date, end_date]).order_by('user', '-timestamp').distinct('user')
+    installations_last_x_days = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_x_days.values('id')), port__iexact=port_name)
+    requested_count = installations_last_x_days.filter(requested=True).values('port').aggregate(Count('port'))
+    total_count = installations_last_x_days.values('port').aggregate(Count('port'))
+    version_distribution = installations_last_x_days.values('version').annotate(num=Count('version')).order_by('-num')
+    os_distribution_unsorted = list(installations_last_x_days.values('submission__os_version', 'submission__os_arch').annotate(num=Count('submission__user_id', distinct=True)).order_by('-num'))
     os_distribution = sorted(os_distribution_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
-    xcode_distribution_unsorted = list(installations_last_30_days.values('submission__xcode_version', 'submission__os_version').annotate(num=Count('submission__user_id', distinct=True)))
+    xcode_distribution_unsorted = list(installations_last_x_days.values('submission__xcode_version', 'submission__os_version').annotate(num=Count('submission__user_id', distinct=True)))
     xcode_distribution = sorted(xcode_distribution_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
 
     installation_by_month = PortInstallation.objects.filter(port__iexact=port_name).annotate(month=TruncMonth('submission__timestamp')).values('month').annotate(num=Count('submission__user', distinct=True))[:12]
@@ -175,7 +185,9 @@ def portdetail_stats(request):
         'installation_by_month': installation_by_month,
         'os_distribution': os_distribution,
         'xcode_distribution': xcode_distribution,
-        'version_by_month': version_by_month
+        'version_by_month': version_by_month,
+        'days': days,
+        'days_ago': days_ago
     })
 
 

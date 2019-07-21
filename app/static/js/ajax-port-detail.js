@@ -99,3 +99,27 @@ function filterBuilds() {
 function changePage(page) {
     buildHistoryAjax(page);
 }
+
+function installationStatsAjax() {
+    var currentinstallationStatsAjax = null;
+
+    currentinstallationStatsAjax = $.ajax({
+        type: 'GET',
+        url: '/port/ajax-call/stats/',
+        data: {
+            'port_name': $('#port_name').text(),
+            'days': $('#days').val(),
+            'days_ago': $('#days-ago').val(),
+            'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+        },
+        success: display,
+        beforeSend: function () {
+                $('#display-box').html("");
+                $('#loading-image').show();
+                if (currentinstallationStatsAjax != null) {
+                    currentinstallationStatsAjax.abort();
+                }
+            },
+        dataType: 'html'
+    });
+}
