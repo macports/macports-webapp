@@ -167,8 +167,8 @@ def portdetail_stats(request):
     # Section for calculation of current stats
     submissions = Submission.objects.filter(timestamp__range=[start_date, end_date]).order_by('user', '-timestamp').distinct('user')
     port_installations = PortInstallation.objects.filter(submission_id__in=Subquery(submissions.values('id')), port__iexact=port_name)
-    requested_port_installations_count = port_installations.filter(requested=True).values('port').aggregate(Count('port'))
-    total_port_installations_count = port_installations.values('port').aggregate(Count('port'))
+    requested_port_installations_count = port_installations.filter(requested=True).aggregate(Count('submission__user_id', distinct=True))
+    total_port_installations_count = port_installations.aggregate(Count('submission__user_id', distinct=True))
     port_installations_by_port_version = port_installations.values('version').annotate(num=Count('version')).order_by('-num')
     port_installations_by_os_version_and_os_arch_unsorted = list(port_installations.values('submission__os_version', 'submission__os_arch').annotate(num=Count('submission__user_id', distinct=True)).order_by('-num'))
     port_installations_by_os_version_and_os_arch = sorted(port_installations_by_os_version_and_os_arch_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
