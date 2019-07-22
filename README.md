@@ -30,12 +30,12 @@ mentored by the [MacPorts](https://www.macports.org) organisation.
 ___
 
 # Running the App
-The repository contains Docker configuration which can be used to build docker image, however, the app can be run without using
+The repository contains Docker configuration which can be used to the build docker image, however, the app can be run without using
 the docker container. Both ways are discussed below:
 
 ## 1. Run inside Docker Container
 It is the recommended way, the Docker Image of the app is pre-configured to run the `migrations` and `collectstatic`.
-However, the commands to populate the database with initial data and start the cron jobs need to be run manually.
+However, the commands to populate the database with the initial data and to start the cron jobs need to be run manually.
 
 The image can be pulled from Docker Hub or can be built locally:
 
@@ -75,7 +75,7 @@ and visit `127.0.0.1:80` to see if everything looks fine. Sometimes, it may take
 the layout properly because `migrations` and `collectstatic` commands are running in the background. There will not be any
 contents in the site because the database is empty, but it should load up nicely with empty sections.
 
-2. Populate the database with initial data using the command:
+2. Populate the database with the initial data using the command:
 
 ```
 docker exec macports-webapp python3 /code/app/manage.py autoload-initial-data
