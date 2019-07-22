@@ -18,11 +18,8 @@ class Command(BaseCommand):
                             help="Not recommended. Helps you provide a commit from which update should start")
 
     def handle(self, *args, **options):
-        # Fetch from rsync
-        Port.RsyncHandler().sync()
-
-        # Open the file
-        data = Port.RsyncHandler().open_file()
+        # Fetch the latest version of PortIndex.json and open the file
+        data = Port.PortIndexUpdateHandler().sync_and_open_file()
 
         # If no argument is provided, use the commit-hash from JSON file:
         if options['new'] is False:

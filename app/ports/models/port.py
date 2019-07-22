@@ -34,18 +34,6 @@ class Port(models.Model):
 
     objects = PortManager()
 
-    class RsyncHandler:
-        @staticmethod
-        def sync():
-            subprocess.call([config.RSYNC, config.PORTINDEX_SOURCE, config.PORTINDEX_JSON])
-            return
-
-        @staticmethod
-        def open_file():
-            with open(config.PORTINDEX_JSON, "r", encoding='utf-8') as file:
-                data = json.load(file)
-            return data
-
     @classmethod
     def load(cls, data):
         def open_portindex_json(path):
@@ -288,6 +276,14 @@ class Port(models.Model):
                 if port not in dict_of_portdirs[portdir]:
                     port.active = False
                     port.save()
+
+    class PortIndexUpdateHandler:
+        @staticmethod
+        def sync_and_open_file():
+            subprocess.call([config.RSYNC, config.PORTINDEX_SOURCE, config.PORTINDEX_JSON])
+            with open(config.PORTINDEX_JSON, "r", encoding='utf-8') as file:
+                data = json.load(file)
+            return data
 
 
 class Dependency(models.Model):
