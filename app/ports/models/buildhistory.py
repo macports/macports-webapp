@@ -5,7 +5,7 @@ import datetime
 
 from django.db import models
 
-from MacPorts.config import BUILDERS_JSON_URL
+from MacPorts.config import BUILDERS_JSON_URL, BUILDBOT_URL_PREFIX, BUILDS_FETCHED_COUNT
 
 
 class Builder(models.Model):
@@ -35,7 +35,7 @@ class BuildHistory(models.Model):
     @classmethod
     def populate(cls):
         builders = Builder.objects.values_list('name', flat=True)
-        url_prefix = 'https://build.macports.org'
+        url_prefix = BUILDBOT_URL_PREFIX
 
         def get_url_json(builder_name, build_number):
             return '{}/json/builders/ports-{}-builder/builds/{}'.format(url_prefix, builder_name, build_number)
@@ -99,7 +99,7 @@ class BuildHistory(models.Model):
             if build_number_loaded:
                 build_in_database = build_number_loaded[0].build_id + 1
             else:
-                build_in_database = last_build_number - 20
+                build_in_database = last_build_number - BUILDS_FETCHED_COUNT
 
             for build_number in range(build_in_database, last_build_number):
                 build_data = get_data_from_url(get_url_json(buildername, build_number))
