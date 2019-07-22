@@ -20,16 +20,16 @@
     </select>
 </form>
 <br>
-{% if total_port_installations_count.port__count > 0 %}
+{% if total_port_installations_count.submission__user_id__count > 0 %}
     <h4 class="border-bottom">Current Stats: <span style="font-size:12px"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#currentStatsHelp">Learn More</button></span> </h4>
     <table class="table table-striped border">
                 <tr>
                     <th scope="row">Total Installations</th>
-                    <td>{{ total_port_installations_count.port__count }}</td>
+                    <td>{{ total_port_installations_count.submission__user_id__count }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Requested Installations</th>
-                    <td>{{ requested_port_installations_count.port__count }}</td>
+                    <td>{{ requested_port_installations_count.submission__user_id__count }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Most Installed Version</th>
