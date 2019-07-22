@@ -25,7 +25,7 @@ def clone_repo():
         subprocess.run([GIT, 'clone', MACPORTS_PORTS_URL, MACPORTS_PORTS])
 
 
-def get_list_of_changed_ports(new_hash=False, old_hash=False):
+def get_list_of_changed_ports(new_commit=None, old_commit=None):
     # Check if the repository clone is available
     if not os.path.isdir(MACPORTS_PORTS_DIR):
         print('{} directory not found. Cloning into'.format(MACPORTS_PORTS))
@@ -46,25 +46,25 @@ def get_list_of_changed_ports(new_hash=False, old_hash=False):
             raise OSError
 
         # If old_hash is not provided by the user
-        if old_hash is False:
+        if old_commit is None:
             # If the database has old commit, use it for old_hash
-            old_hash_object = LastPortIndexUpdate.objects.all().first()
-            if old_hash_object is None:
+            old_commit_object = LastPortIndexUpdate.objects.all().first()
+            if old_commit_object is None:
                 # If database is empty, use the first commit
-                old_hash = subprocess.run([GIT, 'rev-list', 'HEAD', '|', 'tail', '-n', '1'],
+                old_commit = subprocess.run([GIT, 'rev-list', 'HEAD', '|', 'tail', '-n', '1'],
                                           stdout=subprocess.PIPE).stdout.decode('utf-8')
             else:
-                old_hash = old_hash_object.git_commit_hash
+                old_commit = old_commit_object.git_commit_hash
 
         # Pull from macports-ports
         subprocess.call([GIT, 'pull'])
 
         # Get new hash if not provided
-        if new_hash is False:
-            new_hash = subprocess.run([GIT, 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+        if new_commit is None:
+            new_commit = subprocess.run([GIT, 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
         # Generate the range of commits to find updated paths
-        range = str(old_hash).strip() + "^.." + str(new_hash).strip()
+        range = str(old_commit).strip() + "^.." + str(new_commit).strip()
 
         changed_paths = subprocess.run([GIT, 'diff', '--name-only', range], stdout=subprocess.PIPE).stdout.decode(
             'utf-8')
@@ -85,4 +85,4 @@ def get_list_of_changed_ports(new_hash=False, old_hash=False):
         print("Cleaning current tree and cloning new repo.")
         shutil.rmtree(MACPORTS_PORTS_DIR)
         clone_repo()
-        return get_list_of_changed_ports(new_hash, old_hash)
+        return get_list_of_changed_ports(new_commit, old_commit)
