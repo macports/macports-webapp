@@ -20,20 +20,20 @@
     </select>
 </form>
 <br>
-{% if total_count.port__count > 0 %}
+{% if total_port_installations_count.port__count > 0 %}
     <h4 class="border-bottom">Current Stats: <span style="font-size:12px"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#currentStatsHelp">Learn More</button></span> </h4>
     <table class="table table-striped border">
                 <tr>
                     <th scope="row">Total Installations</th>
-                    <td>{{ total_count.port__count }}</td>
+                    <td>{{ total_port_installations_count.port__count }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Requested Installations</th>
-                    <td>{{ requested_count.port__count }}</td>
+                    <td>{{ requested_port_installations_count.port__count }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Most Installed Version</th>
-                    <td><strong>{{ version_distribution.first.version }}</strong> : {{ version_distribution.first.num }} user(s)</td>
+                    <td><strong>{{ port_installations_by_port_version.first.version }}</strong> : {{ port_installations_by_port_version.first.num }} user(s)</td>
                 </tr>
             </table>
     <div class="row">
@@ -122,7 +122,7 @@
             data.addColumn('string', 'Version');
             data.addColumn('number', 'Number of Users');
             data.addRows([
-                {% for version in version_distribution %}
+                {% for version in port_installations_by_port_version %}
                 ['{{ version.version }}', {{ version.num }}],
                 {% endfor %}
             ]);
@@ -145,7 +145,7 @@
             data.addColumn('string', 'Month');
             data.addColumn('number', 'Number of Users');
             data.addRows([
-            {% for i in installation_by_month %}
+            {% for i in port_installations_by_month %}
             ['{{ i.month|date:"M Y" }}', {{ i.num }}],
             {% endfor %}
         ]);
@@ -169,8 +169,8 @@
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
-            {% regroup os_distribution by submission__os_version as os_chart_os_version_parent %}
-            {% regroup os_distribution|dictsort:"submission__os_arch" by submission__os_arch as os_chart_os_arch_parent %}
+            {% regroup port_installations_by_os_version_and_os_arch by submission__os_version as os_chart_os_version_parent %}
+            {% regroup port_installations_by_os_version_and_os_arch|dictsort:"submission__os_arch" by submission__os_arch as os_chart_os_arch_parent %}
 
             var data = google.visualization.arrayToDataTable([
                 ['OS Version', {% for os_arch in os_chart_os_arch_parent %}'{{ os_arch.grouper }}', {% endfor %} {role: 'annotation'}],
@@ -196,8 +196,8 @@
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            {% regroup version_by_month by version as version_parent %}
-            {% regroup version_by_month|dictsort:"month" by month|date:"M Y" as month_parent %}
+            {% regroup port_installations_by_version_and_month by version as version_parent %}
+            {% regroup port_installations_by_version_and_month|dictsort:"month" by month|date:"M Y" as month_parent %}
             // Create the data table.
             var data = new google.visualization.DataTable();
                 data.addColumn('string', 'month');
@@ -232,8 +232,8 @@
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            {% regroup xcode_distribution|sortversion:"submission__xcode_version" by submission__xcode_version as xcode_parent %}
-            {% regroup xcode_distribution by submission__os_version as os_parent %}
+            {% regroup port_installations_by_os_and_xcode_version|sortversion:"submission__xcode_version" by submission__xcode_version as xcode_parent %}
+            {% regroup port_installations_by_os_and_xcode_version by submission__os_version as os_parent %}
 
             var data = google.visualization.arrayToDataTable([
                 ['OS Version', {% for version in xcode_parent %}'{{ version.grouper }}', {% endfor %} { role: 'annotation' } ],
