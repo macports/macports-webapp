@@ -158,6 +158,9 @@ def portdetail_stats(request):
         days_ago = int(days_ago)
     except ValueError:
         return HttpResponse("'days' and 'days-ago' must be integer.")
+    allowed_days = [0, 7, 30, 90, 180, 365]
+    if days not in allowed_days or days_ago not in allowed_days:
+        return HttpResponse("'days' and 'days_ago' can accept only these values: {}".format(allowed_days))
     port_name = request.GET.get('port_name')
     port = Port.objects.get(name__iexact=port_name)
 
@@ -187,7 +190,8 @@ def portdetail_stats(request):
         'port_installations_by_month': port_installations_by_month,
         'port_installations_by_version_and_month': port_installations_by_version_and_month,
         'days': days,
-        'days_ago': days_ago
+        'days_ago': days_ago,
+        'allowed_days': allowed_days
     })
 
 
