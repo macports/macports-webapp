@@ -1,6 +1,6 @@
 ## Details of a Single Port
 
-#### - GET /port/
+#### `- GET /port/`
 
 Fetch the general information about a port i.e. the data extracted from the `Portfile`.
 
@@ -8,7 +8,7 @@ Params:
 - **name** [required]: Name of the port
 - **field** [optional]: Select only a particular field. If not provided, then all fields are sent. [default: All]
 
-#### - GET /port/builds/
+#### - `GET /port/builds/`
 
 Fetch build history of a given port.
 
@@ -19,7 +19,7 @@ Params
 - **status** [optional]: Filter by the status of builds. [default: All]
 
 
-#### - GET /port/stats/
+#### - `GET /port/stats/`
 
 Re
 
