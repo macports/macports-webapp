@@ -91,11 +91,8 @@
 
 {% block script %}
     <script>
-    var tabsArray = ["summary", "stats", "builds", "tickets"];
-    if (jQuery.inArray({{ tab }}, tabsArray !== -1)) {
         $('#{{ tab }}').trigger("click");
         loadTickets();
-    }
     </script>
 
 {% endblock %}
