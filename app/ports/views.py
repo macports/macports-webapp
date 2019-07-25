@@ -471,7 +471,7 @@ def stats_submit(request):
     if request.method == "POST":
         try:
             received_json = json.loads(request.POST.get('submission[data]'))
-            submission_id = Submission.populate(received_json, datetime.datetime.utcnow())
+            submission_id = Submission.populate(received_json, datetime.datetime.now(tz=datetime.timezone.utc))
             PortInstallation.populate(received_json['active_ports'], submission_id)
 
             return HttpResponse("Success")
