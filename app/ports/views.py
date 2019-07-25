@@ -74,6 +74,8 @@ def variantlist(request, variant):
 def portdetail(request, name):
     try:
         req_port = Port.objects.get(name__iexact=name)
+        days = request.GET.get('days', 30)
+        days_ago = request.GET.get('days_ago', 0)
         tab = request.GET.get('tab', "summary")
         allowed_tabs = ["summary", "builds", "stats", "tickets"]
         if tab not in allowed_tabs:
@@ -91,7 +93,9 @@ def portdetail(request, name):
         return render(request, 'ports/portdetail.html', {
             'req_port': req_port,
             'latest_builds': latest_builds,
-            'tab': tab
+            'tab': tab,
+            'days': days,
+            'days_ago': days_ago,
         })
     except Port.DoesNotExist:
         return render(request, 'ports/exceptions/port_not_found.html', {

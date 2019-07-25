@@ -1,4 +1,4 @@
-// Ajax request for the tabs
+// Ajax used by Clicks on tabs : Summary and Builds
 function ajaxCall(url) {
     var currentRequest = null;
 
@@ -20,13 +20,18 @@ function ajaxCall(url) {
             dataType: 'html',
         });
 }
+// End
 
-function tabClick(e, slug) {
+function changePageState(e, state) {
     $('.active').removeClass("active");
     $(e).addClass("active");
-    ajaxCall("/port/ajax-call/" + slug)
+    history.pushState(null, null, state);
+}
+
+function tabClick(e, slug) {
+    changePageState(e, "?tab=" + slug);
     $('#tickets-box').hide();
-    history.pushState(null, null, "?tab=" + slug)
+    ajaxCall("/port/ajax-call/" + slug);
 }
 
 function display(data, textStatus, jqXHR) {
@@ -34,7 +39,7 @@ function display(data, textStatus, jqXHR) {
     $('#loading-image').hide();
 }
 
-//Load Trac Tickets
+// Code for Tickets Start
 function loadTickets() {
     $.ajax({
         type: 'GET',
@@ -58,15 +63,13 @@ function receiveTickets(data, textStatus, jqXHR) {
 }
 
 function showTickets(e) {
-    $('.active').removeClass("active");
-    $(e).addClass("active");
+    changePageState(e, "?tab=tickets")
     $('#display-box').html("");
     $('#tickets-box').show();
-    history.pushState(null, null, "?tab=tickets")
-    
 }
+// Code for Tickets End
 
-//Build History
+// Build History Filters Start
 function buildHistoryAjax(page) {
     var currentRequestBuild = null;
 
@@ -99,8 +102,10 @@ function filterBuilds() {
 function changePage(page) {
     buildHistoryAjax(page);
 }
+// Build History Filters End
 
-function installationStatsAjax() {
+// Installation Stats AJAX call and filters start
+function installationStatsAjax(days=$('#days').val(), days_ago=$('#days-ago').val()) {
     var currentinstallationStatsAjax = null;
 
     currentinstallationStatsAjax = $.ajax({
@@ -108,8 +113,8 @@ function installationStatsAjax() {
         url: '/port/ajax-call/stats/',
         data: {
             'port_name': $('#port_name').text(),
-            'days': $('#days').val(),
-            'days_ago': $('#days-ago').val(),
+            'days': days,
+            'days_ago': days_ago,
             'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
         },
         success: display,
@@ -119,7 +124,15 @@ function installationStatsAjax() {
                 if (currentinstallationStatsAjax != null) {
                     currentinstallationStatsAjax.abort();
                 }
+                history.pushState(null, null, "?tab=stats&days=" + days + "&days_ago=" + days_ago)
             },
         dataType: 'html'
     });
 }
+
+function statsClick(e, days, days_ago) {
+    changePageState(e, "?tab=stats");
+    installationStatsAjax(days, days_ago);
+    $('#tickets-box').hide();
+}
+// Installation Stats AJAX call and filters End
