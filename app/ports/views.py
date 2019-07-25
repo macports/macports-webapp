@@ -75,6 +75,9 @@ def portdetail(request, name):
     try:
         req_port = Port.objects.get(name__iexact=name)
         tab = request.GET.get('tab', "summary")
+        allowed_tabs = ["summary", "builds", "stats", "tickets"]
+        if tab not in allowed_tabs:
+            return HttpResponse("Invalid tab requested. Expected values: {}".format(allowed_tabs))
 
         all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name', '-build_id').distinct('port_name', 'builder_name')
         port_latest_builds = list(BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), port_name__iexact=name).values('builder_name__name', 'build_id', 'status'))
