@@ -45,6 +45,9 @@
         <div class="col-lg-6">
             <div class="chart" id="xcode-chart"></div>
         </div>
+        <div class="col-lg-6">
+            <div class="chart" id="stdlib-chart"></div>
+        </div>
     </div>
 
     <br><br>
@@ -182,6 +185,32 @@
         };
 
         var chart = new google.visualization.ColumnChart(document.getElementById('os-chart'));
+        chart.draw(data, options);
+      }
+    </script>
+
+
+    <!-- OS VERSIONS AND ARCHITECTURES -->
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            {% regroup port_installations_by_stdlib_and_os_arch|dictsort:"submission__cxx_stdlib" by submission__cxx_stdlib as stdlib_chart_stdlib_parent %}
+            {% regroup port_installations_by_stdlib_and_os_arch|dictsort:"submission__os_arch" by submission__os_arch as stdlib_chart_os_arch_parent %}
+
+            var data = google.visualization.arrayToDataTable([
+                ['OS Arch', {% for stdlib in stdlib_chart_stdlib_parent %}'{{ stdlib.grouper }}', {% endfor %} {role: 'annotation'}],
+                {% for os_arch in stdlib_chart_os_arch_parent %}
+                    ['OS: {{ os_arch.grouper }}', {% for stdlib in stdlib_chart_stdlib_parent %}{% for i in stdlib.list %}{% if i.submission__os_arch == os_arch.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
+                {% endfor %}
+            ]);
+
+        var options = {
+            'title':'STDLIB and Architectures',
+            isStacked: true
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('stdlib-chart'));
         chart.draw(data, options);
       }
     </script>
