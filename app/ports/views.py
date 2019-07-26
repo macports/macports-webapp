@@ -171,7 +171,7 @@ def portdetail_stats(request):
     port_name = request.GET.get('port_name')
     port = Port.objects.get(name__iexact=port_name)
 
-    end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days_ago)
+    end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=days_ago)
     start_date = end_date - datetime.timedelta(days=days)
 
     # Section for calculation of current stats
