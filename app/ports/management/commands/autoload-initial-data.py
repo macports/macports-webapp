@@ -11,11 +11,8 @@ class Command(BaseCommand):
         if Port.objects.count() or Builder.objects.count() > 0:
             raise CommandError("The database is not empty. Command cannot run.")
 
-        # Fetch from rsync
-        Port.RsyncHandler().sync()
-
-        # Open the file
-        data = Port.RsyncHandler().open_file()
+        # Fetch the latest version of PortIndex.json and open the file
+        data = Port.PortIndexUpdateHandler().sync_and_open_file()
 
         # Start populating
         Port.load(data['ports'])
