@@ -29,6 +29,7 @@ class Submission(models.Model):
     xcode_version = models.CharField(max_length=10)
     os_arch = models.CharField(max_length=20)
     macports_version = models.CharField(max_length=10)
+    cxx_stdlib = models.CharField(max_length=20, default='libc++')
     timestamp = models.DateTimeField()
 
     class Meta:
@@ -38,6 +39,9 @@ class Submission(models.Model):
             models.Index(fields=['user', '-timestamp']),
             models.Index(fields=['user', 'timestamp']),
             models.Index(fields=['os_version']),
+            models.Index(fields=['os_arch']),
+            models.Index(fields=['macports_version']),
+            models.Index(fields=['cxx_stdlib']),
         ]
 
     @classmethod
@@ -49,6 +53,7 @@ class Submission(models.Model):
         sub.xcode_version = json_object['os']['xcode_version']
         sub.os_arch = json_object['os']['os_arch']
         sub.macports_version = json_object['os']['macports_version']
+        sub.cxx_stdlib = json_object['os']['cxx_stdlib']
         sub.timestamp = timestamp
         sub.save()
         return sub.id
