@@ -1,0 +1,3 @@
+[submodule "app/ports/tests/sample_data/macports-contrib"]
+	path = app/ports/tests/sample_data/macports-contrib
+	url = https://github.com/macports/macports-contrib.git
