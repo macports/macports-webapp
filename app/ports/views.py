@@ -246,8 +246,9 @@ def all_builds_filter(request):
 
 def stats(request):
     days = request.GET.get('days', 30)
+    allowed_days = [7, 30, 90, 180, 365]
     try:
-        if int(days) not in [7, 30, 90, 180, 365]:
+        if int(days) not in allowed_days:
             return HttpResponse("'days' received an invalid value.")
     except ValueError:
             return HttpResponse("'days' must be an integer.")
@@ -278,7 +279,8 @@ def stats(request):
         'os_distribution': os_distribution,
         'macports_distribution': macports_distribution,
         'xcode_distribution': xcode_distribution,
-        'days': int(days)
+        'days': int(days),
+        'allowed_days': allowed_days
     })
 
 
@@ -289,10 +291,10 @@ def stats_port_installations(request):
     third = request.GET.get('third', 'port')
     values = [first, second, third]
     acceptable_values = ['port', '-port', 'total_count', '-total_count', '-req_count', 'req_count']
-    acceptable_days = [7, 30, 90, 180, 365]
+    allowed_days = [7, 30, 90, 180, 365]
 
-    if days not in acceptable_days:
-        return HttpResponse("'days' key must have an integer value from the list: {}".format(acceptable_days))
+    if days not in allowed_days:
+        return HttpResponse("'days' key must have an integer value from the list: {}".format(allowed_days))
 
     for i in values:
         if i not in acceptable_values:
@@ -306,6 +308,7 @@ def stats_port_installations(request):
         'first': first,
         'second': second,
         'third': third,
+        'allowed_days': allowed_days
     })
 
 
