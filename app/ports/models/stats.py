@@ -28,8 +28,11 @@ class Submission(models.Model):
     os_version = models.CharField(max_length=10)
     xcode_version = models.CharField(max_length=10)
     os_arch = models.CharField(max_length=20)
+    build_arch = models.CharField(max_length=20, default='')
+    platform = models.CharField(max_length=20, default='')
     macports_version = models.CharField(max_length=10)
     cxx_stdlib = models.CharField(max_length=20, default='libc++')
+    raw_json = JSONField(default=dict)
     timestamp = models.DateTimeField()
 
     class Meta:
@@ -39,9 +42,12 @@ class Submission(models.Model):
             models.Index(fields=['user', '-timestamp']),
             models.Index(fields=['user', 'timestamp']),
             models.Index(fields=['os_version']),
+            models.Index(fields=['os_version', 'os_arch']),
+            models.Index(fields=['os_version', 'xcode_version']),
             models.Index(fields=['os_arch']),
             models.Index(fields=['macports_version']),
             models.Index(fields=['cxx_stdlib']),
+            models.Index(fields=['build_arch']),
         ]
 
     @classmethod
@@ -54,6 +60,9 @@ class Submission(models.Model):
         sub.os_arch = json_object['os']['os_arch']
         sub.macports_version = json_object['os']['macports_version']
         sub.cxx_stdlib = json_object['os']['cxx_stdlib']
+        sub.build_arch = json_object['os']['build_arch']
+        sub.platform = json_object['os']['os_platform']
+        sub.raw_json = json_object
         sub.timestamp = timestamp
         sub.save()
         return sub.id
