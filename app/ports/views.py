@@ -13,7 +13,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery, Count, Case, IntegerField, When
 from django.db.models.functions import TruncMonth, Lower
 
-from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, User, Variant, OSDistribution, Submission, PortInstallation
+from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, Variant, Submission, PortInstallation
 from .filters import BuildHistoryFilter, PortFilterByMultiple
 
 

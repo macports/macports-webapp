@@ -2,23 +2,6 @@ from django.db import models
 from django.contrib.postgres.fields import JSONField
 
 
-class User(models.Model):
-    uuid = models.CharField(max_length=36, db_index=True)
-    osx_version = models.CharField(max_length=10)
-    macports_version = models.CharField(max_length=10)
-    xcode_version = models.CharField(max_length=10)
-    os_arch = models.CharField(max_length=10)
-    full_json = JSONField()
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-class OSDistribution(models.Model):
-    osx_version = models.CharField(max_length=20, db_index=True)
-    month = models.IntegerField(db_index=True)
-    year = models.IntegerField(db_index=True)
-    users = models.ManyToManyField(User, related_name='users')
-
-
 class UUID(models.Model):
     uuid = models.CharField(max_length=36, db_index=True)
 
