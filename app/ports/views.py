@@ -473,7 +473,12 @@ def search_ports_in_variant(request):
 def stats_submit(request):
     if request.method == "POST":
         try:
-            received_json = json.loads(request.POST.get('submission[data]'))
+            received_body = request.body.decode()
+            prefix = 'submission[data]='
+            if not received_body.startswith(prefix):
+                return HttpResponse("Invalid body of the request.")
+
+            received_json = json.loads(received_body[len(prefix):], encoding='utf-8')
             submission_id = Submission.populate(received_json, datetime.datetime.now(tz=datetime.timezone.utc))
             PortInstallation.populate(received_json['active_ports'], submission_id)
 
