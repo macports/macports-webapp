@@ -9,6 +9,7 @@ $(function () {
                 data: {
                     'name': $('#filter').val(),
                     'maintainers__name': $('#maintainers__name').text(),
+                    'maintainers__github': $('#maintainers__github').text(),
                     'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
                 },
                 success: searchSuccess,
@@ -31,5 +32,5 @@ function searchSuccess(data, textStatus, jqXHR) {
 function cancel_search() {
     $('#filtered_table').hide();
     $('#all_ports_table').show();
-    $('#category_filter').val('');
+    $('#filter').val('');
 }
