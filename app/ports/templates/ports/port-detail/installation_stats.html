@@ -1,4 +1,5 @@
 {% load sort_version %}
+{% load permutations %}
 
 <br>
 <form class="bg-light p-2 form form-inline justify-content-center">
@@ -44,9 +45,6 @@
     <div class="row">
         <div class="col-lg-6">
             <div class="chart" id="xcode-chart"></div>
-        </div>
-        <div class="col-lg-6">
-            <div class="chart" id="stdlib-chart"></div>
         </div>
     </div>
 
@@ -110,7 +108,6 @@
 </div>
 
 
-
     <!-- PORT VERSION CHART -->
     <script type="text/javascript">
         google.charts.load('current', {'packages':['corechart']});
@@ -169,48 +166,21 @@
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
-            {% regroup port_installations_by_os_version_and_os_arch by submission__os_version as os_chart_os_version_parent %}
-            {% regroup port_installations_by_os_version_and_os_arch|dictsort:"submission__os_arch" by submission__os_arch as os_chart_os_arch_parent %}
+            {% regroup port_installations_by_os_stdlib_build_arch by submission__os_version as os_chart_os_version_parent %}
 
             var data = google.visualization.arrayToDataTable([
-                ['OS Version', {% for os_arch in os_chart_os_arch_parent %}'{{ os_arch.grouper }}', {% endfor %} {role: 'annotation'}],
-                {% for os_version in os_chart_os_version_parent %}
-                    ['OS: {{ os_version.grouper }}', {% for os_arch in os_chart_os_arch_parent %}{% for i in os_version.list %}{% if i.submission__os_arch == os_arch.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
+                ['OS Version', {% for i in port_installations_by_os_stdlib_build_arch|unique_pairs:"submission__build_arch submission__cxx_stdlib" %}'{{ i.0 }}/{{ i.1 }}', {% endfor %} {role: 'annotation'}],
+                {% for os in os_chart_os_version_parent %}
+                ['OS: {{ os.grouper }}', {% for j in port_installations_by_os_stdlib_build_arch|unique_pairs:"submission__build_arch submission__cxx_stdlib" %}{% for i in os.list %}{% if j.0 == i.submission__build_arch and j.1 == i.submission__cxx_stdlib %}{{ i.num }}{% endif %}{% endfor %}{% if not forloop.last %}, {% endif %}{% endfor %}, '' ],
                 {% endfor %}
             ]);
 
         var options = {
-            'title':'OS Version and Architectures',
+            'title':'OS Version and Build Architecture/STDLIB',
             isStacked: true
         };
 
         var chart = new google.visualization.ColumnChart(document.getElementById('os-chart'));
-        chart.draw(data, options);
-      }
-    </script>
-
-
-    <!-- OS VERSIONS AND ARCHITECTURES -->
-    <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-            {% regroup port_installations_by_stdlib_and_os_arch|dictsort:"submission__cxx_stdlib" by submission__cxx_stdlib as stdlib_chart_stdlib_parent %}
-            {% regroup port_installations_by_stdlib_and_os_arch|dictsort:"submission__os_arch" by submission__os_arch as stdlib_chart_os_arch_parent %}
-
-            var data = google.visualization.arrayToDataTable([
-                ['OS Arch', {% for stdlib in stdlib_chart_stdlib_parent %}'{{ stdlib.grouper }}', {% endfor %} {role: 'annotation'}],
-                {% for os_arch in stdlib_chart_os_arch_parent %}
-                    ['OS: {{ os_arch.grouper }}', {% for stdlib in stdlib_chart_stdlib_parent %}{% for i in stdlib.list %}{% if i.submission__os_arch == os_arch.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
-                {% endfor %}
-            ]);
-
-        var options = {
-            'title':'STDLIB and Architectures',
-            isStacked: true
-        };
-
-        var chart = new google.visualization.ColumnChart(document.getElementById('stdlib-chart'));
         chart.draw(data, options);
       }
     </script>

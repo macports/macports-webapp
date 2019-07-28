@@ -180,11 +180,10 @@ def portdetail_stats(request):
     requested_port_installations_count = port_installations.filter(requested=True).aggregate(Count('submission__user_id', distinct=True))
     total_port_installations_count = port_installations.aggregate(Count('submission__user_id', distinct=True))
     port_installations_by_port_version = port_installations.values('version').annotate(num=Count('version')).order_by('-num')
-    port_installations_by_os_version_and_os_arch_unsorted = list(port_installations.values('submission__os_version', 'submission__os_arch').annotate(num=Count('submission__user_id', distinct=True)).order_by('-num'))
-    port_installations_by_os_version_and_os_arch = sorted(port_installations_by_os_version_and_os_arch_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
     port_installations_by_os_and_xcode_version_unsorted = list(port_installations.values('submission__xcode_version', 'submission__os_version').annotate(num=Count('submission__user_id', distinct=True)))
     port_installations_by_os_and_xcode_version = sorted(port_installations_by_os_and_xcode_version_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
-    port_installations_by_stdlib_and_os_arch = port_installations.values('submission__cxx_stdlib', 'submission__os_arch').annotate(num=Count('submission__user_id', distinct=True))
+    port_installations_by_os_stdlib_build_arch_unsorted = list(port_installations.values('submission__os_version', 'submission__build_arch', 'submission__cxx_stdlib').annotate(num=Count('submission__user_id', distinct=True)))
+    port_installations_by_os_stdlib_build_arch = sorted(port_installations_by_os_stdlib_build_arch_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
 
     port_installations_by_month = PortInstallation.objects.filter(port__iexact=port_name).annotate(month=TruncMonth('submission__timestamp')).values('month').annotate(num=Count('submission__user', distinct=True))[:12]
     port_installations_by_version_and_month = PortInstallation.objects.filter(port__iexact=port_name).annotate(month=TruncMonth('submission__timestamp')).values('month', 'version').annotate(num=Count('submission__user', distinct=True))[:12]
@@ -193,11 +192,10 @@ def portdetail_stats(request):
         'requested_port_installations_count': requested_port_installations_count,
         'total_port_installations_count': total_port_installations_count,
         'port_installations_by_port_version': port_installations_by_port_version,
-        'port_installations_by_os_version_and_os_arch': port_installations_by_os_version_and_os_arch,
         'port_installations_by_os_and_xcode_version': port_installations_by_os_and_xcode_version,
         'port_installations_by_month': port_installations_by_month,
         'port_installations_by_version_and_month': port_installations_by_version_and_month,
-        'port_installations_by_stdlib_and_os_arch': port_installations_by_stdlib_and_os_arch,
+        'port_installations_by_os_stdlib_build_arch': port_installations_by_os_stdlib_build_arch,
         'days': days,
         'days_ago': days_ago,
         'allowed_days': allowed_days
