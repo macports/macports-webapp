@@ -445,9 +445,14 @@ def search_ports_in_category(request):
 # Respond to ajax calls for searching within a maintainer
 def search_ports_in_maintainer(request):
     query = request.GET.get('name', '')
-    search_in = request.GET.get('maintainers__name', '')
+    name = request.GET.get('maintainers__name')
+    github = request.GET.get('maintainers__github')
+    if name is None:
+        search_in = github
+    else:
+        search_in = name
 
-    filtered_ports = PortFilterByMultiple(request.GET, queryset=Port.objects.all()).qs[:50]
+    filtered_ports = PortFilterByMultiple(request.GET, queryset=Port.objects.all()).qs
     return render(request, 'ports/ajax-filters/filtered_table.html', {
         'ports': filtered_ports,
         'query': query,
