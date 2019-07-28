@@ -19,7 +19,11 @@
         </div>
     {% endif %}
     <br>
-    <h3 id="maintainers__name">{{ maintainer }}</h3>
+    {% if github %}
+            <h3 id="maintainers__github">{{ maintainer }}</h3>
+    {% else %}
+        <h3 id="maintainers__name">{{ maintainer }}</h3>
+    {% endif %}
     {% if maintainers.count > 1 %}
         Found {{ maintainers.count }} entries for that {% if github is True %}GitHub Handle{% else %}Email{% endif %}
     {% endif %}

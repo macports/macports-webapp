@@ -18,4 +18,4 @@ class PortFilterByMultiple(django_filters.FilterSet):
 
     class Meta:
         model = Port
-        fields = ['categories__name', 'maintainers__name']
+        fields = ['categories__name', 'maintainers__name', 'maintainers__github']
