@@ -1,4 +1,5 @@
 FROM ubuntu:18.04
+ARG USER=0:0
 
 # Install required packages and remove the apt packages cache when done.
 
@@ -31,9 +32,6 @@ COPY config/supervisor.conf /etc/supervisor/conf.d/
 COPY app/requirements.txt /code/app/
 RUN pip3 install -r /code/app/requirements.txt
 
-RUN touch /var/log/buildhistorycron.log
-RUN touch /var/log/portinfocron.log
-
 # Setup cron
 COPY config/crons /etc/cron.d/crons
 RUN chmod 0644 /etc/cron.d/crons
@@ -41,5 +39,11 @@ RUN chmod 0644 /etc/cron.d/crons
 # add (the rest of) our code
 COPY . /code/
 
-EXPOSE 80
+RUN touch /var/log/buildhistorycron.log
+RUN touch /var/log/portinfocron.log
+RUN chown -R ${USER} /var/log/buildhistorycron.log /var/log/portinfocron.log /var/log/supervisor /var/log/nginx /var/lib/nginx /code
+RUN chown ${USER} /run
+
+USER ${USER}
+EXPOSE 8080
 CMD ["/usr/bin/supervisord", "-n"]
