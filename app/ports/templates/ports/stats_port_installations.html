@@ -25,7 +25,7 @@
     <form class="form-inline">
     <label class="form-inline" for="days-filter">Showing data for users who submitted stats in last: </label>
     <select class="form-control form-inline ml-2" id="days-filter" name="days-filter">
-    {% for i in allowed_days %}
+    {% for i in allowed_days|slice:"1:" %}
         <option value="{{ i }}" {% if i == 30 %}selected{% endif %}>{{ i }} days</option>
     {% endfor %}
     </select>
