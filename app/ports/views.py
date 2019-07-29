@@ -15,6 +15,7 @@ from django.db.models.functions import TruncMonth, Lower
 
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, Variant, Submission, PortInstallation
 from .filters import BuildHistoryFilter, PortFilterByMultiple
+from .validators import validate_stats_days, validate_columns_port_installations, validate_unique_columns_port_installations, ALLOWED_DAYS_FOR_STATS
 
 
 def index(request):
@@ -160,19 +161,18 @@ def portdetail_build_information(request):
 def portdetail_stats(request):
     days = request.GET.get('days', 30)
     days_ago = request.GET.get('days_ago', 0)
-    try:
-        days = int(days)
-        days_ago = int(days_ago)
-    except ValueError:
-        return HttpResponse("'days' and 'days-ago' must be integer.")
-    allowed_days = [0, 7, 30, 90, 180, 365]
-    if days not in allowed_days or days_ago not in allowed_days:
-        return HttpResponse("'days' and 'days_ago' can accept only these values: {}".format(allowed_days))
+
+    # Validate days and days_ago
+    for value in days, days_ago:
+        check, message = validate_stats_days(value)
+        if check is False:
+            return HttpResponse(message)
+
     port_name = request.GET.get('port_name')
     port = Port.objects.get(name__iexact=port_name)
 
-    end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=days_ago)
-    start_date = end_date - datetime.timedelta(days=days)
+    end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=int(days_ago))
+    start_date = end_date - datetime.timedelta(days=int(days))
 
     # Section for calculation of current stats
     submissions = Submission.objects.filter(timestamp__range=[start_date, end_date]).order_by('user', '-timestamp').distinct('user')
@@ -198,7 +198,7 @@ def portdetail_stats(request):
         'port_installations_by_os_stdlib_build_arch': port_installations_by_os_stdlib_build_arch,
         'days': days,
         'days_ago': days_ago,
-        'allowed_days': allowed_days
+        'allowed_days': ALLOWED_DAYS_FOR_STATS
     })
 
 
