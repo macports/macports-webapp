@@ -30,3 +30,4 @@ BUILDS_FETCHED_COUNT = 20
 TEST_SAMPLE_DATA = os.path.join(BASE_DIR, 'ports', 'tests', 'sample_data')
 TEST_PORTINDEX_JSON = os.path.join(TEST_SAMPLE_DATA, 'portindex.json')
 PORTINDEX2JSON = os.path.join(TEST_SAMPLE_DATA, 'macports-contrib', 'portindex2json', 'portindex2json.tcl')
+TEST_SUBMISSIONS = os.path.join(TEST_SAMPLE_DATA, 'submissions.json')
