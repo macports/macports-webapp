@@ -246,12 +246,11 @@ def all_builds_filter(request):
 
 def stats(request):
     days = request.GET.get('days', 30)
-    allowed_days = [7, 30, 90, 180, 365]
-    try:
-        if int(days) not in allowed_days:
-            return HttpResponse("'days' received an invalid value.")
-    except ValueError:
-            return HttpResponse("'days' must be an integer.")
+
+    # Validate days
+    check, message = validate_stats_days(days)
+    if check is False:
+        return HttpResponse(message)
     current_week = datetime.datetime.today().isocalendar()[1]
     all_submissions = Submission.objects.all()
     total_unique_users = all_submissions.distinct('user').count()
@@ -280,7 +279,7 @@ def stats(request):
         'macports_distribution': macports_distribution,
         'xcode_distribution': xcode_distribution,
         'days': int(days),
-        'allowed_days': allowed_days
+        'allowed_days': ALLOWED_DAYS_FOR_STATS
     })
 
 
