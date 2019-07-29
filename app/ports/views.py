@@ -284,41 +284,60 @@ def stats(request):
 
 
 def stats_port_installations(request):
-    days = int(request.GET.get('days', 30))
-    first = request.GET.get('first', '-total_count')
-    second = request.GET.get('second', '-req_count')
-    third = request.GET.get('third', 'port')
-    values = [first, second, third]
-    acceptable_values = ['port', '-port', 'total_count', '-total_count', '-req_count', 'req_count']
-    allowed_days = [7, 30, 90, 180, 365]
+    days = request.GET.get('days', 30)
+    first = str(request.GET.get('first', '-total_count'))
+    second = str(request.GET.get('second', '-req_count'))
+    third = str(request.GET.get('third', 'port'))
+    columns = [first, second, third]
 
-    if days not in allowed_days:
-        return HttpResponse("'days' key must have an integer value from the list: {}".format(allowed_days))
+    # Validate days
+    check, message = validate_stats_days(days)
+    if check is False:
+        return HttpResponse(message)
 
-    for i in values:
-        if i not in acceptable_values:
-            return HttpResponse("'{}' is an invalid value to sort. Allowed values: {}".format(acceptable_values))
+    # Validate columns
+    check, message = validate_columns_port_installations(columns)
+    if check is False:
+        return HttpResponse(message)
 
-    for i, j in itertools.combinations(values, 2):
-        if i.replace('-', '') == j.replace('-', ''):
-            return HttpResponse("'{}' and '{}' refer to the same column.".format(i, j))
+    # Validate unique columns
+    check, message = validate_unique_columns_port_installations(columns)
+    if check is False:
+        return HttpResponse(message)
+
     return render(request, 'ports/stats_port_installations.html', {
         'days': days,
         'first': first,
         'second': second,
         'third': third,
-        'allowed_days': allowed_days
+        'allowed_days': ALLOWED_DAYS_FOR_STATS
     })
 
 
 def stats_port_installations_filter(request):
-    days = int(request.GET.get('days', 30))
+    days = request.GET.get('days', 30)
     order_by_1 = str(request.GET.get('order_by_1', '-total_count'))
     order_by_2 = str(request.GET.get('order_by_2', '-req_count'))
     order_by_3 = str(request.GET.get('order_by_3', 'port'))
     search_by = str(request.GET.get('search_by', ''))
+    columns = [order_by_1, order_by_2, order_by_3]
 
-    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=days)).order_by('user', '-timestamp').distinct('user')
+    # Validate days
+    check, message = validate_stats_days(days)
+    if check is False:
+        return HttpResponse(message)
+
+    # Validate columns
+    check, message = validate_columns_port_installations(columns)
+    if check is False:
+        return HttpResponse(message)
+
+    # Validate unique columns
+    check, message = validate_unique_columns_port_installations(columns)
+    if check is False:
+        return HttpResponse(message)
+
+    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=int(days))).order_by('user', '-timestamp').distinct('user')
     installations = PortInstallation.objects.order_by('port')\
         .filter(submission_id__in=Subquery(submissions_unique.values('id')))\
         .values('port').annotate(total_count=Count('port'))\
@@ -327,6 +346,7 @@ def stats_port_installations_filter(request):
         .filter(port__icontains=search_by)\
         .extra(select={'port': 'lower(port)'})\
         .order_by(order_by_1, order_by_2, order_by_3)
+
     paginated_obj = Paginator(installations, 100)
     page = request.GET.get('page', 1)
     try:
