@@ -52,6 +52,7 @@ class TestStatistics(TestCase):
         self.assertEquals(Submission.objects.count(), 7)
         self.assertEquals(PortInstallation.objects.count(), 29)
 
+    # ====== TESTS FOR INDIVIDUAL PORT STATS ======
     def test_port_installation_counts(self):
         response1 = self.client.get(reverse('port_detail_stats'), data={
             'port_name': 'port-A1'
@@ -79,5 +80,20 @@ class TestStatistics(TestCase):
                 counter += 1
             elif i['version'] == '1.2':
                 self.assertEquals(i['num'], 2)
+                counter += 1
+        self.assertEquals(counter, 2)
+
+    def test_os_version_and_xcode_version(self):
+        response1 = self.client.get(reverse('port_detail_stats'), data={
+            'port_name': 'port-C1'
+        })
+
+        counter = 0
+        for i in response1.context['port_installations_by_os_and_xcode_version']:
+            if i['submission__os_version'] == '10.14' and i['submission__xcode_version'] == '10.3':
+                self.assertEquals(i['num'], 2)
+                counter += 1
+            elif i['submission__os_version'] == '10.13' and i['submission__xcode_version'] == '10.2.1':
+                self.assertEquals(i['num'], 1)
                 counter += 1
         self.assertEquals(counter, 2)
