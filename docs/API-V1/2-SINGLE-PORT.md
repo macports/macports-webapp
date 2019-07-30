@@ -1,6 +1,6 @@
 ## Details of a Single Port
 
-#### `- GET /port/{port-name}`
+#### `- GET /port/{port-name}/info`
 
 Fetch the general information about a port i.e. the data extracted from the `Portfile`.
 
@@ -10,7 +10,7 @@ Parameters:
 |------|-----|----|----|
 | field | str, optional | Select only a particular field. If not provided, then all fields are sent.| All |
 
-#### - `GET /port/builds/{port-name}`
+#### - `GET /port/{port-name}/builds`
 
 Fetch build history of a given port.
 
@@ -23,7 +23,7 @@ Parameters
 | status | str, optional | Filter by the status of builds. | All |
 
 
-#### - `GET /port/stats/{port-name}`
+#### - `GET /port/{port-name}/stats`
 
 Fetch installation statistics of a given port.
 
@@ -40,3 +40,23 @@ Parameters
 - ***os***: Distribution of total users across various OSX versions.
 - ***xcode***: Distribution of total users across various OSX versions.
 - ***os_arch***: Distribution of total users across various OS architectures.
+
+
+#### - `GET /port/{port-name}/health`
+
+Returns the status of latest build of the port on each builder
+
+Parameters
+
+| key | type | details | default
+|------|-----|----|----|
+| builders | str, optional | Comma separated list of builders | All |
+
+```json
+    [
+        {
+            "builder1": "build successful",
+            "builder2": "failed install-port",
+        }
+    ]
+```
