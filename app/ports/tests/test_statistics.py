@@ -66,3 +66,18 @@ class TestStatistics(TestCase):
 
         self.assertEquals(response2.context['total_port_installations_count']['submission__user_id__count'], 0)
         self.assertEquals(response2.context['requested_port_installations_count']['submission__user_id__count'], 0)
+
+    def test_port_versions_count(self):
+        response1 = self.client.get(reverse('port_detail_stats'), data={
+            'port_name': 'port-C1'
+        })
+
+        counter = 0
+        for i in response1.context['port_installations_by_port_version']:
+            if i['version'] == '1.0':
+                self.assertEquals(i['num'], 1)
+                counter += 1
+            elif i['version'] == '1.2':
+                self.assertEquals(i['num'], 2)
+                counter += 1
+        self.assertEquals(counter, 2)
