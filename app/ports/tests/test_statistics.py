@@ -17,6 +17,13 @@ class TestStatistics(TestCase):
     def setUpTestData(cls):
         Port.load(TEST_PORTINDEX_JSON)
 
+        with open(TEST_SUBMISSIONS, 'r', encoding='utf-8') as file:
+            data = json.loads(file.read())
+
+        for i in data:
+            submission_id = Submission.populate(i, datetime.datetime.now(tz=datetime.timezone.utc))
+            PortInstallation.populate(i['active_ports'], submission_id)
+
     def test_submission(self):
         submission_body = """submission[data]={
             "id": "974EEF9C-XXXX-XXXX-XXXX-XXXXXXXXXXX1",
@@ -41,21 +48,21 @@ class TestStatistics(TestCase):
         }"""
         self.client.generic('POST', reverse('stats_submit'), submission_body)
 
-        self.assertEquals(UUID.objects.count(), 1)
-        self.assertEquals(Submission.objects.count(), 1)
-        self.assertEquals(PortInstallation.objects.count(), 5)
+        self.assertEquals(UUID.objects.count(), 6)
+        self.assertEquals(Submission.objects.count(), 7)
+        self.assertEquals(PortInstallation.objects.count(), 29)
 
     def test_port_installation_counts(self):
-        with open(TEST_SUBMISSIONS, 'r', encoding='utf-8') as file:
-            data = json.loads(file.read())
-
-        for i in data:
-            submission_id = Submission.populate(i, datetime.datetime.now(tz=datetime.timezone.utc))
-            PortInstallation.populate(i['active_ports'], submission_id)
-
-        response = self.client.get(reverse('port_detail_stats'), data={
+        response1 = self.client.get(reverse('port_detail_stats'), data={
             'port_name': 'port-A1'
         })
 
-        self.assertEquals(response.context['total_port_installations_count']['submission__user_id__count'], 4)
-        self.assertEquals(response.context['requested_port_installations_count']['submission__user_id__count'], 2)
+        response2 = self.client.get(reverse('port_detail_stats'), data={
+            'port_name': 'port-B1'
+        })
+
+        self.assertEquals(response1.context['total_port_installations_count']['submission__user_id__count'], 4)
+        self.assertEquals(response1.context['requested_port_installations_count']['submission__user_id__count'], 2)
+
+        self.assertEquals(response2.context['total_port_installations_count']['submission__user_id__count'], 0)
+        self.assertEquals(response2.context['requested_port_installations_count']['submission__user_id__count'], 0)
