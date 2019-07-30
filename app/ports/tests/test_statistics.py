@@ -18,27 +18,27 @@ class TestStatistics(TestCase):
         Port.load(TEST_PORTINDEX_JSON)
 
     def test_submission(self):
-        submission_body = 'submission[data]={\
-            "id": "974EEF9C-XXXX-XXXX-XXXX-XXXXXXXXXXX1",\
-            "os": {\
-                "macports_version": "2.5.4",\
-                "osx_version": "10.14",\
-                "os_arch": "i386",\
-                "os_platform": "darwin",\
-                "cxx_stdlib": "libc++",\
-                "build_arch": "x86_64",\
-                "gcc_version": "none",\
-                "prefix": "/opt/local",\
-                "xcode_version": "10.3"\
-            },\
-            "active_ports": [\
-                {"name": "db48", "version": "4.8.30_4"},\
-                {"name": "expat", "version": "2.2.6_1"},\
-                {"name": "ncurses", "version": "6.1_0"},\
-                {"name": "bzip2", "version": "1.0.6_0"},\
-                {"name": "mpstats-gsoc", "version": "0.1.8_2", "requested": "true"}\
-            ]\
-        }'
+        submission_body = """submission[data]={
+            "id": "974EEF9C-XXXX-XXXX-XXXX-XXXXXXXXXXX1",
+            "os": {
+                "macports_version": "2.5.4",
+                "osx_version": "10.14",
+                "os_arch": "i386",
+                "os_platform": "darwin",
+                "cxx_stdlib": "libc++",
+                "build_arch": "x86_64",
+                "gcc_version": "none",
+                "prefix": "/opt/local",
+                "xcode_version": "10.3"
+            },
+            "active_ports": [
+                {"name": "db48", "version": "4.8.30_4"},
+                {"name": "expat", "version": "2.2.6_1"},
+                {"name": "ncurses", "version": "6.1_0"},
+                {"name": "bzip2", "version": "1.0.6_0"},
+                {"name": "mpstats-gsoc", "version": "0.1.8_2", "requested": "true"}
+            ]
+        }"""
         self.client.generic('POST', reverse('stats_submit'), submission_body)
 
         self.assertEquals(UUID.objects.count(), 1)
