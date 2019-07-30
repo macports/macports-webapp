@@ -1,6 +1,6 @@
 ## API V1
 
-The API v1 of the webapp is callable at /api/v1/{call}?{params}. The response is encoded as JSON object(s).
+The API v1 of the webapp is callable at /api/v1/. The response is encoded as JSON object(s).
 
 #### Index
 
