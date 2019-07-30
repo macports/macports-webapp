@@ -38,13 +38,13 @@ class Submission(models.Model):
         uuid_obj, created = UUID.objects.get_or_create(uuid=json_object['id'])
         sub = Submission()
         sub.user = uuid_obj
-        sub.os_version = json_object['os']['osx_version']
-        sub.xcode_version = json_object['os']['xcode_version']
-        sub.os_arch = json_object['os']['os_arch']
-        sub.macports_version = json_object['os']['macports_version']
-        sub.cxx_stdlib = json_object['os']['cxx_stdlib']
-        sub.build_arch = json_object['os']['build_arch']
-        sub.platform = json_object['os']['os_platform']
+        sub.os_version = json_object['os'].get('osx_version')
+        sub.xcode_version = json_object['os'].get('xcode_version')
+        sub.os_arch = json_object['os'].get('os_arch')
+        sub.macports_version = json_object['os'].get('macports_version')
+        sub.cxx_stdlib = json_object['os'].get('cxx_stdlib')
+        sub.build_arch = json_object['os'].get('build_arch')
+        sub.platform = json_object['os'].get('os_platform')
         sub.raw_json = json_object
         sub.timestamp = timestamp
         sub.save()
