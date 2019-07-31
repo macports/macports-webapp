@@ -97,3 +97,18 @@ class TestStatistics(TestCase):
                 self.assertEquals(i['num'], 1)
                 counter += 1
         self.assertEquals(counter, 2)
+
+    def test_os_stdlib_build_arch(self):
+        response1 = self.client.get(reverse('port_detail_stats'), data={
+            'port_name': 'port-A3-diff'
+        })
+
+        counter = 0
+        for i in response1.context['port_installations_by_os_stdlib_build_arch']:
+            if i['submission__os_version'] == '10.14' and i['submission__build_arch'] == 'x86_64' and i['submission__cxx_stdlib'] == 'libc++':
+                self.assertEquals(i['num'], 3)
+                counter += 1
+            elif i['submission__os_version'] == '10.12' and i['submission__build_arch'] == 'x86_64' and i['submission__cxx_stdlib'] == 'libc++':
+                self.assertEquals(i['num'], 1)
+                counter += 1
+        self.assertEquals(counter, 2)
