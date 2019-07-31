@@ -38,11 +38,16 @@ class Submission(models.Model):
         uuid_obj, created = UUID.objects.get_or_create(uuid=json_object['id'])
         sub = Submission()
         sub.user = uuid_obj
-        sub.os_version = json_object['os'].get('osx_version')
+        os_version = json_object['os'].get('osx_version')
+        cxx_stdlib = json_object['os'].get('cxx_stdlib')
+        if cxx_stdlib is None and (lambda x: tuple(int(i) for i in os_version.split(".")) >= (10, 9)):
+            cxx_stdlib = "libc++"
+
+        sub.os_version = os_version
         sub.xcode_version = json_object['os'].get('xcode_version')
         sub.os_arch = json_object['os'].get('os_arch')
         sub.macports_version = json_object['os'].get('macports_version')
-        sub.cxx_stdlib = json_object['os'].get('cxx_stdlib')
+        sub.cxx_stdlib = cxx_stdlib
         sub.build_arch = json_object['os'].get('build_arch')
         sub.platform = json_object['os'].get('os_platform')
         sub.raw_json = json_object
