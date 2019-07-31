@@ -90,12 +90,12 @@
                 "version": "1.2"
             },
             {
-                "name": "port-D1",
+                "name": "port-A4",
                 "version": "1.0",
                 "requested": "true"
             },
             {
-                "name": "port-D2",
+                "name": "port-A3-diff",
                 "version": "1.12",
                 "requested": "true"
             }
@@ -125,12 +125,12 @@
                 "requested": "true"
             },
             {
-                "name": "port-D1",
+                "name": "port-A4",
                 "version": "1.0",
                 "requested": "true"
             },
             {
-                "name": "port-D2",
+                "name": "port-A3-diff",
                 "version": "1.12"
             }
         ]
@@ -159,12 +159,12 @@
                 "requested": "true"
             },
             {
-                "name": "port-D1",
+                "name": "port-A4",
                 "version": "1.0",
                 "requested": "true"
             },
             {
-                "name": "port-D2",
+                "name": "port-A3-diff",
                 "version": "1.12"
             }
         ]
@@ -193,12 +193,12 @@
                 "requested": "true"
             },
             {
-                "name": "port-D1",
+                "name": "port-A2",
                 "version": "1.0",
                 "requested": "true"
             },
             {
-                "name": "port-D2",
+                "name": "port-A3-diff",
                 "version": "1.12"
             }
         ]
