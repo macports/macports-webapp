@@ -196,8 +196,8 @@ def portdetail_stats(request):
         'port_installations_by_month': port_installations_by_month,
         'port_installations_by_version_and_month': port_installations_by_version_and_month,
         'port_installations_by_os_stdlib_build_arch': port_installations_by_os_stdlib_build_arch,
-        'days': days,
-        'days_ago': days_ago,
+        'days': int(days),
+        'days_ago': int(days_ago),
         'allowed_days': ALLOWED_DAYS_FOR_STATS
     })
 
@@ -306,7 +306,7 @@ def stats_port_installations(request):
         return HttpResponse(message)
 
     return render(request, 'ports/stats_port_installations.html', {
-        'days': days,
+        'days': int(days),
         'first': first,
         'second': second,
         'third': third,
