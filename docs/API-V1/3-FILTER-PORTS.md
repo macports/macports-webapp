@@ -15,5 +15,28 @@ Parameters:
 | variant | str, optional | Filter by variant | All |
 | maintainer_github | str, optional | Filter by maintainer's github handle | All |
 | maintainer_email | str, optional | Filter by maintainer's email | All |
-| info | Boolean, optional | Entire object is returned and not just the port-name | False |
+| info | bool, optional | Entire object is returned and not just the port-name | False |
 | keys | str, optional | Comma separated list of keys which should be returned and not just port-name | Nil |
+| only_count | bool, optional | If True, return just the count and nothing else | False |
+
+
+```json
+[
+    {
+        "ports": 
+        [
+            {
+                "name": "wget",
+                "description": "internet file retriever",
+                "other_keys": "other_values"
+            },
+            {
+                "name": "getmail",
+                "description": "extensible mail retrieval system with POP3, IMAP4, SSL support",
+                "other_keys": "other_values"   
+            }
+        ],
+        "count": 2
+    }
+]
+```
