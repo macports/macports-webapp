@@ -112,3 +112,60 @@ class TestStatistics(TestCase):
                 self.assertEquals(i['num'], 1)
                 counter += 1
         self.assertEquals(counter, 2)
+
+    def test_time_travel(self):
+        time_now = datetime.datetime.now(tz=datetime.timezone.utc)
+
+        # Go back in time 35 days
+        time_35_days_ago = time_now - datetime.timedelta(days=35)
+        submission = json.loads("""{
+            "id": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX6",
+            "os": {
+                "macports_version": "2.5.4",
+                "osx_version": "10.14",
+                "os_arch": "i386",
+                "os_platform": "darwin",
+                "cxx_stdlib": "libc++",
+                "build_arch": "x86_64",
+                "gcc_version": "none",
+                "prefix": "/opt/local",
+                "xcode_version": "10.3"
+            },
+            "active_ports": [
+                {"name": "port-A1", "version": "0.9"},
+                {"name": "port-A2", "version": "0.9.1"},
+                {"name": "port-B1", "version": "1.0"},
+                {"name": "port-C1", "version": "1.1.2"}
+            ]
+        }""")
+
+        # Make a submission dated 35 days ago
+        submission_id = Submission.populate(submission, time_35_days_ago)
+        PortInstallation.populate(submission['active_ports'], submission_id)
+
+        # Call for stats between 30-60 days
+        response1 = self.client.get(reverse('port_detail_stats'), data={
+            'port_name': 'port-B1',
+            'days': 30,
+            'days_ago': 30
+        })
+
+        # Call for stats between 30-37 days
+        response2 = self.client.get(reverse('port_detail_stats'), data={
+            'port_name': 'port-B1',
+            'days': 7,
+            'days_ago': 30
+        })
+
+        # Call for stats of some other port between 30-60 days
+        response3 = self.client.get(reverse('port_detail_stats'), data={
+            'port_name': 'port-A4',
+            'days': 30,
+            'days_ago': 30
+        })
+
+        self.assertEquals(response1.context['total_port_installations_count']['submission__user_id__count'], 1)
+        self.assertEquals(response1.context['requested_port_installations_count']['submission__user_id__count'], 0)
+        self.assertEquals(response2.context['total_port_installations_count']['submission__user_id__count'], 1)
+        self.assertEquals(response2.context['requested_port_installations_count']['submission__user_id__count'], 0)
+        self.assertEquals(response3.context['total_port_installations_count']['submission__user_id__count'], 0)
