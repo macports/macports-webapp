@@ -16,6 +16,7 @@ from django.db.models.functions import TruncMonth, Lower
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, Variant, Submission, PortInstallation
 from .filters import BuildHistoryFilter, PortFilterByMultiple
 from .validators import validate_stats_days, validate_columns_port_installations, validate_unique_columns_port_installations, ALLOWED_DAYS_FOR_STATS
+from .utilities.sort_by_version import sort_list_of_dicts_by_version
 
 
 def index(request):
@@ -180,10 +181,8 @@ def portdetail_stats(request):
     requested_port_installations_count = port_installations.filter(requested=True).aggregate(Count('submission__user_id', distinct=True))
     total_port_installations_count = port_installations.aggregate(Count('submission__user_id', distinct=True))
     port_installations_by_port_version = port_installations.values('version').annotate(num=Count('version')).order_by('-num')
-    port_installations_by_os_and_xcode_version_unsorted = list(port_installations.values('submission__xcode_version', 'submission__os_version').annotate(num=Count('submission__user_id', distinct=True)))
-    port_installations_by_os_and_xcode_version = sorted(port_installations_by_os_and_xcode_version_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
-    port_installations_by_os_stdlib_build_arch_unsorted = list(port_installations.values('submission__os_version', 'submission__build_arch', 'submission__cxx_stdlib').annotate(num=Count('submission__user_id', distinct=True)))
-    port_installations_by_os_stdlib_build_arch = sorted(port_installations_by_os_stdlib_build_arch_unsorted, key=lambda x: (tuple(int(i) for i in x['submission__os_version'].split('.'))), reverse=True)
+    port_installations_by_os_and_xcode_version = sort_list_of_dicts_by_version(list(port_installations.values('submission__xcode_version', 'submission__os_version').annotate(num=Count('submission__user_id', distinct=True))), 'submission__os_version')
+    port_installations_by_os_stdlib_build_arch = sort_list_of_dicts_by_version(list(port_installations.values('submission__os_version', 'submission__build_arch', 'submission__cxx_stdlib').annotate(num=Count('submission__user_id', distinct=True))), 'submission__os_version')
 
     port_installations_by_month = PortInstallation.objects.filter(port__iexact=port_name).annotate(month=TruncMonth('submission__timestamp')).values('month').annotate(num=Count('submission__user', distinct=True))[:12]
     port_installations_by_version_and_month = PortInstallation.objects.filter(port__iexact=port_name).annotate(month=TruncMonth('submission__timestamp')).values('month', 'version').annotate(num=Count('submission__user', distinct=True))[:12]
@@ -264,10 +263,8 @@ def stats(request):
     submissions_last_x_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=int(days))).order_by('user', '-timestamp').distinct('user')
     submissions_unique = Submission.objects.filter(id__in=Subquery(submissions_last_x_days.values('id')))
     macports_distribution = submissions_unique.values('macports_version').annotate(num=Count('macports_version'))
-    os_distribution_unsorted = list(submissions_unique.values('os_version', 'os_arch').annotate(num=Count('user_id', distinct=True)))
-    os_distribution = sorted(os_distribution_unsorted, key=lambda x: int(x['os_version'].replace(".", '')), reverse=True)
-    xcode_distribution_unsorted = list(submissions_unique.values('xcode_version', 'os_version').annotate(num=Count('user_id', distinct=True)))
-    xcode_distribution = sorted(xcode_distribution_unsorted, key=lambda x: (tuple(int(i) for i in x['os_version'].split('.'))), reverse=True)
+    os_distribution = sort_list_of_dicts_by_version(list(submissions_unique.values('os_version', 'os_arch').annotate(num=Count('user_id', distinct=True))), 'os_version')
+    xcode_distribution = sort_list_of_dicts_by_version(list(submissions_unique.values('xcode_version', 'os_version').annotate(num=Count('user_id', distinct=True))), 'os_version')
 
     return render(request, 'ports/stats.html', {
         'total_submissions': all_submissions.count(),
