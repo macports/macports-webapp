@@ -39,7 +39,7 @@
                     <li><a href="{% url 'port_detail' top_port.port %}">{{ top_port.port }}</a><span class="float-right">{{ top_port.num }}</span> </li>
                     {% endfor %}
                 </ul>
-                <a href="/statistics">Continue to overall stats</a>
+                <a href="{% url 'stats_port_installations' %}">More...</a>
             </div>
         </div>
         </div>
