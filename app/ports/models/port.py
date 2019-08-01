@@ -2,7 +2,7 @@ import json
 import os
 import subprocess
 
-from django.db import models
+from django.db import models, transaction
 
 import MacPorts.config as config
 
@@ -54,7 +54,11 @@ class Port(models.Model):
             Category.objects.bulk_create(batch)
             return
 
+        port_id_map = {}
+
+        @transaction.atomic
         def load_ports_and_maintainers_table(ports):
+            pid = 1
             for port in ports:
 
                 # Add Ports to the Database One-by-One
@@ -76,6 +80,8 @@ class Port(models.Model):
                 new_port.license = port.get('license', '')
                 new_port.replaced_by = port.get('replaced_by')
                 new_port.save()
+                port_id_map[port['name']] = pid
+                pid += 1
 
                 try:
                     new_port.categories.add(*port['categories'])
@@ -107,32 +113,31 @@ class Port(models.Model):
                 except KeyError:
                     pass
 
+        @transaction.atomic
         def load_dependencies_table(ports):
-
-            def load_depends(list_of_dependencies, type_of_dependency, port):
+            def load_depends(list_of_dependencies, type_of_dependency, pid):
                 dependency = Dependency()
                 dependencies = []
                 dependency.type = type_of_dependency
-                dependency.port_name = port
+                dependency.port_name_id = pid
                 for depends in list_of_dependencies:
                     try:
-                        dependencies.append(Port.objects.get(name__iexact=depends.rsplit(':', 1)[-1]))
-                    except Port.DoesNotExist:
-                        print("Failed to append {} as a dependency to {}. Not Found.".format(depends.rsplit(':', 1)[-1],
-                                                                                             port.name))
+                        dependencies.append(port_id_map[depends.rsplit(':', 1)[-1]])
+                    except KeyError:
+                        pass
                 dependency.save()
                 dependency.dependencies.add(*dependencies)
 
             for port in ports:
                 try:
-                    port_object = Port.objects.get(name__iexact=port['name'])
+                    port_id = port_id_map[port['name']]
                     for dependency_type in ["lib", "extract", "run", "patch", "build", "test", "fetch"]:
                         key = "depends_" + dependency_type
                         if key in port:
-                            load_depends(port[key], dependency_type, port_object)
+                            load_depends(port[key], dependency_type, port_id)
 
-                except Port.DoesNotExist:
-                    print("Failed to update dependencies for {}. Port not found in database.".format(port['name']))
+                except KeyError:
+                    pass
 
         def populate(ports):
             load_categories_table(ports)
