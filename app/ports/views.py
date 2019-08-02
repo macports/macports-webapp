@@ -198,6 +198,8 @@ def portdetail_stats(request):
         'port_installations_by_os_stdlib_build_arch': port_installations_by_os_stdlib_build_arch,
         'days': int(days),
         'days_ago': int(days_ago),
+        'end_date': end_date,
+        'start_date': start_date,
         'allowed_days': ALLOWED_DAYS_FOR_STATS
     })
 
