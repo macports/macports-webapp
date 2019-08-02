@@ -1,18 +1,17 @@
 import os
 
-from django.test import TestCase, Client
+from django.test import TransactionTestCase, Client
 from django.urls import reverse
 
 from ports.models import Dependency, Port
 from MacPorts.config import TEST_PORTINDEX_JSON
 
 
-class TestDependencies(TestCase):
+class TestDependencies(TransactionTestCase):
+    reset_sequences = True
+
     def setUp(self):
         self.client = Client()
-
-    @classmethod
-    def setUpTestData(cls):
         Port.load(TEST_PORTINDEX_JSON)
 
     def test_rows_created(self):

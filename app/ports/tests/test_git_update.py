@@ -1,14 +1,16 @@
 import os
 import shutil
 
-from django.test import TestCase
+from django.test import TransactionTestCase
 
 from parsing_scripts import git_update
 from ports.models import LastPortIndexUpdate
 from MacPorts.config import MACPORTS_PORTS_DIR
 
 
-class TestGitUpdates(TestCase):
+class TestGitUpdates(TransactionTestCase):
+    reset_sequences = True
+
     def test_between_new_old(self):
         ports = git_update.get_list_of_changed_ports("7646d61853154b9dc523e3d0382960aea562e7ab",
                                                      "ee0fc9c4ca59685f33628fc41c6946920869ab71",
