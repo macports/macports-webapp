@@ -217,6 +217,7 @@
 
         var options = {
             'title':'User vs Version for each month',
+            isStacked: true,
             vAxis: {
                 viewWindow: {
                     min:0
@@ -224,7 +225,7 @@
             }
         };
 
-        var chart = new google.visualization.LineChart(document.getElementById('version-month-chart'));
+        var chart = new google.visualization.AreaChart(document.getElementById('version-month-chart'));
         chart.draw(data, options);
       }
     </script>
