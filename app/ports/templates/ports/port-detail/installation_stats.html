@@ -1,5 +1,7 @@
 {% load sort_version %}
 {% load permutations %}
+{% load utilities %}
+
 
 <br>
 <form class="bg-light p-2 form form-inline justify-content-center">
@@ -211,13 +213,14 @@
 
           data.addRows([
               {% for i in month_parent %}
-                ['{{ i.grouper }}', {% for version in version_parent %}{% for month in i.list %}{% if month.version == version.grouper %}{{ month.num }}{% endif %}{% endfor %}, {% endfor %}],
+                ['{{ i.grouper }}', {% for version in version_parent %}{% find_count_for_version i.list version.grouper %}, {% endfor %}],
               {% endfor %}
         ]);
 
         var options = {
             'title':'User vs Version for each month',
             isStacked: true,
+            interpolateNulls: true,
             vAxis: {
                 viewWindow: {
                     min:0
