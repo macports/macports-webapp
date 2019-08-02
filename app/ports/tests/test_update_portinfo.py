@@ -1,15 +1,16 @@
 import os
 
-from django.test import TestCase
+from django.test import TransactionTestCase
 from django.core.management import call_command
 
 from ports.models import Port
 from MacPorts.config import TEST_PORTINDEX_JSON
 
 
-class TestUpdatePortinfo(TestCase):
-    @classmethod
-    def setUpTestData(cls):
+class TestUpdatePortinfo(TransactionTestCase):
+    reset_sequences = True
+
+    def setUp(self):
         Port.load(TEST_PORTINDEX_JSON)
 
     def test_updates(self):
