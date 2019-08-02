@@ -18,8 +18,12 @@
     </select>
 </form>
 <br>
+<h6 class="text-center">
+    <span class="text-muted">Duration selected:</span> <u>{{ start_date|date:"d M Y" }}</u> <span class="text-muted">to</span> <u>{{ end_date|date:"d M Y" }}</u>
+</h6>
+<br>
 {% if total_port_installations_count.submission__user_id__count > 0 %}
-    <h4 class="border-bottom">Current Stats: <span style="font-size:12px"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#currentStatsHelp">Learn More</button></span> </h4>
+    <h4 class="border-bottom">Statistics: <span style="font-size:12px"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#statsHelp">Learn More</button></span> </h4>
     <table class="table table-striped border">
                 <tr>
                     <th scope="row">Total Installations</th>
@@ -63,17 +67,21 @@
 {% endif %}
 
 <!--Help Modals -->
-<div id="currentStatsHelp" class="modal fade" role="dialog">
+<div id="statsHelp" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">What do "Current Stats" Display?</h4>
+        <h4 class="modal-title">What Does the "Statistics" Block Display?</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
-        <p>Current stats are calculated for those users who have submitted stats in the last 30 days only. For each user
-        who has made a submission in last 30 days, the latest of the submissions is used to decide if the user has the
-        port installed or not.</p>
+        <p>The statistics block shows installations count and different charts to explain the system configuration of the
+            users of that port.<br><br>
+            These stats are displayed for the duration which has been selected. For this duration, each user's latest submission
+            is used to generate stats for that user. For example, if the selected has been made for "previous 30 days
+            starting 30 days ago", then this block would show stats for the period of 30-60 days in the past (considering today
+            as zero). If in this period, one user has made multiple submissions, then only is latest submission is considered.
+            </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -90,7 +98,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p>For each month, a user is considered to have the port installed, if in anyone of the submissions
+                <p>For each month, a user is considered to have the port installed, if in any one of the submissions
                     made by the user in that month- the port is present.</p>
                 <p>Suppose a user makes 4 submissions in a given month, and in any one or more than one submissions the
                     port is present- then it is counted as an installation for that month.<br><strong> You may see different results when
