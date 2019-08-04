@@ -15,8 +15,8 @@
     <form onSubmit="return false">
             {% csrf_token %}
         <div class="form-group mb-0">
-            <label class="radio-inline mr-3"><input onclick="switch_search()" type="radio" name="search_by" value="name" checked>Search by port-name</label>
-            <label class="radio-inline"><input onclick="switch_search()" type="radio" name="search_by" value="description">Search by Description</label>
+            <label class="radio-inline mr-3"><input class="mr-2" onclick="switch_search()" type="radio" name="search_by" value="name" checked>Search by port-name</label>
+            <label class="radio-inline"><input class="mr-2" onclick="switch_search()" type="radio" name="search_by" value="description">Search by Description</label>
         </div>
         <div class="form-group">
             <input type="text" class="form-control" id="search" name="search" placeholder="Search All Ports">
