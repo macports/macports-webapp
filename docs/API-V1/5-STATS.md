@@ -27,6 +27,43 @@ Parameters:
 }
 ```
 
+#### `- GET /stats/system`
+
+Fetch system stats like os_version, xcode version, MacPorts version etc.
+
+Parameters:
+
+| key | type | details | default
+|------|-----|----|----|
+| days | int, optional | Previous X days for which the counting is done | 30 |
+| days_ago | int, optional | Goes back in time by Y days and then starts the counting for previous X days provided by the key 'days' | 0 |
+| criteria | optional | Comma separated list of the criteria of stats. Options: ['os_stats', 'xcode_stats', 'macports_stats'] | All |
+    
+- ***os***: Distribution of total users across various combinations of OSX versions, build architecture and stdlib.
+- ***xcode***: Distribution of total users across various combinations OSX and XCode versions.
+- ***macports***: Distribution of total users across various MacPorts versions.
+
+```json
+{
+    "os_stats": [{
+        "os_version": "10.14",
+        "build_arch": "x86_64",
+        "cxx_stdlib": "libc++",
+        "count": 45
+    }, {
+        "os_version": "10.13",
+        "build_arch": "x86_64",
+        "cxx_stdlib": "libc++",
+        "count": 25
+    }],
+    
+    "xcode_stats": [{
+        "os_version": "10.14",
+        "xcode_version": "10.2.1",
+        "count": 25
+    }]
+}
+```
 
 #### `- GET /stats/top-ports`
 
