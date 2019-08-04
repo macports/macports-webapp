@@ -14,7 +14,7 @@ class TestExceptions(TransactionTestCase):
         self.client = Client()
         Port.load(TEST_PORTINDEX_JSON)
 
-    def test_400(self):
+    def test_404(self):
         response = self.client.get('/testingA404')
 
         self.assertEquals(response.status_code, 404)
