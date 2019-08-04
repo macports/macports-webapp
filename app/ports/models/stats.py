@@ -1,5 +1,9 @@
+from distutils.version import LooseVersion
+
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+
+from ports.utilities.sort_by_version import compare_versions
 
 
 class UUID(models.Model):
@@ -40,7 +44,7 @@ class Submission(models.Model):
         sub.user = uuid_obj
         os_version = json_object['os'].get('osx_version')
         cxx_stdlib = json_object['os'].get('cxx_stdlib')
-        if cxx_stdlib is None and (lambda x: tuple(int(i) for i in os_version.split(".")) >= (10, 9)):
+        if cxx_stdlib is None and LooseVersion(os_version) >= LooseVersion('10.9'):
             cxx_stdlib = "libc++"
 
         sub.os_version = os_version
