@@ -170,9 +170,11 @@ def portdetail_stats(request):
 
     port_name = request.GET.get('port_name')
     port = Port.objects.get(name__iexact=port_name)
+    days = int(days)
+    days_ago = int(days_ago)
 
-    end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=int(days_ago))
-    start_date = end_date - datetime.timedelta(days=int(days))
+    end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=days_ago)
+    start_date = end_date - datetime.timedelta(days=days)
 
     # Section for calculation of current stats
     submissions = Submission.objects.filter(timestamp__range=[start_date, end_date]).order_by('user', '-timestamp').distinct('user')
@@ -196,8 +198,8 @@ def portdetail_stats(request):
         'port_installations_by_month': port_installations_by_month,
         'port_installations_by_version_and_month': port_installations_by_version_and_month,
         'port_installations_by_os_stdlib_build_arch': port_installations_by_os_stdlib_build_arch,
-        'days': int(days),
-        'days_ago': int(days_ago),
+        'days': days,
+        'days_ago': days_ago,
         'end_date': end_date,
         'start_date': start_date,
         'allowed_days': ALLOWED_DAYS_FOR_STATS
@@ -253,6 +255,7 @@ def stats(request):
     check, message = validate_stats_days(days)
     if check is False:
         return HttpResponse(message)
+    days = int(days)
     current_week = datetime.datetime.today().isocalendar()[1]
     all_submissions = Submission.objects.all()
     total_unique_users = all_submissions.distinct('user').count()
@@ -263,7 +266,7 @@ def stats(request):
     users_by_month = Submission.objects.annotate(month=TruncMonth('timestamp')).values('month').annotate(num=Count('user_id', distinct=True))[:12]
 
     # System Stats for Current Users
-    submissions_last_x_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=int(days))).order_by('user', '-timestamp').distinct('user')
+    submissions_last_x_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=days)).order_by('user', '-timestamp').distinct('user')
     submissions_unique = Submission.objects.filter(id__in=Subquery(submissions_last_x_days.values('id')))
     macports_distribution = submissions_unique.values('macports_version').annotate(num=Count('macports_version'))
     os_distribution_unsorted = list(submissions_unique.values('os_version', 'os_arch').annotate(num=Count('user_id', distinct=True)))
@@ -280,7 +283,7 @@ def stats(request):
         'os_distribution': os_distribution,
         'macports_distribution': macports_distribution,
         'xcode_distribution': xcode_distribution,
-        'days': int(days),
+        'days': days,
         'allowed_days': ALLOWED_DAYS_FOR_STATS
     })
 
@@ -339,7 +342,9 @@ def stats_port_installations_filter(request):
     if check is False:
         return HttpResponse(message)
 
-    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=int(days))).order_by('user', '-timestamp').distinct('user')
+    days = int(days)
+
+    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=days)).order_by('user', '-timestamp').distinct('user')
     installations = PortInstallation.objects.order_by('port')\
         .filter(submission_id__in=Subquery(submissions_unique.values('id')))\
         .values('port').annotate(total_count=Count('port'))\
