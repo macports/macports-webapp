@@ -1,34 +1,30 @@
 {% extends 'ports/layout.html' %}
 {% load sort_version %}
+{% load permutations %}
 
 {% block head_scripts %}
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-
-        google.charts.load('current', {'packages': ['corechart']});
-
+        google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
-
         function drawChart() {
-
             {% regroup os_distribution by os_version as os_chart_os_version_parent %}
-            {% regroup os_distribution|dictsort:"os_arch" by os_arch as os_chart_os_arch_parent %}
 
             var data = google.visualization.arrayToDataTable([
-            ['OS Version', {% for os_arch in os_chart_os_arch_parent %}'{{ os_arch.grouper }}', {% endfor %} { role: 'annotation' } ],
-                {% for os_version in os_chart_os_version_parent %}
-                ['OS: {{ os_version.grouper }}', {% for os_arch in os_chart_os_arch_parent %}{% for i in os_version.list %}{% if i.os_arch == os_arch.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
+                ['OS Version', {% for i in os_distribution|unique_pairs:"build_arch cxx_stdlib" %}'{{ i.0 }}/{{ i.1 }}', {% endfor %} {role: 'annotation'}],
+                {% for os in os_chart_os_version_parent %}
+                ['OS: {{ os.grouper }}', {% for j in os_distribution|unique_pairs:"build_arch cxx_stdlib" %}{% for i in os.list %}{% if j.0 == i.build_arch and j.1 == i.cxx_stdlib %}{{ i.num }}{% endif %}{% endfor %}{% if not forloop.last %}, {% endif %}{% endfor %}, '' ],
                 {% endfor %}
             ]);
 
-            var options = {
-                'title': 'OS Versions and Architectures',
-                isStacked: true,
-            };
+        var options = {
+            'title':'OS Version and Build Architecture/STDLIB',
+            isStacked: true
+        };
 
-            var chart = new google.visualization.ColumnChart(document.getElementById('os-chart'));
-            chart.draw(data, options);
-        }
+        var chart = new google.visualization.ColumnChart(document.getElementById('os-chart'));
+        chart.draw(data, options);
+      }
     </script>
     <script type="text/javascript">
         google.charts.load('current', {'packages': ['corechart']});
