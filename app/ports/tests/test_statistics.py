@@ -173,7 +173,7 @@ class TestStatistics(TestCase):
         self.assertEquals(response3.context['total_port_installations_count']['submission__user_id__count'], 0)
 
     def test_installations_vs_month(self):
-        date_may_2019 = "2019-05-25 10:10:10-+00:00"
+        date_may_2019 = "2019-05-25 10:10:10-+0000"
         datetime_obj = datetime.datetime.strptime(date_may_2019, '%Y-%m-%d %H:%M:%S-%z')
 
         submission = QUICK_SUBMISSION_JSON
@@ -192,9 +192,9 @@ class TestStatistics(TestCase):
         month = today.strftime("%m")
         year = today.strftime("%Y")
         for i in response.context['port_installations_by_month']:
-            if i['month'] == datetime.datetime.strptime("2019-05-01 00:00:00-+00:00", '%Y-%m-%d %H:%M:%S-%z'):
+            if i['month'] == datetime.datetime.strptime("2019-05-01 00:00:00-+0000", '%Y-%m-%d %H:%M:%S-%z'):
                 may_count = i['num']
-            elif i['month'] == datetime.datetime.strptime(year + "-" + month + "-01 00:00:00-+00:00", '%Y-%m-%d %H:%M:%S-%z'):
+            elif i['month'] == datetime.datetime.strptime(year + "-" + month + "-01 00:00:00-+0000", '%Y-%m-%d %H:%M:%S-%z'):
                 current_count = i['num']
         self.assertEquals(may_count, 1)
         self.assertEquals(current_count, 4)
