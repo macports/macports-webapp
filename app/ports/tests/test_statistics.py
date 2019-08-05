@@ -8,6 +8,27 @@ from django.urls import reverse
 from ports.models import UUID, PortInstallation, Submission, Port
 from MacPorts.config import TEST_SUBMISSIONS, TEST_PORTINDEX_JSON
 
+QUICK_SUBMISSION_JSON = json.loads("""{
+                    "id": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX6",
+                    "os": {
+                        "macports_version": "2.5.4",
+                        "osx_version": "10.14",
+                        "os_arch": "i386",
+                        "os_platform": "darwin",
+                        "cxx_stdlib": "libc++",
+                        "build_arch": "x86_64",
+                        "gcc_version": "none",
+                        "prefix": "/opt/local",
+                        "xcode_version": "10.3"
+                    },
+                    "active_ports": [
+                        {"name": "port-A1", "version": "0.9"},
+                        {"name": "port-A2", "version": "0.9.1"},
+                        {"name": "port-B1", "version": "1.0"},
+                        {"name": "port-C1", "version": "1.1.2"}
+                    ]
+                }""")
+
 
 class TestStatistics(TestCase):
     def setUp(self):
@@ -118,26 +139,7 @@ class TestStatistics(TestCase):
 
         # Go back in time 35 days
         time_35_days_ago = time_now - datetime.timedelta(days=35)
-        submission = json.loads("""{
-            "id": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX6",
-            "os": {
-                "macports_version": "2.5.4",
-                "osx_version": "10.14",
-                "os_arch": "i386",
-                "os_platform": "darwin",
-                "cxx_stdlib": "libc++",
-                "build_arch": "x86_64",
-                "gcc_version": "none",
-                "prefix": "/opt/local",
-                "xcode_version": "10.3"
-            },
-            "active_ports": [
-                {"name": "port-A1", "version": "0.9"},
-                {"name": "port-A2", "version": "0.9.1"},
-                {"name": "port-B1", "version": "1.0"},
-                {"name": "port-C1", "version": "1.1.2"}
-            ]
-        }""")
+        submission = QUICK_SUBMISSION_JSON
 
         # Make a submission dated 35 days ago
         submission_id = Submission.populate(submission, time_35_days_ago)
@@ -169,3 +171,44 @@ class TestStatistics(TestCase):
         self.assertEquals(response2.context['total_port_installations_count']['submission__user_id__count'], 1)
         self.assertEquals(response2.context['requested_port_installations_count']['submission__user_id__count'], 0)
         self.assertEquals(response3.context['total_port_installations_count']['submission__user_id__count'], 0)
+
+    def test_installations_vs_month(self):
+        date_may_2019 = "2019-05-25 10:10:10-+00:00"
+        datetime_obj = datetime.datetime.strptime(date_may_2019, '%Y-%m-%d %H:%M:%S-%z')
+
+        submission = QUICK_SUBMISSION_JSON
+
+        # Make a submission dated 2019-05-25
+        submission_id = Submission.populate(submission, datetime_obj)
+        PortInstallation.populate(submission['active_ports'], submission_id)
+
+        response = self.client.get(reverse('port_detail_stats'), data={
+            'port_name': 'port-A1'
+        })
+
+        may_count = 0
+        current_count = 0
+        today = datetime.datetime.now()
+        month = today.strftime("%m")
+        year = today.strftime("%Y")
+        for i in response.context['port_installations_by_month']:
+            if i['month'] == datetime.datetime.strptime("2019-05-01 00:00:00-+00:00", '%Y-%m-%d %H:%M:%S-%z'):
+                may_count = i['num']
+            elif i['month'] == datetime.datetime.strptime(year + "-" + month + "-01 00:00:00-+00:00", '%Y-%m-%d %H:%M:%S-%z'):
+                current_count = i['num']
+        self.assertEquals(may_count, 1)
+        self.assertEquals(current_count, 4)
+
+    def test_validation(self):
+        response1 = self.client.get(reverse('port_detail_stats'), data={
+            'port_name': 'port-A1',
+            'days': 91
+        })
+
+        response2 = self.client.get(reverse('port_detail_stats'), data={
+            'port_name': 'port-A1',
+            'days': "randomString"
+        })
+
+        self.assertEquals(response1.content, b"'91' is an invalid value. Allowed values are: [0, 7, 30, 90, 180, 365]")
+        self.assertEquals(response2.content, b"Received 'randomString'. Expecting an integer.")
