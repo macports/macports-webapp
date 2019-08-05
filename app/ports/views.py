@@ -520,22 +520,3 @@ def stats_submit(request):
             return HttpResponse("Something went wrong")
     else:
         return HttpResponse("Method Not Allowed")
-
-
-@csrf_exempt
-def update_api(request):
-    if request.method == 'POST':
-        key = request.POST.get('key')
-        print(key)
-        if key == os.environ['UPDATE_API_KEY']:
-            try:
-                received_json = json.loads(request.POST.get('ports'))
-                Port.update(received_json)
-                return HttpResponse("Updating successful")
-            except:
-                return HttpResponse("Failed to parse the JSON")
-
-        else:
-            return HttpResponse("Authentication failed. Invalid Key")
-    else:
-        return HttpResponse('Method not allowed')
