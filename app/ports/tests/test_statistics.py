@@ -210,8 +210,14 @@ class TestStatistics(TestCase):
             'days': "randomString"
         })
 
+        response3 = self.client.get(reverse('port_detail_stats'), data={
+            'port_name': 'port-A1'
+        })
+
         self.assertEquals(response1.content, b"'91' is an invalid value. Allowed values are: [0, 7, 30, 90, 180, 365]")
         self.assertEquals(response2.content, b"Received 'randomString'. Expecting an integer.")
+        self.assertIsInstance(response3.context['days'], int)
+        self.assertIsInstance(response3.context['days_ago'], int)
 
         # ====== TESTS FOR INDIVIDUAL PORT STATS END ======
 
