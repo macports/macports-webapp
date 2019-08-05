@@ -390,6 +390,8 @@ def get_ports_of_maintainers(maintainers, request):
 
 def maintainer_detail_github(request, github_handle):
     maintainers = Maintainer.objects.filter(github=github_handle)
+    if maintainers.count() == 0:
+        return render(request, '404.html')
     ports, all_ports_num = get_ports_of_maintainers(maintainers, request)
 
     return render(request, 'ports/maintainerdetail.html', {
@@ -403,6 +405,8 @@ def maintainer_detail_github(request, github_handle):
 
 def maintainer_detail_email(request, name, domain):
     maintainers = Maintainer.objects.filter(name=name, domain=domain)
+    if maintainers.count() == 0:
+        return render(request, '404.html')
     ports, all_ports_num = get_ports_of_maintainers(maintainers, request)
 
     return render(request, 'ports/maintainerdetail.html', {
@@ -468,9 +472,9 @@ def search_ports_in_category(request):
 # Respond to ajax calls for searching within a maintainer
 def search_ports_in_maintainer(request):
     query = request.GET.get('name', '')
-    name = request.GET.get('maintainers__name')
+    name = request.GET.get('maintainers__name', '')
     github = request.GET.get('maintainers__github')
-    if name is None:
+    if name is None or name == '':
         search_in = github
     else:
         search_in = name
