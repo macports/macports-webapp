@@ -17,6 +17,7 @@ class Submission(models.Model):
     platform = models.CharField(max_length=20, default='')
     macports_version = models.CharField(max_length=10)
     cxx_stdlib = models.CharField(max_length=20, default='libc++')
+    clt_version = models.CharField(max_length=20, default='')
     raw_json = JSONField(default=dict)
     timestamp = models.DateTimeField()
 
@@ -33,6 +34,7 @@ class Submission(models.Model):
             models.Index(fields=['macports_version']),
             models.Index(fields=['cxx_stdlib']),
             models.Index(fields=['build_arch']),
+            models.Index(fields=['clt_version'])
         ]
 
     @classmethod
@@ -52,6 +54,7 @@ class Submission(models.Model):
         sub.cxx_stdlib = cxx_stdlib
         sub.build_arch = json_object['os'].get('build_arch')
         sub.platform = json_object['os'].get('os_platform')
+        sub.clt_version = json_object['os'].get('clt_version')
         sub.raw_json = json_object
         sub.timestamp = timestamp
         sub.save()
@@ -62,12 +65,14 @@ class PortInstallation(models.Model):
     submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
     port = models.CharField(max_length=100)
     version = models.CharField(max_length=100)
+    variants = models.CharField(max_length=200, default='')
     requested = models.BooleanField(default=False)
 
     class Meta:
         indexes = [
             models.Index(fields=['submission']),
-            models.Index(fields=['port'])
+            models.Index(fields=['port']),
+            models.Index(fields=['variants'])
         ]
 
     @classmethod
@@ -78,6 +83,7 @@ class PortInstallation(models.Model):
             obj.submission_id = submission_id
             obj.port = port['name']
             obj.version = port['version']
+            obj.variants = port.get('variants')
             obj.requested = True if port.get('requested') == "true" else False
             ports.append(obj)
         PortInstallation.objects.bulk_create(ports)
