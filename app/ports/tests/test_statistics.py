@@ -216,7 +216,7 @@ class TestStatistics(TestCase):
         # ====== TESTS FOR INDIVIDUAL PORT STATS END ======
 
         # ====== TESTS FOR GENERAL STATS START ======
-    def test_users_by_month(self):
+    def test_users_count(self):
         date_april_2019 = datetime.datetime.strptime("2019-04-25 10:10:10-+0000", '%Y-%m-%d %H:%M:%S-%z')
         date_april_2018 = datetime.datetime.strptime("2018-04-25 10:10:10-+0000", '%Y-%m-%d %H:%M:%S-%z')
 
@@ -239,3 +239,74 @@ class TestStatistics(TestCase):
 
         self.assertEquals(april_2019_count, 1)
         self.assertEquals(april_2018_count, 1)
+
+        self.assertEquals(response.context['total_submissions'], 8)
+        self.assertEquals(response.context['unique_users'], 6)
+        self.assertEquals(response.context['current_week'], 5)
+        self.assertEquals(response.context['last_week'], 0)
+
+    def test_validation_general_stats(self):
+        response1 = self.client.get(reverse('stats_home'), data={
+            'days': 91
+        })
+
+        response2 = self.client.get(reverse('stats_home'), data={
+            'days': "randomString"
+        })
+
+        response3 = self.client.get(reverse('stats_home'), data={
+            'days': 30
+        })
+
+        self.assertEquals(response1.content, b"'91' is an invalid value. Allowed values are: [0, 7, 30, 90, 180, 365]")
+        self.assertEquals(response2.content, b"Received 'randomString'. Expecting an integer.")
+        self.assertIsInstance(response3.context['days'], int)
+
+    def test_macports_version_general_stats(self):
+        response = self.client.get(reverse('stats_home'))
+
+        count_2_5_1 = 0
+        for i in response.context['macports_distribution']:
+            if i['macports_version'] == '2.5.1':
+                count_2_5_1 = i['num']
+
+        self.assertEquals(count_2_5_1, 5)
+
+    def test_os_version_and_xcode_version_general_stats(self):
+        response = self.client.get(reverse('stats_home'))
+
+        counter = 0
+        for i in response.context['xcode_distribution']:
+            if i['os_version'] == '10.14' and i['xcode_version'] == '10.3':
+                self.assertEquals(i['num'], 2)
+                counter += 1
+            elif i['os_version'] == '10.14' and i['xcode_version'] == '10.2.1':
+                self.assertEquals(i['num'], 1)
+                counter += 1
+            elif i['os_version'] == '10.13' and i['xcode_version'] == '10.2.1':
+                self.assertEquals(i['num'], 1)
+                counter += 1
+            elif i['os_version'] == '10.12' and i['xcode_version'] == '10.2.1':
+                self.assertEquals(i['num'], 1)
+                counter += 1
+        self.assertEquals(counter, 4)
+
+        # ====== TESTS FOR GENERAL STATS END ======
+
+        # ====== TESTS FOR PORT INSTALLATIONS START ======
+    def test_validation_port_installations(self):
+        response1 = self.client.get(reverse('stats_port_installations'), data={
+            'first': 'total_count',
+            'second': '-total_count'
+        })
+        byteresponse1 = b"'total_count' and '-total_count' refer to the same column."
+
+        response2 = self.client.get(reverse('stats_port_installations'), data={
+            'first': 'total_count',
+            'second': '-req_count',
+            'third': 'random_string'
+        })
+        byteresponse2 = b"random_string is an invalid column. Expecting: ['port', '-port', 'total_count', '-total_count', '-req_count', 'req_count']"
+
+        self.assertEquals(response1.content, byteresponse1)
+        self.assertEquals(response2.content, byteresponse2)
