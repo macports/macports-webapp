@@ -3,8 +3,6 @@ from distutils.version import LooseVersion
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 
-from ports.utilities.sort_by_version import compare_versions
-
 
 class UUID(models.Model):
     uuid = models.CharField(max_length=36, db_index=True)
