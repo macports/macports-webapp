@@ -117,11 +117,6 @@ class TestURLs(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='ports/all_builds.html')
 
-    def test_update_api(self):
-        response = self.client.get(reverse('update_api'))
-
-        self.assertEquals(response.status_code, 200)
-
     def test_portdetail(self):
         response = self.client.get(reverse('port_detail', kwargs={
             'name': 'port-A1'
