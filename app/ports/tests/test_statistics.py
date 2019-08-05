@@ -73,7 +73,7 @@ class TestStatistics(TestCase):
         self.assertEquals(Submission.objects.count(), 7)
         self.assertEquals(PortInstallation.objects.count(), 29)
 
-    # ====== TESTS FOR INDIVIDUAL PORT STATS ======
+    # ====== TESTS FOR INDIVIDUAL PORT STATS START ======
     def test_port_installation_counts(self):
         response1 = self.client.get(reverse('port_detail_stats'), data={
             'port_name': 'port-A1'
@@ -212,3 +212,30 @@ class TestStatistics(TestCase):
 
         self.assertEquals(response1.content, b"'91' is an invalid value. Allowed values are: [0, 7, 30, 90, 180, 365]")
         self.assertEquals(response2.content, b"Received 'randomString'. Expecting an integer.")
+
+        # ====== TESTS FOR INDIVIDUAL PORT STATS END ======
+
+        # ====== TESTS FOR GENERAL STATS START ======
+    def test_users_by_month(self):
+        date_april_2019 = datetime.datetime.strptime("2019-04-25 10:10:10-+0000", '%Y-%m-%d %H:%M:%S-%z')
+        date_april_2018 = datetime.datetime.strptime("2018-04-25 10:10:10-+0000", '%Y-%m-%d %H:%M:%S-%z')
+
+        submission = QUICK_SUBMISSION_JSON
+
+        # Make a submissions dated 2019-04-25 and 2019-04-2018
+        for i in date_april_2018, date_april_2019:
+            submission_id = Submission.populate(submission, i)
+            PortInstallation.populate(submission['active_ports'], submission_id)
+
+        response = self.client.get(reverse('stats_home'))
+
+        april_2018_count = 0
+        april_2019_count = 0
+        for i in response.context['users_by_month']:
+            if i['month'] == datetime.datetime.strptime("2018-04-01 00:00:00-+0000", '%Y-%m-%d %H:%M:%S-%z'):
+                april_2018_count = i['num']
+            if i['month'] == datetime.datetime.strptime("2019-04-01 00:00:00-+0000", '%Y-%m-%d %H:%M:%S-%z'):
+                april_2019_count = i['num']
+
+        self.assertEquals(april_2019_count, 1)
+        self.assertEquals(april_2018_count, 1)
