@@ -19,8 +19,8 @@ Parameters
 | key | type | details | default |
 |------|-----|----|----|
 | count | int, optional | Number of builds to be fetched for each builder. | All |
-| builder | str, optional | Specify one or more builders, separated by comma (`,`). | All |
-| status | str, optional | Filter by the status of builds. | All |
+| builder | str, optional | Filter the builds by builder | All |
+| status | str, optional | Filter by the status of builds | All |
 
 
 #### - `GET /port/{port-name}/stats`
