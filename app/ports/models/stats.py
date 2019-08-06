@@ -16,7 +16,7 @@ class Submission(models.Model):
     build_arch = models.CharField(max_length=20, default='')
     platform = models.CharField(max_length=20, default='')
     macports_version = models.CharField(max_length=10)
-    cxx_stdlib = models.CharField(max_length=20, default='libc++')
+    cxx_stdlib = models.CharField(max_length=20, default='')
     clt_version = models.CharField(max_length=100, default='')
     raw_json = JSONField(default=dict)
     timestamp = models.DateTimeField()
