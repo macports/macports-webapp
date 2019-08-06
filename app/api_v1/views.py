@@ -13,55 +13,43 @@ ERROR405 = {
 
 
 @csrf_exempt
-def fetch_port(request, name):
+def api_port_info(request, name):
     if request.method == 'GET':
         try:
+            fields = request.GET.get('fields')
             port = Port.objects.get(name__iexact=name)
-            serializer = PortSerializer(port, context={'request': request})
+            serializer = PortSerializer(port, context={'request': request}, fields=fields)
             return JsonResponse(serializer.data, safe=False)
         except Port.DoesNotExist:
             response = dict()
             response['message'] = "Requested port does not exist"
-            response['status_code'] = 200
+            response['status_code'] = 404
             return JsonResponse(response)
     else:
         return JsonResponse(ERROR405)
 
 
-def fetch_port_build_history(request, portname):
+def api_port_builds(request, name):
     if request.method == 'GET':
-        builds = BuildHistory.objects.filter(port_name__iexact=portname).order_by('-time_start')
+        count = request.GET.get('count', 100)
+        builder = request.GET.get('builder')
+        status = request.GET.get('status')
+
+        builds = BuildHistory.objects.filter(port_name__iexact=name).order_by('-time_start')[:count]
+
+        if not builds.count() > 0:
+            return JsonResponse({
+                "message": "No builds found for {}".format(name),
+                "status_code": 200
+            })
+
+        if builder is not None:
+            builds.filter(builder_name__name=builder)
+        if status is not None:
+            builds.filter(status=status)
+
         serializer = BuildHistorySerializer(builds, many=True)
-        return JsonResponse(serializer.data, safe=False)
-    else:
-        return JsonResponse(ERROR405)
 
-
-def fetch_portnames_of_category(request, category):
-    if request.method == 'GET':
-        ports = Port.objects.filter(categories__name__iexact=category).only('name')
-        serializer = PortListSerializer(ports, many=True)
-        return JsonResponse(serializer.data, safe=False)
-    else:
-        return JsonResponse(ERROR405)
-
-
-def fetch_total_number_of_ports(request):
-    if request.method == 'GET':
-        count = Port.objects.all().count()
-        response = {
-            'count': count,
-            'time': datetime.datetime.now()
-        }
-        return JsonResponse(response)
-
-
-def fetch_paginated_ports(request, page_size, page_num):
-    if request.method == 'GET':
-        start = page_size * (page_num - 1)
-        end = page_size * page_num
-        ports = Port.objects.all().order_by('name').only('name')[start:end]
-        serializer = PortListSerializer(ports, many=True)
         return JsonResponse(serializer.data, safe=False)
     else:
         return JsonResponse(ERROR405)
