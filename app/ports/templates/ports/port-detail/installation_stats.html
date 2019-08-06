@@ -21,7 +21,7 @@
 </form>
 <br>
 <h6 class="text-center">
-    <span class="text-muted">Duration selected:</span> <u>{{ start_date|date:"d M Y" }}</u> <span class="text-muted">to</span> <u>{{ end_date|date:"d M Y" }}</u>
+    <span class="text-muted">Duration selected:</span> <u>{{ start_date|date:"Y-m-d" }}</u> <span class="text-muted">to</span> <u>{{ end_date|date:"Y-m-d" }}</u>
 </h6>
 <br>
 {% if total_port_installations_count.submission__user_id__count > 0 %}
@@ -100,12 +100,16 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p>For each month, a user is considered to have the port installed, if in any one of the submissions
-                    made by the user in that month- the port is present.</p>
-                <p>Suppose a user makes 4 submissions in a given month, and in any one or more than one submissions the
-                    port is present- then it is counted as an installation for that month.<br><strong> You may see different results when
-                    compare with the "Current Stats" section, because for current stats only the 4th submission (the latest one) will be counted,
-                    but in monthly installations, the scenario of submissions over the month is considered.</strong>
+                <p>
+                   For each month, a user is considered to have the port installed, if the port is present in one or more
+                   submissions made by that user in the given month.
+                </p>
+                <p>
+                    Suppose a user makes 4 submissions in a given month, and in any one or more than one submissions the
+                    port is present, then it is counted as an installation for that month.<br><br><strong> You may see
+                    different results when comparing with the "Statistics" section, because for statistics block only the
+                    4th submission (the latest one in the selected duration) will be counted, but in monthly
+                    installations, the scenario of submissions over the month is considered.</strong>
                 </p>
 
             </div>
