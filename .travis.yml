@@ -1,8 +1,11 @@
 language: python
+
 python:
   - "3.6"
   - "3.7"
+
 dist: xenial
+
 # setup environment
 env:
   matrix:
@@ -15,11 +18,22 @@ env:
     - DB_NAME=mp
     - DB_USER=postgres
     - SECRET_KEY=thISkEyisUsedForTravis
+
 # install dependencies
 install:
   - pip install -q Django==$DJANGO_VERSION
   - pip install -q -r app/requirements.txt
   - pip install codecov
+  - docker build -t macports-webapp .
+  - >
+    docker run -d
+    --publish 8080:8080
+    --env DB_HOST=$DB_HOST
+    --env DB_PASSWORD=$DB_PASSWORD
+    --env DB_NAME=$DB_NAME
+    --env DB_USER=$DB_USER
+    --env SECRET_KEY=$SECRET_KEY
+    --name=macports-webapp macports-webapp
 
 # run test scripts
 script:
@@ -28,9 +42,11 @@ script:
   - python manage.py collectstatic --noinput
   - coverage run --source=. manage.py test
   - coverage report
+  - docker ps | grep -q macports-webapp
 
 services:
   - postgresql
+  - docker
 
 before_script:
   - psql -c 'create database mp;' -U postgres
