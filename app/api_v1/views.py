@@ -1,9 +1,11 @@
 import datetime
+from distutils.version import LooseVersion
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Subquery
 
-from ports.models import Port, BuildHistory
+from ports.models import Port, BuildHistory, Builder
 from .serializers import PortSerializer, BuildHistorySerializer, PortListSerializer
 
 ERROR405 = {
@@ -51,5 +53,37 @@ def api_port_builds(request, name):
         serializer = BuildHistorySerializer(builds, many=True)
 
         return JsonResponse(serializer.data, safe=False)
+    else:
+        return JsonResponse(ERROR405)
+
+
+def api_port_health(request, name):
+    if request.method == 'GET':
+
+        try:
+            port = Port.objects.get(name__iexact=name)
+        except Port.DoesNotExist:
+            return JsonResponse({
+                "message": "The port {} does not exist.".format(name),
+                "status_code": 404
+            })
+
+        all_latest_builds = BuildHistory.objects.all()\
+            .order_by('port_name', 'builder_name', '-build_id')\
+            .distinct('port_name', 'builder_name')
+
+        port_latest_builds = list(BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), port_name__iexact=name)
+                                  .values('builder_name__name', 'build_id', 'status'))
+
+        builders = list(Builder.objects.all().values_list('name', flat=True))
+
+        if len(port_latest_builds) == 0:
+            return JsonResponse({
+                "message": "No builds found for {}.".format(name),
+                "status_code": 200
+            })
+        builders.sort(key=LooseVersion, reverse=True)
+
+        return JsonResponse(port_latest_builds, safe=False)
     else:
         return JsonResponse(ERROR405)
