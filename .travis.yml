@@ -5,9 +5,6 @@ python:
 dist: xenial
 # setup environment
 env:
-  matrix:
-    - DJANGO_VERSION=2.1.7
-    - DJANGO_VERSION=2.2
   global:
     - DJANGO_SETTINGS_MODULE='MacPorts.settings'
     - DB_HOST=localhost
@@ -17,7 +14,6 @@ env:
     - SECRET_KEY=thISkEyisUsedForTravis
 # install dependencies
 install:
-  - pip install -q Django==$DJANGO_VERSION
   - pip install -q -r app/requirements.txt
   - pip install codecov
 
