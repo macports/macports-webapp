@@ -52,6 +52,22 @@
         <div class="col-lg-6">
             <div class="chart" id="xcode-chart"></div>
         </div>
+        <div class="col-lg-6 p-lg-3">
+            <table class="table table-striped">
+                <thead>
+                <tr class="p-0">
+                    <th class="pt-0 pb-0">Variants</th>
+                    <th class="pt-0 pb-0">Count</th>
+                </tr>
+                </thead>
+                {% for i in port_installations_by_variants %}
+                    <tr>
+                        <td class="pt-0 pb-0">{{ i.variants }}</td>
+                        <td class="pt-0 pb-0">{{ i.num }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 
     <br><br>
