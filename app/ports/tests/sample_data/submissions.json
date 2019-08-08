@@ -10,7 +10,8 @@
             "build_arch": "x86_64",
             "gcc_version": "none",
             "prefix": "/opt/local",
-            "xcode_version": "10.3"
+            "xcode_version": "10.3",
+            "clt_version": "10.3.0.0.1.1562985497"
         },
         "active_ports": [
             {
@@ -43,7 +44,8 @@
             "build_arch": "x86_64",
             "gcc_version": "none",
             "prefix": "/opt/local",
-            "xcode_version": "10.2.1"
+            "xcode_version": "10.2.1",
+            "clt_version": "10.3.0.0.2"
         },
         "active_ports": [
             {
@@ -77,7 +79,8 @@
             "build_arch": "x86_64",
             "gcc_version": "none",
             "prefix": "/opt/local",
-            "xcode_version": "10.2.1"
+            "xcode_version": "10.2.1",
+            "clt_version": "10.3.0.0.2"
         },
         "active_ports": [
             {
@@ -112,7 +115,8 @@
             "build_arch": "x86_64",
             "gcc_version": "none",
             "prefix": "/opt/local",
-            "xcode_version": "10.2.1"
+            "xcode_version": "10.2.1",
+            "clt_version": "10.3.0.0.2"
         },
         "active_ports": [
             {
@@ -146,7 +150,8 @@
             "build_arch": "x86_64",
             "gcc_version": "none",
             "prefix": "/opt/local",
-            "xcode_version": "10.3"
+            "xcode_version": "10.3",
+            "clt_version": "10.3.0.0.3"
         },
         "active_ports": [
             {
@@ -180,7 +185,8 @@
             "build_arch": "x86_64",
             "gcc_version": "none",
             "prefix": "/opt/local",
-            "xcode_version": "10.3"
+            "xcode_version": "10.3",
+            "clt_version": "10.3.0.0.1.1562985497"
         },
         "active_ports": [
             {
