@@ -58,7 +58,7 @@ class Port(models.Model):
 
         @transaction.atomic
         def load_ports_and_maintainers_table(ports):
-            pid = 1
+            port_id = 1
             for port in ports:
 
                 # Add Ports to the Database One-by-One
@@ -80,8 +80,8 @@ class Port(models.Model):
                 new_port.license = port.get('license', '')
                 new_port.replaced_by = port.get('replaced_by')
                 new_port.save()
-                port_id_map[port['name']] = pid
-                pid += 1
+                port_id_map[port['name']] = port_id
+                port_id += 1
 
                 try:
                     new_port.categories.add(*port['categories'])
@@ -115,18 +115,19 @@ class Port(models.Model):
 
         @transaction.atomic
         def load_dependencies_table(ports):
-            def load_depends(list_of_dependencies, type_of_dependency, pid):
-                dependency = Dependency()
+            def load_depends(port_id, type_of_dependency, list_of_dependencies):
+                obj = Dependency()
                 dependencies = []
-                dependency.type = type_of_dependency
-                dependency.port_name_id = pid
-                for depends in list_of_dependencies:
+                obj.type = type_of_dependency
+                obj.port_name_id = port_id
+                for i in list_of_dependencies:
                     try:
-                        dependencies.append(port_id_map[depends.rsplit(':', 1)[-1]])
+                        dependency_name = i.rsplit(':', 1)[-1]
+                        dependencies.append(port_id_map[dependency_name])
                     except KeyError:
                         pass
-                dependency.save()
-                dependency.dependencies.add(*dependencies)
+                obj.save()
+                obj.dependencies.add(*dependencies)
 
             for port in ports:
                 try:
@@ -134,7 +135,7 @@ class Port(models.Model):
                     for dependency_type in ["lib", "extract", "run", "patch", "build", "test", "fetch"]:
                         key = "depends_" + dependency_type
                         if key in port:
-                            load_depends(port[key], dependency_type, port_id)
+                            load_depends(port_id, dependency_type, port[key])
 
                 except KeyError:
                     pass
