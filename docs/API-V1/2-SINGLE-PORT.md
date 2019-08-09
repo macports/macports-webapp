@@ -33,12 +33,17 @@ Parameters
 |------|-----|----|----|
 | days_ago | int, optional | Number of days behind current day, to calculate stats. | 0 |
 | days | int, optional | Number of days behind `days_ago`. Only the submissions made in this period are used to generate the stats. | 30 |
-| criteria | optional | Comma separated list of the criteria of stats. Options: ['total_count', 'req_count', 'os', 'xcode'] | All |
+| criteria | optional | Comma separated list of the criteria of stats, acceptable options are given below. | All |
     
+##### Acceptable options for `criteria` parameter
+
 - ***total_count***: The total number of users having the port installed.
 - ***req_count***: The number of users who requested the port.
-- ***os***: Distribution of total users across various combinations of OSX versions, build architecture and stdlib.
-- ***xcode***: Distribution of total users across various combinations OSX and XCode versions.
+- ***port_versions***: The number of users of different versions of the port.
+- ***os_versions***: Distribution of total users across various combinations of OSX versions, build architecture and stdlib.
+- ***xcode_versions***: Distribution of total users across various combinations OSX and XCode versions.
+- ***installs_count_monthly***: Number of total users of the port vs months (last 12).
+- ***versions_count_monthly***: Number of total users of a particular version of a port vs months (last 12).
 
 #### - `GET /port/{port-name}/health`
 
