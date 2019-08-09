@@ -19,7 +19,8 @@
 
         var options = {
             'title':'OS Version and Build Architecture/STDLIB',
-            isStacked: true
+            isStacked: true,
+            chartArea: {left: 50, width: "80%"}
         };
 
         var chart = new google.visualization.ColumnChart(document.getElementById('os-chart'));
@@ -43,7 +44,8 @@
             ]);
 
             var options = {
-                'title': 'MacPorts Versions'
+                'title': 'MacPorts Versions',
+                chartArea: {left: 50, width: "80%"}
             };
 
             var chart = new google.visualization.ColumnChart(document.getElementById('macports-chart'));
@@ -66,8 +68,11 @@
             {% endfor %}
         ]);
 
-            var options = {'title': 'XCode Versions',
-                            isStacked: true,};
+            var options = {
+                'title': 'XCode Versions',
+                isStacked: true,
+                chartArea: {left: 50, width: "80%"}
+            };
 
             var chart = new google.visualization.ColumnChart(document.getElementById('xcode-chart'));
             chart.draw(data, options);
