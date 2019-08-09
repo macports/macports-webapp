@@ -69,6 +69,11 @@
             </table>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="chart" id="clt-version-chart"></div>
+        </div>
+    </div>
 
     <br><br>
     <h4 class="border-bottom">Port installations by month <span style="font-size:12px"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#monthlyInstallationsHelp">Learn More</button></span> </h4>
@@ -276,6 +281,33 @@
             };
 
         var chart = new google.visualization.ColumnChart(document.getElementById('xcode-chart'));
+        chart.draw(data, options);
+        }
+    </script>
+
+    <!-- CLT VERSIONS -->
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['corechart']});
+
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            {% regroup port_installations_by_os_and_clt_version|dictsort:"submission__clt_version" by submission__clt_version as clt_parent %}
+            {% regroup port_installations_by_os_and_clt_version by submission__os_version as os_clt_parent %}
+
+            var data = google.visualization.arrayToDataTable([
+                ['OS Version', {% for version in clt_parent %}'{{ version.grouper }}', {% endfor %} { role: 'annotation' } ],
+                {% for os in os_clt_parent %}
+                    ['OS: {{ os.grouper }}', {% for version in clt_parent %}{% for i in os.list %}{% if i.submission__clt_version == version.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
+                {% endfor %}
+        ]);
+
+        var options = {
+            'title': 'CLT Versions',
+            isStacked: true
+            };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('clt-version-chart'));
         chart.draw(data, options);
         }
     </script>
