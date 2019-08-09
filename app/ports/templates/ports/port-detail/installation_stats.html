@@ -156,7 +156,10 @@
                 {% endfor %}
             ]);
 
-        var options = {'title':'Port Versions'};
+        var options = {
+            'title':'Port Versions',
+            chartArea: {left: 50, width: "65%"}
+        };
 
         var chart = new google.visualization.ColumnChart(document.getElementById('version-chart'));
         chart.draw(data, options);
@@ -185,7 +188,9 @@
                 viewWindow: {
                     min:0
                 }
-            }
+            },
+            chartArea: {left: 50, width: "80%"}
+
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('month-chart'));
@@ -209,7 +214,9 @@
 
         var options = {
             'title':'OS Version and Build Architecture/STDLIB',
-            isStacked: true
+            isStacked: true,
+            chartArea: {left: 50, width: "65%"}
+
         };
 
         var chart = new google.visualization.ColumnChart(document.getElementById('os-chart'));
@@ -247,7 +254,9 @@
                 viewWindow: {
                     min:0
                 }
-            }
+            },
+            chartArea: {left: 50, width: "80%"}
+
         };
 
         var chart = new google.visualization.AreaChart(document.getElementById('version-month-chart'));
@@ -274,7 +283,9 @@
 
         var options = {
             'title': 'XCode Versions',
-            isStacked: true
+            isStacked: true,
+            chartArea: {left: 50, width: "65%"}
+
             };
 
         var chart = new google.visualization.ColumnChart(document.getElementById('xcode-chart'));
@@ -301,7 +312,8 @@
 
         var options = {
             'title': 'CLT Versions',
-            isStacked: true
+            isStacked: true,
+            chartArea: {left: 50, width: "65%"}
             };
 
         var chart = new google.visualization.ColumnChart(document.getElementById('clt-version-chart'));
