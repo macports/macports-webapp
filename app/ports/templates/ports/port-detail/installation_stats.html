@@ -293,7 +293,7 @@
             {% regroup port_installations_by_os_and_clt_version by submission__os_version as os_clt_parent %}
 
             var data = google.visualization.arrayToDataTable([
-                ['OS Version', {% for version in clt_parent %}'{{ version.grouper }}', {% endfor %} { role: 'annotation' } ],
+                ['OS Version', {% for version in clt_parent %}'{% if version.grouper == '' %}unknown{% else %}{{ version.grouper }}{% endif %}', {% endfor %} { role: 'annotation' } ],
                 {% for os in os_clt_parent %}
                     ['OS: {{ os.grouper }}', {% for version in clt_parent %}{% for i in os.list %}{% if i.submission__clt_version == version.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
                 {% endfor %}
