@@ -437,13 +437,13 @@ def search(request):
 # Respond to ajax call for loading tickets
 def tickets(request):
     port_name = request.GET.get('port_name')
-    URL = "https://trac.macports.org/query?status=!closed&port=~{}".format(port_name)
+    URL = "https://trac.macports.org/report/16?max=1000&PORT=(%5E%7C%5Cs){}($%7C%5Cs)".format(port_name)
     response = requests.get(URL)
     Soup = BeautifulSoup(response.content, 'html5lib')
     all_tickets = []
-    for row in Soup.findAll('tr', attrs={'class': 'prio2'}):
+    for row in Soup.findAll('tr', attrs={'class': ['color2-even', 'color2-odd']}):
         srow = row.find('td', attrs={'class': 'summary'})
-        idrow = row.find('td', attrs={'class': 'id'})
+        idrow = row.find('td', attrs={'class': 'ticket'})
         typerow = row.find('td', attrs={'class': 'type'})
         ticket = {}
         ticket['url'] = srow.a['href']
