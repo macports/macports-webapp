@@ -52,28 +52,25 @@
         <div class="col-lg-6">
             <div class="chart" id="xcode-chart"></div>
         </div>
-        <div class="col-lg-6 p-lg-3">
-            <table class="table table-striped">
-                <thead>
-                <tr class="p-0">
-                    <th class="pt-0 pb-0">Variants</th>
-                    <th class="pt-0 pb-0">Count</th>
-                </tr>
-                </thead>
-                {% for i in port_installations_by_variants %}
-                    <tr>
-                        <td class="pt-0 pb-0">{{ i.variants }}</td>
-                        <td class="pt-0 pb-0">{{ i.num }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-lg-6">
             <div class="chart" id="clt-version-chart"></div>
         </div>
     </div>
+    <br>
+    <table class="table table-striped">
+        <thead>
+        <tr class="p-0">
+            <th class="pt-0 pb-0">Variants</th>
+            <th class="pt-0 pb-0">Count</th>
+        </tr>
+        </thead>
+        {% for i in port_installations_by_variants %}
+            <tr>
+                <td class="pt-0 pb-0">{{ i.variants }}</td>
+                <td class="pt-0 pb-0">{{ i.num }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 
     <br><br>
     <h4 class="border-bottom">Port installations by month <span style="font-size:12px"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#monthlyInstallationsHelp">Learn More</button></span> </h4>
