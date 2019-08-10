@@ -12,7 +12,7 @@ from ports.models import Port, BuildHistory, Builder, Submission, PortInstallati
 from .serializers import PortSerializer, BuildHistorySerializer, PortNameSerializer
 from ports.validators import validate_stats_days
 from ports.utilities.sort_by_version import sort_list_of_dicts_by_version
-from .filters import PortsFilter
+from ports.filters import PortFilterByMultiple, BuildHistoryFilter
 
 ERROR405 = {
     'message': 'Method Not Allowed',
@@ -173,12 +173,12 @@ def api_ports_filter(request):
     info = request.GET.get('info', False)
     only_count = request.GET.get('only_count', False)
 
-    ports = PortsFilter({
+    ports = PortFilterByMultiple({
         'name': icontains,
         'categories__name': category,
         'description': description,
         'maintainers__github': maintainer_github,
-        'maintainers__email': maintainer_name
+        'maintainers__name': maintainer_name
     }, queryset=Port.objects.all()).qs
 
     if only_count == 'True':
