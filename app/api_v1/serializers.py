@@ -46,6 +46,12 @@ class PortSerializer(DynamicFieldsSerializer):
         return variants
 
 
+class PortNameSerializer(DynamicFieldsSerializer):
+    class Meta:
+        model = Port
+        fields = ('name', )
+
+
 class BuilderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Builder
@@ -58,9 +64,3 @@ class BuildHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = BuildHistory
         fields = ('builder_name', 'build_id', 'status', 'time_start', 'time_elapsed', 'watcher_id')
-
-
-class PortListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Port
-        fields = ('name', )

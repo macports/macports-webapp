@@ -9,9 +9,10 @@ from django.db.models.functions import TruncMonth
 from django.core.serializers.json import DjangoJSONEncoder
 
 from ports.models import Port, BuildHistory, Builder, Submission, PortInstallation
-from .serializers import PortSerializer, BuildHistorySerializer, PortListSerializer
+from .serializers import PortSerializer, BuildHistorySerializer, PortNameSerializer
 from ports.validators import validate_stats_days
 from ports.utilities.sort_by_version import sort_list_of_dicts_by_version
+from .filters import PortsFilter
 
 ERROR405 = {
     'message': 'Method Not Allowed',
@@ -159,3 +160,40 @@ def api_port_stats(request, name):
         json_response['versions_count_monthly'] = json.dumps(list(port_installations_by_version_and_month), cls=DjangoJSONEncoder)
 
     return JsonResponse(json_response)
+
+
+def api_ports_filter(request):
+    if not request.method == 'GET':
+        return JsonResponse(ERROR405)
+    icontains = request.GET.get('icontains')
+    category = request.GET.get('category')
+    description = request.GET.get('description')
+    maintainer_github = request.GET.get('maintainer_github')
+    maintainer_name = request.GET.get('maintainer_name')
+    info = request.GET.get('info', False)
+    only_count = request.GET.get('only_count', False)
+
+    ports = PortsFilter({
+        'name': icontains,
+        'categories__name': category,
+        'description': description,
+        'maintainers__github': maintainer_github,
+        'maintainers__email': maintainer_name
+    }, queryset=Port.objects.all()).qs
+
+    if only_count == 'True':
+        return JsonResponse({
+            "count": ports.count()
+        })
+
+    if info == 'True':
+        serializer = PortSerializer(ports, many=True)
+    else:
+        ports = ports.values('name')
+        serializer = PortNameSerializer(ports, many=True)
+
+    json_response = {
+        "ports": serializer.data,
+        "count": ports.count()
+    }
+    return JsonResponse(json_response, safe=False)
