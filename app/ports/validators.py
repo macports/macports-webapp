@@ -27,3 +27,11 @@ def validate_unique_columns_port_installations(values):
         if i.replace('-', '') == j.replace('-', ''):
             return False, "'{}' and '{}' refer to the same column.".format(i, j)
     return True, "Validation Successful"
+
+
+def validate_int(value):
+    try:
+        value = int(value)
+    except ValueError:
+        return False, "{} is not an integer".format(value)
+    return True, "Validation Successful"

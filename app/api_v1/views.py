@@ -5,12 +5,13 @@ from distutils.version import LooseVersion
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Subquery, Count
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models.functions import TruncMonth
 from django.core.serializers.json import DjangoJSONEncoder
 
 from ports.models import Port, BuildHistory, Builder, Submission, PortInstallation
 from .serializers import PortSerializer, BuildHistorySerializer, PortNameSerializer
-from ports.validators import validate_stats_days
+from ports.validators import validate_stats_days, validate_int
 from ports.utilities.sort_by_version import sort_list_of_dicts_by_version
 from ports.filters import PortFilterByMultiple, BuildHistoryFilter
 
@@ -197,3 +198,51 @@ def api_ports_filter(request):
         "count": ports.count()
     }
     return JsonResponse(json_response, safe=False)
+
+
+def api_builds_filter(request):
+    count = request.GET.get('count', 1000)
+    check, message = validate_int(count)
+    if check is False:
+        return JsonResponse({
+            "message": message,
+            "status_code": 200
+        })
+
+    page = request.GET.get('page', 1)
+    paginate_by = request.GET.get('paginate_by', count)
+    for i in page, paginate_by:
+        check, message = validate_int(i)
+        if check is False:
+            return JsonResponse({
+                "message": message,
+                "status_code": 200
+            })
+
+    count = int(count)
+    page = int(page)
+    paginate_by = int(paginate_by)
+    status = request.GET.get('status')
+    builder = request.GET.get('builder')
+    port_name = request.GET.get('port_name')
+
+    builds = BuildHistoryFilter({
+        'status': status,
+        'port_name': port_name,
+        'builder_name__name': builder
+    }, BuildHistory.objects.all().select_related('builder_name')).qs[:count]
+
+    paginated_builds = Paginator(builds, paginate_by)
+    try:
+        builds_on_page = paginated_builds.get_page(page)
+    except PageNotAnInteger:
+        builds_on_page = paginated_builds.get_page(1)
+    except EmptyPage:
+        builds_on_page = paginated_builds.get_page(paginated_builds.num_pages)
+
+    serializer = BuildHistorySerializer(builds_on_page, many=True)
+
+    return JsonResponse(serializer.data, safe=False)
+
+
+
