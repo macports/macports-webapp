@@ -14,6 +14,8 @@ RUN apt-get update && \
         nginx \
         cron \
         rsync \
+        python-dev \
+        libpq-dev \
         supervisor && \
     pip3 install -U pip setuptools && \
     rm -rf /var/lib/apt/lists/*
