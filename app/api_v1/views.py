@@ -4,14 +4,14 @@ from distutils.version import LooseVersion
 
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Subquery, Count
+from django.db.models import Subquery, Count, Case, IntegerField, When
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models.functions import TruncMonth
 from django.core.serializers.json import DjangoJSONEncoder
 
 from ports.models import Port, BuildHistory, Builder, Submission, PortInstallation
 from .serializers import PortSerializer, BuildHistorySerializer, PortNameSerializer
-from ports.validators import validate_stats_days, validate_int
+from ports.validators import validate_stats_days, validate_int, validate_columns_port_installations, validate_unique_columns_port_installations
 from ports.utilities.sort_by_version import sort_list_of_dicts_by_version
 from ports.filters import PortFilterByMultiple, BuildHistoryFilter
 
@@ -340,3 +340,70 @@ def api_stats_system(request):
         json_response['macports_version'] = json.dumps(list(submissions_by_macports_version), cls=DjangoJSONEncoder)
 
     return JsonResponse(json_response)
+
+
+def api_top_ports(request):
+    days = request.GET.get('days', 30)
+    count = request.GET.get('count', 1000)
+    paginate_by = request.GET.get('paginate_by', 100)
+    sort_by_1 = str(request.GET.get('sort_by_1', '-total_count'))
+    sort_by_2 = str(request.GET.get('sort_by_2', '-req_count'))
+    sort_by_3 = str(request.GET.get('sort_by_3', 'port'))
+    columns = [sort_by_1, sort_by_2, sort_by_3]
+
+    # Validate count and paginate_by to be integers
+    for i in count, paginate_by:
+        check_int, message_int = validate_int(i)
+        if check_int is False:
+            return JsonResponse({
+                "message": message_int,
+                "status_code": 200
+            })
+
+    # Validate days
+    check, message = validate_stats_days(days)
+    if check is False:
+        return JsonResponse({
+            "message": message,
+            "status_code": 200
+        })
+
+    # Validate columns
+    check, message = validate_columns_port_installations(columns)
+    if check is False:
+        return JsonResponse({
+            "message": message,
+            "status_code": 200
+        })
+
+    # Validate unique columns
+    check, message = validate_unique_columns_port_installations(columns)
+    if check is False:
+        return JsonResponse({
+            "message": message,
+            "status_code": 200
+        })
+
+    days = int(days)
+    count = int(count)
+    paginate_by = int(paginate_by)
+
+    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=days)).order_by('user', '-timestamp').distinct('user')
+    installations = PortInstallation.objects.order_by('port')\
+        .filter(submission_id__in=Subquery(submissions_unique.values('id')))\
+        .values('port').annotate(total_count=Count('port'))\
+        .annotate(req_count=Count(Case(When(requested=True, then=1), output_field=IntegerField())))\
+        .exclude(port__iexact='mpstats')\
+        .extra(select={'port': 'lower(port)'})\
+        .order_by(sort_by_1, sort_by_2, sort_by_2)[:count]
+
+    paginated_obj = Paginator(installations, paginate_by)
+    page = request.GET.get('page', 1)
+    try:
+        installs = paginated_obj.get_page(page)
+    except PageNotAnInteger:
+        installs = paginated_obj.get_page(1)
+    except EmptyPage:
+        installs = paginated_obj.get_page(paginated_obj.num_pages)
+
+    return JsonResponse(json.dumps(list(installs), cls=DjangoJSONEncoder), safe=False)
