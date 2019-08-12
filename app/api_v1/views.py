@@ -296,3 +296,47 @@ def api_stats_general(request):
     }
 
     return JsonResponse(json_response)
+
+
+def api_stats_system(request):
+    if not request.method == 'GET':
+        return JsonResponse(ERROR405)
+
+    days = request.GET.get('days', 30)
+    days_ago = request.GET.get('days_ago', 0)
+    criteria = request.GET.get('criteria', 'os_version,xcode_version,macports_version').split(',')
+
+    # Validate days and days_ago
+    for value in days, days_ago:
+        check, message = validate_stats_days(value)
+        if check is False:
+            return JsonResponse({
+                "message": message,
+                "status_code": 200
+            })
+
+    days = int(days)
+    days_ago = int(days_ago)
+
+    end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=days_ago)
+    start_date = end_date - datetime.timedelta(days=days)
+
+    submissions = Submission.objects.filter(timestamp__range=[start_date, end_date]).order_by('user','-timestamp').distinct('user')
+    submissions_unique = Submission.objects.filter(id__in=Subquery(submissions.values('id')))
+
+
+    json_response = dict()
+
+    if 'os_version' in criteria:
+        submissions_by_os_stdlib_build_arch = sort_list_of_dicts_by_version(list(submissions_unique.values('os_version', 'build_arch', 'cxx_stdlib').annotate(num=Count('user_id', distinct=True))), 'os_version')
+        json_response['os_version'] = json.dumps(submissions_by_os_stdlib_build_arch, cls=DjangoJSONEncoder)
+
+    if 'xcode_version' in criteria:
+        submissions_by_os_and_xcode_version = sort_list_of_dicts_by_version(list(submissions_unique.values('xcode_version', 'os_version').annotate(num=Count('user_id', distinct=True))), 'os_version')
+        json_response['xcode_version'] = json.dumps(submissions_by_os_and_xcode_version, cls=DjangoJSONEncoder)
+
+    if 'macports_version' in criteria:
+        submissions_by_macports_version = list(submissions_unique.values('macports_version').annotate(num=Count('user_id', distinct=True)))
+        json_response['macports_version'] = json.dumps(list(submissions_by_macports_version), cls=DjangoJSONEncoder)
+
+    return JsonResponse(json_response)

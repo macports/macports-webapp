@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^ports/$', views.api_ports_filter, name='api_ports_filter'),
     url(r'^builds/$', views.api_builds_filter, name='api_builds_filter'),
     url(r'^stats/general/$', views.api_stats_general, name='api_stats_general'),
+    url(r'^stats/system/$', views.api_stats_system, name='api_stats_system'),
 ]
