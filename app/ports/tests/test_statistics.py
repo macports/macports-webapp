@@ -316,3 +316,42 @@ class TestStatistics(TestCase):
 
         self.assertEquals(response1.content, byteresponse1)
         self.assertEquals(response2.content, byteresponse2)
+
+    def test_sorting_port_installations(self):
+        response1 = self.client.get(reverse('stats_port_installations_filter'), data={
+            'order_by_1': '-total_count',
+            'order_by_2': '-req_count',
+            'order_by_3': 'port'
+        })
+
+        response2 = self.client.get(reverse('stats_port_installations_filter'), data={
+            'order_by_1': '-req_count',
+            'order_by_2': 'port',
+            'order_by_3': 'total_count'
+        })
+
+        response3 = self.client.get(reverse('stats_port_installations_filter'), data={
+            'order_by_1': '-req_count',
+            'order_by_2': 'port',
+            'order_by_3': 'total_count',
+            'search_by': 'port-A3-diff'
+        })
+
+        response1_first = response1.context['installs'][0]
+        self.assertEquals(response1_first['port'], 'port-A1')
+        self.assertEquals(response1_first['total_count'], 4)
+
+        response1_second = response1.context['installs'][1]
+        self.assertEquals(response1_second['port'], 'port-A2')
+
+        response2_first = response2.context['installs'][0]
+        self.assertEquals(response2_first['port'], 'port-A4')
+        self.assertEquals(response2_first['req_count'], 3)
+
+        response3_first = response3.context['installs'][0]
+        self.assertEquals(response3_first['port'], 'port-A3-diff')
+        self.assertEquals(response3_first['req_count'], 1)
+        self.assertEquals(response3_first['total_count'], 4)
+
+
+
