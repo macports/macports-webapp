@@ -37,15 +37,15 @@ Parameters:
 |------|-----|----|----|
 | days | int, optional | Previous X days for which the counting is done | 30 |
 | days_ago | int, optional | Goes back in time by Y days and then starts the counting for previous X days provided by the key 'days' | 0 |
-| criteria | optional | Comma separated list of the criteria of stats. Options: ['os_stats', 'xcode_stats', 'macports_stats'] | All |
+| criteria | optional | Comma separated list of the criteria of stats. Options: ['os_version', 'xcode_version', 'macports_version'] | All |
     
-- ***os***: Distribution of total users across various combinations of OSX versions, build architecture and stdlib.
-- ***xcode***: Distribution of total users across various combinations OSX and XCode versions.
-- ***macports***: Distribution of total users across various MacPorts versions.
+- ***os_version***: Distribution of total users across various combinations of OSX versions, build architecture and stdlib.
+- ***xcode_version***: Distribution of total users across various combinations OSX and XCode versions.
+- ***macports_version***: Distribution of total users across various MacPorts versions.
 
 ```json
 {
-    "os_stats": [{
+    "os_version": [{
         "os_version": "10.14",
         "build_arch": "x86_64",
         "cxx_stdlib": "libc++",
@@ -57,7 +57,7 @@ Parameters:
         "count": 25
     }],
     
-    "xcode_stats": [{
+    "xcode_version": [{
         "os_version": "10.14",
         "xcode_version": "10.2.1",
         "count": 25
@@ -74,10 +74,11 @@ Parameters:
 | key | type | details | default |
 |------|-----|----|----|
 | count | int, optional | The number of top ports to be returned | 100 |
+| paginate_by | int, optional | Number of objects on each page | 100 |
+| page | int, optional | Page to be loaded | 1 |
 | sort_by_1 | str, optional | First priority of sorting | '-total_count' |
 | sort_by_2 | str, optional | Second priority of sorting | '-requested_count' |
-| sort_by_3 | str, optional | Third priority of sorting | 'port-name' |
-| port_filter | str, optional | 'icontains' matching with port-names using the provided string | All |
+| sort_by_3 | str, optional | Third priority of sorting | 'port' (port name) |
 | days | int, optional | Previous X days for which the counting is done | 30 |
 | days_ago | int, optional | Goes back in time by Y days and then starts the counting for previous X days provided by the key 'days' | 0 |
 
