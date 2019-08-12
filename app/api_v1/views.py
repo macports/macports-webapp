@@ -245,4 +245,54 @@ def api_builds_filter(request):
     return JsonResponse(serializer.data, safe=False)
 
 
+def api_stats_general(request):
+    if not request.method == 'GET':
+        return JsonResponse(ERROR405)
 
+    days = request.GET.get('days', 30)
+    days_ago = request.GET.get('days_ago', 0)
+
+    # Validate days and days_ago
+    for value in days, days_ago:
+        check, message = validate_stats_days(value)
+        if check is False:
+            return JsonResponse({
+                "message": message,
+                "status_code": 200
+            })
+
+    days = int(days)
+    days_ago = int(days_ago)
+    all_time = request.GET.get('all_time', False)
+
+    # Generate the timestamp range for the "in_duration" object
+    end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=days_ago)
+    start_date = end_date - datetime.timedelta(days=days)
+
+    all_submissions = Submission.objects.all()
+    submissions_in_duration = all_submissions.filter(timestamp__range=[start_date, end_date])
+
+    users_count_in_duration = submissions_in_duration.distinct('user_id').count()
+
+    json_response = dict()
+
+    # Generate stats for the entire data available in the database
+    if all_time == 'True':
+        last_7_days = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=7)
+        last_30_days = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=30)
+        all_users_count = all_submissions.distinct('user_id').count()
+        users_count_last_7_days = all_submissions.filter(timestamp__gte=last_7_days).distinct('user_id').count()
+        users_count_last_30_days = all_submissions.filter(timestamp__gte=last_30_days).distinct('user_id').count()
+        json_response["all_time"] = {
+            "total_submissions": all_submissions.count(),
+            "total_users": all_users_count,
+            "users_last_7_days": users_count_last_7_days,
+            "users_last_30_days": users_count_last_30_days,
+        }
+
+    json_response["in_duration"] = {
+        "total_submission": submissions_in_duration.count(),
+        "total_users": users_count_in_duration
+    }
+
+    return JsonResponse(json_response)
