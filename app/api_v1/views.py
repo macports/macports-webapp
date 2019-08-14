@@ -40,9 +40,25 @@ def api_port_info(request, name):
 
 def api_port_builds(request, name):
     if request.method == 'GET':
+        try:
+            port = Port.objects.get(name__iexact=name)
+        except Port.DoesNotExist:
+            return JsonResponse({
+                "message": "The port {} does not exist.".format(name),
+                "status_code": 404
+            })
+
         count = request.GET.get('count', 100)
         builder = request.GET.get('builder')
         status = request.GET.get('status')
+
+        check, message = validate_int(count)
+        if check is False:
+            return JsonResponse({
+                'message': message,
+                'status_code': 200
+            })
+        count = int(count)
 
         builds = BuildHistory.objects.filter(port_name__iexact=name).order_by('-time_start')[:count]
 
@@ -79,19 +95,17 @@ def api_port_health(request, name):
             .order_by('port_name', 'builder_name', '-build_id')\
             .distinct('port_name', 'builder_name')
 
-        port_latest_builds = list(BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), port_name__iexact=name)
-                                  .values('builder_name__name', 'build_id', 'status'))
-
-        builders = list(Builder.objects.all().values_list('name', flat=True))
+        port_latest_builds = BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), port_name__iexact=name)
 
         if len(port_latest_builds) == 0:
             return JsonResponse({
                 "message": "No builds found for {}.".format(name),
                 "status_code": 200
             })
-        builders.sort(key=LooseVersion, reverse=True)
 
-        return JsonResponse(port_latest_builds, safe=False)
+        serializer = BuildHistorySerializer(port_latest_builds, many=True)
+
+        return JsonResponse(serializer.data, safe=False)
     else:
         return JsonResponse(ERROR405)
 
