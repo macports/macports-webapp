@@ -45,9 +45,12 @@ class BuildHistory(models.Model):
 
         def get_data_from_url(url):
             gcontext = ssl.SSLContext()
-            with urllib.request.urlopen(url, context=gcontext) as u:
-                data = json.loads(u.read().decode())
-            return data
+            try:
+                with urllib.request.urlopen(url, context=gcontext) as u:
+                    data = json.loads(u.read().decode())
+                return data
+            except urllib.error.URLError:
+                return {}
 
         def get_build_properties(array):
             properties = {}
@@ -94,6 +97,8 @@ class BuildHistory(models.Model):
         for buildername in builders:
             # fetch the last build first in order to figure out its number
             last_build_data = get_data_from_url(get_url_json(buildername, -1))
+            if not last_build_data:
+                continue
             last_build_number = last_build_data['number']
             build_number_loaded = BuildHistory.objects.filter(builder_name__name=buildername).order_by('-build_id')
             if build_number_loaded:
@@ -103,6 +108,8 @@ class BuildHistory(models.Model):
 
             for build_number in range(build_in_database, last_build_number):
                 build_data = get_data_from_url(get_url_json(buildername, build_number))
+                if not build_data:
+                    break
                 build_data_summary = return_summary(buildername, build_number, build_data)
                 load_database(build_data_summary)
 
