@@ -22,7 +22,7 @@ def clone_repo():
     if os.path.isdir(MACPORTS_PORTS_DIR):
         return
     else:
-        subprocess.run([GIT, 'clone', MACPORTS_PORTS_URL, MACPORTS_PORTS])
+        subprocess.run([GIT, 'clone', '--quiet', MACPORTS_PORTS_URL, MACPORTS_PORTS])
 
 
 def get_list_of_changed_ports(new_commit=None, old_commit=None):
@@ -57,7 +57,7 @@ def get_list_of_changed_ports(new_commit=None, old_commit=None):
                 old_commit = old_commit_object.git_commit_hash
 
         # Pull from macports-ports
-        subprocess.call([GIT, 'pull'])
+        subprocess.call([GIT, 'pull', '--quiet'])
 
         # Get new hash if not provided
         if new_commit is None:
