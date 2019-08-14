@@ -14,6 +14,9 @@ class Command(BaseCommand):
         # Fetch the latest version of PortIndex.json and open the file
         data = Port.PortIndexUpdateHandler().sync_and_open_file()
 
+        if not data:
+            return
+
         # Start populating
         Port.load(data['ports'])
 
