@@ -23,7 +23,7 @@ def index(request):
     categories = Category.objects.all().order_by('name')
 
     submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
-    top_ports = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_unique.values('id')), requested=True).exclude(port__exact='mpstats-gsoc').values('port').annotate(num=Count('port')).order_by('-num')[:10]
+    top_ports = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_unique.values('id')), requested=True).exclude(port__icontains='mpstats').values('port').annotate(num=Count('port')).order_by('-num')[:10]
 
     return render(request, 'ports/index.html', {
         'categories': categories,
@@ -349,7 +349,7 @@ def stats_port_installations_filter(request):
         .filter(submission_id__in=Subquery(submissions_unique.values('id')))\
         .values('port').annotate(total_count=Count('port'))\
         .annotate(req_count=Count(Case(When(requested=True, then=1), output_field=IntegerField())))\
-        .exclude(port__iexact='mpstats-gsoc')\
+        .exclude(port__icontains='mpstats')\
         .filter(port__icontains=search_by)\
         .extra(select={'port': 'lower(port)'})\
         .order_by(order_by_1, order_by_2, order_by_3)
