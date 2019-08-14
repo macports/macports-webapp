@@ -286,7 +286,9 @@ class Port(models.Model):
     class PortIndexUpdateHandler:
         @staticmethod
         def sync_and_open_file():
-            subprocess.call([config.RSYNC, config.PORTINDEX_SOURCE, config.PORTINDEX_JSON])
+            return_code = subprocess.call([config.RSYNC, config.PORTINDEX_SOURCE, config.PORTINDEX_JSON])
+            if return_code != 0:
+                return {}
             with open(config.PORTINDEX_JSON, "r", encoding='utf-8') as file:
                 data = json.load(file)
             return data
