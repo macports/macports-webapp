@@ -252,12 +252,20 @@ def all_builds_filter(request):
 
 def stats(request):
     days = request.GET.get('days', 30)
+    days_ago = request.GET.get('days_ago', 0)
 
-    # Validate days
-    check, message = validate_stats_days(days)
-    if check is False:
-        return HttpResponse(message)
+    # Validate days and days_ago
+    for value in days, days_ago:
+        check, message = validate_stats_days(value)
+        if check is False:
+            return HttpResponse(message)
+
     days = int(days)
+    days_ago = int(days_ago)
+
+    end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=days_ago)
+    start_date = end_date - datetime.timedelta(days=days)
+
     current_week = datetime.datetime.today().isocalendar()[1]
     all_submissions = Submission.objects.all()
     total_unique_users = all_submissions.distinct('user').count()
@@ -268,7 +276,7 @@ def stats(request):
     users_by_month = Submission.objects.annotate(month=TruncMonth('timestamp')).values('month').annotate(num=Count('user_id', distinct=True))[:12]
 
     # System Stats for Current Users
-    submissions_last_x_days = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=days)).order_by('user', '-timestamp').distinct('user')
+    submissions_last_x_days = Submission.objects.filter(timestamp__range=[start_date, end_date]).order_by('user', '-timestamp').distinct('user')
     submissions_unique = Submission.objects.filter(id__in=Subquery(submissions_last_x_days.values('id')))
     macports_distribution = submissions_unique.values('macports_version').annotate(num=Count('macports_version'))
     os_distribution = sort_list_of_dicts_by_version(list(submissions_unique.values('os_version', 'build_arch', 'cxx_stdlib').annotate(num=Count('user_id', distinct=True))), 'os_version')
@@ -284,6 +292,10 @@ def stats(request):
         'macports_distribution': macports_distribution,
         'xcode_distribution': xcode_distribution,
         'days': days,
+        'days_ago': days_ago,
+        'start_date': start_date,
+        'end_date': end_date,
+        'users_count_in_duration': submissions_last_x_days.count(),
         'allowed_days': ALLOWED_DAYS_FOR_STATS
     })
 

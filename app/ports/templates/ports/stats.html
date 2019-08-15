@@ -156,14 +156,28 @@
     <hr>
     <br>
     {% csrf_token %}
-    <form class="form-inline justify-content-center" method="get" action="{% url 'stats_home' %}#os-chart">
-        <label for="days"><h5>The charts below show stats for users who made submissions in last: </h5></label>
-        <select onchange="this.form.submit()" class="form-control ml-2" name="days" id="days">
-        {% for i in allowed_days|slice:"1:" %}
-            <option class="format-option" value="{{ i }}" {% if days == i %}selected{% endif %}>{{ i }} Days</option>
-        {% endfor %}
+    <form id="duration-selector" class="form-inline justify-content-center" method="get" action="{% url 'stats_home' %}#duration-selector">
+        <lable for="days">Displaying statistics for users who made submissions in previous:</lable>
+        <select onchange="this.form.submit()" id="days" name="days" class="format-control mx-2">
+            {% for i in allowed_days|slice:"1:" %}
+                <option value="{{ i }}" {% if days == i %}selected{% endif %}>{{ i }} Days</option>
+            {% endfor %}
+        </select>
+        <lable for="days-ago">starting</lable>
+        <select onchange="this.form.submit()" id="days_ago" name="days_ago" class="format-control ml-2">
+            <option value="0" {% if days_ago == 0 %}selected{% endif %}>Today</option>
+            {% for i in allowed_days|slice:"1:" %}
+                <option value="{{ i }}" {% if days_ago == i %}selected{% endif %}>{{ i }} Days Ago</option>
+            {% endfor %}
         </select>
     </form>
+    <br>
+
+    <h6 class="text-center bg-light p-2">
+        <span class="text-muted">Duration selected:</span> <u>{{ start_date|date:"Y-m-d" }}</u> <span class="text-muted">to</span> <u>{{ end_date|date:"Y-m-d" }}</u>
+        <span class="text-muted">({{ users_count_in_duration }} users)</span>
+    </h6>
+
     <br>
     <div class="chart" id="os-chart"></div><br>
     <div class="chart" id="xcode-chart"></div><br><br>
