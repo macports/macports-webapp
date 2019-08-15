@@ -8,12 +8,12 @@
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
-            {% regroup os_distribution by os_version as os_chart_os_version_parent %}
+            {% regroup os_version_build_arch_and_stdlib by os_version as os_chart_os_version_parent %}
 
             var data = google.visualization.arrayToDataTable([
-                ['OS Version', {% for i in os_distribution|unique_pairs:"build_arch cxx_stdlib" %}'{{ i.0 }}/{{ i.1 }}', {% endfor %} {role: 'annotation'}],
+                ['OS Version', {% for i in os_version_build_arch_and_stdlib|unique_pairs:"build_arch cxx_stdlib" %}'{{ i.0 }}/{{ i.1 }}', {% endfor %} {role: 'annotation'}],
                 {% for os in os_chart_os_version_parent %}
-                ['OS: {{ os.grouper }}', {% for j in os_distribution|unique_pairs:"build_arch cxx_stdlib" %}{% for i in os.list %}{% if j.0 == i.build_arch and j.1 == i.cxx_stdlib %}{{ i.num }}{% endif %}{% endfor %}{% if not forloop.last %}, {% endif %}{% endfor %}, '' ],
+                ['OS: {{ os.grouper }}', {% for j in os_version_build_arch_and_stdlib|unique_pairs:"build_arch cxx_stdlib" %}{% for i in os.list %}{% if j.0 == i.build_arch and j.1 == i.cxx_stdlib %}{{ i.num }}{% endif %}{% endfor %}{% if not forloop.last %}, {% endif %}{% endfor %}, '' ],
                 {% endfor %}
             ]);
 
@@ -38,13 +38,13 @@
             data.addColumn('string', 'OSX Version');
             data.addColumn('number', 'Number of Users');
             data.addRows([
-                {% for i in macports_distribution %}
+                {% for i in macports_version %}
                     ['{{ i.macports_version }}', {{ i.num }}],
                 {% endfor %}
             ]);
 
             var options = {
-                'title': 'MacPorts Versions',
+                'title': 'MacPorts Version',
                 chartArea: {width: "65%"}
             };
 
@@ -58,8 +58,8 @@
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            {% regroup xcode_distribution|sortversion:"xcode_version" by xcode_version as xcode_parent %}
-            {% regroup xcode_distribution by os_version as os_parent %}
+            {% regroup os_version_and_xcode_version|sortversion:"xcode_version" by xcode_version as xcode_parent %}
+            {% regroup os_version_and_xcode_version by os_version as os_parent %}
 
         var data = google.visualization.arrayToDataTable([
         ['OS Version', {% for version in xcode_parent %}'{{ version.grouper }}', {% endfor %} { role: 'annotation' } ],
@@ -69,7 +69,7 @@
         ]);
 
             var options = {
-                'title': 'XCode Versions',
+                'title': 'XCode Version',
                 isStacked: true,
                 chartArea: {width: "65%"}
             };

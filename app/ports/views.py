@@ -278,10 +278,10 @@ def stats(request):
     # System Stats for Current Users
     submissions_last_x_days = Submission.objects.filter(timestamp__range=[start_date, end_date]).order_by('user', '-timestamp').distinct('user')
     submissions_unique = Submission.objects.filter(id__in=Subquery(submissions_last_x_days.values('id')))
-    macports_distribution = submissions_unique.values('macports_version').annotate(num=Count('macports_version'))
+    macports_version = submissions_unique.values('macports_version').annotate(num=Count('macports_version'))
     os_version_and_clt_version = sort_list_of_dicts_by_version(list(submissions_unique.values('clt_version', 'os_version').annotate(num=Count('user_id', distinct=True))), 'os_version')
-    os_distribution = sort_list_of_dicts_by_version(list(submissions_unique.values('os_version', 'build_arch', 'cxx_stdlib').annotate(num=Count('user_id', distinct=True))), 'os_version')
-    xcode_distribution = sort_list_of_dicts_by_version(list(submissions_unique.values('xcode_version', 'os_version').annotate(num=Count('user_id', distinct=True))), 'os_version')
+    os_version_build_arch_and_stdlib = sort_list_of_dicts_by_version(list(submissions_unique.values('os_version', 'build_arch', 'cxx_stdlib').annotate(num=Count('user_id', distinct=True))), 'os_version')
+    os_version_and_xcode_version = sort_list_of_dicts_by_version(list(submissions_unique.values('xcode_version', 'os_version').annotate(num=Count('user_id', distinct=True))), 'os_version')
 
     return render(request, 'ports/stats.html', {
         'total_submissions': all_submissions.count(),
@@ -289,9 +289,9 @@ def stats(request):
         'current_week': current_week_unique,
         'last_week': last_week_unique,
         'users_by_month': users_by_month,
-        'os_distribution': os_distribution,
-        'macports_distribution': macports_distribution,
-        'xcode_distribution': xcode_distribution,
+        'os_version_build_arch_and_stdlib': os_version_build_arch_and_stdlib,
+        'macports_version': macports_version,
+        'os_version_and_xcode_version': os_version_and_xcode_version,
         'os_version_and_clt_version': os_version_and_clt_version,
         'days': days,
         'days_ago': days_ago,
