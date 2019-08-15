@@ -2,12 +2,17 @@ body{
     padding: 0;
 }
 
-.grid-container {
+.category-grid-container {
   display: grid;
   justify-content: space-evenly;
-  grid-template-columns: auto auto auto auto; /*Make the grid smaller than the container*/
+  grid-auto-flow: column;
+  grid-template-rows: repeat(23, auto); /*Make the grid smaller than the container*/
   grid-gap: 8px;
   padding: 8px;
+}
+
+.category-grid-item {
+    break-inside: avoid;
 }
 
 .chart {
