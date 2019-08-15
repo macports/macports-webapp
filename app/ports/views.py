@@ -204,6 +204,7 @@ def portdetail_stats(request):
         'days_ago': days_ago,
         'end_date': end_date,
         'start_date': start_date,
+        'users_in_duration_count': submissions.count(),
         'allowed_days': ALLOWED_DAYS_FOR_STATS
     })
 

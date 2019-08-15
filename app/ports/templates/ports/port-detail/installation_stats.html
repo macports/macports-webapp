@@ -22,6 +22,7 @@
 <br>
 <h6 class="text-center">
     <span class="text-muted">Duration selected:</span> <u>{{ start_date|date:"Y-m-d" }}</u> <span class="text-muted">to</span> <u>{{ end_date|date:"Y-m-d" }}</u>
+    <span class="text-muted">({{ users_in_duration_count }} users)</span>
 </h6>
 <br>
 {% if total_port_installations_count.submission__user_id__count > 0 %}
