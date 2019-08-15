@@ -22,7 +22,8 @@
                 <div class="category-grid-container">
                     {% for cat in categories %}
                     <div class="category-grid-item">
-                        <a href="{% url 'category_list' cat.name %}">{{ cat.name }} ({{ cat.ports_count }})</a>
+                        <a class="float-left" href="{% url 'category_list' cat.name %}">{{ cat.name }}</a>
+                        <span class="float-right ml-4 text-muted">{{ cat.ports_count }}</span>
                     </div>
                     {% endfor %}
                 </div>
