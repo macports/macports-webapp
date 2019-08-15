@@ -108,6 +108,34 @@
         }
     </script>
 
+    <!-- CLT VERSIONS -->
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['corechart']});
+
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            {% regroup os_version_and_clt_version|dictsort:"clt_version" by clt_version as clt_parent %}
+            {% regroup os_version_and_clt_version by os_version as os_clt_parent %}
+
+            var data = google.visualization.arrayToDataTable([
+                ['OS Version', {% for version in clt_parent %}'{% if version.grouper == '' %}unknown{% else %}{{ version.grouper }}{% endif %}', {% endfor %} { role: 'annotation' } ],
+                {% for os in os_clt_parent %}
+                    ['OS: {{ os.grouper }}', {% for version in clt_parent %}{% for i in os.list %}{% if i.clt_version == version.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
+                {% endfor %}
+        ]);
+
+        var options = {
+            'title': 'Command Line Tools Version',
+            isStacked: true,
+            chartArea: {width: "65%"}
+            };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('clt-chart'));
+        chart.draw(data, options);
+        }
+    </script>
+
 {% endblock %}
 
 {% block title %}Statistics |{% endblock %}
@@ -181,6 +209,7 @@
     <br>
     <div class="chart" id="os-chart"></div><br>
     <div class="chart" id="xcode-chart"></div><br><br>
+    <div class="chart" id="clt-chart"></div><br><br>
     <div class="chart" id="macports-chart"></div><br><br>
     <br>
 {% endblock %}
