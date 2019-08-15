@@ -279,6 +279,7 @@ def stats(request):
     submissions_last_x_days = Submission.objects.filter(timestamp__range=[start_date, end_date]).order_by('user', '-timestamp').distinct('user')
     submissions_unique = Submission.objects.filter(id__in=Subquery(submissions_last_x_days.values('id')))
     macports_distribution = submissions_unique.values('macports_version').annotate(num=Count('macports_version'))
+    os_version_and_clt_version = sort_list_of_dicts_by_version(list(submissions_unique.values('clt_version', 'os_version').annotate(num=Count('user_id', distinct=True))), 'os_version')
     os_distribution = sort_list_of_dicts_by_version(list(submissions_unique.values('os_version', 'build_arch', 'cxx_stdlib').annotate(num=Count('user_id', distinct=True))), 'os_version')
     xcode_distribution = sort_list_of_dicts_by_version(list(submissions_unique.values('xcode_version', 'os_version').annotate(num=Count('user_id', distinct=True))), 'os_version')
 
@@ -291,6 +292,7 @@ def stats(request):
         'os_distribution': os_distribution,
         'macports_distribution': macports_distribution,
         'xcode_distribution': xcode_distribution,
+        'os_version_and_clt_version': os_version_and_clt_version,
         'days': days,
         'days_ago': days_ago,
         'start_date': start_date,
