@@ -69,3 +69,56 @@ when the update was carried out.
 
 - `git_commit_hash`
 - `updated_at`
+
+---
+
+#### 7. `Builder` Model
+
+Stores names of the active builders from Buildbot. The build history is fetched only for these builders. This is the only
+place where information about builders is stored.
+
+#### 8. `BuildHistory` Model
+
+The JSON received from buildbot is stored in this Model. Details of one build is one object for this model.
+
+- `builder_name` - foreign key to `Builder` Model
+- `build_id`
+- `status`
+- `port_name`
+- `time_start`
+- `time_elapsed`
+- `watcher_id`
+
+---
+
+#### 9. `UUID` Model
+
+Stores UUID of the users who have made submissions. There are no duplicates in the table, no matter how many submissions
+one user makes there is only one object representing the user.
+
+#### 10. `Submission` Model
+
+The body of the submission made by the user is stored in this model, except the installed ports which have their own
+model.
+
+- `user` - foreign key to `UUID` model
+- `os_version`
+- `xcode_version`
+- `os_arch`
+- `build_arch`
+- `platform`
+- `macports_version`
+- `cxx_stdlib`
+- `clt_version`
+- `raw_json` - stores the entire JSON object received in the submission
+- `timestamp`
+
+#### 11. `PortInstallation` Model
+
+Stores the installed ports received from a particular submission with their versions and variants.
+
+- `submission` - foreign key to `Submission` model
+- `port`
+- `version`
+- `variants`
+- `requested` - (bool) whether the port was requested or not.
