@@ -136,3 +136,8 @@ function statsClick(e, days, days_ago) {
     $('#tickets-box').hide();
 }
 // Installation Stats AJAX call and filters End
+
+// Mouse over for closed maintainer
+$(document).ready(function() {
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+});

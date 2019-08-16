@@ -14,6 +14,11 @@
                 <tr>
                     <th scope="row">Maintained by:</th>
                     <td>
+                        {% if port.closedmaintainer is True %}
+                            <button type="button" class="btn" data-toggle="tooltip" data-placement="top" title="This is a closed maintainer port.">
+                                <i class="fas fa-lock"></i>
+                            </button>
+                        {% endif %}
                         {% if maintainers.all|length > 0 %}
                         {% for maintainer in maintainers %}
                                 {% if maintainer.github %}
@@ -26,10 +31,6 @@
                             No Maintainers Found
                         {% endif %}
                     </td>
-                </tr>
-                <tr>
-                    <th scope="row">ClosedMaintainer:</th>
-                    <td>{{ port.closedmaintainer }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Variants:</th>
