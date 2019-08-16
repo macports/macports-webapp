@@ -23,13 +23,14 @@ function ajaxCall(url) {
 // End
 
 function changePageState(e, state) {
+    var port_name = $('#port_name').text();
     $('.active').removeClass("active");
     $(e).addClass("active");
-    history.pushState(null, null, state);
+    history.pushState(null, null, "/port/" + port_name + "/" + state);
 }
 
 function tabClick(e, slug) {
-    changePageState(e, "?tab=" + slug);
+    changePageState(e, slug);
     $('#tickets-box').hide();
     ajaxCall("/port/ajax-call/" + slug);
 }
@@ -63,7 +64,7 @@ function receiveTickets(data, textStatus, jqXHR) {
 }
 
 function showTickets(e) {
-    changePageState(e, "?tab=tickets")
+    changePageState(e, "tickets")
     $('#display-box').html("");
     $('#tickets-box').show();
 }
@@ -124,14 +125,14 @@ function installationStatsAjax(days=$('#days').val(), days_ago=$('#days-ago').va
                 if (currentinstallationStatsAjax != null) {
                     currentinstallationStatsAjax.abort();
                 }
-                history.pushState(null, null, "?tab=stats&days=" + days + "&days_ago=" + days_ago)
+                history.pushState(null, null, "?days=" + days + "&days_ago=" + days_ago)
             },
         dataType: 'html'
     });
 }
 
 function statsClick(e, days, days_ago) {
-    changePageState(e, "?tab=stats");
+    changePageState(e, "stats");
     installationStatsAjax(days, days_ago);
     $('#tickets-box').hide();
 }

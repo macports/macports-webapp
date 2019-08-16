@@ -77,12 +77,12 @@ def variantlist(request, variant):
 
 
 # Views for port-detail page START
-def portdetail(request, name):
+def portdetail(request, name, slug="summary"):
     try:
         req_port = Port.objects.get(name__iexact=name)
         days = request.GET.get('days', 30)
         days_ago = request.GET.get('days_ago', 0)
-        tab = request.GET.get('tab', "summary")
+        tab = str(slug)
         allowed_tabs = ["summary", "builds", "stats", "tickets"]
         if tab not in allowed_tabs:
             return HttpResponse("Invalid tab requested. Expected values: {}".format(allowed_tabs))
