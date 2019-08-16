@@ -5,24 +5,23 @@
 
 <br>
 <form class="bg-light p-2 form form-inline justify-content-center">
-    <lable for="days">Displaying statistics for users who made submissions in previous:</lable>
-    <select onchange="installationStatsAjax()" id="days" name="days" class="format-control mx-2">
+    <lable for="days">Displaying statistics for <strong>{{ users_in_duration_count }} users</strong> who made submissions during:</lable>
+    <select onchange="installationStatsAjax()" id="days" name="days" class="form-control mx-2">
     {% for i in allowed_days|slice:"1:" %}
-        <option value="{{ i }}" {% if days == i %}selected{% endif %}>{{ i }} Days</option>
+        <option value="{{ i }}" {% if days == i %}selected{% endif %}>{{ i }} days</option>
     {% endfor %}
     </select>
-    <lable for="days-ago">starting</lable>
-    <select onchange="installationStatsAjax()" id="days-ago" name="days-ago" class="format-control ml-2">
+    <lable for="days-ago">until</lable>
+    <select onchange="installationStatsAjax()" id="days-ago" name="days-ago" class="form-control ml-2">
         <option value="0" {% if days_ago == 0 %}selected{% endif %}>Today</option>
     {% for i in allowed_days|slice:"1:" %}
-        <option value="{{ i }}" {% if days_ago == i %}selected{% endif %}>{{ i }} Days Ago</option>
+        <option value="{{ i }}" {% if days_ago == i %}selected{% endif %}>{{ i }} days ago</option>
     {% endfor %}
     </select>
 </form>
 <br>
 <h6 class="text-center">
     <span class="text-muted">Duration selected:</span> <u>{{ start_date|date:"Y-m-d" }}</u> <span class="text-muted">to</span> <u>{{ end_date|date:"Y-m-d" }}</u>
-    <span class="text-muted">({{ users_in_duration_count }} users)</span>
 </h6>
 <br>
 {% if total_port_installations_count.submission__user_id__count > 0 %}
