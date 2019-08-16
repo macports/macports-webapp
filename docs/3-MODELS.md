@@ -1,124 +1,164 @@
 ## 2. MODELS (Storing the collected data)
 
+- [PortIndex](#portindex)
+    - [Port](#1-the-port-model)
+    - [Category](#2-the-category-model)
+    - [Maintainer](#3-the-maintainer-model)
+    - [Variant](#4-the-variant-model)
+    - [Dependency](#5-the-dependency-model)
+    - [LastPortIndexUpdate](#6-the-lastportindexupdate-model)
+- [Build History](#build-history)
+    - [Builder](#1-the-builder-model)
+    - [BuildHistory](#2-the-buildhistory-model)
+- [Installation Statistics](#installation-statistics)
+    - [UUID](#1-the-uuid-model)
+    - [Submission](#2-the-submission-model)
+    - [PortInstallation](#3-the-portinstallation-model)
+
+---
+
 The data collected from various sources, as discussed in [2-SOURCES](/docs/2-SOURCES.md), is stored in a PostgreSQL
 database. The tables are designed using Django models.
 
-All of the project's models are defined inside the app: `ports`. The models are split into three different files: `port`,
-`buildhistory` and `stats`. Each file contains the models related to the category defined by file name.
+All of the project's models are defined inside the app: `ports`. The models are split into three different files: [port](/app/ports/models/port.py),
+[buildhistory](/app/ports/models/buildhistory.py) and [stats](/app/ports/models/stats.py). Each file contains the models
+related to the category defined by file name.
 
-#### 1. `Port` Model
+### PortIndex
 
-It stored the basic information related to a port, with the following fields:
-- `portdir`
-- `description`
-- `homepage`
-- `epoch`
-- `platforms`
-- `categories` - A many-to-many relation with `Category` model
-- `long_description`
-- `version`
-- `revision`
-- `closedmaintainer`
-- `name`
-- `license`
-- `replaced_by` - Default values is `Null` for active ports. If the value is not null, the port is considered as obsolete.
-- `active` - Value is `False` for deleted ports, otherwise `True`*.
+#### 1. The Port Model
 
-***A Port is marked as deleted when the port is available in the app's database, but does not exist in PortIndex. If a 
-port with the same name is added later in time, then previous object is replaced with new object and the newer ports gets
-marked as `active=True` automatically.*
+Column | Type | Notes
+-------|------|-------
+name | character field | unique, max-length = 100
+portdir | character field | max-length=100
+description | text field | default = ''
+homepage | url field | default = ''
+epoch | big integer field | default = 0
+platforms | text field | default = Null
+categories | many-to-many field | related to the Category model
+long_description | text field | default = ''
+version | character field | default = ''
+revision | integer field | default = 0
+closedmaintainer | boolean field | default = False
+license | character field | default = '', max-length = 100
+replaced_by | character field | nullable, max-length = 100
+active | boolean field | default = True
 
-#### 2. `Category` Model
+- **replaced_by**: `NULL` by default. If the port is obsolete and replaced by another one, the name of the new port is 
+stored here.
+- **active**: `True` by default. `False` when the port no longer exists (in `PortIndex`).
 
-Contains the categories in which the ports is divided. It is related with the `Port` model using a many-to-many relation.
-The model has a single field `name` which also becomes the primary key for the table.
+#### 2. The Category Model
 
-#### 3. `Maintainer` Model
+Column | Type | Notes
+-------|------|------
+name | text field | primary-key
 
-Stores email and github-handle of the maintainers, and maps them with objects from the `Port` model.
+#### 3. The Maintainer Model
 
-- `name`
-- `domain`
-- `github`
-- `ports`- many-to-many relation with the `Port` Model.
+Column | Type | Notes
+-------|------|------
+name | char field | default = '', max-length = 50
+domain | char field | default = '', max-length = 50
+github | char field | default = '', max-length = 50
+ports | many-to-many field | related to the Port model
 
-*The `name`, `domain`, `github` triplet is unique. But due to inconsistencies in the `Portfiles`, there might be cases
+- The `name`, `domain`, `github` triplet is unique. But due to inconsistencies in the `Portfiles`, there might be cases
 when we have two entries with same github-handle but different emails. In such cases, a warning is displayed on the
-maintainer's page.*
+maintainer's page.
 
-#### 4. `Variant` Model
+- Example of inconsistency: https://ports.macports.org/maintainer/github/yan12125/
 
-Stores the variant and maps it to the related objects from the `Port` Model. It has only two fields:
-- `port` - foreign key to `Port` Model
-- `variant`
+#### 4. The Variant Model
+
+Column | Type | Notes
+-------|------|------
+port | foreign key | related to the Port model
+variant | character field | default = '', max-length = 100
+
+#### 5. The Dependency Model
+
+Column | Type | Notes
+-------|------|------
+port_name | foreign key | related to the Port model
+dependencies | many-to-many field | related to the Port model
+type | character field | max-length = 100
 
 
-#### 5. `Dependency` Model
+#### 6. The LastPortIndexUpdate Model
 
-Contains relation for ports and their dependencies:
+Column | Type | Notes
+-------|------|------
+git_commit_hash | character field | max-length = 50
+updated_at | datetime field | auto_now = True
 
-- `port_name` - foreign key to `Port` model
-- `dependencies` - many-to-many relation with `Port` model
-- `type`
-
-
-#### 6. `LastPortIndexUpdate` Model
-
-Stores only one object. The object tells about the git commit till which the port information is up-to-date and the time
+- Stores only one object. The object tells about the git commit till which the port information is up-to-date and the time
 when the update was carried out.
 
-- `git_commit_hash`
-- `updated_at`
-
 ---
 
-#### 7. `Builder` Model
+### Build History
 
-Stores names of the active builders from Buildbot. The build history is fetched only for these builders. This is the only
+#### 1. The Builder Model
+
+Column | Type | Notes
+-------|------|------
+name | character field | unique, max-length = 100
+
+- Stores names of the active builders from Buildbot. The build history is fetched only for these builders. This is the only
 place where information about builders is stored.
 
-#### 8. `BuildHistory` Model
+#### 2. The BuildHistory Model
 
-The JSON received from buildbot is stored in this Model. Details of one build is one object for this model.
+Column | Type | Notes
+-------|------|------
+builder_name | foreign key | related to the Builder model
+build_id | integer field |
+status | character field | max-length = 50
+port_name | character field | max-length = 100
+time_start | datetime field |
+time_elapsed | time field | nullable
+watcher_id | integer field |
 
-- `builder_name` - foreign key to `Builder` Model
-- `build_id`
-- `status`
-- `port_name`
-- `time_start`
-- `time_elapsed`
-- `watcher_id`
+- The JSON received from buildbot is stored in this Model. Details of one build is one object for this model.
 
 ---
 
-#### 9. `UUID` Model
+### Installation Statistics
 
-Stores UUID of the users who have made submissions. There are no duplicates in the table, no matter how many submissions
-one user makes there is only one object representing the user.
+#### 1. The UUID Model
 
-#### 10. `Submission` Model
+Column | Type | Notes
+-------|------|------
+uuid | character field | unique, max-length = 36
 
-The body of the submission made by the user is stored in this model, except the installed ports which have their own
-model.
+- Stores UUID of the users who have made submissions. There are no duplicates in the table, no matter how many submissions
+one user makes, there is only one object representing the user.
 
-- `user` - foreign key to `UUID` model
-- `os_version`
-- `xcode_version`
-- `os_arch`
-- `build_arch`
-- `platform`
-- `macports_version`
-- `cxx_stdlib`
-- `clt_version`
-- `raw_json` - stores the entire JSON object received in the submission
-- `timestamp`
+#### 2. The Submission Model
 
-#### 11. `PortInstallation` Model
+Column | Type | Notes
+-------|------|------
+user | foreign key | related to the UUID model
+os_version | character field | max-length = 10
+xcode_version | character field | max-length = 10
+os_arch | character field | max-length = 20
+build_arch | character field | max-length = 20, default = ''
+platform | character field | max-length = 20, default = ''
+macports_version | character field | max-length = 10
+cxx_stdlib | character field | max-length = 20, default = ''
+clt_version | character field | max-length = 100, default = ''
+raw_json | json field | stores the entire body of the submission
+timestamp | datetime field | stores the time when the submission was made
 
-Stores the installed ports received from a particular submission with their versions and variants.
 
-- `submission` - foreign key to `Submission` model
-- `port`
-- `version`
-- `variants`
-- `requested` - (bool) whether the port was requested or not.
+#### 3. The PortInstallation Model
+
+Column | Type | Notes
+-------|------|------
+submission | foreign key | related to the Submission model
+port | character field | max-length = 100
+version | character field | max-length = 100
+variants | character field | default = '', max-length = 200
+requested | boolean field  | default = False
