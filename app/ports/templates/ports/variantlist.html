@@ -63,7 +63,6 @@
                 <th scope="col">Name</th>
                 <th scope="col">Version</th>
                 <th scope="col">Description</th>
-                <th scope="col">Installations this month</th>
             </tr>
             </thead>
             {% for object in objects %}
@@ -71,7 +70,6 @@
                     <td><a href="{% url 'port_detail' object.port.name %}">{{ object.port.name }}</a></td>
                     <td>{{ object.port.version }}</td>
                     <td>{{ object.port.description }}</td>
-                    <td>NA</td>
                 </tr>
             {% endfor %}
         </table>
