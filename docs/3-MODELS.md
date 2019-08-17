@@ -1,4 +1,4 @@
-## 2. MODELS (Storing the collected data)
+## 3. MODELS (Storing the collected data)
 
 - [PortIndex](#portindex)
     - [Port](#1-the-port-model)
