@@ -105,8 +105,7 @@
                     <li class="list-group-item">Requested Installations:<strong class="float-right">
                         {{ requested_count.port__count }}</strong></li>
                     <li class="list-group-item">Total Installations:<strong class="float-right">{{ total_count.port__count }}</strong></li>
-                    <li class="list-group-item"><a href="javascript:void(0);" onclick="tabClick(this, 'stats')">View detailed
-                        statistics for {{ port.name }}</a></li>
+                    <li class="list-group-item"><a href="javascript:void(0);" onclick="statsClick($('#stats'), 30, 0)">Continue to statistics</a></li>
                 </ul>
             </div>
         </div>
