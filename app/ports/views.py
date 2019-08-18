@@ -31,6 +31,10 @@ def index(request):
     })
 
 
+def about_page(request):
+    return render(request, 'ports/about.html')
+
+
 def categorylist(request, cat):
     try:
         category = Category.objects.get(name__iexact=cat)

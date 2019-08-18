@@ -38,4 +38,5 @@ urlpatterns = [
     path('ports/all_builds/filter/', views.all_builds_filter, name='all_builds_filter'),
     path('ports/all_builds/', views.all_builds_view, name='all_builds'),
     path('api/v1/', include('api_v1.urls')),
+    path('about/', views.about_page, name='about_page'),
 ]
