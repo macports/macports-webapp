@@ -41,3 +41,12 @@ body{
     background-color: #E0F8E0;
     color: white;
 }
+
+.footer-links{
+    text-decoration: none;
+    color: #ddefff;
+}
+
+.footer-links:hover{
+    color: white;
+}
