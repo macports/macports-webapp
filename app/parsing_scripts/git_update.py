@@ -72,6 +72,9 @@ def get_list_of_changed_ports(new_commit=None, old_commit=None):
         updated_ports_dir = {}
         for line in s:
             sections = line.split('/')
+            if len(sections) < 2:
+                # ignore updates in the root directory
+                continue
             portdir = sections[0].lower() + '/' + sections[1].lower()
             if portdir not in updated_ports_dir:
                 updated_ports_dir[portdir] = ""
