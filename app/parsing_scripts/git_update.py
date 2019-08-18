@@ -69,7 +69,7 @@ def get_list_of_changed_ports(new_commit=None, old_commit=None):
         changed_paths = subprocess.run([GIT, 'diff', '--name-only', range], stdout=subprocess.PIPE).stdout.decode(
             'utf-8')
         s = io.StringIO(changed_paths)
-        updated_ports_dir = {}
+        updated_ports_dir = set()
         for line in s:
             sections = line.split('/')
             if len(sections) < 2:
@@ -77,7 +77,7 @@ def get_list_of_changed_ports(new_commit=None, old_commit=None):
                 continue
             portdir = sections[0].lower() + '/' + sections[1].lower()
             if portdir not in updated_ports_dir:
-                updated_ports_dir[portdir] = ""
+                updated_ports_dir.add(portdir)
         os.chdir(BASE_DIR)
         print(updated_ports_dir)
         return updated_ports_dir
