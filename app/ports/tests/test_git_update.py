@@ -23,6 +23,12 @@ class TestGitUpdates(TransactionTestCase):
         ports = git_update.get_list_of_changed_ports("f3527caa506b1b944f43f47085dd35a8b8e2b050")
         self.assertEquals(ports, set(['net/nomad', 'sysutils/terraform']))
 
+    def test_non_port_paths(self):
+        ports = git_update.get_list_of_changed_ports("29129a78bafafe5b85dca4687707ce17223a355d",
+                                                     "5306b17283373a0f0819d13aad7dc927ebda0347"
+                                                     )
+        self.assertEquals(ports, set(['security/mkcert', 'python/py-wheel']))
+
     def test_broken_repo(self):
         os.chdir(MACPORTS_PORTS_DIR)
         shutil.rmtree('.git')
