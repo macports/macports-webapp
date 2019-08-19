@@ -6,18 +6,17 @@
     <h3>About</h3>
     <hr>
     <div class="row">
-        <div class="col-lg-3 col-md-4 bg-light border border-secondary p-2">
-            <strong>Quick Links</strong>
-            <hr>
-                <ul>
-                    <li><a href="{% url 'stats_faq' %}">Statistics FAQ</a></li>
-                    <li><a href="https://github.com/macports/macports-webapp">Git Repository</a></li>
-                    <li><a href="https://github.com/macports/macports-webapp/tree/master/docs">Documentation</a></li>
-                    <li><a href="https://github.com/macports/macports-webapp/tree/master/docs/api_v1">API</a></li>
-                    <li><a href="https://docs.google.com/document/d/1TqNHm3NrtLDelWqY7P4pZyTMZDJrlsPymFZklzV2t24/edit">Feature Requests</a></li>
-                    <li><a href="https://github.com/macports/macports-webapp/issues">Issues</a></li>
-                    <li><a href="https://www.macports.org/install.php">Install MacPorts</a></li>
-                </ul>
+        <div class="col-lg-3 col-md-4 bg-light border border-secondary pr-2 pl-2 pt-1">
+            <ul>
+                <li><a href="{% url 'stats_faq' %}">Statistics FAQ</a></li>
+                <li><a href="https://github.com/macports/macports-webapp">Git Repository</a></li>
+                <li><a href="https://github.com/macports/macports-webapp/tree/master/docs">Documentation</a></li>
+                <li><a href="https://github.com/macports/macports-webapp/tree/master/docs/api_v1">API</a></li>
+                <li><a href="https://docs.google.com/document/d/1TqNHm3NrtLDelWqY7P4pZyTMZDJrlsPymFZklzV2t24/edit">Feature
+                    Requests</a></li>
+                <li><a href="https://github.com/macports/macports-webapp/issues">Issues</a></li>
+                <li><a href="https://www.macports.org/install.php">Install MacPorts</a></li>
+            </ul>
         </div>
         <div class="col-lg-9 col-lg-8">
             The MacPorts web application:
@@ -29,27 +28,59 @@
                 </li>
                 <li>Makes available all the collected data through API.</li>
             </ol>
-            <p>The application is based on the <a href="https://www.djangoproject.com">Django Framework</a> and runs
-                inside a <a href="https://www.docker.com">Docker</a> container with <a href="https://www.nginx.com">nginx</a>
-                and <a href="https://uwsgi-docs.readthedocs.io">uWSGI</a> serving the content. It has been written as a part of the <a href="https://summerofcode.withgoogle.com">
-                Google Summer of Code 2019</a> mentored by the <a href="https://www.macports.org">MacPorts</a> organisation.</p>
-
         </div>
     </div>
     <br>
     <h4>Credits</h4>
     <hr>
-    <p><strong>Student:</strong> <a href="https://github.com/arjunsalyan">Arjun Salyan</a></p>
-    <p><strong>Mentors:</strong> <a href="https://github.com/mojca">Mojca Miklavec</a>, <a href="https://github.com/umeshksingla">Umesh Singla</a></p>
-    <br>
+    <p>The MacPorts Webapp was written by <a href="https://github.com/arjunsalyan">Arjun Salyan</a> as a
+        <a href="https://trac.macports.org/wiki/SummerOfCode/2019#webapp">Google Summer of Code 2019</a> project,
+        mentored by <a href="https://github.com/mojca">Mojca Miklavec</a> and
+        <a href="https://github.com/umeshksingla">Umesh Singla</a>. The server is administered by
+        <a href="https://github.com/neverpanic">Clemens Lang</a>.
+    </p>
+
+    <h5>History</h5>
+    <p>
+        The first MacPorts statistics web application and the initial client were written by <a
+            href="https://trac.macports.org/wiki/derek">Derek Ingrouville</a>
+        as a <a href="https://trac.macports.org/wiki/SummerOfCode2011">Google Summer of Code 2011</a> project.
+        Some documentation for the source written in GSoC can be found in <a
+            href="https://trac.macports.org/wiki/MacPortsStatisticsGSoC2011">the Wiki</a>.
+        The source code for the
+        server is available in MacPorts' Subversion repository at <a
+            href="https://trac.macports.org/browser/branches/gsoc11-statistics">/branches/gsoc11-statistics</a>.
+    </p>
+    <h4>Technologies</h4>
+    <hr>
+    <p>The web application is based on the <a href="https://www.djangoproject.com">Django Framework</a> and
+        utilises a <a href="https://www.postgresql.org/">PostgreSQL</a> database. It runs inside a <a
+                href="https://www.docker.com">Docker</a> container with <a href="https://www.nginx.com">nginx</a>
+        and <a href="https://uwsgi-docs.readthedocs.io">uWSGI</a> serving the content.</p>
     <h4>Dependencies</h4>
     <hr>
     The app is dependent on the following:
     <ul>
-        <li><a href="https://build.macports.org/json/help">Buildbot JSON API</a>: Allows fetching the build history.</li>
-        <li><a href="https://github.com/macports/macports-contrib/blob/master/portindex2json/portindex2json.tcl">portindex2json.tcl</a>: Converts PortIndex into JSON format.</li>
-        <li><a href="https://github.com/macports/macports-infrastructure/blob/master/jobs/mprsyncup">mprsync job</a>: Runs portindex2json.tcl and distributes PortIndex.json through rsync.</li>
-        <li><a href="https://github.com/macports/macports-ports/tree/master/sysutils/mpstats">mpstats</a>: Port that submits
-        installation statistics.</li>
+        <li><a href="https://build.macports.org/json/help">Buildbot JSON API</a>: Allows fetching the build history.
+        </li>
+        <li><a href="https://github.com/macports/macports-contrib/blob/master/portindex2json/portindex2json.tcl">portindex2json.tcl</a>:
+            Converts PortIndex into JSON format. Written by <a href="https://github.com/jmroot">Joshua Root.</a></li>
+        <li><a href="https://github.com/macports/macports-infrastructure/blob/master/jobs/mprsyncup">mprsyncup job</a>:
+            Runs portindex2json.tcl and distributes PortIndex.json through rsync.
+        </li>
+        <li><a href="https://github.com/macports/macports-ports/tree/master/sysutils/mpstats">mpstats</a>: Port that
+            submits
+            installation statistics.
+            <br>
+            <p>
+                The client implementation as the <code>mpstats</code> port is the work of <a
+                    href="https://trac.macports.org/wiki/derek">Derek Ingrouville</a>,
+                <a href="https://github.com/jmroot">Joshua Root</a> and <a href="https://github.com/neverpanic">Clemens
+                Lang</a>. The source of
+                the client is currently available at <a
+                    href="https://github.com/macports/macports-ports/tree/master/sysutils/mpstats">/trunk/dports/sysutils/mpstats</a>
+                in the MacPorts Subversion repository.
+            </p>
+        </li>
     </ul>
 {% endblock %}
