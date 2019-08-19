@@ -373,6 +373,10 @@ def stats_port_installations_filter(request):
     })
 
 
+def stats_faq(request):
+    return render(request, 'ports/stats_faq.html')
+
+
 def get_ports_of_maintainers(maintainers, request):
     i = 0
     for maintainer in maintainers:
