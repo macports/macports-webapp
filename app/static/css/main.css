@@ -6,9 +6,21 @@ body{
   display: grid;
   justify-content: space-evenly;
   grid-auto-flow: column;
-  grid-template-rows: repeat(23, auto); /*Make the grid smaller than the container*/
+  grid-template-rows: repeat(23, auto);
   grid-gap: 8px;
   padding: 8px;
+}
+
+@media only screen and (max-width: 900px) {
+  .category-grid-container {
+      grid-template-rows: repeat(31, auto);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .category-grid-container {
+      grid-template-rows: repeat(46, auto);
+  }
 }
 
 .category-grid-item {
