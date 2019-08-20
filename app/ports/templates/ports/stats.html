@@ -193,7 +193,7 @@
         </select>
         <lable for="days-ago">until</lable>
         <select onchange="this.form.submit()" id="days_ago" name="days_ago" class="form-control ml-2">
-            <option value="0" {% if days_ago == 0 %}selected{% endif %}>Today</option>
+            <option value="0" {% if days_ago == 0 %}selected{% endif %}>today</option>
             {% for i in allowed_days|slice:"1:" %}
                 <option value="{{ i }}" {% if days_ago == i %}selected{% endif %}>{{ i }} days ago</option>
             {% endfor %}
