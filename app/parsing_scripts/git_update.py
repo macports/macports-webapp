@@ -25,7 +25,7 @@ def clone_repo():
         subprocess.run([GIT, 'clone', '--quiet', MACPORTS_PORTS_URL, MACPORTS_PORTS])
 
 
-def get_list_of_changed_ports(new_commit=None, old_commit=None):
+def get_list_of_changed_ports(new_commit, old_commit):
     # Check if the repository clone is available
     if not os.path.isdir(MACPORTS_PORTS_DIR):
         print('{} directory not found. Cloning into'.format(MACPORTS_PORTS))
@@ -45,23 +45,8 @@ def get_list_of_changed_ports(new_commit=None, old_commit=None):
         else:
             raise OSError
 
-        # If old_hash is not provided by the user
-        if old_commit is None:
-            # If the database has old commit, use it for old_hash
-            old_commit_object = LastPortIndexUpdate.objects.all().first()
-            if old_commit_object is None:
-                # If database is empty, use the first commit
-                old_commit = subprocess.run([GIT, 'rev-list', 'HEAD', '|', 'tail', '-n', '1'],
-                                          stdout=subprocess.PIPE).stdout.decode('utf-8')
-            else:
-                old_commit = old_commit_object.git_commit_hash
-
         # Pull from macports-ports
         subprocess.call([GIT, 'pull', '--quiet'])
-
-        # Get new hash if not provided
-        if new_commit is None:
-            new_commit = subprocess.run([GIT, 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
         # Generate the range of commits to find updated paths
         range = str(old_commit).strip() + "^.." + str(new_commit).strip()

@@ -21,16 +21,24 @@ class Command(BaseCommand):
         # Fetch the latest version of PortIndex.json and open the file
         data = Port.PortIndexUpdateHandler().sync_and_open_file()
 
-        # If no argument is provided, use the commit-hash from JSON file:
+        # If new commit argument is not provided, use the commit-hash from JSON file:
         if options['new_commit'] is None:
             new_commit = data['info']['commit']
         # If argument is provided
         else:
             new_commit = options['new_commit']
 
-        # If no argument is provided, options['old_commit'] will default to None
-        # The code will then use the commit from last update which is stored in the database
-        updated_portdirs = git_update.get_list_of_changed_ports(new_commit, options['old_commit'])
+        # If old commit argument is not provided, use the commit from the database
+        if options['old_commit'] is None:
+            try:
+                old_commit_object = LastPortIndexUpdate.objects.all().first()
+                old_commit = old_commit_object.git_commit_hash
+            except AttributeError:
+                return 1  # The command should not proceed if no old commit could be located.
+        else:
+            old_commit = options['old_commit']
+
+        updated_portdirs = git_update.get_list_of_changed_ports(new_commit, old_commit)
 
         # Using the received list of port names, find related JSON objects
         ports_to_be_updated_json = []
