@@ -115,7 +115,7 @@
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            {% regroup os_version_and_clt_version|dictsort:"clt_version" by clt_version as clt_parent %}
+            {% regroup os_version_and_clt_version|sortversion:"clt_version" by clt_version as clt_parent %}
             {% regroup os_version_and_clt_version by os_version as os_clt_parent %}
 
             var data = google.visualization.arrayToDataTable([
