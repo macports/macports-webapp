@@ -300,7 +300,7 @@
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            {% regroup port_installations_by_os_and_clt_version|dictsort:"submission__clt_version" by submission__clt_version as clt_parent %}
+            {% regroup port_installations_by_os_and_clt_version|sortversion:"submission__clt_version" by submission__clt_version as clt_parent %}
             {% regroup port_installations_by_os_and_clt_version by submission__os_version as os_clt_parent %}
 
             var data = google.visualization.arrayToDataTable([
