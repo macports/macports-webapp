@@ -58,23 +58,36 @@
            placeholder="Search Ports by '{{ maintainer }}'">
     <br>
     <div id="all_ports_table">
-        <h3>Total {{ all_ports_num }} Ports Maintained By : <em>{{ maintainer }}</em></h3>
-        <form class="form-inline"></form>
+        <h3>Ports maintained By : <em>{{ maintainer }}</em></h3>
+        <div class="row">
+                <div class="col-lg-7">
+                    <p>Page {{ ports.number }} of {{ ports.paginator.num_pages }} | Showing
+                        ports {{ ports.start_index }} to
+                        {{ ports.end_index }} of {{ all_ports_num }}</p>
+                </div>
+                <div class="col-lg-5">
+                    <form class="form-inline justify-content-lg-end" method="get"
+                            action="">
+                        <label for="paginate_by">Ports per page: </label>
+                        <input style="max-width: 150px" class="ml-2" type="number" name="paginate_by"
+                               value="{{ paginate_by }}">
+                        <button type="submit">Update</button>
+                    </form>
+                </div>
+        </div>
 
         {% if ports.has_other_pages %}
-            Page {{ ports.number }} of {{ ports.paginator.num_pages }} | Showing ports {{ ports.start_index }} to
-            {{ ports.end_index }}<br><br>
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     {% if ports.has_previous %}
                         <li class="page-item"><a class="page-link"
-                                                 href="?page={{ ports.previous_page_number }}">&laquo;</a></li>
+                                                 href="?page={{ ports.previous_page_number }}&paginate_by={{ paginate_by }}">&laquo;</a></li>
                     {% else %}
                         <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
                     {% endif %}
 
                     {% if ports.number|add:'-4' > 1 %}
-                        <li class="page-item"><a class="page-link" href="?page={{ ports.number|add:'-5' }}">&hellip;</a>
+                        <li class="page-item"><a class="page-link" href="?page={{ ports.number|add:'-5' }}&paginate_by={{ paginate_by }}">&hellip;</a>
                         </li>
                     {% endif %}
 
@@ -83,17 +96,17 @@
                             <li class="active page-item"><span class="page-link">{{ i }} <span
                                     class="sr-only">(current)</span></span></li>
                         {% elif i > ports.number|add:'-5' and i < ports.number|add:'5' %}
-                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}&paginate_by={{ paginate_by }}">{{ i }}</a></li>
                         {% endif %}
                     {% endfor %}
 
                     {% if ports.paginator.num_pages > ports.number|add:'4' %}
-                        <li class="page-item"><a class="page-link" href="?page={{ ports.number|add:'5' }}">&hellip;</a>
+                        <li class="page-item"><a class="page-link" href="?page={{ ports.number|add:'5' }}&paginate_by={{ paginate_by }}">&hellip;</a>
                         </li>
                     {% endif %}
 
                     {% if ports.has_next %}
-                        <li class="page-item"><a class="page-link" href="?page={{ ports.next_page_number }}">&raquo;</a>
+                        <li class="page-item"><a class="page-link" href="?page={{ ports.next_page_number }}&paginate_by={{ paginate_by }}">&raquo;</a>
                         </li>
                     {% else %}
                         <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
@@ -139,13 +152,13 @@
                 <ul class="pagination">
                     {% if ports.has_previous %}
                         <li class="page-item"><a class="page-link"
-                                                 href="?page={{ ports.previous_page_number }}">&laquo;</a></li>
+                                                 href="?page={{ ports.previous_page_number }}&paginate_by={{ paginate_by }}">&laquo;</a></li>
                     {% else %}
                         <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
                     {% endif %}
 
                     {% if ports.number|add:'-4' > 1 %}
-                        <li class="page-item"><a class="page-link" href="?page={{ ports.number|add:'-5' }}">&hellip;</a>
+                        <li class="page-item"><a class="page-link" href="?page={{ ports.number|add:'-5' }}&paginate_by={{ paginate_by }}">&hellip;</a>
                         </li>
                     {% endif %}
 
@@ -154,17 +167,17 @@
                             <li class="active page-item"><span class="page-link">{{ i }} <span
                                     class="sr-only">(current)</span></span></li>
                         {% elif i > ports.number|add:'-5' and i < ports.number|add:'5' %}
-                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}&paginate_by={{ paginate_by }}">{{ i }}</a></li>
                         {% endif %}
                     {% endfor %}
 
                     {% if ports.paginator.num_pages > ports.number|add:'4' %}
-                        <li class="page-item"><a class="page-link" href="?page={{ ports.number|add:'5' }}">&hellip;</a>
+                        <li class="page-item"><a class="page-link" href="?page={{ ports.number|add:'5' }}&paginate_by={{ paginate_by }}">&hellip;</a>
                         </li>
                     {% endif %}
 
                     {% if ports.has_next %}
-                        <li class="page-item"><a class="page-link" href="?page={{ ports.next_page_number }}">&raquo;</a>
+                        <li class="page-item"><a class="page-link" href="?page={{ ports.next_page_number }}&paginate_by={{ paginate_by }}">&raquo;</a>
                         </li>
                     {% else %}
                         <li class="disabled page-item"><span class="page-link">&raquo;</span></li>

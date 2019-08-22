@@ -37,10 +37,11 @@ def about_page(request):
 
 def categorylist(request, cat):
     try:
+        paginate_by = request.GET.get('paginate_by', 100)
         category = Category.objects.get(name__iexact=cat)
         all_ports = Port.objects.filter(categories__name=cat).order_by(Lower('name'))
         portscount = all_ports.count()
-        paginated_ports = Paginator(all_ports, 100)
+        paginated_ports = Paginator(all_ports, paginate_by)
         page = request.GET.get('page', 1)
         try:
             ports = paginated_ports.get_page(page)
@@ -52,16 +53,18 @@ def categorylist(request, cat):
                       {
                           'ports': ports,
                           'portscount': portscount,
-                          'category': cat
+                          'category': cat,
+                          'paginate_by': paginate_by
                       })
     except Category.DoesNotExist:
         return render(request, 'ports/exceptions/category_not_found.html')
 
 
 def variantlist(request, variant):
+    paginate_by = request.GET.get('paginate_by', 100)
     all_objects = Variant.objects.filter(variant=variant).select_related('port').order_by(Lower('port__name'))
     all_objects_count = all_objects.count()
-    paginated_objects = Paginator(all_objects, 100)
+    paginated_objects = Paginator(all_objects, paginate_by)
     page = request.GET.get('page', 1)
     try:
         objects = paginated_objects.get_page(page)
@@ -72,7 +75,8 @@ def variantlist(request, variant):
     return render(request, 'ports/variantlist.html', {
         'objects': objects,
         'variant': variant,
-        'all_objects_count': all_objects_count
+        'all_objects_count': all_objects_count,
+        'paginate_by': paginate_by
     })
 
 
@@ -393,6 +397,7 @@ def stats_faq(request):
 
 
 def get_ports_of_maintainers(maintainers, request):
+    paginate_by = request.GET.get('paginate_by', 100)
     i = 0
     for maintainer in maintainers:
         if i > 0:
@@ -402,7 +407,7 @@ def get_ports_of_maintainers(maintainers, request):
         i = i + 1
 
     all_ports_num = all_ports.count()
-    paginated_ports = Paginator(all_ports, 100)
+    paginated_ports = Paginator(all_ports, paginate_by)
     page = request.GET.get('page', 1)
     try:
         ports = paginated_ports.get_page(page)
@@ -411,14 +416,14 @@ def get_ports_of_maintainers(maintainers, request):
     except EmptyPage:
         ports = paginated_ports.get_page(paginated_ports.num_pages)
 
-    return ports, all_ports_num
+    return ports, all_ports_num, paginate_by
 
 
 def maintainer_detail_github(request, github_handle):
     maintainers = Maintainer.objects.filter(github=github_handle)
     if maintainers.count() == 0:
         return render(request, '404.html')
-    ports, all_ports_num = get_ports_of_maintainers(maintainers, request)
+    ports, all_ports_num, paginate_by = get_ports_of_maintainers(maintainers, request)
 
     return render(request, 'ports/maintainerdetail.html', {
         'maintainers': maintainers,
@@ -426,6 +431,7 @@ def maintainer_detail_github(request, github_handle):
         'all_ports_num': all_ports_num,
         'ports': ports,
         'github': True,
+        'paginate_by': paginate_by
     })
 
 
@@ -433,14 +439,15 @@ def maintainer_detail_email(request, name, domain):
     maintainers = Maintainer.objects.filter(name=name, domain=domain)
     if maintainers.count() == 0:
         return render(request, '404.html')
-    ports, all_ports_num = get_ports_of_maintainers(maintainers, request)
+    ports, all_ports_num, paginate_by = get_ports_of_maintainers(maintainers, request)
 
     return render(request, 'ports/maintainerdetail.html', {
         'maintainers': maintainers,
         'maintainer': name,
         'ports': ports,
         'all_ports_num': all_ports_num,
-        'github': False
+        'github': False,
+        'paginate_by': paginate_by
     })
 
 
