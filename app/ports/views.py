@@ -345,6 +345,7 @@ def stats_port_installations(request):
 
 
 def stats_port_installations_filter(request):
+    paginate_by = request.GET.get('items', 100)
     days = request.GET.get('days', 30)
     order_by_1 = str(request.GET.get('order_by_1', '-total_count'))
     order_by_2 = str(request.GET.get('order_by_2', '-req_count'))
@@ -379,7 +380,7 @@ def stats_port_installations_filter(request):
         .extra(select={'port': 'lower(port)'})\
         .order_by(order_by_1, order_by_2, order_by_3)
 
-    paginated_obj = Paginator(installations, 100)
+    paginated_obj = Paginator(installations, paginate_by)
     page = request.GET.get('page', 1)
     try:
         installs = paginated_obj.get_page(page)
@@ -389,8 +390,10 @@ def stats_port_installations_filter(request):
         installs = paginated_obj.get_page(paginated_obj.num_pages)
 
     return render(request, 'ports/ajax-filters/port_installations_table.html', {
+        'all_count': installations.count(),
         'installs': installs,
-        'search_by': search_by
+        'search_by': search_by,
+        'paginate_by': paginate_by,
     })
 
 

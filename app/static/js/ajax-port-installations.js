@@ -16,6 +16,7 @@ function runPortsSortAjax(page, order_by_1, order_by_2, order_by_3, days, search
                 'order_by_3': order_by_3,
                 'days': days,
                 'search_by': search_by,
+                'items': $('#custom-paginate').val(),
                 'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
             },
             success: portsSortAjaxSuccess,
