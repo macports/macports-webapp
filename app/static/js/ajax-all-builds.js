@@ -7,6 +7,7 @@ function runAllBuildsAjax(page) {
                 'builder_name__name': $('#builder-filter').val(),
                 'status': $('#status-filter').val(),
                 'port_name': $('#name-filter').val(),
+                'items': $('#paginate_by').val(),
                 'page': page,
                 'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
             },
@@ -47,4 +48,4 @@ function changePage(page) {
 function filterSuccess(data, textStatus, jqXHR) {
     $('#all_builds_table').html(data);
     $('#loading-builds').hide();
-}
+};

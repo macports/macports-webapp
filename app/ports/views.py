@@ -233,6 +233,7 @@ def all_builds_filter(request):
     status = request.GET.get('status')
     port_name = request.GET.get('port_name')
     page = request.GET.get('page')
+    paginate_by = request.GET.get('items', 100)
 
     if status == 'unresolved':
         all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name', '-build_id').distinct('port_name', 'builder_name')
@@ -243,7 +244,7 @@ def all_builds_filter(request):
     else:
         builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().select_related('builder_name').order_by('-time_start')).qs
 
-    paginated_builds = Paginator(builds, 100)
+    paginated_builds = Paginator(builds, paginate_by)
     try:
         result = paginated_builds.get_page(page)
     except PageNotAnInteger:
@@ -256,6 +257,7 @@ def all_builds_filter(request):
         'builder': builder,
         'status': status,
         'port_name': port_name,
+        'paginate_by': paginate_by
     })
 
 
