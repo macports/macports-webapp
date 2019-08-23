@@ -1,0 +1,32 @@
+<!-- ############
+This table is used on the following pages:
+#1. Category
+#2. Variant
+-->
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Version</th>
+        <th scope="col">Description</th>
+    </tr>
+    </thead>
+    {% if is_foreign_key is False %}
+    {% for port in ports %}
+        <tr>
+            <td><a href="{% url 'port_detail' port.name %}">{{ port.name }}</a></td>
+            <td>{{ port.version }}</td>
+            <td>{{ port.description }}</td>
+        </tr>
+    {% endfor %}
+    {% else %}
+    {% for port in ports %}
+        <tr>
+            <td><a href="{% url 'port_detail' port.port.name %}">{{ port.port.name }}</a></td>
+            <td>{{ port.port.version }}</td>
+            <td>{{ port.port.description }}</td>
+        </tr>
+    {% endfor %}
+    {% endif %}
+</table>
