@@ -37,7 +37,7 @@ def about_page(request):
 
 def categorylist(request, cat):
     try:
-        paginate_by = request.GET.get('paginate_by', 100)
+        paginate_by = request.GET.get('items', 100)
         category = Category.objects.get(name__iexact=cat)
         all_ports = Port.objects.filter(categories__name=cat).order_by(Lower('name'))
         portscount = all_ports.count()
@@ -402,7 +402,7 @@ def stats_faq(request):
 
 
 def get_ports_of_maintainers(maintainers, request):
-    paginate_by = request.GET.get('paginate_by', 100)
+    paginate_by = request.GET.get('items', 100)
     i = 0
     for maintainer in maintainers:
         if i > 0:
