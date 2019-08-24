@@ -15,7 +15,7 @@ from django.db.models.functions import TruncMonth, Lower
 
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, Variant, Submission, PortInstallation
 from .filters import BuildHistoryFilter, PortFilterByMultiple
-from .validators import validate_stats_days, validate_columns_port_installations, validate_unique_columns_port_installations, ALLOWED_DAYS_FOR_STATS
+from .validators import validate_stats_days, validate_columns_port_installations, validate_unique_columns_port_installations, validate_positive_int, ALLOWED_DAYS_FOR_STATS
 from .utilities.sort_by_version import sort_list_of_dicts_by_version
 
 
@@ -37,7 +37,7 @@ def about_page(request):
 
 def categorylist(request, cat):
     try:
-        paginate_by = request.GET.get('items', 100)
+        paginate_by = validate_positive_int(request.GET.get('items', 100), 100)
         category = Category.objects.get(name__iexact=cat)
         all_ports = Port.objects.filter(categories__name=cat).order_by(Lower('name'))
         portscount = all_ports.count()
@@ -61,7 +61,7 @@ def categorylist(request, cat):
 
 
 def variantlist(request, variant):
-    paginate_by = request.GET.get('paginate_by', 100)
+    paginate_by = validate_positive_int(request.GET.get('items', 100), 100)
     all_objects = Variant.objects.filter(variant=variant).select_related('port').order_by(Lower('port__name'))
     all_objects_count = all_objects.count()
     paginated_objects = Paginator(all_objects, paginate_by)
@@ -233,7 +233,7 @@ def all_builds_filter(request):
     status = request.GET.get('status')
     port_name = request.GET.get('port_name')
     page = request.GET.get('page')
-    paginate_by = request.GET.get('items', 100)
+    paginate_by = validate_positive_int(request.GET.get('items', 100), 100)
 
     if status == 'unresolved':
         all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name', '-build_id').distinct('port_name', 'builder_name')
@@ -345,7 +345,7 @@ def stats_port_installations(request):
 
 
 def stats_port_installations_filter(request):
-    paginate_by = request.GET.get('items', 100)
+    paginate_by = validate_positive_int(request.GET.get('items', 100), 100)
     days = request.GET.get('days', 30)
     order_by_1 = str(request.GET.get('order_by_1', '-total_count'))
     order_by_2 = str(request.GET.get('order_by_2', '-req_count'))
@@ -402,7 +402,7 @@ def stats_faq(request):
 
 
 def get_ports_of_maintainers(maintainers, request):
-    paginate_by = request.GET.get('items', 100)
+    paginate_by = validate_positive_int(request.GET.get('items', 100), 100)
     i = 0
     for maintainer in maintainers:
         if i > 0:
