@@ -34,11 +34,22 @@
     {% endif %}
     <!-- Obsolete port warning end-->
 
+    <!-- Deleted port warning start-->
+    {% if req_port.active is False %}
+        <div class="alert alert-danger" role="alert">
+            This port has been deleted. This page will exist till another port with the name "{{ req_port.name }}" comes
+            into existence.</a>
+        </div>
+    {% endif %}
+    <!-- Deleted port warning end-->
+
         <div class="rounded bg-light border border-secondary" style="padding: 8px">
         <h4>{{ req_port.name }}</h4>
         <p class="text-secondary">{{ req_port.description }}</p>
+        {% if req_port.active is True %}
         <p class="float-right"><a class="btn-warning btn" href="https://github.com/macports/macports-ports/tree/master/{{ req_port.portdir }}/Portfile"
                target="_blank">View on Github</a><br><br></p>
+        {% endif %}
             <h5>Port Health:
                 {% for builder, latest_build in latest_builds.items %}
                     {% if latest_build %}
