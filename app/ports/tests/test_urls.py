@@ -11,7 +11,6 @@ class TestURLs(TransactionTestCase):
     reset_sequences = True
 
     def setUp(self):
-        self.client = Client()
         Port.load(TEST_PORTINDEX_JSON)
 
     def test_home(self):

@@ -1,6 +1,6 @@
 import os
 
-from django.test import TransactionTestCase, Client
+from django.test import TransactionTestCase
 from django.urls import reverse
 
 from ports.models import Dependency, Port
@@ -11,7 +11,6 @@ class TestDependencies(TransactionTestCase):
     reset_sequences = True
 
     def setUp(self):
-        self.client = Client()
         Port.load(TEST_PORTINDEX_JSON)
 
     def test_rows_created(self):
