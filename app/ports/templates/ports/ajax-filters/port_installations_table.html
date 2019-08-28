@@ -47,7 +47,10 @@
 {% if installs|length > 0 %}
 {% for port in installs %}
     <div class="row">
-        <div class="col-6 p-2 border-left border-bottom pl-lg-4 pl-3">
+        <div class="col-1 p-2 border-left border-bottom text-right">
+            {{ installs.start_index|add:forloop.counter0 }}
+        </div>
+        <div class="col-5 p-2 border-left border-bottom pl-lg-4 pl-3">
             <a href="{% url 'port_detail' port.port %}">{{ port.port }}</a>
         </div>
         <div class="col-3 p-2 border-left border-bottom text-right">
