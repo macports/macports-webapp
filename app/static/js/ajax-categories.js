@@ -1,7 +1,7 @@
 var categorySearchTimer;
 
 $(function () {
-    $('#filter').keypress(function () {
+    $('#filter').keydown(function () {
         clearTimeout(categorySearchTimer);
         categorySearchTimer = setTimeout(function () {
             var data = {

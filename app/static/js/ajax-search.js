@@ -33,7 +33,7 @@ function ajaxCallSearch() {
 }
 
 $(function () {
-    $('#search').keypress(function () {
+    $('#search').keydown(function () {
         clearTimeout(requestTimer);
         requestTimer = setTimeout(function () {
             ajaxCallSearch();

@@ -1,7 +1,7 @@
 var variantSearchTimer;
 
 $(function () {
-    $('#filter').keypress(function () {
+    $('#filter').keydown(function () {
         clearTimeout(variantSearchTimer);
         variantSearchTimer = setTimeout(function () {
             var data = {
