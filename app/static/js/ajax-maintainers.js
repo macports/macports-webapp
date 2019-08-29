@@ -1,7 +1,7 @@
 var maintainerSearchTimer;
 
 $(function () {
-    $('#filter').keypress(function () {
+    $('#filter').keydown(function () {
         clearTimeout(maintainerSearchTimer);
         maintainerSearchTimer = setTimeout(function () {
             var data = {
