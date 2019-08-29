@@ -9,25 +9,27 @@ function ajaxCallSearch() {
     data['search_text'] = $('#search').val()
 
     if ($('#search').val()) {
-            $('#filtered_table').show();
-            $('#main-content').hide();
-            currentSearchRequest = $.ajax({
-                type: 'GET',
-                url: '/ports/search/',
-                data: data,
-                success: searchSuccess,
-                beforeSend: function () {
-                    $('#filtered_table').html("Searching ...");
-                    if(currentSearchRequest != null) {
-                        currentSearchRequest.abort();
-                    }
-                },
-                dataType: 'html'
-            });
-        } else {
-            $('#filtered_table').hide();
-            $('#main-content').show();
-        }
+        $('#filtered_table').show();
+        $('#main-content').hide();
+        currentSearchRequest = $.ajax({
+            type: 'GET',
+            url: '/ports/search/',
+            data: data,
+            success: searchSuccess,
+            beforeSend: function () {
+                $('#filtered_table').html('');
+                $('#searching-image').show();
+                if (currentSearchRequest != null) {
+                    currentSearchRequest.abort();
+                }
+            },
+            dataType: 'html'
+        });
+    } else {
+        $('#filtered_table').hide();
+        $('#searching-image').hide();
+        $('#main-content').show();
+    }
 }
 
 $(function () {
@@ -41,6 +43,7 @@ $(function () {
 
 function searchSuccess(data, textStatus, jqXHR) {
     $('#filtered_table').html(data);
+    $('#searching-image').hide();
 }
 
 function cancel_search() {
