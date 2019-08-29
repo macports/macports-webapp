@@ -1,3 +1,5 @@
+var requestTimer;
+
 function ajaxCallSearch() {
     var data = {};
     var currentSearchRequest = null;
@@ -29,8 +31,11 @@ function ajaxCallSearch() {
 }
 
 $(function () {
-    $('#search').keyup(function () {
-        ajaxCallSearch()
+    $('#search').keypress(function () {
+        clearTimeout(requestTimer);
+        requestTimer = setTimeout(function () {
+            ajaxCallSearch();
+        }, 1000);
     });
 });
 
