@@ -1,4 +1,4 @@
-<button type="button" style="color: red; float: right" onclick="cancel_search()">Cancel Search</button>
+<button class="float-right" type="button" style="color: red;" onclick="cancel_search()">Cancel Search</button>
 {% if ports.count > 0 %}
     {% if content == "Category" %}
         <h4>Your search "{{ query }}" in category "{{ search_in }}" matched {{ ports|length }} ports.</h4>
@@ -49,6 +49,7 @@
     </table>
         {% endif %}
 {% else %}
+    <br><br>
     {% if content == "Category" %}
         <div class="alert alert-danger" role="alert">
             Sorry, no matching ports found for "{{ query }}" in category "{{ search_in }}".

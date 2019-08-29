@@ -1,6 +1,11 @@
 {% extends 'ports/layout.html' %}
+{% load staticfiles %}
 
 {% block title %}Ports |{% endblock %}
+
+{% block head_scripts %}
+    <script src="{% static 'js/ajax-search.js' %}"></script>
+{% endblock %}
 
 {% block content %}
     <br>
