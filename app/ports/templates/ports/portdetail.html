@@ -12,7 +12,7 @@
 
 {% block content %}
     <br>
-    <form onSubmit="return false">
+    <form onSubmit="clearTimeout(requestTimer); ajaxCallSearch(); return false">
             {% csrf_token %}
         <div class="form-group mb-0">
             <label class="radio-inline mr-3"><input class="mr-2" onclick="switch_search()" type="radio" name="search_by" value="name" checked>Search by port-name</label>
