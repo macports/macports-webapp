@@ -279,7 +279,7 @@ class Port(models.Model):
     def mark_deleted(cls, dict_of_portdirs):
         for portdir in dict_of_portdirs:
             for port in Port.objects.filter(portdir__iexact=portdir).only('portdir', 'name', 'active'):
-                if port not in dict_of_portdirs[portdir]:
+                if port.name not in dict_of_portdirs[portdir]:
                     port.active = False
                     port.save()
 
