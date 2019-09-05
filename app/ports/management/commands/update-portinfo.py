@@ -32,20 +32,24 @@ class Command(BaseCommand):
         # The code will then use the commit from last update which is stored in the database
         updated_portdirs = git_update.get_list_of_changed_ports(new_commit, options['old_commit'])
 
-        # Using the received list of port names, find related JSON objects
+        # Generate a dictionary containing all the portdirs and initialise their values
+        # with empty sets. The set would contain the ports under that portdir.
+        dict_of_portdirs_with_ports = {}
+        for portdir in updated_portdirs:
+            dict_of_portdirs_with_ports[portdir] = set()
+
+        # Using the received set of updated portdirs, find corresponding JSON objects for all ports under
+        # that portdir.
         ports_to_be_updated_json = []
-        found_ports_tree = {}
         for port in data['ports']:
             portdir = port['portdir'].lower()
             portname = port['name'].lower()
             if portdir in updated_portdirs:
                 ports_to_be_updated_json.append(port)
-                if found_ports_tree.get(portdir) is None:
-                    found_ports_tree[portdir] = {}
-                found_ports_tree[portdir][portname] = True
+                dict_of_portdirs_with_ports[portdir].add(portname)
 
         # Mark deleted ports
-        Port.mark_deleted(found_ports_tree)
+        Port.mark_deleted(dict_of_portdirs_with_ports)
 
         # Run updates
         Port.update(ports_to_be_updated_json)
