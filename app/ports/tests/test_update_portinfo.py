@@ -20,7 +20,7 @@ class TestUpdatePortinfo(TransactionTestCase):
     def test_deleted(self):
         Port.mark_deleted({
             'categoryA/port-A1': {
-                'port-A1': True
+                'port-A1'
             }
         })
 
