@@ -57,7 +57,7 @@ ___
 
     Detailed stats for a port can be found on the port-detail page, but general statistics are available on "Overall
     Statistics Page". The page displays number of users who are submitting data over months and the OS Version, MacPorts
-    Version, XCode Version they are using.
+    Version, Xcode Version they are using.
     
     It also displays the ports with highest number of installations.
 
