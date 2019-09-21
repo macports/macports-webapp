@@ -186,7 +186,7 @@ def portdetail_stats(request):
     port_installations = PortInstallation.objects.filter(submission_id__in=Subquery(submissions.values('id')), port__iexact=port_name)
     requested_port_installations_count = port_installations.filter(requested=True).aggregate(Count('submission__user_id', distinct=True))
     total_port_installations_count = port_installations.aggregate(Count('submission__user_id', distinct=True))
-    port_installations_by_port_version = port_installations.values('version').annotate(num=Count('version')).order_by('-num')
+    port_installations_by_port_version = sort_list_of_dicts_by_version(list(port_installations.values('version').annotate(num=Count('version'))), 'version')
     port_installations_by_os_and_xcode_version = sort_list_of_dicts_by_version(list(port_installations.values('submission__xcode_version', 'submission__os_version').annotate(num=Count('submission__user_id', distinct=True))), 'submission__os_version')
     port_installations_by_os_and_clt_version = sort_list_of_dicts_by_version(list(port_installations.values('submission__clt_version', 'submission__os_version').annotate(num=Count('submission__user_id', distinct=True))), 'submission__os_version')
     port_installations_by_os_stdlib_build_arch = sort_list_of_dicts_by_version(list(port_installations.values('submission__os_version', 'submission__build_arch', 'submission__cxx_stdlib').annotate(num=Count('submission__user_id', distinct=True))), 'submission__os_version')
