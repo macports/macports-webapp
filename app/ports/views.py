@@ -464,7 +464,7 @@ def tickets(request):
     response = requests.get(URL)
     Soup = BeautifulSoup(response.content, 'html5lib')
     all_tickets = []
-    for row in Soup.findAll('tr', attrs={'class': ['color2-even', 'color2-odd']}):
+    for row in Soup.findAll('tr', attrs={'class': ['color2-even', 'color2-odd', 'color1-even', 'color1-odd']}):
         srow = row.find('td', attrs={'class': 'summary'})
         idrow = row.find('td', attrs={'class': 'ticket'})
         typerow = row.find('td', attrs={'class': 'type'})
