@@ -276,10 +276,10 @@ class Port(models.Model):
         # ============ END ==============
 
     @classmethod
-    def mark_deleted(cls, dict_of_portdirs_with_ports):
-        for portdir in dict_of_portdirs_with_ports:
-            for port in Port.objects.filter(portdir__iexact=portdir).only('portdir', 'name', 'active'):
-                if port.name not in dict_of_portdirs_with_ports[portdir]:
+    def mark_deleted(cls, all_ports_from_json):
+        with transaction.atomic():
+            for port in Port.objects.all().only('name', 'active'):
+                if port.name.lower() not in all_ports_from_json:
                     port.active = False
                     port.save()
 

@@ -18,11 +18,7 @@ class TestUpdatePortinfo(TransactionTestCase):
         self.assertEquals(Port.objects.count(), 14)
 
     def test_deleted(self):
-        Port.mark_deleted({
-            'categoryA/port-A1': {
-                'port-A1'
-            }
-        })
+        Port.mark_deleted({'port-a1', 'port-a2', 'port-a3-diff', 'port-a4', 'port-a5', 'port-b1', 'port-c1'})
 
         port_status_subport = Port.objects.get(name='port-A1-subport').active
         port_status_mainport = Port.objects.get(name='port-A1').active
@@ -88,9 +84,7 @@ class TestUpdatePortinfo(TransactionTestCase):
 
         # Entire categoryA/port-A1 portdir is removed, but the subports move to other directory
         # All ports under category/port-A1 would be deleted.
-        Port.mark_deleted({
-            'categoryA/port-A1': {}
-        })
+        Port.mark_deleted({'port-a2', 'port-a3-diff', 'port-a4', 'port-a5', 'port-b1', 'port-c1'})
 
         port_status_subport1 = Port.objects.get(name='port-A1-subport').active
         port_status_subport2 = Port.objects.get(name='port-A2-subport').active
@@ -155,11 +149,8 @@ class TestUpdatePortinfo(TransactionTestCase):
         self.assertEquals(port_status_subport3, True)
 
     def test_added_back(self):
-        Port.mark_deleted({
-            'categoryA/port-A1': {
-                'port-A1'
-            }
-        })
+        Port.mark_deleted({'port-a1', 'port-a2', 'port-a3-diff', 'port-a4', 'port-a5', 'port-b1', 'port-c1'})
+
         Port.update([
             {
                 "variants": ["universal"],
