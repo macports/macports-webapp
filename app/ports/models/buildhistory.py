@@ -18,7 +18,7 @@ class BuildHistory(models.Model):
     status = models.CharField(max_length=50)
     port_name = models.CharField(max_length=100)
     time_start = models.DateTimeField()
-    time_elapsed = models.TimeField(null=True)
+    time_elapsed = models.DurationField(null=True)
     watcher_id = models.IntegerField()
 
     class Meta:
