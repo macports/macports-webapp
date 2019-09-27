@@ -37,7 +37,7 @@
                 </tr>
                 <tr>
                     <th scope="row">Most Installed Version</th>
-                    <td><strong>{{ port_installations_by_port_version.first.version }}</strong> : {{ port_installations_by_port_version.first.num }} user(s)</td>
+                    <td>{% most_installed_version port_installations_by_port_version %}</td>
                 </tr>
             </table>
     <div class="row">
