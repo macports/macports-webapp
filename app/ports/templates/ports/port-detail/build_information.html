@@ -82,7 +82,7 @@
             <td>{{ build.builder_name.name|os_version }}</td>
             <td><a target="_blank" href="{% build_url build.builder_name.name build.build_id %}">{{ build.build_id }}</a></td>
             <td>{{ build.time_start|date:"Y-m-d" }}  {{ build.time_start|time:"G:i:s" }} </td>
-            <td>{{ build.time_elapsed|time:"H:i:s" }}</td>
+            <td>{{ build.time_elapsed }}</td>
             <td><a target="_blank" href="{% watcher_url build.builder_name.name build.watcher_id %}">{{ build.watcher_id }}</a></td>
             <td class="{% if build.status == 'build successful' %}text-success {% else %} text-danger {% endif %}">{{ build.status }}</td>
         </tr>
