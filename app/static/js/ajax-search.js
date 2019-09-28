@@ -6,7 +6,12 @@ function ajaxCallSearch() {
     data[$("input[name=search_by]:checked").val()] = $('#search').val();
     data['csrfmiddlewaretoken'] = $("input[name=csrfmiddlewaretoken]").val();
     data['search_by'] = $("input[name=search_by]:checked").val();
-    data['search_text'] = $('#search').val()
+    data['search_text'] = $('#search').val();
+    if ($('#show-active').is(':checked')) {
+        data['active'] = '';
+    } else {
+        data['active'] = 'true';
+    }
 
     if ($('#search').val()) {
         $('#filtered_table').show();

@@ -18,6 +18,9 @@
         <div class="form-group">
             <input type="text" class="form-control" id="search" name="search" placeholder="Search Ports">
         </div>
+        <div class="form-group mb-0">
+            <label class="mr-3"><input class="mr-2" id="show-active" onchange="switch_search();" type="checkbox" name="show-active" value="active">Show deleted ports</label>
+        </div>
     </form>
     <br>
     <div class="container" id="main-content">

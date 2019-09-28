@@ -23,7 +23,7 @@
         </thead>
         {% for port in ports %}
             <tr>
-                <td><a href="{% url 'port_detail' port.port.name %}">{{ port.port.name }}</a></td>
+                <td><a {% if port.active is False %}class="text-danger"{% endif %} href="{% url 'port_detail' port.port.name %}">{{ port.port.name }}</a></td>
                 <td>{{ port.port.version }}</td>
                 <td>{{ port.port.description }}</td>
             </tr>
@@ -41,7 +41,7 @@
         </thead>
         {% for port in ports %}
             <tr>
-                <td><a href="{% url 'port_detail' port.name %}">{{ port.name }}</a></td>
+                <td><a {% if port.active is False %}class="text-danger"{% endif %} href="{% url 'port_detail' port.name %}">{{ port.name }}</a></td>
                 <td>{{ port.version }}</td>
                 <td>{{ port.description }}</td>
             </tr>

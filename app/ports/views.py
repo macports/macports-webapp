@@ -447,7 +447,15 @@ def maintainer_detail_email(request, name, domain):
 def search(request):
     query = request.GET.get('search_text', '')
     search_by = request.GET.get('search_by', '')
-    ports = PortFilterByMultiple(request.GET, queryset=Port.get_active.all()).qs[:50]
+    name = request.GET.get('name')
+    description = request.GET.get('description')
+    active = True if request.GET.get('active') == 'true' else None
+
+    ports = PortFilterByMultiple({
+        'name': name,
+        'description': description,
+        'active': active
+    }, queryset=Port.objects.all().only('name', 'version', 'description', 'active')).qs[:50]
 
     return render(request, 'ports/ajax-filters/filtered_table.html', {
         'ports': ports,
