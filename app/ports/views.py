@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Subquery, Count, Case, IntegerField, When
+from django.db.models import Subquery, Count, Case, IntegerField, When, Q
 from django.db.models.functions import TruncMonth, Lower
 
 from .models import Port, Category, BuildHistory, Maintainer, Dependency, Builder, Variant, Submission, PortInstallation
@@ -20,8 +20,7 @@ from .utilities.sort_by_version import sort_list_of_dicts_by_version
 
 
 def index(request):
-    categories = Category.objects.all().order_by('name').annotate(ports_count=Count('category'))
-
+    categories = Category.objects.all().order_by('name').annotate(ports_count=Count('category', filter=Q(category__active=True)))
     submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
     top_ports = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_unique.values('id')), requested=True).exclude(port__icontains='mpstats').values('port').annotate(num=Count('port')).order_by('-num')[:10]
 
@@ -38,7 +37,7 @@ def about_page(request):
 def categorylist(request, cat):
     try:
         category = Category.objects.get(name__iexact=cat)
-        all_ports = Port.objects.filter(categories__name=cat).order_by(Lower('name'))
+        all_ports = Port.get_active.filter(categories__name=cat).order_by(Lower('name'))
         portscount = all_ports.count()
         paginated_ports = Paginator(all_ports, 100)
         page = request.GET.get('page', 1)
@@ -59,7 +58,7 @@ def categorylist(request, cat):
 
 
 def variantlist(request, variant):
-    all_objects = Variant.objects.filter(variant=variant).select_related('port').order_by(Lower('port__name'))
+    all_objects = Variant.objects.filter(variant=variant, port__active=True).select_related('port').order_by(Lower('port__name'))
     all_objects_count = all_objects.count()
     paginated_objects = Paginator(all_objects, 100)
     page = request.GET.get('page', 1)
@@ -396,9 +395,9 @@ def get_ports_of_maintainers(maintainers, request):
     i = 0
     for maintainer in maintainers:
         if i > 0:
-            all_ports = maintainer.ports.all().order_by('id') | all_ports
+            all_ports = maintainer.ports.all().order_by('id').filter(active=True) | all_ports
         else:
-            all_ports = maintainer.ports.all().order_by('id')
+            all_ports = maintainer.ports.all().order_by('id').filter(active=True)
         i = i + 1
 
     all_ports_num = all_ports.count()
@@ -448,7 +447,7 @@ def maintainer_detail_email(request, name, domain):
 def search(request):
     query = request.GET.get('search_text', '')
     search_by = request.GET.get('search_by', '')
-    ports = PortFilterByMultiple(request.GET, queryset=Port.objects.all()).qs[:50]
+    ports = PortFilterByMultiple(request.GET, queryset=Port.get_active.all()).qs[:50]
 
     return render(request, 'ports/ajax-filters/filtered_table.html', {
         'ports': ports,
@@ -486,7 +485,7 @@ def search_ports_in_category(request):
     query = request.GET.get('name')
     search_in = request.GET.get('categories__name')
 
-    filtered_ports = PortFilterByMultiple(request.GET, queryset=Port.objects.all()).qs[:50]
+    filtered_ports = PortFilterByMultiple(request.GET, queryset=Port.get_active.all()).qs[:50]
     return render(request, 'ports/ajax-filters/filtered_table.html', {
         'ports': filtered_ports,
         'query': query,
@@ -505,7 +504,7 @@ def search_ports_in_maintainer(request):
     else:
         search_in = name
 
-    filtered_ports = PortFilterByMultiple(request.GET, queryset=Port.objects.all()).qs
+    filtered_ports = PortFilterByMultiple(request.GET, queryset=Port.get_active.all()).qs
     return render(request, 'ports/ajax-filters/filtered_table.html', {
         'ports': filtered_ports,
         'query': query,
@@ -518,7 +517,7 @@ def search_ports_in_variant(request):
     query = request.GET.get('name', '')
     search_in = request.GET.get('variant', '')
 
-    filtered_ports = Variant.objects.filter(variant=search_in, port__name__icontains=query)
+    filtered_ports = Variant.objects.filter(variant=search_in, port__name__icontains=query, port__active=True)
     return render(request, 'ports/ajax-filters/filtered_table.html', {
         'ports': filtered_ports,
         'query': query,
