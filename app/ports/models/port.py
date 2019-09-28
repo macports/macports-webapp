@@ -16,6 +16,11 @@ class PortManager(models.Manager):
         return self.get(name=name)
 
 
+class ActivePortsManager(models.Manager):
+    def get_queryset(self):
+        return super(ActivePortsManager, self).get_queryset().filter(active=True)
+
+
 class Port(models.Model):
     portdir = models.CharField(max_length=100)
     description = models.TextField(default='')
@@ -33,6 +38,7 @@ class Port(models.Model):
     active = models.BooleanField(default=True)
 
     objects = PortManager()
+    get_active = ActivePortsManager()
 
     @classmethod
     def load(cls, data):
