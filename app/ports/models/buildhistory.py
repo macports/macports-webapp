@@ -10,6 +10,7 @@ from MacPorts.config import BUILDERS_JSON_URL, BUILDBOT_URL_PREFIX, BUILDS_FETCH
 
 class Builder(models.Model):
     name = models.CharField(max_length=100, db_index=True)
+    display_name = models.CharField(max_length=20, db_index=True, default='')
 
 
 class BuildHistory(models.Model):
