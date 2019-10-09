@@ -86,15 +86,15 @@ def portdetail(request, name, slug="summary"):
         if tab not in allowed_tabs:
             return HttpResponse("Invalid tab requested. Expected values: {}".format(allowed_tabs))
 
-        all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name', '-build_id').distinct('port_name', 'builder_name')
-        port_latest_builds = list(BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), port_name__iexact=name).values('builder_name__name', 'build_id', 'status'))
+        all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name__display_name', '-time_start').distinct('port_name', 'builder_name__display_name')
+        port_latest_builds = list(BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), port_name__iexact=name).values('builder_name__name', 'builder_name__display_name', 'build_id', 'status'))
 
-        builders = list(Builder.objects.all().values_list('name', flat=True))
+        builders = list(Builder.objects.all().order_by('display_name').distinct('display_name').values_list('display_name', flat=True))
 
         builders.sort(key=LooseVersion, reverse=True)
         latest_builds = {}
         for builder in builders:
-            latest_builds[builder] = next((item for item in port_latest_builds if item['builder_name__name'] == builder), False)
+            latest_builds[builder] = next((item for item in port_latest_builds if item['builder_name__display_name'] == builder), False)
         return render(request, 'ports/portdetail.html', {
             'req_port': req_port,
             'latest_builds': latest_builds,
@@ -140,10 +140,10 @@ def portdetail_build_information(request):
     builder = request.GET.get('builder_name__name', '')
     port_name = request.GET.get('port_name', '')
     page = request.GET.get('page', 1)
-    builders = list(Builder.objects.all().values_list('name', flat=True))
+    builders = list(Builder.objects.all().order_by('display_name').distinct('display_name').values_list('display_name', flat=True))
     builders.sort(key=LooseVersion, reverse=True)
     builds = BuildHistoryFilter({
-        'builder_name__name': builder,
+        'builder_name__display_name': builder,
         'status': status,
     }, queryset=BuildHistory.objects.filter(port_name__iexact=port_name).select_related('builder_name').order_by('-time_start')).qs
     paginated_builds = Paginator(builds, 100)
@@ -213,7 +213,7 @@ def portdetail_stats(request):
 
 
 def all_builds_view(request):
-    builders = list(Builder.objects.all().values_list('name', flat=True))
+    builders = list(Builder.objects.all().order_by('display_name').distinct('display_name').values_list('display_name', flat=True))
     builders.sort(key=LooseVersion, reverse=True)
     jump_to_page = request.GET.get('page', 1)
 
@@ -224,15 +224,15 @@ def all_builds_view(request):
 
 
 def all_builds_filter(request):
-    builder = request.GET.get('builder_name__name')
+    builder = request.GET.get('builder_name__display_name')
     status = request.GET.get('status')
     port_name = request.GET.get('port_name')
     page = request.GET.get('page')
 
     if status == 'unresolved':
-        all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name', '-build_id').distinct('port_name', 'builder_name')
+        all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name__display_name', '-build_id').distinct('port_name', 'builder_name__display_name')
         builds = BuildHistoryFilter({
-            'builder_name__name': builder,
+            'builder_name__display_name': builder,
             'port_name': port_name,
         }, queryset=BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), status__icontains='failed').select_related('builder_name').order_by('-time_start')).qs
     else:

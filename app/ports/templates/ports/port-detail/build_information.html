@@ -79,7 +79,7 @@
     </thead>
     {% for build in builds %}
         <tr>
-            <td>{{ build.builder_name.name|os_version }}</td>
+            <td>{{ build.builder_name.display_name }}</td>
             <td><a target="_blank" href="{% build_url build.builder_name.name build.build_id %}">{{ build.build_id }}</a></td>
             <td>{{ build.time_start|date:"Y-m-d" }}  {{ build.time_start|time:"G:i:s" }} </td>
             <td>{{ build.time_elapsed }}</td>

@@ -55,14 +55,14 @@
                 {% for builder, latest_build in latest_builds.items %}
                     {% if latest_build %}
                         <a target="_blank"
-                           href="{% build_url builder latest_build.build_id %}"><span class="mr-1 badge {% if latest_build.status == "build successful" %}
+                           href="{% build_url latest_build.builder_name__name latest_build.build_id %}"><span class="mr-1 badge {% if latest_build.status == "build successful" %}
                                                         badge-success
                                                     {% else %}
                                                         badge-danger
-                                                    {% endif %}">{{ builder|os_version }}</span></a>
+                                                    {% endif %}">{{ builder }}</span></a>
 
                     {% else %}
-                        <span class="badge badge-secondary mr-1">{{ builder|os_version }}</span>
+                        <span class="badge badge-secondary mr-1">{{ builder }}</span>
 
                     {% endif %}
                 {% endfor %}</h5>

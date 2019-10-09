@@ -9,7 +9,7 @@ class BuildHistoryFilter(django_filters.FilterSet):
 
     class Meta:
         model = BuildHistory
-        fields = ['builder_name__name']
+        fields = ['builder_name__display_name']
 
 
 class PortFilterByMultiple(django_filters.FilterSet):
