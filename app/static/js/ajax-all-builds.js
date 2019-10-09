@@ -4,7 +4,7 @@ function runAllBuildsAjax(page) {
             type: 'GET',
             url: '/ports/all_builds/filter/',
             data: {
-                'builder_name__name': $('#builder-filter').val(),
+                'builder_name__display_name': $('#builder-filter').val(),
                 'status': $('#status-filter').val(),
                 'port_name': $('#name-filter').val(),
                 'page': page,
