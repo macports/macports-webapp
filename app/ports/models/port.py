@@ -283,6 +283,24 @@ class Port(models.Model):
                     port.active = False
                     port.save()
 
+    # Run through all the ports to identify deleted ports
+    @classmethod
+    def full_deleted_ports_run(cls):
+        all_ports_from_json = set()
+        data = Port.PortIndexUpdateHandler().sync_and_open_file()
+
+        # Generate a set of all the portname available in the JSON file
+        for port in data['ports']:
+            portname = port['name'].lower()
+            all_ports_from_json.add(portname)
+
+        # Loop over all the ports in the database and check if it is available in all_ports_from_json
+        with transaction.atomic():
+            for port in Port.objects.all().only('name', 'active'):
+                if port.name.lower() not in all_ports_from_json:
+                    port.active = False
+                    port.save()
+
     class PortIndexUpdateHandler:
         @staticmethod
         def sync_and_open_file():
