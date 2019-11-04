@@ -15,7 +15,13 @@ class TestUpdatePortinfo(TransactionTestCase):
 
     def test_updates(self):
         call_command('update-portinfo', '3c6f37828d091670e7b9a2676757b2e468ee3d52', 'cb7086953124c73ffb616e955653176e3c4be02c')
-        self.assertEquals(Port.objects.count(), 14)
+        try:
+            port1 = Port.objects.get(name='youtube-dl')
+            port2 = Port.objects.get(name='py-yapf')
+            update_success = True
+        except Port.DoesNotExist:
+            update_success = False
+        self.assertEquals(update_success, True)
 
     def test_deleted(self):
         Port.mark_deleted({
