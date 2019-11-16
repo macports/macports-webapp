@@ -106,7 +106,9 @@ class BuildHistory(models.Model):
             if build_number_loaded:
                 build_in_database = build_number_loaded[0].build_id + 1
             else:
-                build_in_database = last_build_number - BUILDS_FETCHED_COUNT
+                # build_in_database = last_build_number - BUILDS_FETCHED_COUNT
+                # Temporarily being set to zero to allow fetching all builds for 10.15 builder.
+                build_in_database = 0
 
             for build_number in range(build_in_database, last_build_number):
                 build_data = get_data_from_url(get_url_json(buildername, build_number))
