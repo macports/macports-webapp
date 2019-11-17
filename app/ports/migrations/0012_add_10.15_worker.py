@@ -9,7 +9,7 @@ def add_new_builder(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ports', '0011_populate_display_name.py'),
+        ('ports', '0011_populate_display_name'),
     ]
 
     operations = [
