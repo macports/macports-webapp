@@ -9,7 +9,7 @@ chardet==3.0.4
 coverage==4.0.3
 cryptography==2.6.1
 DateTime==4.3
-Django==2.2.4
+Django==2.2.8
 django-filter==2.1.0
 django-silk==3.0.2
 djangorestframework==3.9.4
