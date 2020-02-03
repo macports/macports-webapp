@@ -1,5 +1,5 @@
 asn1crypto==0.24.0
-astroid==2.2.5
+astroid==2.3.3
 autopep8==1.4.4
 beautifulsoup4==4.7.1
 bs4==0.0.1
