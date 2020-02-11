@@ -12,7 +12,7 @@ DateTime==4.3
 Django==2.2.10
 django-filter==2.1.0
 django-silk==3.0.2
-djangorestframework==3.9.4
+djangorestframework==3.11.0
 filelock==3.0.12
 gprof2dot==2017.9.19
 gunicorn==20.0.4
