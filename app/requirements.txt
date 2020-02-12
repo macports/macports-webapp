@@ -14,7 +14,7 @@ django-filter==2.1.0
 django-silk==3.0.2
 djangorestframework==3.11.0
 filelock==3.0.12
-gprof2dot==2017.9.19
+gprof2dot==2019.11.30
 gunicorn==20.0.4
 html5lib==1.0.1
 idna==2.8
