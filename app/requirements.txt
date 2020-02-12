@@ -11,7 +11,7 @@ cryptography==2.8
 DateTime==4.3
 Django==2.2.10
 django-filter==2.1.0
-django-silk==3.0.2
+django-silk==4.0.0
 djangorestframework==3.11.0
 filelock==3.0.12
 gprof2dot==2019.11.30
