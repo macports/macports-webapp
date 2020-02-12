@@ -35,7 +35,7 @@ pyOpenSSL==19.1.0
 python-coveralls==2.9.1
 python-dateutil==2.8.0
 pytz==2018.9
-PyYAML==5.1.1
+PyYAML==5.3
 requests==2.22.0
 Send2Trash==1.5.0
 six==1.12.0
