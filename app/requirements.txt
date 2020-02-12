@@ -19,7 +19,7 @@ gunicorn==20.0.4
 html5lib==1.0.1
 idna==2.8
 importlib-metadata==0.17
-isort==4.3.20
+isort==4.3.21
 Jinja2==2.10.1
 lazy-object-proxy==1.4.1
 MarkupSafe==1.1.1
