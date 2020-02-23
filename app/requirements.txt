@@ -32,7 +32,7 @@ pycparser==2.19
 Pygments==2.4.2
 pylint==2.4.4
 pyOpenSSL==19.1.0
-python-coveralls==2.9.1
+python-coveralls==2.9.3
 python-dateutil==2.8.0
 pytz==2018.9
 PyYAML==5.3
