@@ -4,7 +4,7 @@ autopep8==1.5
 beautifulsoup4==4.7.1
 bs4==0.0.1
 certifi==2019.3.9
-cffi==1.12.2
+cffi==1.14.0
 chardet==3.0.4
 coverage==4.0.3
 cryptography==2.8
