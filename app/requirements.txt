@@ -49,5 +49,5 @@ virtualenv==20.0.5
 webencodings==0.5.1
 whitenoise==4.1.2
 wrapt==1.11.1
-zipp==2.2.0
+zipp==3.1.0
 zope.interface==4.6.0
