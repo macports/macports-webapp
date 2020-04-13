@@ -1,6 +1,7 @@
 import django_filters
 
-from .models import BuildHistory, Port
+from .models import BuildHistory
+from port_detail.models import Port
 
 
 class BuildHistoryFilter(django_filters.FilterSet):

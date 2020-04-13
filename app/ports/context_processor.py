@@ -1,4 +1,5 @@
-from ports.models import LastPortIndexUpdate, Submission, BuildHistory
+from ports.models import Submission, BuildHistory
+from port_detail.models import LastPortIndexUpdate
 
 
 def footer_processor(request):
