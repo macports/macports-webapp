@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from ports.models import Port, Maintainer, Variant, BuildHistory, Builder
+from ports.models import BuildHistory, Builder
+from port_detail.models import Port, Maintainer, Variant
 
 
 class MaintainerSerializer(serializers.ModelSerializer):
