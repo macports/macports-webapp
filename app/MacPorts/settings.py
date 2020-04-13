@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'ports',
+    'port_detail',
     'django_filters',
     'api_v1',
 ]
