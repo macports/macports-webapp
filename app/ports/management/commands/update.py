@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from ports.models import Port
+from port_detail.models import Port
 
 
 class Command(BaseCommand):
