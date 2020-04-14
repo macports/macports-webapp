@@ -1,6 +1,4 @@
 import os
-import subprocess
-import json
 
 from django.core.management.base import BaseCommand
 

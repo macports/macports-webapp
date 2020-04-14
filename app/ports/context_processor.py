@@ -1,4 +1,5 @@
-from ports.models import Submission, BuildHistory
+from ports.models import Submission
+from builds.models import BuildHistory
 from port_detail.models import LastPortIndexUpdate
 
 

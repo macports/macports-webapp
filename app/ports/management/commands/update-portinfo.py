@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 
 from parsing_scripts import git_update
-from ports.models import Port, LastPortIndexUpdate
+from port_detail.models import Port, LastPortIndexUpdate
 
 
 class Command(BaseCommand):
