@@ -4,12 +4,13 @@ from distutils.version import LooseVersion
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Subquery, Count, Case, IntegerField, When, Q
+from django.db.models import Subquery, Count
 from django.db.models.functions import TruncMonth, Lower
 
 from port_detail.models import Port, Maintainer, Dependency, Variant
-from ports.models import BuildHistory, Builder, Submission, PortInstallation
-from ports.filters import BuildHistoryFilter
+from builds.models import BuildHistory, Builder
+from ports.models import Submission, PortInstallation
+from builds.filters import BuildHistoryFilter
 from ports.validators import validate_stats_days, ALLOWED_DAYS_FOR_STATS
 from ports.utilities.sort_by_version import sort_list_of_dicts_by_version
 

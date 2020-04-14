@@ -35,8 +35,7 @@ urlpatterns = [
     path('ports/load_tickets/', views.tickets, name='trac_tickets'),
     path('ports/category/<slug:cat>/', views.categorylist, name='category_list'),
     url(r'^ports/variant/(?P<variant>[a-zA-Z0-9_.]+)/$', views.variantlist, name='variant_list'),
-    path('ports/all_builds/filter/', views.all_builds_filter, name='all_builds_filter'),
-    path('ports/all_builds/', views.all_builds_view, name='all_builds'),
+    path('ports/all_builds/', include('builds.urls')),
     path('api/v1/', include('api_v1.urls')),
     path('about/', views.about_page, name='about_page'),
 ]
