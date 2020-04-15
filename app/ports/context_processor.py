@@ -1,4 +1,4 @@
-from ports.models import Submission
+from stats.models import Submission
 from builds.models import BuildHistory
 from port_detail.models import LastPortIndexUpdate
 

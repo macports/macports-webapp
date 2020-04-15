@@ -184,7 +184,7 @@
     <hr>
     <br>
     {% csrf_token %}
-    <form id="duration-selector" class="bg-light p-2 form form-inline justify-content-center" method="get" action="{% url 'stats_home' %}#duration-selector">
+    <form id="duration-selector" class="bg-light p-2 form form-inline justify-content-center" method="get" action="{% url 'stats' %}#duration-selector">
         <lable for="days">Displaying statistics for <strong>{{ users_count_in_duration }} users</strong> who made submissions during:</lable>
         <select onchange="this.form.submit()" id="days" name="days" class="form-control mx-2">
             {% for i in allowed_days|slice:"1:" %}

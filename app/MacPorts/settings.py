@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'ports',
     'port_detail',
     'builds',
+    'stats',
     'django_filters',
     'api_v1',
 ]
