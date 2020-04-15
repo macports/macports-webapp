@@ -9,10 +9,10 @@ from django.db.models.functions import TruncMonth, Lower
 
 from port_detail.models import Port, Maintainer, Dependency, Variant
 from builds.models import BuildHistory, Builder
-from ports.models import Submission, PortInstallation
+from stats.models import Submission, PortInstallation
 from builds.filters import BuildHistoryFilter
-from ports.validators import validate_stats_days, ALLOWED_DAYS_FOR_STATS
-from ports.utilities.sort_by_version import sort_list_of_dicts_by_version
+from stats.validators import validate_stats_days, ALLOWED_DAYS_FOR_STATS
+from stats.utilities.sort_by_version import sort_list_of_dicts_by_version
 
 
 def port_detail(request, name, slug="summary"):

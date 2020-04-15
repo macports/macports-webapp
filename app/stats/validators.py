@@ -1,4 +1,3 @@
-# These are different custom validators utilised mostly in ports.views
 import itertools
 
 ALLOWED_DAYS_FOR_STATS = [0, 7, 30, 90, 180, 365]
