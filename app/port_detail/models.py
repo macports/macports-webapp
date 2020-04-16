@@ -4,7 +4,7 @@ import subprocess
 
 from django.db import models, transaction
 
-import MacPorts.config as config
+import config as config
 
 
 class Category(models.Model):

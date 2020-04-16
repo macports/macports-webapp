@@ -1,5 +1,5 @@
 import os
-from MacPorts.settings import BASE_DIR
+from settings import BASE_DIR
 
 # data directory
 # the data required by app- portindex.json, macports-ports repository etc. live here

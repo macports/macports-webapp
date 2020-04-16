@@ -1,10 +1,8 @@
-import os
-
 from django.test import TransactionTestCase, Client
 from django.urls import reverse
 
 from ports.models import Dependency, Port
-from MacPorts.config import TEST_PORTINDEX_JSON
+from config import TEST_PORTINDEX_JSON
 
 
 class TestDependencies(TransactionTestCase):

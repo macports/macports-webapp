@@ -1,10 +1,8 @@
-import os
-
 from django.test import TransactionTestCase
 from django.core.management import call_command
 
 from ports.models import Port
-from MacPorts.config import TEST_PORTINDEX_JSON
+from config import TEST_PORTINDEX_JSON
 
 
 class TestUpdatePortinfo(TransactionTestCase):
