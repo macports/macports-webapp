@@ -3,8 +3,7 @@ import os
 import subprocess
 
 from django.db import models, transaction
-
-import config as config
+import config
 
 
 class Category(models.Model):
@@ -64,6 +63,7 @@ class Port(models.Model):
 
         @transaction.atomic
         def load_ports_and_maintainers_table(ports):
+            from maintainers.models import Maintainer
             port_id = 1
             for port in ports:
 
@@ -316,23 +316,6 @@ class Dependency(models.Model):
 class Variant(models.Model):
     port = models.ForeignKey(Port, on_delete=models.CASCADE, related_name='ports')
     variant = models.CharField(max_length=100, default='')
-
-
-class Maintainer(models.Model):
-    name = models.CharField(max_length=50, default='')
-    domain = models.CharField(max_length=50, default='')
-    github = models.CharField(max_length=50, default='')
-    ports = models.ManyToManyField(Port, related_name='maintainers')
-
-    objects = PortManager()
-
-    class Meta:
-        unique_together = [['name', 'domain', 'github']]
-
-        indexes = [
-            models.Index(fields=['github']),
-            models.Index(fields=['name', 'domain'])
-        ]
 
 
 class LastPortIndexUpdate(models.Model):
