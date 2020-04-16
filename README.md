@@ -6,10 +6,10 @@ This is a web application that:
  1. Displays general information about all the ports.
  2. Fetches and displays build history of the ports.
  3. Collects and displays installation statistics (system configurations and installed ports) from users who opt-in by
-    installing the port `mpstats-gsoc`.
+    installing the port `mpstats`.
     
 It aims at being an all-one-place for users to find relevant ports and for maintainers to monitor their ports and
-understand their user base.
+understand their user base. The app is running in production at [ports.macports.org](https://ports.macports.org).
  
 More info at [docs/1-INFORMATION.md](docs/1-INTRODUCTION.md)
 
@@ -18,8 +18,6 @@ More info at [docs/1-INFORMATION.md](docs/1-INTRODUCTION.md)
 The web application is based on the [Django Framework](http://djangoproject.com) utilising a PostgreSQL database.
 
 The app is supposed to be deployed in a docker container with nginx and uWSGI serving the content.
-
-**Demo**: [AWS EC2](http://ec2-52-34-234-111.us-west-2.compute.amazonaws.com) (running a docker container)
  
 This web application has been implemented during the [Google Summer of Code 2019](https://summerofcode.withgoogle.com) 
 mentored by the [MacPorts](https://www.macports.org) organisation.

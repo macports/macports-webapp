@@ -9,10 +9,9 @@ ___
 
 The web application is based on the [Django Framework](http://djangoproject.com) utilising a PostgreSQL database.
 
-The app is supposed to be deployed in a docker container with nginx and uWSGI serving the content.
+The app is supposed to be deployed in a docker container with nginx and uWSGI serving the content. It is running in production
+at [ports.macports.org](https://ports.macports.org).
 
-**Demo**: [Heroku](https://frozen-falls-98471.herokuapp.com), [AWS EC2](http://ec2-52-34-234-111.us-west-2.compute.amazonaws.com)
-(running a docker container)
 ___
 
 
