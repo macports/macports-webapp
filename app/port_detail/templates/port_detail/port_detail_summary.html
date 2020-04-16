@@ -22,9 +22,9 @@
                         {% if maintainers.all|length > 0 %}
                         {% for maintainer in maintainers %}
                                 {% if maintainer.github %}
-                                    <a href="/maintainer/github/{{ maintainer.github }}">{{ maintainer.github }}</a>{% if not forloop.last %},{% endif %}
+                                    <a href="/maintainers/github/{{ maintainer.github }}">{{ maintainer.github }}</a>{% if not forloop.last %},{% endif %}
                                 {% else %}
-                                    <a href="/maintainer/email/{{ maintainer.name }}__{{ maintainer.domain }}">{{ maintainer.name }}</a>{% if not forloop.last %},{% endif %}
+                                    <a href="/maintainers/email/{{ maintainer.name }}__{{ maintainer.domain }}">{{ maintainer.name }}</a>{% if not forloop.last %},{% endif %}
                                 {% endif %}
                         {% endfor %}
                         {% else %}
