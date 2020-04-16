@@ -2,7 +2,7 @@ import os
 
 from django.core.management.base import BaseCommand
 
-from MacPorts.config import TEST_SAMPLE_DATA, PORTINDEX2JSON, TEST_PORTINDEX_JSON, TCLSH
+from config import TEST_SAMPLE_DATA, PORTINDEX2JSON, TEST_PORTINDEX_JSON, TCLSH
 
 os.chdir(TEST_SAMPLE_DATA)
 

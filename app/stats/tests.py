@@ -2,7 +2,7 @@ from django.test import TransactionTestCase, Client
 from django.urls import reverse
 
 from port_detail.models import Port
-from MacPorts.config import TEST_PORTINDEX_JSON
+from config import TEST_PORTINDEX_JSON
 
 
 class TestURLsStats(TransactionTestCase):
