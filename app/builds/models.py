@@ -5,7 +5,7 @@ import datetime
 
 from django.db import models
 
-from MacPorts.config import BUILDERS_JSON_URL, BUILDBOT_URL_PREFIX, BUILDS_FETCHED_COUNT
+from config import BUILDERS_JSON_URL, BUILDBOT_URL_PREFIX, BUILDS_FETCHED_COUNT
 
 
 class Builder(models.Model):

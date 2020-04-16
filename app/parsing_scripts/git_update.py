@@ -7,8 +7,8 @@ import shutil
 import django
 
 from ports.models import LastPortIndexUpdate
-from MacPorts.config import MACPORTS_PORTS_DIR, MACPORTS_PORTS_URL, MACPORTS_PORTS, DATA_DIR, GIT
-from MacPorts.settings import BASE_DIR
+from config import MACPORTS_PORTS_DIR, MACPORTS_PORTS_URL, MACPORTS_PORTS, DATA_DIR, GIT
+from settings import BASE_DIR
 
 sys.path.append(BASE_DIR)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'MacPorts.settings'

@@ -5,7 +5,7 @@ from django.test import TransactionTestCase
 
 from parsing_scripts import git_update
 from ports.models import LastPortIndexUpdate
-from MacPorts.config import MACPORTS_PORTS_DIR
+from config import MACPORTS_PORTS_DIR
 
 
 class TestGitUpdates(TransactionTestCase):
