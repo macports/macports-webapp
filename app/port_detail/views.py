@@ -1,6 +1,8 @@
 import datetime
+import requests
 from distutils.version import LooseVersion
 
+from bs4 import BeautifulSoup
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -149,4 +151,28 @@ def port_detail_stats(request):
         'start_date': start_date,
         'users_in_duration_count': submissions.count(),
         'allowed_days': ALLOWED_DAYS_FOR_STATS
+    })
+
+
+# Respond to ajax call for loading tickets
+def port_detail_tickets(request):
+    port_name = request.GET.get('port_name')
+    URL = "https://trac.macports.org/report/16?max=1000&PORT=(%5E%7C%5Cs){}($%7C%5Cs)".format(port_name)
+    response = requests.get(URL)
+    Soup = BeautifulSoup(response.content, 'html5lib')
+    all_tickets = []
+    for row in Soup.findAll('tr', attrs={'class': ['color2-even', 'color2-odd', 'color1-even', 'color1-odd']}):
+        srow = row.find('td', attrs={'class': 'summary'})
+        idrow = row.find('td', attrs={'class': 'ticket'})
+        typerow = row.find('td', attrs={'class': 'type'})
+        ticket = {}
+        ticket['url'] = srow.a['href']
+        ticket['title'] = srow.a.text
+        ticket['id'] = idrow.a.text
+        ticket['type'] = typerow.text
+        all_tickets.append(ticket)
+
+    return render(request, 'port_detail/port_detail_tickets.html', {
+        'portname': port_name,
+        'tickets': all_tickets,
     })

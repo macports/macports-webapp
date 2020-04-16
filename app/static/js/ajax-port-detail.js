@@ -44,7 +44,7 @@ function display(data, textStatus, jqXHR) {
 function loadTickets() {
     $.ajax({
         type: 'GET',
-        url: '/ports/load_tickets/',
+        url: '/port/ajax-call/tickets',
         data: {
             'port_name': $('#port_name').text(),
             'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
