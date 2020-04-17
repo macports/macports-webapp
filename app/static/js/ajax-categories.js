@@ -9,7 +9,7 @@ $(function () {
                 'categories__name': $('#categories__name').text(),
                 'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
             };
-            var url = "/ports/filter/category/";
+            var url = "/categories/search/";
             ajaxCallSearchWithin(url, data);
         }, 1000);
     });

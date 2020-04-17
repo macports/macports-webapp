@@ -41,11 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
-    'ports',
     'port_detail',
     'builds',
     'stats',
     'maintainers',
+    'categories',
+    'variants',
     'django_filters',
     'api_v1',
 ]
@@ -76,7 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'ports.context_processor.footer_processor'
+                'context_processor.footer_processor'
             ],
         },
     },
