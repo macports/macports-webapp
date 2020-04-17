@@ -68,7 +68,7 @@ def search_ports_in_maintainer(request):
         search_in = name
 
     filtered_ports = PortFilterByMultiple(request.GET, queryset=Port.get_active.all()).qs
-    return render(request, 'ports/ajax-filters/../templates/filtered_table.html', {
+    return render(request, 'filtered_table.html', {
         'ports': filtered_ports,
         'query': query,
         'search_in': search_in,
