@@ -9,7 +9,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery, Count
 from django.db.models.functions import TruncMonth, Lower
 
-from port_detail.models import Port, Dependency, Variant
+from port_detail.models import Port, Dependency
+from variants.models import Variant
 from maintainers.models import Maintainer
 from builds.models import BuildHistory, Builder
 from stats.models import Submission, PortInstallation

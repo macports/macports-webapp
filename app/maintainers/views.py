@@ -30,7 +30,7 @@ def get_ports_of_maintainers(maintainers, request):
 def maintainer_detail_github(request, github_handle):
     maintainers = Maintainer.objects.filter(github=github_handle)
     if maintainers.count() == 0:
-        return render(request, '404.html')
+        return render(request, '../templates/404.html')
     ports, all_ports_num = get_ports_of_maintainers(maintainers, request)
 
     return render(request, 'maintainers/maintainerdetail.html', {
@@ -45,7 +45,7 @@ def maintainer_detail_github(request, github_handle):
 def maintainer_detail_email(request, name, domain):
     maintainers = Maintainer.objects.filter(name=name, domain=domain)
     if maintainers.count() == 0:
-        return render(request, '404.html')
+        return render(request, '../templates/404.html')
     ports, all_ports_num = get_ports_of_maintainers(maintainers, request)
 
     return render(request, 'maintainers/maintainerdetail.html', {
@@ -68,7 +68,7 @@ def search_ports_in_maintainer(request):
         search_in = name
 
     filtered_ports = PortFilterByMultiple(request.GET, queryset=Port.get_active.all()).qs
-    return render(request, 'ports/ajax-filters/filtered_table.html', {
+    return render(request, 'ports/ajax-filters/../templates/filtered_table.html', {
         'ports': filtered_ports,
         'query': query,
         'search_in': search_in,

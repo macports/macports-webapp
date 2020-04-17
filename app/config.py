@@ -27,6 +27,6 @@ BUILDBOT_URL_PREFIX = "https://build.macports.org"
 BUILDS_FETCHED_COUNT = 20
 
 # configuration for tests
-TEST_SAMPLE_DATA = os.path.join(BASE_DIR, 'ports', 'tests', 'sample_data')
+TEST_SAMPLE_DATA = os.path.join(BASE_DIR, 'data', 'sample_data')
 TEST_PORTINDEX_JSON = os.path.join(TEST_SAMPLE_DATA, 'portindex.json')
 PORTINDEX2JSON = os.path.join(TEST_SAMPLE_DATA, 'macports-contrib', 'portindex2json', 'portindex2json.tcl')

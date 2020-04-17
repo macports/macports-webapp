@@ -9,7 +9,7 @@ $(function () {
                 'variant': $('#search_in').text(),
                 'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
             };
-            var url = "/ports/filter/variant/";
+            var url = "/variants/search/";
             ajaxCallSearchWithin(url, data);
         }, 1000);
     });

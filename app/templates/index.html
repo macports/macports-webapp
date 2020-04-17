@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+{% load staticfiles %}
+
+{% block title %}Ports |{% endblock %}
+
+{% block head_scripts %}
+    <script src="{% static 'js/ajax-search.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <br>
+    <form onSubmit="clearTimeout(requestTimer); ajaxCallSearch(); return false" class="shadow-sm p-3 rounded">
+        {% csrf_token %}
+        <div class="form-group mb-0">
+            <label class="radio-inline mr-3"><input class="mr-2" onclick="switch_search()" type="radio" name="search_by" value="name" checked>Search by port-name</label>
+            <label class="radio-inline"><input class="mr-2" onclick="switch_search()" type="radio" name="search_by" value="description">Search by description</label>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="search" name="search" placeholder="Search Ports" autofocus>
+        </div>
+    </form>
+    <br>
+    <div class="container" id="main-content">
+        <div class="row">
+        <div class="col-lg-8 shadow-sm pt-2">
+            <h3 class="text-secondary border-bottom border-secondary">Browse by category</h3>
+                <div class="category-grid-container">
+                    {% for cat in categories %}
+                    <div class="category-grid-item">
+                        <a class="float-left" href="{% url 'category' cat.name %}">{{ cat.name }}</a>
+                        <span class="float-right ml-4 text-muted">{{ cat.ports_count }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+        <br>
+        </div>
+        <div class="col-lg-4">
+            <div class="bg-secondary pl-2 pt-1">
+                <h5 style="color: white;">Top Installations</h5>
+                <p class="text-light">Requested ports in last 30 days</p>
+            </div>
+            <div class="border" style="padding: 12px">
+                <ul>
+                    {% for top_port in top_ports %}
+                    <li><a href="{% url 'port_detail' top_port.port %}">{{ top_port.port }}</a><span class="float-right">{{ top_port.num }}</span> </li>
+                    {% endfor %}
+                </ul>
+                <a href="{% url 'stats_port_installations' %}">More...</a>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div id="filtered_table">
+    </div>
+
+
+{% endblock %}
+
+{% block script %}
+{% endblock %}

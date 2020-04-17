@@ -10,7 +10,7 @@ $(function () {
                 'maintainers__github': $('#maintainers__github').text(),
                 'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
             };
-            var url = "/maintainers/filter/";
+            var url = "/maintainers/search/";
             ajaxCallSearchWithin(url, data);
         }, 1000);
     });
