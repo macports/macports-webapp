@@ -6,7 +6,7 @@ import shutil
 
 import django
 
-from ports.models import LastPortIndexUpdate
+from ports import LastPortIndexUpdate
 from config import MACPORTS_PORTS_DIR, MACPORTS_PORTS_URL, MACPORTS_PORTS, DATA_DIR, GIT
 from settings import BASE_DIR
 

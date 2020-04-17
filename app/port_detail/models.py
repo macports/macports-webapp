@@ -6,10 +6,6 @@ from django.db import models, transaction
 import config
 
 
-class Category(models.Model):
-    name = models.TextField(primary_key=True)
-
-
 class PortManager(models.Manager):
     def get_by_natural_key(self, name):
         return self.get(name=name)
@@ -26,7 +22,7 @@ class Port(models.Model):
     homepage = models.URLField(default='')
     epoch = models.BigIntegerField(default=0)
     platforms = models.TextField(null=True)
-    categories = models.ManyToManyField(Category, related_name='category', db_index=True)
+    categories = models.ManyToManyField('categories.Category', related_name='category', db_index=True)
     long_description = models.TextField(default='')
     version = models.CharField(max_length=100, default='')
     revision = models.IntegerField(default=0)
@@ -48,6 +44,8 @@ class Port(models.Model):
 
         # Add All the Categories to the Database using bulk_create
         def load_categories_table(ports):
+            from categories.models import Category
+
             categories = set()
             for port in ports:
                 try:
@@ -64,6 +62,8 @@ class Port(models.Model):
         @transaction.atomic
         def load_ports_and_maintainers_table(ports):
             from maintainers.models import Maintainer
+            from variants.models import Variant
+
             port_id = 1
             for port in ports:
 
@@ -161,6 +161,10 @@ class Port(models.Model):
 
     @classmethod
     def update(cls, data):
+        from categories.models import Category
+        from maintainers.models import Maintainer
+        from variants.models import Variant
+
         def open_portindex_json(path):
             with open(path, "r", encoding='utf-8') as file:
                 data = json.load(file)
@@ -311,11 +315,6 @@ class Dependency(models.Model):
         indexes = [
             models.Index(fields=['port_name'])
         ]
-
-
-class Variant(models.Model):
-    port = models.ForeignKey(Port, on_delete=models.CASCADE, related_name='ports')
-    variant = models.CharField(max_length=100, default='')
 
 
 class LastPortIndexUpdate(models.Model):

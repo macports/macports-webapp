@@ -32,7 +32,7 @@ function changePageState(e, state) {
 function tabClick(e, slug) {
     changePageState(e, slug);
     $('#tickets-box').hide();
-    ajaxCall("/port/ajax-call/" + slug);
+    ajaxCall("/port/ajax-call/" + slug + "/");
 }
 
 function display(data, textStatus, jqXHR) {
