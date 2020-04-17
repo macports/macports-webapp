@@ -2,7 +2,7 @@ function runAllBuildsAjax(page) {
     var currentBuildFilter = null;
     currentBuildFilter = $.ajax({
             type: 'GET',
-            url: '/ports/all_builds/filter/',
+            url: '/all_builds/filter/',
             data: {
                 'builder_name__display_name': $('#builder-filter').val(),
                 'status': $('#status-filter').val(),
