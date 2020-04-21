@@ -3,12 +3,15 @@ var requestTimer;
 function ajaxCallSearch() {
     var data = {};
     var currentSearchRequest = null;
-    data[$("input[name=search_by]:checked").val()] = $('#search').val();
+    var search = $('#search').val();
+    data[$("input[name=search_by]:checked").val()] = search;
     data['csrfmiddlewaretoken'] = $("input[name=csrfmiddlewaretoken]").val();
     data['search_by'] = $("input[name=search_by]:checked").val();
-    data['search_text'] = $('#search').val()
+    data['search_text'] = search;
+    
+    updateLocation();
 
-    if ($('#search').val()) {
+    if (search) {
         $('#filtered_table').show();
         $('#main-content').hide();
         currentSearchRequest = $.ajax({
@@ -33,12 +36,27 @@ function ajaxCallSearch() {
 }
 
 $(function () {
-    $('#search').keydown(function () {
-        clearTimeout(requestTimer);
-        requestTimer = setTimeout(function () {
-            ajaxCallSearch();
-        }, 1000);
-    });
+    var params = new URLSearchParams(location.search.substring(1));
+    var search = params.get('search');
+    var defaultSearchBy = $("input[name=search_by]:checked").val();
+    var otherSearchBy = $("input[name=search_by]:not(:checked)").val();
+    var searchBy = params.get('search_by') === defaultSearchBy ? defaultSearchBy : otherSearchBy;
+    
+    $('#search')
+        .keydown(function () {
+            clearTimeout(requestTimer);
+            requestTimer = setTimeout(function () {
+                ajaxCallSearch();
+            }, 1000);
+        })
+        .val(search);    
+    $("input[name=search_by][value=" + searchBy + "]").prop("checked", true);
+    
+    updateLocation(true);
+    
+    if (search) {
+        ajaxCallSearch();
+    }
 });
 
 function searchSuccess(data, textStatus, jqXHR) {
@@ -50,9 +68,28 @@ function cancel_search() {
     $('#filtered_table').hide();
     $('#main-content').show();
     $('#search').val('');
+    updateLocation();
 }
 
 function switch_search() {
-    ajaxCallSearch()
+    ajaxCallSearch();
+}
+
+function updateLocation(replace) {
+    var url = new URL(location);
+    var search = $('#search').val();
+    if (search) {
+        url.searchParams.set('search', search);
+        url.searchParams.set('search_by', $("input[name=search_by]:checked").val());
+    } else {
+        url.searchParams.delete('search');
+        url.searchParams.delete('search_by');
+    }
+    
+    if (replace) {
+        history.replaceState(null, '', url.href);
+    } else {
+        history.pushState(null, '', url.href);
+    }
 }
 
