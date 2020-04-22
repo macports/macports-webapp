@@ -40,7 +40,7 @@ $(function () {
     var search = params.get('search');
     var defaultSearchBy = $("input[name=search_by]:checked").val();
     var otherSearchBy = $("input[name=search_by]:not(:checked)").val();
-    var searchBy = params.get('search_by') === defaultSearchBy ? defaultSearchBy : otherSearchBy;
+    var searchBy = params.get('search_by') === otherSearchBy ? otherSearchBy : defaultSearchBy;
     
     $('#search')
         .keydown(function () {
