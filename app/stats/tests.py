@@ -1,7 +1,7 @@
 from django.test import TransactionTestCase, Client
 from django.urls import reverse
 
-from port_detail.models import Port
+from port.models import Port
 from config import TEST_PORTINDEX_JSON
 
 

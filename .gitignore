@@ -36,7 +36,6 @@ __pycache__/
 .Python
 bmenv/
 env/
-build/
 develop-eggs/
 dist/
 downloads/
