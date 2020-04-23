@@ -1,6 +1,6 @@
 from stats.models import Submission
-from builds.models import BuildHistory
-from port_detail.models import LastPortIndexUpdate
+from build.models import BuildHistory
+from port.models import LastPortIndexUpdate
 
 
 def footer_processor(request):

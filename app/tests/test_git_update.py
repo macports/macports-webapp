@@ -4,7 +4,7 @@ import shutil
 from django.test import TransactionTestCase
 
 from parsing_scripts import git_update
-from port_detail.models import LastPortIndexUpdate
+from port.models import LastPortIndexUpdate
 from config import MACPORTS_PORTS_DIR
 
 

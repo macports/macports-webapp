@@ -20,12 +20,12 @@ import views
 urlpatterns = [
     path('', views.index, name='home'),
     path('statistics/', include('stats.urls')),
-    path('maintainers/', include('maintainers.urls')),
-    path('port/', include('port_detail.urls')),
-    path('categories/', include('categories.urls')),
-    path('variants/', include('variants.urls')),
+    path('maintainers/', include('maintainer.urls')),
+    path('port/', include('port.urls')),
+    path('categories/', include('category.urls')),
+    path('variants/', include('variant.urls')),
     path('ports/search/', views.search, name='ports_search'),
-    path('all_builds/', include('builds.urls')),
+    path('all_builds/', include('build.urls')),
     path('api/v1/', include('api_v1.urls')),
     path('about/', views.about_page, name='about_page'),
 ]

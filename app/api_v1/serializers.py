@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
-from builds.models import BuildHistory, Builder
-from port_detail.models import Port
-from variants.models import Variant
-from maintainers.models import Maintainer
+from build.models import BuildHistory, Builder
+from port.models import Port
+from variant.models import Variant
+from maintainer.models import Maintainer
 
 
 class MaintainerSerializer(serializers.ModelSerializer):
