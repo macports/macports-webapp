@@ -22,7 +22,7 @@ class Port(models.Model):
     homepage = models.URLField(default='')
     epoch = models.BigIntegerField(default=0)
     platforms = models.TextField(null=True)
-    categories = models.ManyToManyField('category.Category', related_name='category', db_index=True)
+    categories = models.ManyToManyField('category.Category', related_name='ports', db_index=True)
     long_description = models.TextField(default='')
     version = models.CharField(max_length=100, default='')
     revision = models.IntegerField(default=0)
@@ -34,6 +34,11 @@ class Port(models.Model):
 
     objects = PortManager()
     get_active = ActivePortsManager()
+
+    class Meta:
+        db_table = "port"
+        verbose_name = "Port"
+        verbose_name_plural = "Ports"
 
     @classmethod
     def load(cls, data):
@@ -310,16 +315,23 @@ class Dependency(models.Model):
     type = models.CharField(max_length=100)
 
     class Meta:
+        db_table = "dependency"
+        verbose_name = "Dependency"
+        verbose_name_plural = "Dependencies"
         unique_together = [['port_name', 'type']]
-
         indexes = [
             models.Index(fields=['port_name'])
         ]
 
 
 class LastPortIndexUpdate(models.Model):
-    git_commit_hash = models.CharField(max_length=50)
-    updated_at = models.DateTimeField(auto_now=True)
+    git_commit_hash = models.CharField(max_length=50, verbose_name="Commit hash till which update was done")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Timestamp when update completed")
+
+    class Meta:
+        db_table = "portindex_update"
+        verbose_name = "PortIndex Update"
+        verbose_name_plural = "PortIndex Updates"
 
     @classmethod
     def update_or_create_first_object(cls, commit_hash):

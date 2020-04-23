@@ -22,6 +22,9 @@ class Submission(models.Model):
     timestamp = models.DateTimeField()
 
     class Meta:
+        db_table = "submission"
+        verbose_name = "Statistics Submission"
+        verbose_name_plural = "Statistics Submissions"
         indexes = [
             models.Index(fields=['timestamp']),
             models.Index(fields=['user']),
@@ -69,6 +72,9 @@ class PortInstallation(models.Model):
     requested = models.BooleanField(default=False)
 
     class Meta:
+        db_table = "installed_ports"
+        verbose_name = "Installed Port"
+        verbose_name_plural = "Installed Ports"
         indexes = [
             models.Index(fields=['submission']),
             models.Index(fields=['port']),

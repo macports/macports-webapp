@@ -9,8 +9,13 @@ from config import BUILDERS_JSON_URL, BUILDBOT_URL_PREFIX, BUILDS_FETCHED_COUNT
 
 
 class Builder(models.Model):
-    name = models.CharField(max_length=100, db_index=True)
-    display_name = models.CharField(max_length=20, db_index=True, default='')
+    name = models.CharField(max_length=100, db_index=True, verbose_name="Name of the builder as per Buildbot")
+    display_name = models.CharField(max_length=20, db_index=True, default='', verbose_name="Simplified builder name: 10.XX")
+
+    class Meta:
+        db_table = "builder"
+        verbose_name = "Builder"
+        verbose_name_plural = "Builders"
 
 
 class BuildHistory(models.Model):
@@ -23,6 +28,9 @@ class BuildHistory(models.Model):
     watcher_id = models.IntegerField()
 
     class Meta:
+        db_table = "builds"
+        verbose_name = "Build"
+        verbose_name_plural = "Builds"
         indexes = [
             models.Index(fields=['port_name', 'builder_name', '-build_id']),
             models.Index(fields=['port_name', 'builder_name', '-time_start']),
