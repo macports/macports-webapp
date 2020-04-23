@@ -3,10 +3,10 @@ import datetime
 from django.shortcuts import render
 from django.db.models import Subquery, Count, Q
 
-from categories.models import Category
-from port_detail.models import Port
+from category.models import Category
+from port.models import Port
 from stats.models import Submission, PortInstallation
-from port_detail.filters import PortFilterByMultiple
+from port.filters import PortFilterByMultiple
 
 
 def index(request):
