@@ -35,6 +35,9 @@ class Port(models.Model):
     objects = PortManager()
     get_active = ActivePortsManager()
 
+    def __str__(self):
+        return '%s' % self.name
+
     class Meta:
         db_table = "port"
         verbose_name = "Port"

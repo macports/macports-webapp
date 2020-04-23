@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from variant.models import Variant
+
+
+@admin.register(Variant)
+class Variant(admin.ModelAdmin):
+    list_display = ("port", "variant")
