@@ -33,7 +33,6 @@ install:
 
 # run test scripts
 script:
-  - python manage.py makemigrations --noinput
   - python manage.py migrate --noinput
   - python manage.py collectstatic --noinput
   - coverage run --source=. manage.py test
