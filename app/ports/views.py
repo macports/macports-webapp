@@ -86,8 +86,8 @@ def portdetail(request, name, slug="summary"):
         if tab not in allowed_tabs:
             return HttpResponse("Invalid tab requested. Expected values: {}".format(allowed_tabs))
 
-        all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name__display_name', '-time_start').distinct('port_name', 'builder_name__display_name')
-        port_latest_builds = list(BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), port_name__iexact=name).values('builder_name__name', 'builder_name__display_name', 'build_id', 'status'))
+        all_latest_builds = BuildHistory.objects.all().select_related('builder_name').order_by('port_name', 'builder_name__display_name', '-time_start').distinct('port_name', 'builder_name__display_name')
+        port_latest_builds = list(BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), port_name__iexact=name).select_related('builder_name').values('builder_name__name', 'builder_name__display_name', 'build_id', 'status'))
 
         builders = list(Builder.objects.all().order_by('display_name').distinct('display_name').values_list('display_name', flat=True))
 
