@@ -467,12 +467,9 @@ def tickets(request):
         srow = row.find('td', attrs={'class': 'summary'})
         idrow = row.find('td', attrs={'class': 'ticket'})
         typerow = row.find('td', attrs={'class': 'type'})
-        ticket = {}
-        ticket['url'] = srow.a['href']
-        ticket['title'] = srow.a.text
-        ticket['id'] = idrow.a.text
-        ticket['type'] = typerow.text
+        ticket = {'url': srow.a['href'], 'title': srow.a.text, 'id': idrow.a.text, 'type': typerow.text}
         all_tickets.append(ticket)
+    all_tickets = sorted(all_tickets, key=lambda x: x['id'], reverse=True)
 
     return render(request, 'ports/ajax-filters/tickets.html', {
         'portname': port_name,
