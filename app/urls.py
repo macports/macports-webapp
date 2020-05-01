@@ -30,7 +30,7 @@ urlpatterns = [
         template='search/search.html',
         results_per_page=50
 
-    )),
+    ), name='search'),
     path('statistics/', include('stats.urls')),
     path('maintainers/', include('maintainer.urls')),
     path('port/', include('port.urls')),
