@@ -3,55 +3,42 @@
 
 {% block title %}Ports |{% endblock %}
 
-{% block head_scripts %}
-    <script src="{% static 'js/ajax-search.js' %}"></script>
-{% endblock %}
-
 {% block content %}
-    <br>
-    <form onSubmit="clearTimeout(requestTimer); ajaxCallSearch(); return false" class="shadow-sm p-3 rounded">
-        {% csrf_token %}
-        <div class="form-group mb-0">
-            <label class="radio-inline mr-3"><input class="mr-2" onclick="switch_search()" type="radio" name="search_by" value="name" checked>Search by port-name</label>
-            <label class="radio-inline"><input class="mr-2" onclick="switch_search()" type="radio" name="search_by" value="description">Search by description</label>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control" id="search" name="search" placeholder="Search Ports">
-        </div>
-    </form>
-    <br>
-    <div class="container" id="main-content">
-        <div class="row">
-        <div class="col-lg-8 shadow-sm pt-2">
-            <h3 class="text-secondary border-bottom border-secondary">Browse by category</h3>
-                <div class="category-grid-container">
-                    {% for cat in categories %}
-                    <div class="category-grid-item">
-                        <a class="float-left" href="{% url 'category' cat.name %}">{{ cat.name }}</a>
-                        <span class="float-right ml-4 text-muted">{{ cat.ports_count }}</span>
-                    </div>
-                    {% endfor %}
-                </div>
+    <div class="container text-center p-4" style="max-width: 800px">
+        <img src="{% static 'images/macports-logo.png' %}" class="img-fluid" style="max-width: 300px">
         <br>
+        <br>
+        <form method="get" action="/search/">
+            <div class="form-row">
+                <div class="col-10">
+                    <input type="text" class="form-control rounded-pill" id="q" name="q" placeholder="Search ports by name, description or maintainer" autofocus>
+                    <input type="hidden" value="on" name="maintainers">
+                    <input type="hidden" value="on" name="name">
+                    <input type="hidden" value="on" name="description">
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                </div>
         </div>
-        <div class="col-lg-4">
-            <div class="bg-secondary pl-2 pt-1">
-                <h5 style="color: white;">Top Installations</h5>
-                <p class="text-light">Requested ports in last 30 days</p>
-            </div>
-            <div class="border" style="padding: 12px">
+        </form>
+        <a class="btn btn-sm text-primary btn-link" href="{% url 'search' %}">Advanced search</a>
+        <a class="btn btn-sm text-primary btn-link" href="https://www.macports.org">MacPorts Home</a>
+        <a class="btn btn-sm text-primary btn-link" href="{% url 'search' %}">Install MacPorts</a>
+        <br>
+        <div class="row pt-3">
+            <div class="col-6 text-left">
+            <h5><ins>Popular ports</ins></h5>
                 <ul>
                     {% for top_port in top_ports %}
-                    <li><a href="{% url 'port_detail' top_port.port %}">{{ top_port.port }}</a><span class="float-right">{{ top_port.num }}</span> </li>
+                        <li><a href="{% url 'port_detail' top_port.port %}">{{ top_port.port }}</a></li>
                     {% endfor %}
                 </ul>
                 <a href="{% url 'stats_port_installations' %}">More...</a>
             </div>
-        </div>
-        </div>
-    </div>
+            <div class="col-6">
 
-    <div id="filtered_table">
+            </div>
+        </div>
     </div>
 
 
