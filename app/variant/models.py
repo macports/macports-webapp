@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Variant(models.Model):
@@ -9,3 +10,6 @@ class Variant(models.Model):
         db_table = "variant"
         verbose_name = "Variant"
         verbose_name_plural = "Variants"
+
+    def get_absolute_url(self):
+        return reverse('variant', args=[str(self.variant)])
