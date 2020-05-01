@@ -3,7 +3,7 @@ from django.urls import reverse
 
 
 class Variant(models.Model):
-    port = models.ForeignKey('port.Port', on_delete=models.CASCADE, related_name='ports')
+    port = models.ForeignKey('port.Port', on_delete=models.CASCADE, related_name='variants')
     variant = models.CharField(max_length=100, default='')
 
     class Meta:
