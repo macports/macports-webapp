@@ -37,7 +37,7 @@ urlpatterns = [
     path('categories/', include('category.urls')),
     path('variants/', include('variant.urls')),
     path('ports/search/', views.search, name='ports_search'),
-    path('all_builds/', include('build.urls')),
+    path('all_builds/', include('buildhistory.urls')),
     path('api/v1/', include('api_v1.urls')),
     path('about/', views.about_page, name='about_page'),
 ]

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from build import views
+from buildhistory import views
 
 urlpatterns = [
     path('', views.all_builds, name='all_builds'),

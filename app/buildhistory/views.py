@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery
 
-from build.models import BuildHistory, Builder
-from build.filters import BuildHistoryFilter
+from buildhistory.models import BuildHistory, Builder
+from buildhistory.filters import BuildHistoryFilter
 
 
 def all_builds(request):
@@ -13,7 +13,7 @@ def all_builds(request):
     builders.sort(key=LooseVersion, reverse=True)
     jump_to_page = request.GET.get('page', 1)
 
-    return render(request, 'build/all_builds.html', {
+    return render(request, 'buildhistory/all_builds.html', {
         'builders': builders,
         'jump_to_page': jump_to_page
     })
@@ -42,7 +42,7 @@ def all_builds_filter(request):
     except EmptyPage:
         result = paginated_builds.get_page(paginated_builds.num_pages)
 
-    return render(request, 'build/builds_filtered_table.html', {
+    return render(request, 'buildhistory/builds_filtered_table.html', {
         'builds': result,
         'builder': builder,
         'status': status,

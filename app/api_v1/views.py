@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from port.models import Port
-from build.models import BuildHistory
+from buildhistory.models import BuildHistory
 from .serializers import PortSerializer, BuildHistorySerializer, PortListSerializer
 
 ERROR405 = {
