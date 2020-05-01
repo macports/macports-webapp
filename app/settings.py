@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    'haystack',
     'port',
     'build',
     'stats',
@@ -98,6 +99,14 @@ DATABASES = {
         'HOST': os.environ['DB_HOST'],
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
+}
+
+# django-haystack configuration
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    },
 }
 
 # Password validation
