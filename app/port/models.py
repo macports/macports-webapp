@@ -3,6 +3,7 @@ import os
 import subprocess
 
 from django.db import models, transaction
+from django.urls import reverse
 import config
 
 
@@ -42,6 +43,9 @@ class Port(models.Model):
         db_table = "port"
         verbose_name = "Port"
         verbose_name_plural = "Ports"
+
+    def get_absolute_url(self):
+        return reverse('port_detail', args=[str(self.name)])
 
     @classmethod
     def load(cls, data):
