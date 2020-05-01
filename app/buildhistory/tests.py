@@ -16,10 +16,10 @@ class TestURLsBuilds(TransactionTestCase):
         response = self.client.get(reverse('all_builds'))
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name='build/all_builds.html')
+        self.assertTemplateUsed(response, template_name='buildhistory/all_builds.html')
 
     def test_all_builds_filter(self):
         response = self.client.get(reverse('all_builds_filter'))
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name='build/builds_filtered_table.html')
+        self.assertTemplateUsed(response, template_name='buildhistory/builds_filtered_table.html')

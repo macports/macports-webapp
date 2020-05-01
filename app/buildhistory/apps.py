@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class BuildsConfig(AppConfig):
-    name = 'build'
+    name = 'buildhistory'

@@ -12,9 +12,9 @@ from django.db.models.functions import TruncMonth, Lower
 from port.models import Port, Dependency
 from variant.models import Variant
 from maintainer.models import Maintainer
-from build.models import BuildHistory, Builder
+from buildhistory.models import BuildHistory, Builder
 from stats.models import Submission, PortInstallation
-from build.filters import BuildHistoryFilter
+from buildhistory.filters import BuildHistoryFilter
 from stats.validators import validate_stats_days, ALLOWED_DAYS_FOR_STATS
 from stats.utilities.sort_by_version import sort_list_of_dicts_by_version
 

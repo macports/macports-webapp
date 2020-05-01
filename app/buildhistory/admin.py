@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from build.models import Builder, BuildHistory
+from buildhistory.models import Builder, BuildHistory
 
 
 @admin.register(Builder)

@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 
 from port.models import Port, LastPortIndexUpdate
-from build.models import BuildHistory, Builder
+from buildhistory.models import BuildHistory, Builder
 
 
 class Command(BaseCommand):
