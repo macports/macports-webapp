@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from build.models import BuildHistory
+from buildhistory.models import BuildHistory
 
 
 class Command(BaseCommand):

@@ -1,6 +1,6 @@
 import django_filters
 
-from build.models import BuildHistory
+from buildhistory.models import BuildHistory
 
 
 class BuildHistoryFilter(django_filters.FilterSet):

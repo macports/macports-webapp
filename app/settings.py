@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'haystack',
     'port',
-    'build',
+    'buildhistory',
     'stats',
     'maintainer',
     'category',
