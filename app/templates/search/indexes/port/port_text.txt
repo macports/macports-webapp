@@ -1,0 +1,9 @@
+{{ object.name }}
+{{ object.description }}
+{% for m in object.maintainers.all %}
+{{ m }}
+{% endfor %}
+{% for v in object.variants.all %}
+{{ v }}
+{% endfor %}
+{{ object.active }}

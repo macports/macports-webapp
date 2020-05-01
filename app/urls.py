@@ -14,12 +14,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
+from django.conf.urls import url
 from django.contrib import admin
 import views
+from haystack.views import SearchView, search_view_factory
+from port.forms import AdvancedSearch
 
 urlpatterns = [
     path('', views.index, name='home'),
     path('admin/', admin.site.urls),
+    # URL for advanced search page
+    url(r'^search/', search_view_factory(
+        view_class=SearchView,
+        form_class=AdvancedSearch,
+        template='search/search.html',
+        results_per_page=50
+
+    )),
     path('statistics/', include('stats.urls')),
     path('maintainers/', include('maintainer.urls')),
     path('port/', include('port.urls')),
