@@ -4,36 +4,33 @@
 {% block title %}Ports |{% endblock %}
 
 {% block content %}
-    <div class="container text-center p-4" style="max-width: 800px">
-        <img src="{% static 'images/macports-logo.png' %}" class="img-fluid" style="max-width: 300px">
+    <div class="container text-center" style="max-width: 800px">
+        <img src="{% static 'images/macports-logo.png' %}" class="img-fluid home-logo">
         <br>
         <br>
         <form method="get" action="/search/">
             <div class="form-row">
-                <div class="col-10">
-                    <input type="text" class="form-control rounded-pill" id="q" name="q" placeholder="Search ports by name, description or maintainer" autofocus>
+                <div class="col-12">
+                    <input type="text" class="home-input-search form-control rounded-pill" id="q" name="q" placeholder="Search ports by name, description or maintainer" autofocus>
+                    <button class="home-input-search-icon btn btn-default m-0 p-0" type="submit"><i class="text-secondary fa fa-search"></i></button>
                     <input type="hidden" value="on" name="maintainers">
                     <input type="hidden" value="on" name="name">
                     <input type="hidden" value="on" name="description">
                 </div>
-                <div class="col-2">
-                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
-                </div>
-        </div>
+            </div>
         </form>
         <a class="btn btn-sm text-primary btn-link" href="{% url 'search' %}">Advanced search</a>
         <a class="btn btn-sm text-primary btn-link" href="https://www.macports.org">MacPorts Home</a>
-        <a class="btn btn-sm text-primary btn-link" href="{% url 'search' %}">Install MacPorts</a>
+        <a class="btn btn-sm text-primary btn-link" href="https://www.macports.org/install.php">Install MacPorts</a>
         <br>
         <div class="row pt-3">
             <div class="col-6 text-left">
             <h5><ins>Popular ports</ins></h5>
-                <ul>
                     {% for top_port in top_ports %}
-                        <li><a href="{% url 'port_detail' top_port.port %}">{{ top_port.port }}</a></li>
+                        <span class="top-ports-list"><a href="{% url 'port_detail' top_port.port %}">{{ top_port.port }}</a></span><br>
                     {% endfor %}
                 </ul>
-                <a href="{% url 'stats_port_installations' %}">More...</a>
+                <a class="btn btn-link" href="{% url 'stats_port_installations' %}">More...</a>
             </div>
             <div class="col-6">
 

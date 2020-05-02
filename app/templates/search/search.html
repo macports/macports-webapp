@@ -4,15 +4,14 @@
 {% block title %}Search ports |{% endblock %}
 
 {% block content %}
-    <h4 class="text-center mb-4 mt-2"><ins>Search for ports</ins></h4>
-    <div class="container p-0">
+    <div class="container mt-3">
         <form method="get" action=".">
             <div class="form-row">
-                <div class="col-10">
+                <div class="col-8">
                     {{ form.q }}
                 </div>
-                <div class="col-2">
-                    <button type="submit" class="btn form-control btn-success"><i class="fa fa-search"></i></button>
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                 </div>
             </div>
             <div class="form-group p-3">
@@ -23,34 +22,88 @@
                 <label class="checkbox-inline mr-2">{{ form.variants }} Variants</label>
             </div>
         </form>
-    </div>
+
 
         {% if query %}
-            <h3>{{ page.paginator.count }} Results</h3>
-                <table class="table table-condensed" style="font-size: 14px">
-        <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Maintainers</th>
-        </tr>
-        </thead>
+            <h3>Results for "{{ query }}"</h3>
+            <p>{{ page.paginator.count }} results found | Showing results {{ page.start_index }} to {{ page.end_index }}
+            {% if page.has_other_pages %}
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-sm">
+                        {% if builds.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ request.get_full_path }}&page={{ page.previous_page_number }}">
+                                    &laquo;
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+                        {% endif %}
+
+                        {% if builds.number|add:'-4' > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href={{ request.get_full_path }}&page={{ page.number|add:'-5' }}>&hellip;
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for i in page.paginator.page_range %}
+                            {% if page.number == i %}
+                                <li class="active page-item"><span class="page-link">{{ i }} <span
+                                        class="sr-only">(current)</span></span></li>
+                            {% elif i > page.number|add:'-5' and i < page.number|add:'5' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ request.get_full_path }}&page={{ i }}">{{ i }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page.paginator.num_pages > page.number|add:'4' %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{request.get_full_path}}&page={{ page.number|add:'5' }}">&hellip;
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% if page.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ request.get_full_path }}&page={{ page.next_page_number }}">&raquo;
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+
+
+
+
+
+            </p>
+            <hr>
         {% for result in page.object_list %}
-            <tr>
-                <td><a href="{{ result.object.get_absolute_url }}"><strong>{{result.name}}</strong></a></td>
-                <td>
-                {{result.description}}
-                </td>
-            <td>
-                {% for m in result.maintainers %}
-                    <a href="{% url 'maintainer_detail_github' m %}">{{ m }}</a>
+            <div>
+                <a class="btn btn-link text-primary p-0" href="{{ result.object.get_absolute_url }}"><h4>{{result.name}}</h4></a>
+                <p class="mb-0 text-secondary" style="font-size: 18px">{{result.description}}</p>
+                <span class="text-secondary" style="font-size: 13px">
+                    <strong>Maintained by:</strong>
+                    {% for m in result.maintainers %}
+                        <a href="{% url 'maintainer_detail_github' m %}">{{ m }}</a>
                     {% endfor %}
-                </td>
-            </tr>
+                    |
+                    <strong>Variants:</strong>
+                    {% for v in result.variants %}
+                        {{ v }}
+                    {% endfor %}
+
+                </span>
+            </div>
+            <hr>
             {% empty %}
                 <p>No results found.</p>
             {% endfor %}
-                </table>
 
             {% if page.has_other_pages %}
                 Showing results {{ page.start_index }} to {{ page.end_index }}<br><br>
@@ -105,5 +158,5 @@
         {% else %}
             {# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
-    </form>
+    </div>
 {% endblock %}
