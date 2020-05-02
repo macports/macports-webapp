@@ -28,7 +28,6 @@ urlpatterns = [
         view_class=SearchView,
         form_class=AdvancedSearch,
         template='search/search.html',
-        results_per_page=50
 
     ), name='search'),
     path('statistics/', include('stats.urls')),
