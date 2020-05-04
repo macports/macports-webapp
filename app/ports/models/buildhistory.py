@@ -28,6 +28,7 @@ class BuildHistory(models.Model):
             models.Index(fields=['port_name', 'builder_name', '-time_start']),
             models.Index(fields=['port_name', 'status', 'builder_name']),
             models.Index(fields=['port_name', 'builder_name']),
+            models.Index(fields=['builder_name', '-time_start']),
             models.Index(fields=['-time_start']),
             models.Index(fields=['port_name']),
             models.Index(fields=['status']),

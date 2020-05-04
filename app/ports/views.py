@@ -86,15 +86,15 @@ def portdetail(request, name, slug="summary"):
         if tab not in allowed_tabs:
             return HttpResponse("Invalid tab requested. Expected values: {}".format(allowed_tabs))
 
-        all_latest_builds = BuildHistory.objects.all().select_related('builder_name').order_by('port_name', 'builder_name__display_name', '-time_start').distinct('port_name', 'builder_name__display_name')
-        port_latest_builds = list(BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), port_name__iexact=name).select_related('builder_name').values('builder_name__name', 'builder_name__display_name', 'build_id', 'status'))
+        this_builds = BuildHistory.objects.filter(port_name__iexact=name).select_related('display_name', 'name')
+        this_latest_builds = list(this_builds.order_by('builder_name__display_name', '-time_start').distinct('builder_name__display_name').values('builder_name__display_name', 'builder_name__name', 'build_id', 'status'))
 
         builders = list(Builder.objects.all().order_by('display_name').distinct('display_name').values_list('display_name', flat=True))
 
         builders.sort(key=LooseVersion, reverse=True)
         latest_builds = {}
         for builder in builders:
-            latest_builds[builder] = next((item for item in port_latest_builds if item['builder_name__display_name'] == builder), False)
+            latest_builds[builder] = next((item for item in this_latest_builds if item['builder_name__display_name'] == builder), False)
         return render(request, 'ports/portdetail.html', {
             'req_port': req_port,
             'latest_builds': latest_builds,
