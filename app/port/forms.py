@@ -46,6 +46,6 @@ class AdvancedSearch(SearchForm):
             sqs = sqs.filter_or(variants__contains=self.cleaned_data['q'])
 
         if self.cleaned_data['description']:
-            sqs = sqs.filter_or(description__contains=self.cleaned_data['q'])
+            sqs = sqs.filter_or(description__search=self.cleaned_data['q'])
 
         return sqs
