@@ -7,3 +7,4 @@
 {{ v }}
 {% endfor %}
 {{ object.active }}
+{{ object.name_l }}
