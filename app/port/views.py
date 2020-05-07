@@ -8,7 +8,10 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery, Count
 from django.db.models.functions import TruncMonth, Lower
+from rest_framework import mixins, viewsets
 
+from port.forms import AdvancedSearchForm
+from port.serializers import SearchSerializer
 from port.models import Port, Dependency
 from variant.models import Variant
 from maintainer.models import Maintainer
@@ -174,3 +177,23 @@ def port_detail_tickets(request):
         'portname': port_name,
         'tickets': all_tickets,
     })
+
+
+# PortSearchView handles api call for advanced search
+class PortSearchView(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = SearchSerializer
+    form = None
+    # We use the same form as used by the advanced search.
+    # AdvancedSearchForm takes care of filtering the queryset itself.
+    form_class = AdvancedSearchForm
+
+    def build_form(self):
+        data = self.request.GET
+        return self.form_class(data, None)
+
+    def get_queryset(self, *args, **kwargs):
+        self.form = self.build_form()
+        request = self.request
+
+        if request.GET.get('q') is not None:
+            return self.form.search()
