@@ -105,8 +105,9 @@ DATABASES = {
 # django-haystack configuration
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': os.environ['SOLR_URL'],
+        'ADMIN_URL': os.environ['SOLR_ADMIN_URL']
     },
 }
 

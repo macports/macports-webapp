@@ -16,6 +16,8 @@ django-filter==2.1.0
 django-haystack==2.8.1
 django-silk==4.0.0
 djangorestframework==3.11.0
+drf-haystack==1.8.6
+elasticsearch==5.5.3
 filelock==3.0.12
 gprof2dot==2019.11.30
 gunicorn==20.0.4
@@ -37,6 +39,7 @@ Pygments==2.4.2
 pylint==2.4.4
 pyOpenSSL==19.1.0
 pyparsing==2.4.7
+pysolr==3.9.0
 python-coveralls==2.9.3
 python-dateutil==2.8.0
 pytz==2018.9
