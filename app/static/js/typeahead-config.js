@@ -5,7 +5,7 @@ $(document).ready(function () {
         limit: 20,
         rateLimitWait: 800,
         remote: {
-            url: '/api/v1/search/?q=%QUERY&name=on&description=on&maintainers=on',
+            url: '/api/v1/search/?q=%QUERY&name=on',
             wildcard: '%QUERY',
             filter: function (response) {
                 return response.results;
@@ -18,7 +18,7 @@ $(document).ready(function () {
     $('#bloodhound .typeahead').typeahead({
             hint: true,
             highlight: true,
-            minLength: 1,
+            minLength: 2,
         },
         {
             name: 'results',
@@ -34,26 +34,17 @@ $(document).ready(function () {
                 suggestion: Handlebars.compile(
                     '<div class="card search-result-item text-left bg-light">' +
                     '<div class="card-body p-2">' +
-                    '<a class="btn btn-link text-primary p-0" href="/port/{{name}}"><h5>{{name}}</h5></a>' +
-                    '<p class="mb-0" style="font-size: 16px">{{description}}</p>' +
-                    '<span style="font-size: 13px">' +
-                    '<strong>Maintained by: </strong>' +
-                    '{{#each maintainers}}' +
-                    '<a href="/maintainers/github/{{this}}">{{ this }}, </a>' +
-                    '{{/each}}' +
-                    ` | ` +
-                    '<strong>Variants: </strong>' +
-                    '{{#each variants}}' +
-                    '<a href="/variant/v/{{this}}">{{ this }}</a>' +
-                    '{{/each}}' +
-                    '</span>' +
+                    '<a class="btn btn-link text-primary p-0 m-0" href="/port/{{name}}"><h5>{{name}}</h5></a>' +
+                    '<p class="m-0 p-0">{{description}}</p>' +
                     '</div>' +
                     '</div>'
                 )
             }
         }).on('typeahead:asyncrequest', function () {
-        $('#search-spinner').show();
+            $('#search-spinner').show();
         }).on('typeahead:asynccancel typeahead:asyncreceive', function () {
-        $('#search-spinner').hide();
+            $('#search-spinner').hide();
+        }).on('typeahead:select', function (evt, itm) {
+            window.location.href = "/port/" + itm.name;
         });
 });

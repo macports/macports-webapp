@@ -64,7 +64,7 @@ body{
 }
 
 .home-logo{
-    margin-top: 40px;
+    margin-top: 80px;
     max-width: 250px !important;
 }
 
@@ -94,4 +94,12 @@ body{
 
 .search-result-item:hover {
     background-color: lightgrey !important;
+}
+
+.tt-cursor {
+    background-color: lightgrey !important;
+}
+
+.tt-hint {
+    color: grey;
 }

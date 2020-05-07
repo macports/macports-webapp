@@ -35,17 +35,23 @@ class AdvancedSearchForm(SearchForm):
             return self.no_query_found()
 
         sqs = SearchQuerySet().models(Port).all()
+        do_sort = False
 
         if self.cleaned_data['maintainers']:
-            sqs = sqs.filter_or(maintainers=self.cleaned_data['q'])
+            sqs = sqs.filter_or(maintainers__contains=self.cleaned_data['q'])
 
         if self.cleaned_data['name']:
-            sqs = sqs.filter_or(name=self.cleaned_data["q"])
+            sqs = sqs.filter_or(name__contains=self.cleaned_data['q'])
+            do_sort = True
 
         if self.cleaned_data['variants']:
-            sqs = sqs.filter_or(variants=self.cleaned_data['q'])
+            sqs = sqs.filter_or(variants__contains=self.cleaned_data['q'])
 
         if self.cleaned_data['description']:
             sqs = sqs.filter_or(description=self.cleaned_data['q'])
+            do_sort = False
+
+        if do_sort:
+            sqs = sqs.order_by('name_l')
 
         return sqs
