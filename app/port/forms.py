@@ -6,7 +6,7 @@ from haystack.query import EmptySearchQuerySet, SearchQuerySet
 from port.models import Port
 
 
-class AdvancedSearch(SearchForm):
+class AdvancedSearchForm(SearchForm):
     show_deleted_ports = forms.BooleanField(required=False)
     q = forms.CharField(
         required=False,
@@ -37,15 +37,15 @@ class AdvancedSearch(SearchForm):
         sqs = SearchQuerySet().models(Port).all()
 
         if self.cleaned_data['maintainers']:
-            sqs = sqs.filter_or(maintainers__contains=self.cleaned_data['q'])
+            sqs = sqs.filter_or(maintainers=self.cleaned_data['q'])
 
         if self.cleaned_data['name']:
-            sqs = sqs.filter_or(name__contains=self.cleaned_data["q"])
+            sqs = sqs.filter_or(name=self.cleaned_data["q"])
 
         if self.cleaned_data['variants']:
-            sqs = sqs.filter_or(variants__contains=self.cleaned_data['q'])
+            sqs = sqs.filter_or(variants=self.cleaned_data['q'])
 
         if self.cleaned_data['description']:
-            sqs = sqs.filter_or(description__search=self.cleaned_data['q'])
+            sqs = sqs.filter_or(description=self.cleaned_data['q'])
 
         return sqs
