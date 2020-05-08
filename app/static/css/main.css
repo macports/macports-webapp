@@ -94,6 +94,11 @@ body{
 
 .search-result-item:hover {
     background-color: lightgrey !important;
+    border-bottom: lightgrey !important;
+}
+
+.search-result-item{
+    border-radius: 5px;
 }
 
 .tt-cursor {
