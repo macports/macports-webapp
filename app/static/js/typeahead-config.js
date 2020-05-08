@@ -32,10 +32,9 @@ $(document).ready(function () {
                     '</div>'
                 ].join('\n'),
                 suggestion: Handlebars.compile(
-                    '<div class="card search-result-item text-left bg-light">' +
+                    '<div class="border-bottom search-result-item text-left bg-light">' +
                     '<div class="card-body p-2">' +
-                    '<a class="btn btn-link text-primary p-0 m-0" href="/port/{{name}}"><h5>{{name}}</h5></a>' +
-                    '<p class="m-0 p-0">{{description}}</p>' +
+                    '<h5>{{name}} <span style="font-size: 15px" class="float-right"><a href="/port/{{name}}">Jump to port</a></span></h5>' +
                     '</div>' +
                     '</div>'
                 )
@@ -45,6 +44,10 @@ $(document).ready(function () {
         }).on('typeahead:asynccancel typeahead:asyncreceive', function () {
             $('#search-spinner').hide();
         }).on('typeahead:select', function (evt, itm) {
-            window.location.href = "/port/" + itm.name;
+            window.location.href = "/search/?q=" + itm.name + "&name=on";
+        }).on('keyup', '.home-input-search', function (event) {
+            if (event.key == "Enter") {
+                $('#search_submit').click();
+            }
         });
 });

@@ -13,16 +13,15 @@
     <div class="container text-center" style="max-width: 800px">
         <img src="{% static 'images/macports-logo.png' %}" class="img-fluid home-logo">
         <br>
-        <form class="pt-3">
+        <form class="pt-3" method="get" action="/search">
             <div class="form-row">
                 <div class="col-12" id="bloodhound">
-                    <input type="text" class="home-input-search form-control rounded-pill typeahead" id="q" name="q" placeholder="Jump to port..." autofocus>
+                    <input type="text" class="home-input-search form-control rounded-pill typeahead" id="q" name="q" placeholder="Search for ports..." autofocus>
                     <img class="home-input-search-icon" id="search-spinner" style="display: none; max-width: 38px" src="{% static 'images/spinner.gif' %}">
-                    <input type="hidden" value="on" name="maintainers">
                     <input type="hidden" value="on" name="name">
-                    <input type="hidden" value="on" name="description">
                 </div>
             </div>
+            <input type="submit" id="search_submit" style="display: none">
         </form>
         <a class="btn btn-sm text-primary btn-link" href="{% url 'search' %}">Advanced search</a>
         <a class="btn btn-sm text-primary btn-link" href="https://www.macports.org">MacPorts Home</a>
