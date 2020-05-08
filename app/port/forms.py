@@ -41,7 +41,7 @@ class AdvancedSearchForm(SearchForm):
             sqs = sqs.filter_or(maintainers__contains=self.cleaned_data['q'])
 
         if self.cleaned_data['name']:
-            sqs = sqs.filter_or(name__contains=self.cleaned_data['q'])
+            sqs = sqs.filter_or(name=self.cleaned_data['q'])
             do_sort = True
 
         if self.cleaned_data['variants']:
