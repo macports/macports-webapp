@@ -179,6 +179,8 @@ def portdetail_stats(request):
 
     end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=days_ago)
     start_date = end_date - datetime.timedelta(days=days)
+    today_day = datetime.datetime.now().day
+    last_12_months = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=int(today_day)+365)
 
     # Section for calculation of current stats
     submissions = Submission.objects.filter(timestamp__range=[start_date, end_date]).order_by('user', '-timestamp').distinct('user')
@@ -190,8 +192,21 @@ def portdetail_stats(request):
     port_installations_by_os_and_clt_version = sort_list_of_dicts_by_version(list(port_installations.values('submission__clt_version', 'submission__os_version').annotate(num=Count('submission__user_id', distinct=True))), 'submission__os_version')
     port_installations_by_os_stdlib_build_arch = sort_list_of_dicts_by_version(list(port_installations.values('submission__os_version', 'submission__build_arch', 'submission__cxx_stdlib').annotate(num=Count('submission__user_id', distinct=True))), 'submission__os_version')
     port_installations_by_variants = port_installations.values('variants').annotate(num=Count('submission__user_id', distinct=True))
-    port_installations_by_month = PortInstallation.objects.filter(port__iexact=port_name).annotate(month=TruncMonth('submission__timestamp')).values('month').annotate(num=Count('submission__user', distinct=True))[:12]
-    port_installations_by_version_and_month = PortInstallation.objects.filter(port__iexact=port_name).annotate(month=TruncMonth('submission__timestamp')).values('month', 'version').annotate(num=Count('submission__user', distinct=True))[:12]
+    port_installations_by_month = PortInstallation.objects\
+        .select_related('submission')\
+        .only('submission__user', 'submission__timestamp', 'port')\
+        .filter(port__iexact=port_name,submission__timestamp__gte=last_12_months)\
+        .annotate(month=TruncMonth('submission__timestamp'))\
+        .values('month')\
+        .annotate(num=Count('submission__user', distinct=True))
+
+    port_installations_by_version_and_month = PortInstallation.objects\
+        .select_related('submission')\
+        .only('submission__user', 'submission__timestamp', 'port')\
+        .filter(port__iexact=port_name, submission__timestamp__gte=last_12_months)\
+        .annotate(month=TruncMonth('submission__timestamp'))\
+        .values('month', 'version')\
+        .annotate(num=Count('submission__user_id', distinct=True))
 
     return render(request, 'ports/port-detail/installation_stats.html', {
         'requested_port_installations_count': requested_port_installations_count,
