@@ -11,7 +11,7 @@ from django.db.models.functions import TruncMonth, Lower
 from rest_framework import mixins, viewsets
 
 from port.forms import AdvancedSearchForm
-from port.serializers import SearchSerializer
+from port.serializers import SearchSerializer, PortSerializer
 from port.models import Port, Dependency
 from variant.models import Variant
 from maintainer.models import Maintainer
@@ -197,3 +197,9 @@ class PortSearchView(mixins.ListModelMixin, viewsets.GenericViewSet):
 
         if request.GET.get('q') is not None:
             return self.form.search()
+
+
+class PortInfoView(viewsets.ReadOnlyModelViewSet):
+    serializer_class = PortSerializer
+    queryset = Port.objects.all()
+    lookup_field = 'name'
