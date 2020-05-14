@@ -1,8 +1,11 @@
 from django.conf.urls import url
 from django.urls import path
+from rest_framework import routers
 
 from maintainer import views
 
+router = routers.DefaultRouter()
+router.register('maintainers', views.MaintainerView, basename='maintainers')
 
 urlpatterns = [
     url(r'^github/(?P<github_handle>[-a-zA-Z0-9_.]+)/$', views.maintainer_detail_github, name='maintainer_detail_github'),
