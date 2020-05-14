@@ -8,11 +8,13 @@ import views
 from port.forms import AdvancedSearchForm
 from port.views import PortSearchView
 from port.urls import router as port_router
+from category.urls import router as category_router
 
 # Router for rest framework
 router = routers.DefaultRouter()
 router.register("search", PortSearchView, basename="ports_advanced_search")
 router.registry.extend(port_router.registry)
+router.registry.extend(category_router.registry)
 
 urlpatterns = [
     path('', views.index, name='home'),
