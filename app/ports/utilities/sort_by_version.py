@@ -2,7 +2,7 @@ from distutils.version import LooseVersion
 
 
 def cleaned_version(version):
-    return version.replace("_", "")
+    return version.replace("_", ".")
 
 
 def sort_list_of_dicts_by_version(lst, key):
