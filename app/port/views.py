@@ -200,7 +200,8 @@ class PortSearchView(mixins.ListModelMixin, viewsets.GenericViewSet):
 class PortInfoView(viewsets.ReadOnlyModelViewSet):
     serializer_class = PortSerializer
     queryset = Port.objects.all()
-    lookup_field = 'name'
+    lookup_field = 'name__iexact'
+    lookup_value_regex = '[a-zA-Z0-9_.]+'
     filter_backends = [filters.SearchFilter, django_filters.rest_framework.DjangoFilterBackend]
     search_fields = ['name', 'maintainers__github', 'variants__variant', 'categories__name']
     filterset_fields = ['name', 'categories', 'maintainers__github', 'variants__variant']
