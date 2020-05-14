@@ -1,6 +1,12 @@
 from django.urls import path
 from django.conf.urls import url
+from rest_framework import routers
+
 from port import views
+from port.views import PortInfoView
+
+router = routers.DefaultRouter()
+router.register('ports', PortInfoView, basename="port")
 
 urlpatterns = [
     path('ajax-call/summary/', views.port_detail_summary, name='port_detail_summary_ajax'),
