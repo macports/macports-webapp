@@ -3,9 +3,12 @@ from distutils.version import LooseVersion
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery
+from rest_framework import viewsets, filters
+import django_filters
 
 from buildhistory.models import BuildHistory, Builder
 from buildhistory.filters import BuildHistoryFilter
+from buildhistory.serializers import BuilderSerializer, BuildHistorySerializer
 
 
 def all_builds(request):
@@ -48,3 +51,20 @@ def all_builds_filter(request):
         'status': status,
         'port_name': port_name,
     })
+
+
+class BuilderView(viewsets.ReadOnlyModelViewSet):
+    queryset = Builder.objects.all()
+    serializer_class = BuilderSerializer
+    detail_serializer_class = BuildHistorySerializer
+    lookup_value_regex = '[a-zA-Z0-9_.]+'
+
+
+class BuildHistoryView(viewsets.ReadOnlyModelViewSet):
+    queryset = BuildHistory.objects.all()
+    serializer_class = BuildHistorySerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.OrderingFilter]
+    lookup_value_regex = '[a-zA-Z0-9_.]+'
+    ordering_fields = ['builder_name__name', 'builder_name__display_name', 'status', 'build_id', 'time_start']
+    ordering = ['-time_start']
+    filterset_fields = ['builder_name__name', 'builder_name__display_name', 'status']
