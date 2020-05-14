@@ -8,7 +8,8 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery, Count
 from django.db.models.functions import TruncMonth, Lower
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, viewsets, filters
+import django_filters
 
 from port.forms import AdvancedSearchForm
 from port.serializers import SearchSerializer, PortSerializer
@@ -203,3 +204,6 @@ class PortInfoView(viewsets.ReadOnlyModelViewSet):
     serializer_class = PortSerializer
     queryset = Port.objects.all()
     lookup_field = 'name'
+    filter_backends = [filters.SearchFilter, django_filters.rest_framework.DjangoFilterBackend]
+    search_fields = ['name', 'maintainers__github', 'variants__variant', 'categories__name']
+    filterset_fields = ['name', 'categories', 'maintainers__github', 'variants__variant']
