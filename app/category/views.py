@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models.functions import Lower
+from rest_framework import viewsets
 
 from category.models import Category
+from category.serializers import CategoriesListSerializer
 from port.models import Port
 from port.filters import PortFilterByMultiple
 
@@ -42,3 +44,8 @@ def search_ports_in_category(request):
         'search_in': search_in,
         'content': "Category"
     })
+
+
+class CategoriesListView(viewsets.ReadOnlyModelViewSet):
+    serializer_class = CategoriesListSerializer
+    queryset = Category.objects.all()
