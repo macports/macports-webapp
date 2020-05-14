@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from rest_framework import viewsets, filters
+import django_filters
 
 from maintainer.models import Maintainer
+from maintainer.serializers import MaintainerSerializer
 from port.models import Port
 from port.filters import PortFilterByMultiple
 
@@ -74,3 +77,12 @@ def search_ports_in_maintainer(request):
         'search_in': search_in,
         'content': "Maintainer"
     })
+
+
+class MaintainerView(viewsets.ReadOnlyModelViewSet):
+    serializer_class = MaintainerSerializer
+    queryset = Maintainer.objects.all()
+    lookup_value_regex = '[a-zA-Z0-9_.]+'
+    filter_backends = [filters.SearchFilter, django_filters.rest_framework.DjangoFilterBackend]
+    search_fields = ['name', 'domain', 'github']
+    filterset_fields = ['name', 'domain', 'github']
