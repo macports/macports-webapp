@@ -194,10 +194,7 @@ class PortSearchView(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     def get_queryset(self, *args, **kwargs):
         self.form = self.build_form()
-        request = self.request
-
-        if request.GET.get('q') is not None:
-            return self.form.search()
+        return self.form.search()
 
 
 class PortInfoView(viewsets.ReadOnlyModelViewSet):
