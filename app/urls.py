@@ -22,6 +22,7 @@ router.registry.extend(maintainer_router.registry)
 
 urlpatterns = [
     path('', views.index, name='home'),
+    path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     # URL for advanced search page
     url(r'^search/', search_view_factory(
