@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'variant',
     'django_filters',
     'api_v1',
+    'django.contrib.admindocs'
 ]
 
 MIDDLEWARE = [
