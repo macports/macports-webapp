@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM arjunsalyan/macports-ubuntu
 ARG USER=0:0
 
 # Install required packages and remove the apt packages cache when done.
