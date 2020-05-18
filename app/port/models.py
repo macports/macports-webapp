@@ -331,6 +331,19 @@ class Dependency(models.Model):
         ]
 
 
+class LiveCheck(models.Model):
+    port = models.ForeignKey(Port, on_delete=models.CASCADE, related_name='livecheck')
+    result = models.TextField(null=True, verbose_name="Result of the last livecheck for the port")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Timestamp when livecheck was last for the port")
+
+    class Meta:
+        db_table = "livecheck"
+        verbose_name = "Livecheck"
+        indexes = [
+            models.Index(fields=['updated_at'])
+        ]
+
+
 class LastPortIndexUpdate(models.Model):
     git_commit_hash = models.CharField(max_length=50, verbose_name="Commit hash till which update was done")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Timestamp when update completed")
