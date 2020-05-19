@@ -94,15 +94,6 @@
             </table>
         </div>
         <div class="col-lg-4">
-            {% for livecheck in port.livecheck.all %}
-            {% if livecheck.result %}
-            <div class="alert alert-warning" role="alert">
-                <h5>Livecheck results</h5>
-                <p>{{ livecheck.result }}</p>
-                <p style="font-size: 12px">Updated at: <strong>{{ livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
-            </div>
-            {% endif %}
-            {% endfor %}
             <div class="rounded border" style="padding: 8px;">
                 <h6 class="text-center">{{ port.portdir }}</h6>
                 <p class="text-secondary">{{ port.long_description }}</p>
@@ -117,5 +108,21 @@
                     <li class="list-group-item"><a href="javascript:void(0);" onclick="statsClick($('#stats'), 30, 0)">Continue to statistics</a></li>
                 </ul>
             </div>
+            <br>
+            {% for livecheck in port.livecheck.all %}
+            {% if livecheck.result %}
+            <div class="rounded border p-2">
+                <h5>Livecheck results</h5>
+                <p class="text-secondary" style="font-size: 14px">{{ livecheck.result }}</p>
+                <p style="font-size: 12px">livecheck ran at: <strong>{{ livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
+            </div>
+            {% elif livecheck.error %}
+                <div class="rounded border p-2">
+                    <h5>Livecheck error</h5>
+                    <p class="text-secondary" style="font-size: 14px">{{ livecheck.error }}</p>
+                    <p style="font-size: 12px">livecheck ran at: <strong>{{ livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
+                </div>
+            {% endif %}
+            {% endfor %}
         </div>
     </div>
