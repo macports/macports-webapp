@@ -17,11 +17,14 @@
             <div class="form-row">
                 <div class="col-12" id="bloodhound">
                     <input type="text" class="home-input-search form-control rounded-pill typeahead" id="q" name="q" placeholder="Search for ports..." autofocus>
-                    <img class="home-input-search-icon" id="search-spinner" style="display: none; max-width: 38px" src="{% static 'images/spinner.gif' %}">
+                    <img class="home-input-search-spinner" id="search-spinner" src="{% static 'images/spinner.gif' %}">
+                    <button type="submit" class="home-input-search-icon btn" id="search_submit"><i class="fa fa-search"></i></button>
                     <input type="hidden" value="on" name="name">
+                    <input type="hidden" value="on" name="maintainers">
+                    <input type="hidden" value="on" name="description">
+                    <input type="hidden" value="on" name="sort_by_length">
                 </div>
             </div>
-            <input type="submit" id="search_submit" style="display: none">
         </form>
         <a class="btn btn-sm text-primary btn-link" href="{% url 'search' %}">Advanced search</a>
         <a class="btn btn-sm text-primary btn-link" href="https://www.macports.org">MacPorts Home</a>
