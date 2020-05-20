@@ -64,8 +64,8 @@ body{
 }
 
 .home-logo{
-    margin-top: 80px;
-    max-width: 250px !important;
+    margin-top: 30px;
+    max-width: 200px !important;
 }
 
 .home-input-search {
@@ -82,27 +82,44 @@ body{
     max-width: 38px !important;
 }
 
+.home-input-search-spinner{
+    position: absolute !important;
+    right: 58px !important;
+    top: 5px !important;
+    max-width: 38px !important;
+    display: none;
+}
+
 .top-ports-list {
     font-size: 18px;
 }
 
 .twitter-typeahead, .tt-hint, .tt-input, .tt-menu { width: 100%; !important;}
 
-.tt-menu {
-    background-color: white;
+.tt-input:focus {
+    box-shadow: black;
+}
+
+.tt-input:hover, .tt-input:focus {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19) !important;
 }
 
 .search-result-item:hover {
-    background-color: lightgrey !important;
-    border-bottom: lightgrey !important;
+    background-color: whitesmoke !important;
 }
 
-.search-result-item{
-    border-radius: 5px;
+.search-result-item {
+}
+
+.tt-menu {
+    margin-top: 4px !important;
+    background-color: white;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19) !important;
+    border-radius: 20px;
 }
 
 .tt-cursor {
-    background-color: lightgrey !important;
+    background-color: whitesmoke !important;
 }
 
 .tt-hint {

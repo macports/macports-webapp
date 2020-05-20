@@ -27,14 +27,12 @@ $(document).ready(function () {
             source: queryPorts.ttAdapter(),
             templates: {
                 empty: [
-                    '<div class="alert alert-danger">',
-                    '<h6>Sorry, could not find any results. You may want to try advanced search, or include more details.</h6>',
-                    '</div>'
                 ].join('\n'),
                 suggestion: Handlebars.compile(
-                    '<div class="border-bottom search-result-item text-left bg-light">' +
-                    '<div class="card-body p-2">' +
-                    '<h5>{{name}} <span style="font-size: 15px" class="float-right"><a href="/port/{{name}}">Jump to port</a></span></h5>' +
+                    '<div class="border-bottom search-result-item text-left">' +
+                    '<div class="card-body py-1 px-2">' +
+                    '<h6 class="mb-0 pb-0"><i class="fa fa-search mr-2 my-0"></i>{{name}} <a class="ml-2 btn btn-link text-secondary p-0 m-0" href="/port/{{name}}"><i class="fa fa-sign-in-alt"></i></a></h6>' +
+                    '<span style="font-size: 13px" class="text-secondary">{{description}}</span>' +
                     '</div>' +
                     '</div>'
                 )
@@ -44,7 +42,7 @@ $(document).ready(function () {
         }).on('typeahead:asynccancel typeahead:asyncreceive', function () {
             $('#search-spinner').hide();
         }).on('typeahead:select', function (evt, itm) {
-            window.location.href = "/search/?q=" + itm.name + "&name=on";
+            window.location.href = "/search/?q=" + itm.name + "&name=on&description=on&maintainers=on";
         }).on('keyup', '.home-input-search', function (event) {
             if (event.key == "Enter") {
                 $('#search_submit').click();

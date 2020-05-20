@@ -34,11 +34,11 @@ class AdvancedSearchForm(SearchForm):
         if not self.cleaned_data.get("q"):
             return self.no_query_found()
 
-        sqs = SearchQuerySet().models(Port).all()
+        sqs = SearchQuerySet().models(Port)
         do_sort = False
 
         if self.cleaned_data['maintainers']:
-            sqs = sqs.filter_or(maintainers__contains=self.cleaned_data['q'])
+            sqs = sqs.filter_or(maintainers=self.cleaned_data['q'])
 
         if self.cleaned_data['name']:
             sqs = sqs.filter_or(name=self.cleaned_data['q'])
