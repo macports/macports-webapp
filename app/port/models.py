@@ -332,7 +332,7 @@ class Dependency(models.Model):
 
 
 class LiveCheck(models.Model):
-    port = models.ForeignKey(Port, on_delete=models.CASCADE, related_name='livecheck')
+    port = models.OneToOneField(Port, on_delete=models.CASCADE, related_name='livecheck')
     result = models.TextField(null=True, verbose_name="Result of the last livecheck for the port. Only stored if new version is available")
     has_updates = models.BooleanField(default=False, verbose_name="True if updates are available for the port.")
     error = models.TextField(null=True, verbose_name="Error thrown by livecheck, defaults to Null if no error encountered")
