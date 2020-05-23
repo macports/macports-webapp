@@ -8,3 +8,6 @@
 {% endfor %}
 {{ object.active }}
 {{ object.name_l }}
+{{ object.livecheck_outdated }}
+{{ object.livecheck_error }}
+

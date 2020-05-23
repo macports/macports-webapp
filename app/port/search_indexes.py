@@ -9,6 +9,8 @@ class PortIndex(indexes.SearchIndex, indexes.Indexable):
     maintainers = indexes.MultiValueField(boost=1.2)
     description = indexes.CharField(model_attr='description', boost=1.5)
     variants = indexes.MultiValueField()
+    livecheck_broken = indexes.BooleanField()
+    livecheck_outdated = indexes.BooleanField()
     active = indexes.BooleanField(model_attr='active')
 
     def get_model(self):
@@ -22,3 +24,15 @@ class PortIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_variants(self, obj):
         return [v.variant for v in obj.variants.all()]
+
+    def prepare_livecheck_broken(self, obj):
+        if hasattr(obj, 'livecheck'):
+            return False if obj.livecheck.error is None else True
+        else:
+            return False
+
+    def prepare_livecheck_outdated(self, obj):
+        if hasattr(obj, 'livecheck'):
+            return obj.livecheck.has_updates
+        else:
+            return False
