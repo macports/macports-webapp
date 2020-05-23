@@ -14,7 +14,6 @@ distlib==0.3.0
 Django==2.2.10
 django-filter==2.1.0
 django-haystack==2.8.1
-django-silk==4.0.0
 djangorestframework==3.11.0
 docutils==0.16
 drf-haystack==1.8.6
@@ -51,13 +50,11 @@ six==1.12.0
 soupsieve==1.9
 sqlparse==0.3.0
 toml==0.10.0
-tox==3.14.5
 typed-ast==1.4.0
 urllib3==1.25.8
 virtualenv==20.0.5
 webencodings==0.5.1
 whitenoise==4.1.2
-Whoosh==2.7.4
 wrapt==1.11.1
-zipp==2.2.0
+zipp==3.1.0
 zope.interface==4.6.0
