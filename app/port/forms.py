@@ -14,7 +14,7 @@ class AdvancedSearchForm(SearchForm):
         widget=forms.TextInput(attrs={
             "type": "search",
             "placeholder": "Search for ports",
-            "class": "form-control rounded-pill",
+            "class": "form-control",
             "autofocus": "autofocus",
         }),
     )
@@ -69,6 +69,7 @@ class AdvancedSearchForm(SearchForm):
         if self.cleaned_data['livecheck_outdated']:
             f = f | SQ(livecheck_outdated=True)
 
-        sqs = sqs.filter(f)
+        if f != SQ():
+            sqs = sqs.filter(f)
 
         return sqs

@@ -125,3 +125,16 @@ body{
 .tt-hint {
     color: grey;
 }
+
+.search-by-options {
+    font-size: 14px !important;
+    font-weight: bold !important;
+}
+
+.filter-by-options {
+    font-size: 14px !important;
+}
+
+.bg-information {
+    background-color: #fffdf7 !important;
+}

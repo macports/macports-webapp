@@ -1,10 +1,11 @@
 {% extends 'layout.html' %}
 {% load highlight %}
+{% load url_replace %}
 
 {% block title %}Search ports |{% endblock %}
 
 {% block content %}
-    <div class="container mt-3">
+    <div class="mt-3">
         <form method="get" action=".">
             <div class="form-row">
                 <div class="col-10">
@@ -14,20 +15,22 @@
                     <button style="width: 100%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                 </div>
             </div>
-            <div class="form-group py-2 px-3 my-2 bg-light" style="font-size: 14px; font-weight: bold">
-                <span class="mr-4">Search by: </span>
-                <label class="checkbox-inline mr-2 mb-0">{{ form.name }} Port name</label>
-                <label class="checkbox-inline mr-2 mb-0">{{ form.description }} Description</label>
-                <label class="checkbox-inline mr-2 mb-0">{{ form.maintainers }} Maintainers</label>
-                <label class="checkbox-inline mr-2 mb-0">{{ form.variants }} Variants</label>
+            <div class="form-group py-2 px-3 mx-1 rounded-lg search-by-options">
+                <span class="mr-4 text-secondary">Search by: </span>
+                <label class="checkbox-inline rounded bg-light p-2 mr-2 mb-0">{{ form.name }} Port name</label>
+                <label class="checkbox-inline rounded bg-light p-2 mr-2 mb-0">{{ form.description }} Description</label>
+                <label class="checkbox-inline rounded bg-light p-2 mr-2 mb-0">{{ form.maintainers }} Maintainers</label>
+                <label class="checkbox-inline rounded bg-light p-2 mr-2 mb-0">{{ form.variants }} Variants</label>
+                <button type="button" class="bg-light border-0 p-2 float-right" data-toggle="modal" data-target="#search-help"><i class="fa fa-question-circle"></i></button>
             </div>
-            <div class="form-group py-2 px-3" style="font-size: 14px">
+            <div class="form-group py-2 bg-information px-3 rounded-lg border-secondary filter-by-options">
                 <span class="mr-4">Filter the results: </span>
-                <label class="checkbox-inline mr-2 mb-0">{{ form.livecheck_outdated }} Show only outdated ports</label>
-                <label class="checkbox-inline mr-2 mb-0">{{ form.livecheck_broken }} Broken livecheck</label>
-                <label class="checkbox-inline mr-2 mb-0">{{ form.active }} Show deleted ports also</label>
+                <label class="checkbox-inline mr-2 mb-0">{{ form.livecheck_outdated }} Outdated (livecheck)</label>
+                <label class="checkbox-inline mr-2 mb-0">{{ form.livecheck_broken }} Livecheck errored</label>
+                <label class="checkbox-inline mr-2 mb-0">{{ form.active }} Show deleted ports</label>
             </div>
         </form>
+        <br>
          {% if query %}
             <h4>Results for "{{ query }}"</h4>
         {% else %}
@@ -39,7 +42,7 @@
                     <ul class="pagination pagination-sm">
                         {% if builds.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="{{ request.get_full_path }}&page={{ page.previous_page_number }}">
+                                <a class="page-link" href="?{% url_replace page=page.previous_page_number %}">
                                     &laquo;
                                 </a>
                             </li>
@@ -49,7 +52,7 @@
 
                         {% if builds.number|add:'-4' > 1 %}
                             <li class="page-item">
-                                <a class="page-link" href={{ request.get_full_path }}&page={{ page.number|add:'-5' }}>&hellip;
+                                <a class="page-link" href="?{% url_replace page=page.number|add:'-5' %}">&hellip;
                                 </a>
                             </li>
                         {% endif %}
@@ -60,21 +63,21 @@
                                         class="sr-only">(current)</span></span></li>
                             {% elif i > page.number|add:'-5' and i < page.number|add:'5' %}
                                 <li class="page-item">
-                                    <a class="page-link" href="{{ request.get_full_path }}&page={{ i }}">{{ i }}</a>
+                                    <a class="page-link" href="?{% url_replace page=i %}">{{ i }}</a>
                                 </li>
                             {% endif %}
                         {% endfor %}
 
                         {% if page.paginator.num_pages > page.number|add:'4' %}
                             <li class="page-item">
-                                <a class="page-link" href="{{request.get_full_path}}&page={{ page.number|add:'5' }}">&hellip;
+                                <a class="page-link" href="?{% url_replace page=page.number|add:'5' %}">&hellip;
                                 </a>
                             </li>
                         {% endif %}
 
                         {% if page.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="{{ request.get_full_path }}&page={{ page.next_page_number }}">&raquo;
+                                <a class="page-link" href="?{% url_replace page=page.next_page_number %}">&raquo;
                                 </a>
                             </li>
                         {% else %}
@@ -108,12 +111,11 @@
             {% endfor %}
 
             {% if page.has_other_pages %}
-                Showing results {{ page.start_index }} to {{ page.end_index }}<br><br>
                 <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        {% if page.has_previous %}
+                    <ul class="pagination pagination-sm">
+                        {% if builds.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="{{ request.get_full_path }}&page={{ page.previous_page_number }}">
+                                <a class="page-link" href="?{% url_replace page=page.previous_page_number %}">
                                     &laquo;
                                 </a>
                             </li>
@@ -121,9 +123,9 @@
                             <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
                         {% endif %}
 
-                        {% if page.number|add:'-4' > 1 %}
+                        {% if builds.number|add:'-4' > 1 %}
                             <li class="page-item">
-                                <a class="page-link" href={{ request.get_full_path }}&page={{ page.number|add:'-5' }}>&hellip;
+                                <a class="page-link" href="?{% url_replace page=page.number|add:'-5' %}">&hellip;
                                 </a>
                             </li>
                         {% endif %}
@@ -134,21 +136,21 @@
                                         class="sr-only">(current)</span></span></li>
                             {% elif i > page.number|add:'-5' and i < page.number|add:'5' %}
                                 <li class="page-item">
-                                    <a class="page-link" href="{{ request.get_full_path }}&page={{ i }}">{{ i }}</a>
+                                    <a class="page-link" href="?{% url_replace page=i %}">{{ i }}</a>
                                 </li>
                             {% endif %}
                         {% endfor %}
 
                         {% if page.paginator.num_pages > page.number|add:'4' %}
                             <li class="page-item">
-                                <a class="page-link" href="{{request.get_full_path}}&page={{ page.number|add:'5' }}">&hellip;
+                                <a class="page-link" href="?{% url_replace page=page.number|add:'5' %}">&hellip;
                                 </a>
                             </li>
                         {% endif %}
 
                         {% if page.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="{{ request.get_full_path }}&page={{ page.next_page_number }}">&raquo;
+                                <a class="page-link" href="?{% url_replace page=page.next_page_number %}">&raquo;
                                 </a>
                             </li>
                         {% else %}
@@ -156,6 +158,27 @@
                         {% endif %}
                     </ul>
                 </nav>
-            {% endif %}
+                {% endif %}
     </div>
+    <div id="search-help" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">A few tips for better searching</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>You can search particular properties of a port and can also filter those results further.</li>
+                    <li>If the search box is empty, then filtering is done based on all ports</li>
+                    <li>For searching by maintainer, category and variants results are displayed only for exact matches.</li>
+                </ul>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
