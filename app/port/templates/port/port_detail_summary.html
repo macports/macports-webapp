@@ -109,20 +109,18 @@
                 </ul>
             </div>
             <br>
-            {% for livecheck in port.livecheck.all %}
-            {% if livecheck.result %}
+            {% if port.livecheck.result %}
             <div class="rounded border p-2">
                 <h5>Livecheck results</h5>
-                <p class="text-secondary" style="font-size: 14px">{{ livecheck.result }}</p>
+                <p class="text-secondary" style="font-size: 14px">{{ port.livecheck.result }}</p>
                 <p style="font-size: 12px">livecheck ran at: <strong>{{ livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
             </div>
-            {% elif livecheck.error %}
+            {% elif port.livecheck.error %}
                 <div class="rounded border p-2">
                     <h5>Livecheck error</h5>
-                    <p class="text-secondary" style="font-size: 14px">{{ livecheck.error }}</p>
-                    <p style="font-size: 12px">livecheck ran at: <strong>{{ livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
+                    <p class="text-secondary" style="font-size: 14px">{{ port.livecheck.error }}</p>
+                    <p style="font-size: 12px">livecheck ran at: <strong>{{ port.livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
                 </div>
             {% endif %}
-            {% endfor %}
         </div>
     </div>
