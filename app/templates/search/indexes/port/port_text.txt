@@ -6,6 +6,9 @@
 {% for v in object.variants.all %}
 {{ v }}
 {% endfor %}
+{% for c in object.categories.all %}
+{{ c }}
+{% endfor %}
 {{ object.active }}
 {{ object.name_l }}
 {{ object.livecheck_outdated }}

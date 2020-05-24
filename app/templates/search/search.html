@@ -6,35 +6,35 @@
 
 {% block content %}
     <div class="mt-3">
-        <form method="get" action=".">
+        <form method="get" action="." class="border rounded-lg p-2">
             <div class="form-row">
                 <div class="col-10">
                     {{ form.q }}
                 </div>
                 <div class="col-2">
-                    <button style="width: 100%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    <button id="super-submit" style="width: 100%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                 </div>
             </div>
-            <div class="form-group py-2 px-3 mx-1 rounded-lg search-by-options">
-                <span class="mr-4 text-secondary">Search by: </span>
-                <label class="checkbox-inline rounded bg-light p-2 mr-2 mb-0">{{ form.name }} Port name</label>
-                <label class="checkbox-inline rounded bg-light p-2 mr-2 mb-0">{{ form.description }} Description</label>
-                <label class="checkbox-inline rounded bg-light p-2 mr-2 mb-0">{{ form.maintainers }} Maintainers</label>
-                <label class="checkbox-inline rounded bg-light p-2 mr-2 mb-0">{{ form.variants }} Variants</label>
-                <button type="button" class="bg-light border-0 p-2 float-right" data-toggle="modal" data-target="#search-help"><i class="fa fa-question-circle"></i></button>
+            <div class="form-group my-0 py-2 rounded-lg search-by-options">
+                <label class="checkbox-inline rounded bg-light py-2 px-1 mb-0">{{ form.name }} Only match by port names</label>
+                <button type="button" class="btn btn-default border-0 p-2" data-toggle="modal" data-target="#search-help"><i class="fa fa-question-circle"></i></button>
+                <a href="." class="btn btn-link border-0 p-2 float-right">Reset all filters <i class="fa fa-window-close"></i></a>
             </div>
-            <div class="form-group py-2 bg-information px-3 rounded-lg border-secondary filter-by-options">
+            <div class="form-group py-2 bg-information px-2 rounded-lg border-secondary filter-by-options">
                 <span class="mr-4">Filter the results: </span>
                 <label class="checkbox-inline mr-2 mb-0">{{ form.livecheck_outdated }} Outdated (livecheck)</label>
                 <label class="checkbox-inline mr-2 mb-0">{{ form.livecheck_broken }} Livecheck errored</label>
-                <label class="checkbox-inline mr-2 mb-0">{{ form.active }} Show deleted ports</label>
+                <label class="checkbox-inline mr-2 mb-0">{{ form.show_deleted_ports }} Show deleted ports</label>
+            </div>
+            <div id="m-facets" class="mb-2">
+
             </div>
         </form>
-        <br>
+    <br>
          {% if query %}
-            <h4>Results for "{{ query }}"</h4>
+            <h5>Results for "{{ query }}"</h5>
         {% else %}
-            <h4>No search query, searching and filtering all ports</h4>
+            <h5>No search query, searching and filtering all ports</h5>
         {% endif %}
             <p>{{ page.paginator.count }} results found | Showing results {{ page.start_index }} to {{ page.end_index }}
             {% if page.has_other_pages %}
@@ -87,6 +87,15 @@
                 </nav>
                 {% endif %}
             </p>
+            {% if facets.fields.maintainers %}
+                <div class="filter-by-options">
+                <span>Narrow these results by maintainer: </span>
+                <a class="btn btn-link p-1 btn-sm" href="?{% url_replace selected_facets='' page=1 %}">Any maintainer</a>
+                    {% for author in facets.fields.maintainers|slice:":7" %}
+                        <a class="btn btn-link p-1 btn-sm" href="?{% url_replace selected_facets='maintainers_exact:'|add:author.0 page=1 %}">{{ author.0 }}({{ author.1 }})</a>
+                {% endfor %}
+                </div>
+            {% endif %}
             <hr>
         {% for result in page.object_list %}
             <div>
@@ -164,16 +173,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">A few tips for better searching</h4>
+                <h4 class="modal-title">Only search by port names</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <ul>
-                    <li>You can search particular properties of a port and can also filter those results further.</li>
-                    <li>If the search box is empty, then filtering is done based on all ports</li>
-                    <li>For searching by maintainer, category and variants results are displayed only for exact matches.</li>
-                </ul>
-
+                If this is selected, then results are displayed by matching the query with only the port names. Otherwise
+                "description" is also used to find results.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -181,4 +186,36 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    let searchParams = new URLSearchParams(window.location.search);
+    if(searchParams.has("selected_facets")) {
+        let v = searchParams.get("selected_facets");
+        let sections = v.split(':');
+        let maintainer = sections[1];
+        if(maintainer === "" || sections.length < 2) {
+            $('#m-facets').html("");
+        } else {
+            $('#m-facets').html([
+                'Results will only show ports by <strong>',
+                maintainer,
+                '</strong> <input style="display: none" class="disabled" name="selected_facets" value=',
+                v,
+                '>',
+                '<button id="remove-maintainer-filter"',
+                'class="btn btn-lg p-0 text-danger btn-link"><i class="fa fa-window-close"></i></button>'
+                ].join(' ')
+            );
+        }
+    }
+
+    $(function () {
+    $('#remove-maintainer-filter').on('click', function () {
+        $('#m-facets').html("");
+        $('#super-submit').click();
+    });
+});
+</script>
 {% endblock %}

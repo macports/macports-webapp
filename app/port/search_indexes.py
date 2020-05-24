@@ -6,12 +6,13 @@ class PortIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     name = indexes.NgramField(model_attr='name', boost=2.0)
     name_l = indexes.IntegerField()
-    maintainers = indexes.MultiValueField(boost=1.2)
+    maintainers = indexes.MultiValueField(boost=1.2, faceted=True)
     description = indexes.CharField(model_attr='description', boost=1.5)
-    variants = indexes.MultiValueField()
+    variants = indexes.MultiValueField(faceted=True)
     livecheck_broken = indexes.BooleanField()
     livecheck_outdated = indexes.BooleanField()
     active = indexes.BooleanField(model_attr='active')
+    categories = indexes.MultiValueField(faceted=True)
 
     def get_model(self):
         return Port
@@ -36,3 +37,6 @@ class PortIndex(indexes.SearchIndex, indexes.Indexable):
             return obj.livecheck.has_updates
         else:
             return False
+
+    def prepare_categories(self, obj):
+        return [c.name for c in obj.categories.all()]

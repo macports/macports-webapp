@@ -1,7 +1,8 @@
 from django.urls import path, include
 from django.conf.urls import url
 from django.contrib import admin
-from haystack.views import SearchView, search_view_factory
+from haystack.views import FacetedSearchView
+from haystack.query import SearchQuerySet
 from rest_framework import routers
 
 import views
@@ -25,10 +26,9 @@ urlpatterns = [
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     # URL for advanced search page
-    url(r'^search/', search_view_factory(
-        view_class=SearchView,
+    url(r'^search/', FacetedSearchView(
         form_class=AdvancedSearchForm,
-        template='search/search.html',
+        searchqueryset=SearchQuerySet().facet('maintainers'),
     ), name='search'),
     path('statistics/', include('stats.urls')),
     path('maintainers/', include('maintainer.urls')),
