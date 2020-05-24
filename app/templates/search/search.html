@@ -1,7 +1,11 @@
 {% extends 'layout.html' %}
+{% load static %}
 {% load highlight %}
 {% load url_replace %}
 
+{% block head_scripts %}
+    <script type="text/javascript" src="{% static 'js/search.js' %}"></script>
+{% endblock %}
 {% block title %}Search ports |{% endblock %}
 
 {% block content %}
@@ -27,15 +31,15 @@
                 <label class="checkbox-inline mr-2 mb-0">{{ form.show_deleted_ports }} Show deleted ports</label>
                 <label class="checkbox-inline mr-2 mb-0">{{ form.nomaintainer }} Only no-maintainer ports</label>
             </div>
-            <div id="m-facets" class="mb-2">
-
-            </div>
+            <div id="m-facets" class="mb-2"></div>
+            <div id="c-facets" class="mb-2"></div>
+            <div id="v-facets" class="mb-2"></div>
         </form>
     <br>
          {% if query %}
             <h5>Results for "{{ query }}"</h5>
         {% else %}
-            <h5>No search query, searching and filtering all ports</h5>
+            <h5>No search query. You can still perform filtering</h5>
         {% endif %}
             <p>{{ page.paginator.count }} results found | Showing results {{ page.start_index }} to {{ page.end_index }}
             {% if page.has_other_pages %}
@@ -90,7 +94,7 @@
             </p>
             {% if facets.fields.maintainers %}
                 <div class="filter-by-options">
-                <span>Narrow these results by maintainer: </span>
+                <span>Apply a filter for maintainers: </span>
                 <a class="btn btn-link p-1 btn-sm" href="?{% url_replace selected_facets='' page=1 %}">Any maintainer</a>
                     {% for author in facets.fields.maintainers|slice:":7" %}
                         <a class="btn btn-link p-1 btn-sm" href="?{% url_replace selected_facets='maintainers_exact:'|add:author.0 page=1 %}">{{ author.0 }}({{ author.1 }})</a>
@@ -187,36 +191,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block script %}
-<script>
-    let searchParams = new URLSearchParams(window.location.search);
-    if(searchParams.has("selected_facets")) {
-        let v = searchParams.get("selected_facets");
-        let sections = v.split(':');
-        let maintainer = sections[1];
-        if(maintainer === "" || sections.length < 2) {
-            $('#m-facets').html("");
-        } else {
-            $('#m-facets').html([
-                'Results will only show ports by <strong>',
-                maintainer,
-                '</strong> <input style="display: none" class="disabled" name="selected_facets" value=',
-                v,
-                '>',
-                '<button id="remove-maintainer-filter"',
-                'class="btn btn-lg p-0 text-danger btn-link"><i class="fa fa-window-close"></i></button>'
-                ].join(' ')
-            );
-        }
-    }
-
-    $(function () {
-    $('#remove-maintainer-filter').on('click', function () {
-        $('#m-facets').html("");
-        $('#super-submit').click();
-    });
-});
-</script>
 {% endblock %}
