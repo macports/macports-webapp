@@ -28,7 +28,7 @@ urlpatterns = [
     # URL for advanced search page
     url(r'^search/', FacetedSearchView(
         form_class=AdvancedSearchForm,
-        searchqueryset=SearchQuerySet().facet('maintainers'),
+        searchqueryset=SearchQuerySet().facet('maintainers').facet('categories').facet('variants'),
     ), name='search'),
     path('statistics/', include('stats.urls')),
     path('maintainers/', include('maintainer.urls')),
