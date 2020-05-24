@@ -10,6 +10,7 @@
 {{ c }}
 {% endfor %}
 {{ object.active }}
+{{ object.nomaintainer }}
 {{ object.name_l }}
 {{ object.livecheck_outdated }}
 {{ object.livecheck_error }}

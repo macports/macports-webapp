@@ -11,6 +11,7 @@ class PortIndex(indexes.SearchIndex, indexes.Indexable):
     variants = indexes.MultiValueField(faceted=True)
     livecheck_broken = indexes.BooleanField()
     livecheck_outdated = indexes.BooleanField()
+    nomaintainer = indexes.BooleanField()
     active = indexes.BooleanField(model_attr='active')
     categories = indexes.MultiValueField(faceted=True)
 
@@ -22,6 +23,9 @@ class PortIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_maintainers(self, obj):
         return [m.github for m in obj.maintainers.all()]
+
+    def prepare_nomaintainer(self, obj):
+        return False if obj.maintainers.all().count() > 0 else True
 
     def prepare_variants(self, obj):
         return [v.variant for v in obj.variants.all()]

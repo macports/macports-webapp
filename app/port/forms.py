@@ -22,6 +22,7 @@ class AdvancedSearchForm(FacetedSearchForm):
     name = forms.BooleanField(required=False, initial=False)
     livecheck_broken = forms.BooleanField(required=False, initial=False)
     livecheck_outdated = forms.BooleanField(required=False, initial=False)
+    nomaintainer = forms.BooleanField(required=False, initial=False)
     active = forms.BooleanField(required=False, initial=False)
 
     def no_query_found(self):
@@ -55,6 +56,9 @@ class AdvancedSearchForm(FacetedSearchForm):
 
         if self.cleaned_data['livecheck_outdated']:
             f = f | SQ(livecheck_outdated=True)
+
+        if self.cleaned_data['nomaintainer']:
+            f = f & SQ(nomaintainer=True)
 
         if f != SQ():
             sqs = sqs.filter(f)
