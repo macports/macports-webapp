@@ -2,6 +2,19 @@ import itertools
 
 ALLOWED_DAYS_FOR_STATS = [0, 7, 30, 90, 180, 365]
 ALLOWED_COLUMNS_FOR_SORT = ['port', '-port', 'total_count', '-total_count', '-req_count', 'req_count']
+ALLOWED_PROPERTIES = [
+    'requested',
+    'version',
+    'variants',
+    'submission__os_version',
+    'submission__xcode_version',
+    'submission__clt_version',
+    'submission__os_arch',
+    'submission__build_arch',
+    'submission__platform',
+    'submission__macports_version',
+    'submission__cxx_stdlib'
+]
 
 
 def validate_stats_days(value):

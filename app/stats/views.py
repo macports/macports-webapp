@@ -5,12 +5,15 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Subquery, Count, Case, IntegerField, When, Q
-from django.db.models.functions import TruncMonth, Lower
+from django.db.models import Subquery, Count, Case, IntegerField, When
+from django.db.models.functions import TruncMonth
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from stats.models import Submission, PortInstallation
 from stats.validators import validate_stats_days, validate_columns_port_installations, validate_unique_columns_port_installations, ALLOWED_DAYS_FOR_STATS
 from stats.utilities.sort_by_version import sort_list_of_dicts_by_version
+from stats.serializers import PortStatisticsSerializer
 
 
 def stats(request):
@@ -36,15 +39,25 @@ def stats(request):
     last_week_unique = all_submissions.filter(timestamp__week=current_week - 1).distinct('user').count()
 
     # Number of unique users vs month
-    users_by_month = Submission.objects.annotate(month=TruncMonth('timestamp')).values('month').annotate(num=Count('user_id', distinct=True))[:12]
+    users_by_month = Submission.objects.annotate(month=TruncMonth('timestamp')).values('month').annotate(
+        num=Count('user_id', distinct=True))[:12]
 
     # System Stats for Current Users
-    submissions_last_x_days = Submission.objects.filter(timestamp__range=[start_date, end_date]).order_by('user', '-timestamp').distinct('user')
+    submissions_last_x_days = Submission.objects.filter(timestamp__range=[start_date, end_date]).order_by('user',
+                                                                                                          '-timestamp').distinct(
+        'user')
     submissions_unique = Submission.objects.filter(id__in=Subquery(submissions_last_x_days.values('id')))
-    macports_version = sort_list_of_dicts_by_version(list(submissions_unique.values('macports_version').annotate(num=Count('macports_version'))), 'macports_version')
-    os_version_and_clt_version = sort_list_of_dicts_by_version(list(submissions_unique.values('clt_version', 'os_version').annotate(num=Count('user_id', distinct=True))), 'os_version')
-    os_version_build_arch_and_stdlib = sort_list_of_dicts_by_version(list(submissions_unique.values('os_version', 'build_arch', 'cxx_stdlib').annotate(num=Count('user_id', distinct=True))), 'os_version')
-    os_version_and_xcode_version = sort_list_of_dicts_by_version(list(submissions_unique.values('xcode_version', 'os_version').annotate(num=Count('user_id', distinct=True))), 'os_version')
+    macports_version = sort_list_of_dicts_by_version(
+        list(submissions_unique.values('macports_version').annotate(num=Count('macports_version'))), 'macports_version')
+    os_version_and_clt_version = sort_list_of_dicts_by_version(
+        list(submissions_unique.values('clt_version', 'os_version').annotate(num=Count('user_id', distinct=True))),
+        'os_version')
+    os_version_build_arch_and_stdlib = sort_list_of_dicts_by_version(list(
+        submissions_unique.values('os_version', 'build_arch', 'cxx_stdlib').annotate(
+            num=Count('user_id', distinct=True))), 'os_version')
+    os_version_and_xcode_version = sort_list_of_dicts_by_version(
+        list(submissions_unique.values('xcode_version', 'os_version').annotate(num=Count('user_id', distinct=True))),
+        'os_version')
 
     return render(request, 'stats/stats.html', {
         'total_submissions': all_submissions.count(),
@@ -121,14 +134,17 @@ def stats_port_installations_filter(request):
 
     days = int(days)
 
-    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=days)).order_by('user', '-timestamp').distinct('user')
-    installations = PortInstallation.objects.order_by('port')\
-        .filter(submission_id__in=Subquery(submissions_unique.values('id')))\
-        .values('port').annotate(total_count=Count('port'))\
-        .annotate(req_count=Count(Case(When(requested=True, then=1), output_field=IntegerField())))\
-        .exclude(port__icontains='mpstats')\
-        .filter(port__icontains=search_by)\
-        .extra(select={'port': 'lower(port)'})\
+    submissions_unique = Submission.objects.filter(
+        timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=days)).order_by('user',
+                                                                                                                 '-timestamp').distinct(
+        'user')
+    installations = PortInstallation.objects.order_by('port') \
+        .filter(submission_id__in=Subquery(submissions_unique.values('id'))) \
+        .values('port').annotate(total_count=Count('port')) \
+        .annotate(req_count=Count(Case(When(requested=True, then=1), output_field=IntegerField()))) \
+        .exclude(port__icontains='mpstats') \
+        .filter(port__icontains=search_by) \
+        .extra(select={'port': 'lower(port)'}) \
         .order_by(order_by_1, order_by_2, order_by_3)
 
     paginated_obj = Paginator(installations, 100)
@@ -169,3 +185,18 @@ def stats_submit(request):
             return HttpResponse("Something went wrong")
     else:
         return HttpResponse("Method Not Allowed")
+
+
+class PortStatisticsAPIView(APIView):
+    def get(self, request):
+        result = PortStatisticsSerializer(
+            PortInstallation.objects.all(),
+            context={
+                'name': request.GET.get('name'),
+                'days': request.GET.get('days', "30"),
+                'days_ago': request.GET.get('days_ago', "0"),
+                'property': request.GET.getlist('property'),
+                'sort_by': request.GET.get('sort_by')
+            }
+        )
+        return Response(result.data)
