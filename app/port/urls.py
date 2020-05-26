@@ -6,6 +6,7 @@ from port import views
 from port.views import PortInfoView
 
 router = routers.DefaultRouter()
+router.register("autocomplete/port", views.PortAutocompleteView, basename="autocomplete_port")
 router.register('ports', PortInfoView, basename="port")
 
 urlpatterns = [

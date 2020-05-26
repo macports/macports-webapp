@@ -12,7 +12,7 @@ from rest_framework import mixins, viewsets, filters
 import django_filters
 
 from port.forms import AdvancedSearchForm
-from port.serializers import SearchSerializer, PortSerializer
+from port.serializers import PortHaystackSerializer, PortSerializer
 from port.models import Port, Dependency
 from variant.models import Variant
 from maintainer.models import Maintainer
@@ -180,9 +180,11 @@ def port_detail_tickets(request):
     })
 
 
-# PortSearchView handles api call for advanced search
-class PortSearchView(mixins.ListModelMixin, viewsets.GenericViewSet):
-    serializer_class = SearchSerializer
+# VIEWS FOR DJANGO REST-FRAMEWORK
+
+
+class PortAutocompleteView(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = PortHaystackSerializer
     form = None
     # We use the same form as used by the advanced search.
     # AdvancedSearchForm takes care of filtering the queryset itself.
