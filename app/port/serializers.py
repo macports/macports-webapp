@@ -5,13 +5,10 @@ from variant.serializers import VariantSerializer
 from port.models import Port
 
 
-# SearchSerializer is used by PortSearchView to serialize results
-# obtained from django-haystack
-class SearchSerializer(serializers.Serializer):
+# Used by autocomplete search queries
+class PortHaystackSerializer(serializers.Serializer):
     name = serializers.CharField()
     description = serializers.CharField()
-    maintainers = serializers.ListField()
-    variants = serializers.ListField()
 
 
 class PortSerializer(serializers.ModelSerializer):
