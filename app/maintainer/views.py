@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, mixins
 import django_filters
 
 from maintainer.models import Maintainer
-from maintainer.serializers import MaintainerSerializer
+from maintainer.forms import MaintainerAutocompleteForm
+from maintainer.serializers import MaintainerSerializer, MaintainerHaystackSerializer
 from port.models import Port
 from port.filters import PortFilterByMultiple
 
@@ -78,6 +79,8 @@ def search_ports_in_maintainer(request):
         'content': "Maintainer"
     })
 
+# VIEWS FOR DJANGO REST FRAMEWORK
+
 
 class MaintainerView(viewsets.ReadOnlyModelViewSet):
     serializer_class = MaintainerSerializer
@@ -86,3 +89,17 @@ class MaintainerView(viewsets.ReadOnlyModelViewSet):
     filter_backends = [filters.SearchFilter, django_filters.rest_framework.DjangoFilterBackend]
     search_fields = ['name', 'domain', 'github']
     filterset_fields = ['name', 'domain', 'github']
+
+
+class MaintainerAutocompleteView(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = MaintainerHaystackSerializer
+    form = None
+    form_class = MaintainerAutocompleteForm
+
+    def build_form(self):
+        data = self.request.GET
+        return self.form_class(data, None)
+
+    def get_queryset(self, *args, **kwargs):
+        self.form = self.build_form()
+        return self.form.search()

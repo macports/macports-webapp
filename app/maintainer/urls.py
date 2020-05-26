@@ -5,6 +5,7 @@ from rest_framework import routers
 from maintainer import views
 
 router = routers.DefaultRouter()
+router.register("autocomplete/maintainer", views.MaintainerAutocompleteView, basename="maintainer_autocomplete")
 router.register('maintainers', views.MaintainerView, basename='maintainers')
 
 urlpatterns = [
