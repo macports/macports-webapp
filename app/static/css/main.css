@@ -90,7 +90,7 @@ body{
     display: none;
 }
 
-.maintainer-autocomplete-spinner{
+.maintainer-autocomplete-spinner, .category-autocomplete-spinner{
     position: absolute !important;
     right: 8px !important;
     top: 8px !important;

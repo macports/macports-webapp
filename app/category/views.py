@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models.functions import Lower
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 
 from category.models import Category
-from category.serializers import CategoriesListSerializer
+from category.forms import CategoryAutocompleteForm
+from category.serializers import CategoriesListSerializer, CategoryHaystackSerializer
 from port.models import Port
 from port.filters import PortFilterByMultiple
 
@@ -49,3 +50,17 @@ def search_ports_in_category(request):
 class CategoriesListView(viewsets.ReadOnlyModelViewSet):
     serializer_class = CategoriesListSerializer
     queryset = Category.objects.all()
+
+
+class CategoryAutocompleteView(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = CategoryHaystackSerializer
+    form = None
+    form_class = CategoryAutocompleteForm
+
+    def build_form(self):
+        data = self.request.GET
+        return self.form_class(data, None)
+
+    def get_queryset(self, *args, **kwargs):
+        self.form = self.build_form()
+        return self.form.search()
