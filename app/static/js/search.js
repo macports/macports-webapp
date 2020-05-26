@@ -9,7 +9,7 @@ $(function () {
             let facet_value = sections[1];
             switch(facet_query) {
                 case "maintainers_exact":
-                    if (sections.length < 2) {
+                    if (sections.length < 2 || searchParams.get("nomaintainer") === "on") {
                         $('#m-facets').html("");
                     } else {
                         appendMaintainerFilter(facet_value);
@@ -206,7 +206,7 @@ function appendMaintainerFilter(facet_value) {
         $('#m-facets').html([
                 'Selected maintainer: <strong>',
                 facet_value,
-                '</strong> <input style="display: none" class="disabled" name="selected_facets" value=',
+                '</strong> <input form="super-form" style="display: none" class="disabled" name="selected_facets" value=',
                 'maintainers_exact:' + facet_value,
                 '>',
                 '<button id="remove-maintainers-filter"',
@@ -224,7 +224,7 @@ function appendCategoryFilter(facet_value) {
         $('#c-facets').html([
                 'Selected category: <strong>',
                 facet_value,
-                '</strong> <input style="display: none" class="disabled" name="selected_facets" value=',
+                '</strong> <input form="super-form" style="display: none" class="disabled" name="selected_facets" value=',
                 'categories_exact:' + facet_value,
                 '>',
                 '<button id="remove-categories-filter"',
@@ -242,7 +242,7 @@ function appendVariantFilter(facet_value) {
         $('#v-facets').html([
                 'Selected variant <strong>',
                 facet_value,
-                '</strong> <input style="display: none" class="disabled" name="selected_facets" value=',
+                '</strong> <input form="super-form" style="display: none" class="disabled" name="selected_facets" value=',
                 'variants_exact:' + facet_value,
                 '>',
                 '<button id="remove-variants-filter"',
