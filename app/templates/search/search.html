@@ -37,25 +37,71 @@
             <div id="c-facets" class="mb-2"></div>
             <div id="v-facets" class="mb-2"></div>
         </form>
-        <div class="form-row my-2">
-            <div class="col-md-3">
-                <input id="maintainer-q" class="typeahead form-control" type="text"
-                       placeholder="Choose a maintainer...">
-                <img class="maintainer-autocomplete-spinner" id="maintainer-autocomplete-spinner"
-                     src="{% static 'images/spinner.gif' %}">
-            </div>
-            <div class="col-md-3">
-                <input id="category-q" class="typeahead form-control" type="text" placeholder="Choose a category...">
-                <img class="category-autocomplete-spinner" id="category-autocomplete-spinner"
-                     src="{% static 'images/spinner.gif' %}">
-            </div>
-            <div class="col-md-3">
-                <input id="variant-q" class="typeahead form-control" type="text" placeholder="Choose a variant...">
-                <img class="variant-autocomplete-spinner" id="variant-autocomplete-spinner"
-                     src="{% static 'images/spinner.gif' %}">
-            </div>
+    </div>
+    <div class="form-row my-2">
+        <div class="col-md-3">
+            <input id="maintainer-q" class="typeahead form-control" type="text"
+                   placeholder="Choose a maintainer...">
+            <img class="maintainer-autocomplete-spinner" id="maintainer-autocomplete-spinner"
+                 src="{% static 'images/spinner.gif' %}">
         </div>
-    <br>
+        <div class="col-md-3">
+            <input id="category-q" class="typeahead form-control" type="text" placeholder="Choose a category...">
+            <img class="category-autocomplete-spinner" id="category-autocomplete-spinner"
+                 src="{% static 'images/spinner.gif' %}">
+        </div>
+        <div class="col-md-3">
+            <input id="variant-q" class="typeahead form-control" type="text" placeholder="Choose a variant...">
+            <img class="variant-autocomplete-spinner" id="variant-autocomplete-spinner"
+                 src="{% static 'images/spinner.gif' %}">
+        </div>
+    </div>
+    {% if facets.fields.maintainers or facets.fields.categories or facets.fields.variants %}
+        <button class="btn btn-sm btn-info" data-toggle="collapse" data-target="#suggestions"><i
+                class="fa fa-angle-down"></i> Show suggestions
+        </button>
+    {% endif %}
+    <div id="suggestions" class="collapse p-1">
+        {% if facets.fields.maintainers %}
+            <div class="filter-by-options">
+                <span><strong>Maintainers:</strong> </span>
+                <button class="btn btn-link text-info p-1 btn-sm"
+                        onclick="appendMaintainerFilter('');$('#super-submit').click();">Any
+                    maintainer
+                </button>
+                {% for maintainer in facets.fields.maintainers|slice:":7" %}
+                    <button class="btn btn-link p-1 btn-sm"
+                            onclick="appendMaintainerFilter('{{ maintainer.0 }}');$('#super-submit').click();">{{ maintainer.0 }}({{ maintainer.1 }})
+                    </button>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if facets.fields.categories %}
+            <div class="filter-by-options">
+                <span><strong>Categories:</strong> </span>
+                <button class="btn btn-link text-info p-1 btn-sm" onclick="appendCategoryFilter('');$('#super-submit').click();">All
+                    categories</button>
+                {% for category in facets.fields.categories|slice:":7" %}
+                    <button class="btn btn-link p-1 btn-sm"
+                            onclick="appendCategoryFilter('{{ category.0 }}');$('#super-submit').click();">{{ category.0 }}({{ category.1 }})
+                    </button>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if facets.fields.variants %}
+            <div class="filter-by-options">
+                <span><strong>Variants:</strong> </span>
+                <button class="btn btn-link text-info p-1 btn-sm" onclick="appendVariantFilter('');$('#super-submit').click();">All
+                    variants</button>
+                {% for variant in facets.fields.variants|slice:":7" %}
+                    <button class="btn btn-link p-1 btn-sm"
+                            onclick="appendVariantFilter('{{ variant.0 }}');$('#super-submit').click();">{{ variant.0 }}({{ variant.1 }})
+                    </button>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div id="search-results" class="mt-3">
          {% if query %}
             <h5>Results for "{{ query }}"</h5>
         {% else %}
@@ -112,15 +158,6 @@
                 </nav>
                 {% endif %}
             </p>
-            {% if facets.fields.maintainers %}
-                <div class="filter-by-options">
-                <span>Apply a filter for maintainers: </span>
-                <a class="btn btn-link p-1 btn-sm" href="?{% url_replace selected_facets='' page=1 %}">Any maintainer</a>
-                    {% for author in facets.fields.maintainers|slice:":7" %}
-                        <a class="btn btn-link p-1 btn-sm" href="?{% url_replace selected_facets='maintainers_exact:'|add:author.0 page=1 %}">{{ author.0 }}({{ author.1 }})</a>
-                {% endfor %}
-                </div>
-            {% endif %}
             <hr>
         {% for result in page.object_list %}
             <div>
@@ -195,20 +232,21 @@
                 {% endif %}
     </div>
     <div id="search-help" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Only search by port names</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                If this is selected, then results are displayed by matching the query with only the port names. Otherwise
-                "description" is also used to find results.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Only search by port names</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    If this is selected, then results are displayed by matching the query with only the port names.
+                    Otherwise
+                    "description" is also used to find results.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
