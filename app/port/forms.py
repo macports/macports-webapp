@@ -7,7 +7,6 @@ from port.models import Port
 
 
 class AdvancedSearchForm(FacetedSearchForm):
-    show_deleted_ports = forms.BooleanField(required=False)
     q = forms.CharField(
         required=False,
         label=_("Search"),
@@ -19,11 +18,46 @@ class AdvancedSearchForm(FacetedSearchForm):
         }),
     )
 
-    name = forms.BooleanField(required=False, initial=False)
-    livecheck_broken = forms.BooleanField(required=False, initial=False)
-    livecheck_outdated = forms.BooleanField(required=False, initial=False)
-    nomaintainer = forms.BooleanField(required=False, initial=False)
-    active = forms.BooleanField(required=False, initial=False)
+    name = forms.BooleanField(
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(attrs={
+            "form": "super-form",
+            "onchange": "this.form.submit();"
+        })
+    )
+    livecheck_broken = forms.BooleanField(
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(attrs={
+            "form": "super-form",
+            "onchange": "this.form.submit();"
+        })
+    )
+    livecheck_outdated = forms.BooleanField(
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(attrs={
+            "form": "super-form",
+            "onchange": "this.form.submit();"
+        })
+    )
+    nomaintainer = forms.BooleanField(
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(attrs={
+            "form": "super-form",
+            "onchange": "this.form.submit();"
+        })
+    )
+    show_deleted_ports = forms.BooleanField(
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(attrs={
+            "form": "super-form",
+            "onchange": "this.form.submit();"
+        })
+    )
 
     def no_query_found(self):
         return SearchQuerySet().models(Port)

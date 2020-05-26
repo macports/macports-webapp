@@ -11,240 +11,278 @@
 {% block title %}Search ports |{% endblock %}
 
 {% block content %}
-    <div class="mt-3">
-        <form id="super-form" method="get" action="." class="border rounded-lg p-2">
-            <div class="form-row">
-                <div class="col-10">
-                    {{ form.q }}
+    <div class="row mt-3">
+        <div class="col-lg-3 col-md-4 p-1">
+            <div class="card">
+                <div class="card-header p-2">
+                    Port version:
                 </div>
-                <div class="col-2">
-                    <button id="super-submit" style="width: 100%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                <div class="card-body p-2" form="super-form">
+                    <label>{{ form.livecheck_outdated }} Outdated</label><br>
+                    <label>{{ form.livecheck_broken }} Broken check</label>
                 </div>
             </div>
-            <div class="form-group my-0 py-2 rounded-lg search-by-options">
-                <label class="checkbox-inline rounded bg-light py-2 px-1 mb-0">{{ form.name }} Only match by port names</label>
-                <button type="button" class="btn btn-default border-0 p-2" data-toggle="modal" data-target="#search-help"><i class="fa fa-question-circle"></i></button>
-                <a href="." class="btn btn-link border-0 p-2 float-right">Reset all filters <i class="fa fa-window-close"></i></a>
-            </div>
-            <div class="form-group py-2 bg-information px-2 rounded-lg border-secondary filter-by-options">
-                <span class="mr-4">Filter the results: </span>
-                <label class="checkbox-inline mr-2 mb-0">{{ form.livecheck_outdated }} Outdated (livecheck)</label>
-                <label class="checkbox-inline mr-2 mb-0">{{ form.livecheck_broken }} Livecheck errored</label>
-                <label class="checkbox-inline mr-2 mb-0">{{ form.show_deleted_ports }} Show deleted ports</label>
-                <label class="checkbox-inline mr-2 mb-0">{{ form.nomaintainer }} Only no-maintainer ports</label>
-            </div>
-            <div id="m-facets" class="mb-2"></div>
-            <div id="c-facets" class="mb-2"></div>
-            <div id="v-facets" class="mb-2"></div>
-        </form>
-    </div>
-    <div class="form-row my-2">
-        <div class="col-md-3">
-            <input id="maintainer-q" class="typeahead form-control" type="text"
-                   placeholder="Choose a maintainer...">
-            <img class="maintainer-autocomplete-spinner" id="maintainer-autocomplete-spinner"
-                 src="{% static 'images/spinner.gif' %}">
-        </div>
-        <div class="col-md-3">
-            <input id="category-q" class="typeahead form-control" type="text" placeholder="Choose a category...">
-            <img class="category-autocomplete-spinner" id="category-autocomplete-spinner"
-                 src="{% static 'images/spinner.gif' %}">
-        </div>
-        <div class="col-md-3">
-            <input id="variant-q" class="typeahead form-control" type="text" placeholder="Choose a variant...">
-            <img class="variant-autocomplete-spinner" id="variant-autocomplete-spinner"
-                 src="{% static 'images/spinner.gif' %}">
-        </div>
-    </div>
-    {% if facets.fields.maintainers or facets.fields.categories or facets.fields.variants %}
-        <button class="btn btn-sm btn-info" data-toggle="collapse" data-target="#suggestions"><i
-                class="fa fa-angle-down"></i> Show suggestions
-        </button>
-    {% endif %}
-    <div id="suggestions" class="collapse p-1">
-        {% if facets.fields.maintainers %}
-            <div class="filter-by-options">
-                <span><strong>Maintainers:</strong> </span>
-                <button class="btn btn-link text-info p-1 btn-sm"
-                        onclick="appendMaintainerFilter('');$('#super-submit').click();">Any
-                    maintainer
-                </button>
-                {% for maintainer in facets.fields.maintainers|slice:":7" %}
-                    <button class="btn btn-link p-1 btn-sm"
-                            onclick="appendMaintainerFilter('{{ maintainer.0 }}');$('#super-submit').click();">{{ maintainer.0 }}({{ maintainer.1 }})
-                    </button>
-                {% endfor %}
-            </div>
-        {% endif %}
-        {% if facets.fields.categories %}
-            <div class="filter-by-options">
-                <span><strong>Categories:</strong> </span>
-                <button class="btn btn-link text-info p-1 btn-sm" onclick="appendCategoryFilter('');$('#super-submit').click();">All
-                    categories</button>
-                {% for category in facets.fields.categories|slice:":7" %}
-                    <button class="btn btn-link p-1 btn-sm"
-                            onclick="appendCategoryFilter('{{ category.0 }}');$('#super-submit').click();">{{ category.0 }}({{ category.1 }})
-                    </button>
-                {% endfor %}
-            </div>
-        {% endif %}
-        {% if facets.fields.variants %}
-            <div class="filter-by-options">
-                <span><strong>Variants:</strong> </span>
-                <button class="btn btn-link text-info p-1 btn-sm" onclick="appendVariantFilter('');$('#super-submit').click();">All
-                    variants</button>
-                {% for variant in facets.fields.variants|slice:":7" %}
-                    <button class="btn btn-link p-1 btn-sm"
-                            onclick="appendVariantFilter('{{ variant.0 }}');$('#super-submit').click();">{{ variant.0 }}({{ variant.1 }})
-                    </button>
-                {% endfor %}
-            </div>
-        {% endif %}
-    </div>
-    <div id="search-results" class="mt-3">
-         {% if query %}
-            <h5>Results for "{{ query }}"</h5>
-        {% else %}
-            <h5>No search query. You can still perform filtering</h5>
-        {% endif %}
-            <p>{{ page.paginator.count }} results found | Showing results {{ page.start_index }} to {{ page.end_index }}
-            {% if page.has_other_pages %}
-                <nav aria-label="Page navigation">
-                    <ul class="pagination pagination-sm">
-                        {% if builds.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?{% url_replace page=page.previous_page_number %}">
-                                    &laquo;
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
-                        {% endif %}
-
-                        {% if builds.number|add:'-4' > 1 %}
-                            <li class="page-item">
-                                <a class="page-link" href="?{% url_replace page=page.number|add:'-5' %}">&hellip;
-                                </a>
-                            </li>
-                        {% endif %}
-
-                        {% for i in page.paginator.page_range %}
-                            {% if page.number == i %}
-                                <li class="active page-item"><span class="page-link">{{ i }} <span
-                                        class="sr-only">(current)</span></span></li>
-                            {% elif i > page.number|add:'-5' and i < page.number|add:'5' %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?{% url_replace page=i %}">{{ i }}</a>
-                                </li>
-                            {% endif %}
+            <div class="card mt-2">
+                <div class="card-header p-2">
+                    Maintainer:
+                </div>
+                <div class="card-body p-2">
+                    <div class="text-info" id="m-facets"></div>
+                    <div class="col-12 p-0 m-0">
+                        <input id="maintainer-q" class="typeahead form-control" type="text"
+                               placeholder="Choose a maintainer...">
+                        <img class="maintainer-autocomplete-spinner" id="maintainer-autocomplete-spinner"
+                             src="{% static 'images/spinner.gif' %}">
+                    </div>
+                    <label class="mt-2">{{ form.nomaintainer }} No maintainer</label>
+                    {% if facets.fields.maintainers %}
+                    <div class="filter-by-options">
+                        <span><strong>Suggested: </strong></span>
+                        <button class="btn btn-link text-info p-0 m-0 btn-sm"
+                                onclick="appendMaintainerFilter('');$('#super-submit').click();">Any
+                            maintainer
+                        </button>
+                        {% for maintainer in facets.fields.maintainers|slice:":7" %}
+                            <button class="btn btn-link p-0 m-0 btn-sm"
+                                    onclick="appendMaintainerFilter('{{ maintainer.0 }}');$('#super-submit').click();">{{ maintainer.0 }}({{ maintainer.1 }})
+                            </button>
                         {% endfor %}
-
-                        {% if page.paginator.num_pages > page.number|add:'4' %}
-                            <li class="page-item">
-                                <a class="page-link" href="?{% url_replace page=page.number|add:'5' %}">&hellip;
-                                </a>
-                            </li>
-                        {% endif %}
-
-                        {% if page.has_next %}
-                            <li class="page-item">
-                                <a class="page-link" href="?{% url_replace page=page.next_page_number %}">&raquo;
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
-                        {% endif %}
-                    </ul>
-                </nav>
+                    </div>
                 {% endif %}
-            </p>
-            <hr>
-        {% for result in page.object_list %}
-            <div>
-                <a class="btn btn-link text-primary p-0" href="{{ result.object.get_absolute_url }}"><h4>{{result.name}}</h4></a>
-                <p class="mb-0 text-secondary" style="font-size: 18px">{{result.description}}</p>
-                <span class="text-secondary" style="font-size: 13px">
+                </div>
+            </div>
+            <div class="card mt-2">
+                <div class="card-header p-2">
+                    Category:
+                </div>
+                <div class="card-body p-2">
+                    <div class="text-info" id="c-facets"></div>
+                    <div class="col-12 p-0 m-0">
+                       <input id="category-q" class="typeahead form-control" type="text"
+                           placeholder="Choose a category...">
+                    <img class="category-autocomplete-spinner" id="category-autocomplete-spinner"
+                         src="{% static 'images/spinner.gif' %}">
+                    </div>
+                     {% if facets.fields.categories %}
+                    <div class="filter-by-options mt-2">
+                        <span><strong>Categories:</strong> </span>
+                        <button class="btn btn-link text-info p-0 m-0 btn-sm"
+                                onclick="appendCategoryFilter('');$('#super-submit').click();">All
+                            categories
+                        </button>
+                        {% for category in facets.fields.categories|slice:":7" %}
+                            <button class="btn btn-link p-0 m-0 btn-sm"
+                                    onclick="appendCategoryFilter('{{ category.0 }}');$('#super-submit').click();">{{ category.0 }}({{ category.1 }})
+                            </button>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+            <div class="card mt-2">
+                <div class="card-header p-2">
+                    Variant:
+                </div>
+                <div class="card-body p-2">
+                    <div class="col-12 p-0 m-0">
+                        <div class="text-info" id="v-facets"></div>
+                        <input id="variant-q" class="typeahead form-control" type="text"
+                               placeholder="Choose a variant...">
+                        <img class="variant-autocomplete-spinner" id="variant-autocomplete-spinner"
+                             src="{% static 'images/spinner.gif' %}">
+                    </div>
+                    {% if facets.fields.variants %}
+                    <div class="filter-by-options mt-2">
+                        <span><strong>Variants:</strong> </span>
+                        <button class="btn btn-link text-info p-0 m-0 btn-sm"
+                                onclick="appendVariantFilter('');$('#super-submit').click();">All
+                            variants
+                        </button>
+                        {% for variant in facets.fields.variants|slice:":7" %}
+                            <button class="btn btn-link p-0 m-0 btn-sm"
+                                    onclick="appendVariantFilter('{{ variant.0 }}');$('#super-submit').click();">{{ variant.0 }}({{ variant.1 }})
+                            </button>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+            <div class="card mt-2">
+                <div class="card-body p-2">
+                       <label>{{ form.show_deleted_ports }} Show deleted ports also</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-8">
+            <form id="super-form" method="get" action="." class="border rounded-lg p-2">
+                <div class="form-row">
+                    <div class="col-10">
+                        {{ form.q }}
+                    </div>
+                    <div class="col-2">
+                        <button id="super-submit" style="width: 100%" type="submit" class="btn btn-primary"><i
+                                class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="form-group my-0 py-2 rounded-lg search-by-options">
+                    <label class="checkbox-inline rounded bg-light py-2 px-1 mb-0">{{ form.name }} Only match by port
+                        names</label>
+                    <button type="button" class="btn btn-default border-0 p-2" data-toggle="modal"
+                            data-target="#search-help"><i class="fa fa-question-circle"></i></button>
+                    <a href="." class="btn btn-link border-0 p-2 float-right">Reset all filters <i
+                            class="fa fa-window-close"></i></a>
+                </div>
+
+            </form>
+            <div id="search-results" class="mt-3">
+                {% if query %}
+                    <h5>Results for "{{ query }}"</h5>
+                {% else %}
+                    <h5>No search query. You can still perform filtering</h5>
+                {% endif %}
+                <p>{{ page.paginator.count }} results found | Showing results {{ page.start_index }}
+                    to {{ page.end_index }}
+                    {% if page.has_other_pages %}
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-sm">
+                                {% if builds.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{% url_replace page=page.previous_page_number %}">
+                                            &laquo;
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+                                {% endif %}
+
+                                {% if builds.number|add:'-4' > 1 %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{% url_replace page=page.number|add:'-5' %}">&hellip;
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% for i in page.paginator.page_range %}
+                                    {% if page.number == i %}
+                                        <li class="active page-item"><span class="page-link">{{ i }} <span
+                                                class="sr-only">(current)</span></span></li>
+                                    {% elif i > page.number|add:'-5' and i < page.number|add:'5' %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?{% url_replace page=i %}">{{ i }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if page.paginator.num_pages > page.number|add:'4' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{% url_replace page=page.number|add:'5' %}">&hellip;
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% if page.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{% url_replace page=page.next_page_number %}">&raquo;
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </p>
+                <hr>
+                {% for result in page.object_list %}
+                    <div>
+                        <a class="btn btn-link text-primary p-0" href="{{ result.object.get_absolute_url }}">
+                            <h4>{{ result.name }}</h4></a>
+                        <p class="mb-0 text-secondary" style="font-size: 18px">{{ result.description }}</p>
+                        <span class="text-secondary" style="font-size: 13px">
                     <strong>Maintained by:</strong>
-                    {% for m in result.maintainers %}
-                        <a href="{% url 'maintainer_detail_github' m %}">{{ m }}, </a>
-                    {% endfor %}
-                    |
+                            {% for m in result.maintainers %}
+                                <a href="{% url 'maintainer_detail_github' m %}">{{ m }}, </a>
+                            {% endfor %}
+                            |
                     <strong>Variants:</strong>
-                    {% for v in result.variants %}
-                        {{ v }},
-                    {% endfor %}
+                            {% for v in result.variants %}
+                                {{ v }},
+                            {% endfor %}
 
                 </span>
-            </div>
-            <hr>
-            {% empty %}
-                <p>No results found.</p>
-            {% endfor %}
+                    </div>
+                    <hr>
+                    {% empty %}
+                    <p>No results found.</p>
+                {% endfor %}
 
-            {% if page.has_other_pages %}
-                <nav aria-label="Page navigation">
-                    <ul class="pagination pagination-sm">
-                        {% if builds.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?{% url_replace page=page.previous_page_number %}">
-                                    &laquo;
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
-                        {% endif %}
-
-                        {% if builds.number|add:'-4' > 1 %}
-                            <li class="page-item">
-                                <a class="page-link" href="?{% url_replace page=page.number|add:'-5' %}">&hellip;
-                                </a>
-                            </li>
-                        {% endif %}
-
-                        {% for i in page.paginator.page_range %}
-                            {% if page.number == i %}
-                                <li class="active page-item"><span class="page-link">{{ i }} <span
-                                        class="sr-only">(current)</span></span></li>
-                            {% elif i > page.number|add:'-5' and i < page.number|add:'5' %}
+                {% if page.has_other_pages %}
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm">
+                            {% if builds.has_previous %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?{% url_replace page=i %}">{{ i }}</a>
+                                    <a class="page-link" href="?{% url_replace page=page.previous_page_number %}">
+                                        &laquo;
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+                            {% endif %}
+
+                            {% if builds.number|add:'-4' > 1 %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% url_replace page=page.number|add:'-5' %}">&hellip;
+                                    </a>
                                 </li>
                             {% endif %}
-                        {% endfor %}
 
-                        {% if page.paginator.num_pages > page.number|add:'4' %}
-                            <li class="page-item">
-                                <a class="page-link" href="?{% url_replace page=page.number|add:'5' %}">&hellip;
-                                </a>
-                            </li>
-                        {% endif %}
+                            {% for i in page.paginator.page_range %}
+                                {% if page.number == i %}
+                                    <li class="active page-item"><span class="page-link">{{ i }} <span
+                                            class="sr-only">(current)</span></span></li>
+                                {% elif i > page.number|add:'-5' and i < page.number|add:'5' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{% url_replace page=i %}">{{ i }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
 
-                        {% if page.has_next %}
-                            <li class="page-item">
-                                <a class="page-link" href="?{% url_replace page=page.next_page_number %}">&raquo;
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
-                        {% endif %}
-                    </ul>
-                </nav>
+                            {% if page.paginator.num_pages > page.number|add:'4' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% url_replace page=page.number|add:'5' %}">&hellip;
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if page.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% url_replace page=page.next_page_number %}">&raquo;
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
                 {% endif %}
-    </div>
-    <div id="search-help" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Only search by port names</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    If this is selected, then results are displayed by matching the query with only the port names.
-                    Otherwise
-                    "description" is also used to find results.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            <div id="search-help" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Only search by port names</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            If this is selected, then results are displayed by matching the query with only the port
+                            names.
+                            Otherwise
+                            "description" is also used to find results.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
