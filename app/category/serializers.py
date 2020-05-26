@@ -12,3 +12,7 @@ class CategoriesListSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_ports_count(self, obj):
         return obj.ports.all().count()
+
+
+class CategoryHaystackSerializer(serializers.Serializer):
+    name = serializers.CharField()

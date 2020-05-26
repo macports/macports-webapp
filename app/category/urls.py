@@ -5,6 +5,7 @@ from category import views
 
 router = routers.DefaultRouter()
 router.register('categories', views.CategoriesListView, basename='categories')
+router.register('autocomplete/category', views.CategoryAutocompleteView, basename='autocomplete_category')
 
 
 urlpatterns = [

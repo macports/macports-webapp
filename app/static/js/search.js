@@ -16,19 +16,10 @@ $(function () {
                     }
                     break;
                 case "categories_exact":
-                    if (facet_value === "" || sections.length < 2) {
+                    if (sections.length < 2) {
                         $('#c-facets').html("");
                     } else {
-                        $('#c-facets').html([
-                                'Selected category: <strong>',
-                                facet_value,
-                                '</strong> <input style="display: none" class="disabled" name="selected_facets" value=',
-                                v,
-                                '>',
-                                '<button id="remove-categories-filter"',
-                                'class="btn btn-lg p-0 text-danger btn-link"><i class="fa fa-window-close"></i></button>'
-                            ].join(' ')
-                        );
+                        appendCategoryFilter(facet_value);
                     }
                     break;
                 case "variants_exact":
@@ -67,7 +58,7 @@ $(function () {
 
 
 $(document).ready(function () {
-    var queryPorts = new Bloodhound({
+    var queryMaintainers = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('github'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         limit: 20,
@@ -81,7 +72,22 @@ $(document).ready(function () {
         }
     });
 
-    queryPorts.initialize();
+    var queryCategories = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        limit: 20,
+        rateLimitWait: 800,
+        remote: {
+            url: '/api/v1/autocomplete/category/?q=%QUERY',
+            wildcard: '%QUERY',
+            filter: function (response) {
+                return response.results;
+            }
+        }
+    });
+
+    queryMaintainers.initialize();
+    queryCategories.initialize();
 
     $('#maintainer-q').typeahead({
             hint: true,
@@ -92,7 +98,7 @@ $(document).ready(function () {
             name: 'results',
             limit: 10,
             display: 'github',
-            source: queryPorts.ttAdapter(),
+            source: queryMaintainers.ttAdapter(),
             templates: {
                 empty: [].join('\n'),
                 suggestion: Handlebars.compile(
@@ -116,6 +122,40 @@ $(document).ready(function () {
             $('#super-submit').click();
         }
     });
+
+    $('#category-q').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 2,
+        },
+        {
+            name: 'results',
+            limit: 10,
+            display: 'name',
+            source: queryCategories.ttAdapter(),
+            templates: {
+                empty: [].join('\n'),
+                suggestion: Handlebars.compile(
+                    '<div class="border-bottom text-left">' +
+                    '<div class="card-body py-1 px-2">' +
+                    '{{ name }}' +
+                    '</div>' +
+                    '</div>'
+                )
+            }
+        }).on('typeahead:asyncrequest', function () {
+        $('#category-autocomplete-spinner').show();
+    }).on('typeahead:asynccancel typeahead:asyncreceive', function () {
+        $('#category-autocomplete-spinner').hide();
+    }).on('typeahead:select', function (evt, itm) {
+        appendCategoryFilter(itm.name);
+        $('#super-submit').click();
+    }).on('keydown', function (event) {
+        if (event.keyCode == 13) {
+            appendCategoryFilter($('#category-q').val());
+            $('#super-submit').click();
+        }
+    });
 });
 
 
@@ -134,4 +174,23 @@ function appendMaintainerFilter(facet_value) {
             ].join(' ')
         );
     }
+}
+
+
+function appendCategoryFilter(facet_value) {
+    if (facet_value === "") {
+        $('#c-facets').html("");
+    } else {
+        $('#c-facets').html([
+                'Selected category: <strong>',
+                facet_value,
+                '</strong> <input style="display: none" class="disabled" name="selected_facets" value=',
+                'categories_exact:' + facet_value,
+                '>',
+                '<button id="remove-categories-filter"',
+                'class="btn btn-lg p-0 text-danger btn-link"><i class="fa fa-window-close"></i></button>'
+            ].join(' ')
+        );
+    }
+
 }

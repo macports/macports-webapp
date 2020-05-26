@@ -38,10 +38,16 @@
             <div id="v-facets" class="mb-2"></div>
         </form>
     <div class="form-row my-2">
-                <div class="col-md-3">
-                    <input id="maintainer-q" class="typeahead form-control" type="text" placeholder="Choose a maintainer...">
-                    <img class="maintainer-autocomplete-spinner" id="maintainer-autocomplete-spinner" src="{% static 'images/spinner.gif' %}">
-                </div>
+        <div class="col-md-3">
+            <input id="maintainer-q" class="typeahead form-control" type="text" placeholder="Choose a maintainer...">
+            <img class="maintainer-autocomplete-spinner" id="maintainer-autocomplete-spinner"
+                 src="{% static 'images/spinner.gif' %}">
+        </div>
+        <div class="col-md-3">
+            <input id="category-q" class="typeahead form-control" type="text" placeholder="Choose a category...">
+            <img class="category-autocomplete-spinner" id="category-autocomplete-spinner"
+                 src="{% static 'images/spinner.gif' %}">
+        </div>
             </div>
     <br>
          {% if query %}
