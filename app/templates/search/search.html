@@ -5,12 +5,14 @@
 
 {% block head_scripts %}
     <script type="text/javascript" src="{% static 'js/search.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/typeahead.bundle.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/handlebars.min-v4.7.6.js' %}"></script>
 {% endblock %}
 {% block title %}Search ports |{% endblock %}
 
 {% block content %}
     <div class="mt-3">
-        <form method="get" action="." class="border rounded-lg p-2">
+        <form id="super-form" method="get" action="." class="border rounded-lg p-2">
             <div class="form-row">
                 <div class="col-10">
                     {{ form.q }}
@@ -35,6 +37,12 @@
             <div id="c-facets" class="mb-2"></div>
             <div id="v-facets" class="mb-2"></div>
         </form>
+    <div class="form-row my-2">
+                <div class="col-md-3">
+                    <input id="maintainer-q" class="typeahead form-control" type="text" placeholder="Choose a maintainer...">
+                    <img class="maintainer-autocomplete-spinner" id="maintainer-autocomplete-spinner" src="{% static 'images/spinner.gif' %}">
+                </div>
+            </div>
     <br>
          {% if query %}
             <h5>Results for "{{ query }}"</h5>

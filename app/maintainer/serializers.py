@@ -7,3 +7,7 @@ class MaintainerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Maintainer
         fields = ('name', 'domain', 'github')
+
+
+class MaintainerHaystackSerializer(serializers.Serializer):
+    github = serializers.CharField()

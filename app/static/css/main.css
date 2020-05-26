@@ -90,6 +90,14 @@ body{
     display: none;
 }
 
+.maintainer-autocomplete-spinner{
+    position: absolute !important;
+    right: 8px !important;
+    top: 8px !important;
+    max-width: 25px !important;
+    display: none;
+}
+
 .top-ports-list {
     font-size: 18px;
 }
