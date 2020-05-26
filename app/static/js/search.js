@@ -23,19 +23,10 @@ $(function () {
                     }
                     break;
                 case "variants_exact":
-                    if (facet_value === "" || sections.length < 2) {
+                    if (sections.length < 2) {
                         $('#v-facets').html("");
                     } else {
-                        $('#v-facets').html([
-                                'Selected variant <strong>',
-                                facet_value,
-                                '</strong> <input style="display: none" class="disabled" name="selected_facets" value=',
-                                v,
-                                '>',
-                                '<button id="remove-variants-filter"',
-                                'class="btn btn-lg p-0 text-danger btn-link"><i class="fa fa-window-close"></i></button>'
-                            ].join(' ')
-                        );
+                        appendVariantFilter(facet_value);
                     }
                     break;
             }
@@ -86,8 +77,23 @@ $(document).ready(function () {
         }
     });
 
+    var queryVariants = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('variant'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        limit: 20,
+        rateLimitWait: 800,
+        remote: {
+            url: '/api/v1/autocomplete/variant/?q=%QUERY',
+            wildcard: '%QUERY',
+            filter: function (response) {
+                return response.results;
+            }
+        }
+    });
+
     queryMaintainers.initialize();
     queryCategories.initialize();
+    queryVariants.initialize();
 
     $('#maintainer-q').typeahead({
             hint: true,
@@ -156,6 +162,40 @@ $(document).ready(function () {
             $('#super-submit').click();
         }
     });
+
+    $('#variant-q').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 2,
+        },
+        {
+            name: 'results',
+            limit: 10,
+            display: 'variant',
+            source: queryVariants.ttAdapter(),
+            templates: {
+                empty: [].join('\n'),
+                suggestion: Handlebars.compile(
+                    '<div class="border-bottom text-left">' +
+                    '<div class="card-body py-1 px-2">' +
+                    '{{ variant }}' +
+                    '</div>' +
+                    '</div>'
+                )
+            }
+        }).on('typeahead:asyncrequest', function () {
+        $('#variant-autocomplete-spinner').show();
+    }).on('typeahead:asynccancel typeahead:asyncreceive', function () {
+        $('#variant-autocomplete-spinner').hide();
+    }).on('typeahead:select', function (evt, itm) {
+        appendVariantFilter(itm.variant);
+        $('#super-submit').click();
+    }).on('keydown', function (event) {
+        if (event.keyCode == 13) {
+            appendVariantFilter($('#variant-q').val());
+            $('#super-submit').click();
+        }
+    });
 });
 
 
@@ -193,4 +233,21 @@ function appendCategoryFilter(facet_value) {
         );
     }
 
+}
+
+function appendVariantFilter(facet_value) {
+    if (facet_value === "") {
+        $('#v-facets').html("");
+    } else {
+        $('#v-facets').html([
+                'Selected variant <strong>',
+                facet_value,
+                '</strong> <input style="display: none" class="disabled" name="selected_facets" value=',
+                'variants_exact:' + facet_value,
+                '>',
+                '<button id="remove-variants-filter"',
+                'class="btn btn-lg p-0 text-danger btn-link"><i class="fa fa-window-close"></i></button>'
+            ].join(' ')
+        );
+    }
 }

@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from rest_framework import viewsets, mixins
 
 from variant.models import Variant
+from variant.serializers import VariantHaystackSerializer
+from variant.forms import VariantAutocompleteForm
 
 
 def variant(request, variant):
@@ -33,3 +36,17 @@ def search_ports_in_variant(request):
         'search_in': search_in,
         'content': "Variant"
     })
+
+
+class VariantAutocompleteView(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = VariantHaystackSerializer
+    form = None
+    form_class = VariantAutocompleteForm
+
+    def build_form(self):
+        data = self.request.GET
+        return self.form_class(data, None)
+
+    def get_queryset(self, *args, **kwargs):
+        self.form = self.build_form()
+        return self.form.search()

@@ -11,6 +11,7 @@ from port.urls import router as port_router
 from category.urls import router as category_router
 from buildhistory.urls import router as buildhistory_router
 from maintainer.urls import router as maintainer_router
+from variant.urls import router as variants_router
 
 # Router for rest framework
 router = routers.DefaultRouter()
@@ -18,6 +19,7 @@ router.registry.extend(port_router.registry)
 router.registry.extend(category_router.registry)
 router.registry.extend(buildhistory_router.registry)
 router.registry.extend(maintainer_router.registry)
+router.registry.extend(variants_router.registry)
 
 urlpatterns = [
     path('', views.index, name='home'),
