@@ -34,6 +34,14 @@ class AdvancedSearchForm(FacetedSearchForm):
             "onchange": "this.form.submit();"
         })
     )
+    livecheck_uptodate = forms.BooleanField(
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(attrs={
+            "form": "super-form",
+            "onchange": "this.form.submit();"
+        })
+    )
     livecheck_outdated = forms.BooleanField(
         required=False,
         initial=False,
@@ -98,8 +106,11 @@ class AdvancedSearchForm(FacetedSearchForm):
         # Filter operations, perform even if a search query is absent
         # This is done to allow viewing all "outdated ports", "all ports with broken livecheck" etc.
         f = SQ()
+        if self.cleaned_data['livecheck_uptodate']:
+            f = SQ(livecheck_broken=False) & SQ(livecheck_outdated=False)
+
         if self.cleaned_data['livecheck_broken']:
-            f = SQ(livecheck_broken=True)
+            f = f | SQ(livecheck_broken=True)
 
         if self.cleaned_data['livecheck_outdated']:
             f = f | SQ(livecheck_outdated=True)
