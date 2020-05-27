@@ -251,3 +251,10 @@ function appendVariantFilter(facet_value) {
         );
     }
 }
+
+function clearLivecheck() {
+    $("#id_livecheck_broken").prop("checked", false);
+    $("#id_livecheck_outdated").prop("checked", false);
+    $("#id_livecheck_uptodate").prop("checked", false);
+    $("#super-submit").click();
+}

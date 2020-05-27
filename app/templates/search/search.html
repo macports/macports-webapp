@@ -12,17 +12,8 @@
 
 {% block content %}
     <div class="row mt-3">
-        <div class="col-lg-3 col-md-4 p-1">
+        <div class="col-lg-3 col-md-4 p-1 pt-0">
             <div class="card">
-                <div class="card-header p-2">
-                    Port version:
-                </div>
-                <div class="card-body p-2" form="super-form">
-                    <label>{{ form.livecheck_outdated }} Outdated</label><br>
-                    <label>{{ form.livecheck_broken }} Broken check</label>
-                </div>
-            </div>
-            <div class="card mt-2">
                 <div class="card-header p-2">
                     Maintainer:
                 </div>
@@ -108,6 +99,17 @@
                 </div>
             </div>
             <div class="card mt-2">
+                    <div class="card-header p-2">
+                        Port version:
+                    </div>
+                    <div class="card-body p-2" form="super-form">
+                        <label>{{ form.livecheck_uptodate }} Up to date</label><br>
+                        <label>{{ form.livecheck_outdated }} Outdated</label><br>
+                        <label>{{ form.livecheck_broken }} Broken check</label>
+                        <button onclick="clearLivecheck();" class="btn btn-sm btn-link p-0 m-0"><i class="fa fa-window-close"></i> Clear livecheck filters</button>
+                    </div>
+                </div>
+        <div class="card mt-2">
                 <div class="card-body p-2">
                        <label>{{ form.show_deleted_ports }} Show deleted ports also</label>
                 </div>
