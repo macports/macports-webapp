@@ -66,7 +66,18 @@ class AdvancedSearchForm(FacetedSearchForm):
         if not self.is_valid():
             return self.no_query_found()
 
-        sqs = super(AdvancedSearchForm, self).search()
+        sqs = SearchQuerySet().models(Port).facet('maintainers').facet('categories').facet('variants')
+
+        # Performing narrowing based on facets
+        for facet in self.selected_facets:
+            if ":" not in facet:
+                continue
+
+            field, value = facet.split(":", 1)
+
+            if value:
+                sqs = sqs.narrow('%s:"%s"' % (field, sqs.query.clean(value)))
+
         do_sort = False
 
         # Filter out deleted ports, based on query
@@ -78,6 +89,8 @@ class AdvancedSearchForm(FacetedSearchForm):
             if self.cleaned_data['name']:
                 sqs = sqs.filter(name=self.cleaned_data['q'])
                 do_sort = True
+            else:
+                sqs = sqs.filter(SQ(name=self.cleaned_data['q']) | SQ(description=self.cleaned_data['q']))
 
             if do_sort:
                 sqs = sqs.order_by('name_l')
