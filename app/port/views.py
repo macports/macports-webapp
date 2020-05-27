@@ -10,6 +10,7 @@ from django.db.models import Subquery, Count
 from django.db.models.functions import TruncMonth, Lower
 from rest_framework import mixins, viewsets, filters
 import django_filters
+from drf_haystack.viewsets import HaystackViewSet
 
 from port.forms import AdvancedSearchForm
 from port.serializers import PortHaystackSerializer, PortSerializer
@@ -21,6 +22,7 @@ from stats.models import Submission, PortInstallation
 from buildhistory.filters import BuildHistoryFilter
 from stats.validators import validate_stats_days, ALLOWED_DAYS_FOR_STATS
 from stats.utilities.sort_by_version import sort_list_of_dicts_by_version
+from port.serializers import SearchSerializer
 
 
 def port_detail(request, name, slug="summary"):
@@ -207,3 +209,9 @@ class PortInfoView(viewsets.ReadOnlyModelViewSet):
     filter_backends = [filters.SearchFilter, django_filters.rest_framework.DjangoFilterBackend]
     search_fields = ['name', 'maintainers__github', 'variants__variant', 'categories__name']
     filterset_fields = ['name', 'categories', 'maintainers__github', 'variants__variant']
+
+
+class SearchView(HaystackViewSet):
+    index_models = [Port]
+
+    serializer_class = SearchSerializer
