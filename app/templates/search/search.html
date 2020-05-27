@@ -201,14 +201,19 @@
                             <h4>{{ result.name }}</h4></a>
                         <p class="mb-0 text-secondary" style="font-size: 18px">{{ result.description }}</p>
                         <span class="text-secondary" style="font-size: 13px">
-                    <strong>Maintained by:</strong>
+                            <strong>Maintained by:</strong>
                             {% for m in result.maintainers %}
-                                <a href="{% url 'maintainer_detail_github' m %}">{{ m }}, </a>
+                                <a href="{% url 'maintainer' m %}">{{ m }}</a>{% if not forloop.last %}, {% endif %}
                             {% endfor %}
                             |
-                    <strong>Variants:</strong>
+                            <strong>Categories:</strong>
+                            {% for c in result.categories %}
+                                <a href="{% url 'category' c %}">{{ c }}</a>
+                            {% endfor %}
+                            |
+                            <strong>Variants:</strong>
                             {% for v in result.variants %}
-                                {{ v }},
+                                <a href="{% url 'variant' v %}">{{ v }}</a>{% if not forloop.last %}, {% endif %}
                             {% endfor %}
 
                 </span>
