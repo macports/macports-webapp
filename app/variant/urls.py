@@ -8,6 +8,5 @@ router = routers.DefaultRouter()
 router.register('autocomplete/variant', views.VariantAutocompleteView, basename='autocomplete_variant')
 
 urlpatterns = [
-    url(r'^v/(?P<variant>[a-zA-Z0-9_.]+)/$', views.variant, name='variant'),
-    path('search/', views.search_ports_in_variant, name='search_ports_in_variant')
+    url(r'^(?P<v>[a-zA-Z0-9_.]+)/$', views.variant, name='variant'),
 ]
