@@ -14,6 +14,7 @@ class PortIndex(indexes.SearchIndex, indexes.Indexable):
     nomaintainer = indexes.BooleanField()
     active = indexes.BooleanField(model_attr='active')
     categories = indexes.MultiValueField(faceted=True)
+    version = indexes.CharField(model_attr='version', indexed=False)
 
     def get_model(self):
         return Port

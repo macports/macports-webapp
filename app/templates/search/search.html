@@ -201,6 +201,9 @@
                             <h4>{{ result.name }}</h4></a>
                         <p class="mb-0 text-secondary" style="font-size: 18px">{{ result.description }}</p>
                         <span class="text-secondary" style="font-size: 13px">
+                            <strong>Version:</strong>
+                            {{ result.version }}
+                            |
                             <strong>Maintained by:</strong>
                             {% for m in result.maintainers %}
                                 <a href="{% url 'maintainer' m %}">{{ m }}</a>{% if not forloop.last %}, {% endif %}
