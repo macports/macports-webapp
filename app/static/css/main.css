@@ -68,21 +68,21 @@ body{
     max-width: 200px !important;
 }
 
-.home-input-search {
+.quick-input-search {
     height: 50px !important;
     font-size: 20px !important;
     padding-right: 60px !important;
     padding-left: 20px !important;
 }
 
-.home-input-search-icon{
+.quick-input-search-icon{
     position: absolute !important;
     right: 20px !important;
     top: 5px !important;
     max-width: 38px !important;
 }
 
-.home-input-search-spinner{
+.quick-input-search-spinner{
     position: absolute !important;
     right: 58px !important;
     top: 5px !important;

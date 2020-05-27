@@ -1,12 +1,6 @@
 {% extends 'layout.html' %}
 {% load staticfiles %}
 
-{% block head_scripts %}
-    <script type="text/javascript" src="{% static 'js/typeahead.bundle.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/home.js' %}"></script>
-    <script src="{% static 'js/handlebars.min-v4.7.6.js' %}"></script>
-{% endblock %}
-
 {% block title %}Ports |{% endblock %}
 
 {% block content %}
@@ -16,13 +10,10 @@
         <form class="pt-3" method="get" action="/search">
             <div class="form-row">
                 <div class="col-12" id="bloodhound">
-                    <input type="text" class="home-input-search form-control rounded-pill typeahead" id="q" name="q" placeholder="Search for ports..." autofocus>
-                    <img class="home-input-search-spinner" id="search-spinner" src="{% static 'images/spinner.gif' %}">
-                    <button type="submit" class="home-input-search-icon btn" id="search_submit"><i class="fa fa-search"></i></button>
+                    <input type="text" class="quick-input-search form-control rounded-pill typeahead" id="q" name="q" placeholder="Search for ports..." autofocus>
+                    <img class="quick-input-search-spinner" id="search-spinner" src="{% static 'images/spinner.gif' %}">
+                    <button type="submit" class="quick-input-search-icon btn" id="search_submit"><i class="fa fa-search"></i></button>
                     <input type="hidden" value="on" name="name">
-                    <input type="hidden" value="on" name="maintainers">
-                    <input type="hidden" value="on" name="description">
-                    <input type="hidden" value="on" name="sort_by_length">
                 </div>
             </div>
         </form>

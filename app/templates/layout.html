@@ -14,15 +14,32 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/all.min.css' %}">
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/typeahead.bundle.js' %}"></script>
+    <script src="{% static 'js/quick-search.js' %}"></script>
+    <script src="{% static 'js/handlebars.min-v4.7.6.js' %}"></script>
     {% block head_scripts %}
     {% endblock %}
 
     <title>{% block title %}{% endblock %} MacPorts</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
     <a class="navbar-brand" href="/"><img width="120px" src="{% static 'images/macports-logo.png' %}" class="img-fluid"></a>
+    {% if request.path != '/' and request.path != '/search/' %}
+        <form style="width: 50%" class="ml-4" method="get" action="/search">
+            <div class="form-row">
+                <div class="col-12" id="bloodhound">
+                    <input type="text" class="quick-input-search form-control rounded-pill typeahead" id="q" name="q"
+                           placeholder="Search for ports...">
+                    <img class="quick-input-search-spinner" id="search-spinner" src="{% static 'images/spinner.gif' %}">
+                    <button type="submit" class="quick-input-search-icon btn" id="search_submit"><i
+                            class="fa fa-search"></i></button>
+                    <input type="hidden" value="on" name="name">
+                </div>
+            </div>
+        </form>
+    {% endif %}
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

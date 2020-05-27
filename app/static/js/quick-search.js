@@ -42,7 +42,7 @@ $(document).ready(function () {
         }).on('typeahead:asynccancel typeahead:asyncreceive', function () {
             $('#search-spinner').hide();
         }).on('typeahead:select', function (evt, itm) {
-            window.location.href = "/search/?q=" + itm.name + "&name=on&description=on&maintainers=on";
+            window.location.href = "/search/?q=" + itm.name + "&name=on";
         }).on('keyup', '.home-input-search', function (event) {
             if (event.key == "Enter") {
                 $('#search_submit').click();
