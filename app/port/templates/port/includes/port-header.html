@@ -1,0 +1,64 @@
+{% load static %}
+
+<!-- Obsolete port warning start-->
+{% if port.replaced_by %}
+    <div class="alert alert-warning" role="alert">
+        This port is obsolete. It has been replaced by <a
+            href="{% url 'port_detail' port.replaced_by %}">{{ port.replaced_by }}</a>.
+    </div>
+{% endif %}
+<!-- Obsolete port warning end-->
+
+<!-- Deleted port warning start-->
+{% if port.active is False %}
+    <div class="alert alert-danger" role="alert">
+        This port has been deleted. This page will exist till another port with the name "{{ port.name }}" comes
+        into existence.
+    </div>
+{% endif %}
+<!-- Deleted port warning end-->
+<h3><span id="port_name">{{ port.name }}</span> <span class="text-secondary" style="font-size: 14px">({{ port.portdir }})</span></h3>
+<p class="text-secondary">
+    <strong>Version: </strong>{{ port.version }}
+    {% if port.livecheck.has_updates %}
+        <button type="button" class="btn p-0" data-toggle="tooltip" data-placement="top"
+                title="{{ port.livecheck.result }}">
+            <i class="text-warning fas fa-exclamation-circle"></i>
+        </button>
+    {% endif %}
+    |
+    <strong>License: </strong>{{ port.license }}
+    |
+    <a href="{{ port.homepage }}" target="_blank">Homepage</a>
+    {% if port.active %}
+        |
+        <a class="btn btn-light p-1 m-0" target="_blank" href="https://github.com/macports/macports-ports/blob/master/{{ port.portdir }}/Portfile"><img height="21px" src="{% static 'images/github.png' %}"> View on
+            GitHub</a>
+    {% endif %}
+    <button class="btn btn-light p-1 m-0" data-toggle="modal" data-target="#tickets-modal">Trac Tickets
+    <span id="tickets-count" class="badge badge-light border border-secondary"></span>
+    </button>
+
+</p>
+
+
+<p>{{ port.description }}</p>
+
+<div class="modal fade" id="tickets-modal" tabindex="-1" role="dialog" aria-labelledby="tickets-box-label" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tickets-box-label">Trac Tickets</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="tickets-box">
+          Please wait while tickets are being fetched from Trac.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

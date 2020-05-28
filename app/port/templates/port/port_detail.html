@@ -1,0 +1,160 @@
+{% extends 'layout.html' %}
+{% load staticfiles %}
+{% load format_names %}
+{% load url_generate %}
+{% load sort_version %}
+
+{% block title %}Install {{ port.name }} on MacOS with {% endblock %}
+
+{% block head_scripts %}
+    <script type="text/javascript" src="{% static 'js/port-detail.js' %}"></script>
+    <script>
+        loadTickets('{{ port.name }}');
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div id="main-content" class="mt-2">
+        {% include 'port/includes/port-header.html' with port=port %}
+        {% include 'port/includes/port-tabs.html' with port_name=port.name active="summary" %}
+
+    <div class="row mt-4">
+        <div class="col-lg-8">
+        <h5>Description: </h5>
+            <p class="bg-el border p-2 rounded">{{ port.long_description }}</p>
+
+        <table class="table table-condensed">
+            <tr>
+                <td><strong>Maintainers</strong></td>
+                <td>
+                    {% if port.closedmaintainer is True %}
+                        <button type="button" class="btn" data-toggle="tooltip" data-placement="top"
+                                title="Changes of this port require maintainer's approval.">
+                            <i class="fas fa-lock"></i>
+                        </button>
+                    {% endif %}
+                    {% if port.maintainers.all.count > 0 %}
+                        {% for maintainer in port.maintainers.all %}
+                            {% if maintainer.github %}
+                                <a
+                                        href="{% url 'maintainer' maintainer.github %}">{{ maintainer.github }}</a>{% if not forloop.last %}, {% endif %}
+                            {% else %}
+                                {{ maintainer.name }} (GitHub handle not provided){% if not forloop.last %}, {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        No Maintainer
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Categories</strong></td>
+                <td>
+                {% if port.categories.all.count > 0 %}
+                    {% for category in port.categories.all %}
+                        <a href="{% url 'category' category.name %}">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                {% else %}
+                    --
+                {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Variants</strong></td>
+                <td>
+                {% if port.variants.all.count > 0 %}
+                    {% for variant in port.variants.all %}
+                        <a href="{% url 'variant' variant.variant %}">{{ variant.variant }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                {% else %}
+                    -
+                {% endif %}
+                </td>
+            </tr>
+        </table>
+            <table class="table border border-top border-muted">
+                <tr>
+                    <td scope="row"><strong>Depends on:</strong><br>
+                    </td>
+                    <td></td>
+                </tr>
+                {% for dependency in port.dependent_port.all %}
+                    <tr>
+                        <td class="pt-0 pb-0 text-right">{{ dependency.type }}:</td>
+                        <td class="pt-0 pb-0">
+                            {% for port in dependency.dependencies.all %}
+                                <a href="{% url 'port_detail' port.name %}">{{ port.name }}</a>{% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th scope="row">Dependency of:</th>
+                    <td>{% if not dependents|length > 0 %}-{% endif %}</td>
+                </tr>
+                {% regroup dependents|dictsort:"type" by type as dependent_parent %}
+                {% for type in dependent_parent %}
+                    <tr>
+                        <td class="pt-0 pb-0 text-right">{{ type.grouper }}:</td>
+                        <td class="pt-0 pb-0">
+                        {% for i in type.list %}
+                            <a href="{% url 'port_detail' i.port_name.name %}">{{ i.port_name.name }}</a>{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tr>
+            </table>
+        </div>
+        <div class="col-lg-4">
+            <div class="rounded border p-2">
+                <h5>Port Health:</h5>
+                <ul>
+                    {% for builder in builders %}
+                    {% with builder.latest_builds|first as latest_build %}
+                    {% if latest_build %}
+                        <li>
+                            <a target="_blank" class="text-secondary" href="{% build_url builder.name latest_build.build_id %}">
+                                {% if latest_build.status == "build successful" %}
+                                    <span class="badge text-success p-0"><i class="fa fa-check"></i></span>
+                                {% else %}
+                                    <span class="badge text-danger p-0"><i class="fa fa-times"></i></span>
+                                {% endif %}
+                            {{ builder.display_name }}
+                            </a>
+                            <span class="text-muted">( {{ builder.name }} )</span>
+                        </li>
+                    {% endif %}
+                    {% endwith %}
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="card bg-light p-0 mt-2">
+                <div class="card-body bg-light p-2">
+                    <h6 class="text-uppercase">Installations</h6>
+                    <h1 class="display-5 mb-0">{{count.all}}</h1>
+                </div>
+            </div>
+            <div class="card bg-light p-0 mt-2">
+                <div class="card-body bg-light p-2">
+                    <h6 class="text-uppercase">Requested Installations</h6>
+                    <h1 class="display-5 mb-0">{{ count.requested }}</h1>
+                </div>
+            </div>
+            {% if port.livecheck.result %}
+            <div class="rounded border p-2 mt-2">
+                <h5>Livecheck results</h5>
+                <p class="text-secondary" style="font-size: 14px">{{ port.livecheck.result }}</p>
+                <p style="font-size: 12px">livecheck ran at: <strong>{{ port.livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
+            </div>
+            {% elif port.livecheck.error %}
+                <div class="rounded border p-2">
+                    <h5>Livecheck error</h5>
+                    <p class="text-secondary" style="font-size: 14px">{{ port.livecheck.error }}</p>
+                    <p style="font-size: 12px">livecheck ran at: <strong>{{ port.livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+{% endblock %}
