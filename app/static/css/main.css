@@ -143,3 +143,8 @@ body{
 .bg-information {
     background-color: #fffdf7 !important;
 }
+
+.bg-el {
+    background-color: #FAFAFA !important;
+    font-size: 14px !important;
+}

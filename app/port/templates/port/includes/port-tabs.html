@@ -1,0 +1,11 @@
+<ul class="nav nav-tabs" id="tabs">
+    <li class="nav-item">
+        <a href="{% url 'port_detail' port_name %}" id="summary" class="nav-link {% if active == "summary" %}active{% endif %}">Summary</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'port_builds' port_name %}" id="builds" class="nav-link {% if active == "builds" %}active{% endif %}">Build Information</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'port_stats' port_name %}" id="stats" class="nav-link {% if active == "stats" %}active{% endif %}">Installation Stats</a>
+    </li>
+</ul>
