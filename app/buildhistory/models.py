@@ -3,7 +3,7 @@ import ssl
 import json
 import datetime
 
-from django.db import models
+from django.db import models, transaction
 
 from config import BUILDERS_JSON_URL, BUILDBOT_URL_PREFIX, BUILDS_FETCHED_COUNT
 
@@ -22,7 +22,7 @@ class Builder(models.Model):
 
 
 class BuildHistory(models.Model):
-    builder_name = models.ForeignKey(Builder, on_delete=models.CASCADE)
+    builder_name = models.ForeignKey(Builder, on_delete=models.CASCADE, related_name='builds')
     build_id = models.IntegerField()
     status = models.CharField(max_length=50)
     port_name = models.CharField(max_length=100)
@@ -47,7 +47,6 @@ class BuildHistory(models.Model):
 
     @classmethod
     def populate(cls):
-        builders = Builder.objects.values_list('name', flat=True)
         url_prefix = BUILDBOT_URL_PREFIX
 
         def get_url_json(builder_name, build_number):
@@ -55,6 +54,9 @@ class BuildHistory(models.Model):
 
         def get_url_build(builder_name, build_number):
             return '{}/builders/ports-{}-builder/builds/{}'.format(url_prefix, builder_name, build_number)
+
+        def get_files_url(builder_name, build_number):
+            return '{}/builders/ports-{}-builder/builds/{}/steps/install-port/logs/files/text'.format(url_prefix, builder_name, build_number)
 
         def get_data_from_url(url):
             gcontext = ssl.SSLContext()
@@ -64,6 +66,14 @@ class BuildHistory(models.Model):
                 return data
             except urllib.error.URLError:
                 return {}
+
+        def get_text_from_url(url):
+            gcontext = ssl.SSLContext()
+            try:
+                lines = urllib.request.urlopen(url, context=gcontext)
+                return lines
+            except urllib.error.URLError:
+                return []
 
         def get_build_properties(array):
             properties = {}
@@ -93,40 +103,50 @@ class BuildHistory(models.Model):
 
             return data
 
-        def load_database(data):
-            builder = Builder.objects.get(name=data['builder'])
+        def load_build_to_db(builder_obj, data):
             build = BuildHistory()
             build.port_name = data['name']
             build.status = data['status']
             build.build_id = data['buildnr']
             build.time_start = data['time_start']
             build.time_elapsed = data['buildtime']
-            build.builder_name = builder
+            build.builder_name = builder_obj
             build.build_url = data['url']
             build.watcher_url = data['watcher_url']
             build.watcher_id = data['watcher_id']
             build.save()
+            return build
 
-        for buildername in builders:
+        @transaction.atomic()
+        def load_files_to_db(build_obj, lines):
+            for line in lines:
+                decoded_line = line.decode("utf-8")
+                file_obj = InstalledFile()
+                file_obj.build = build_obj
+                file_obj.file = decoded_line
+                file_obj.save()
+
+        for builder in Builder.objects.all():
+            buildername = builder.name
             # fetch the last build first in order to figure out its number
-            last_build_data = get_data_from_url(get_url_json(buildername, -1))
+            last_build_data = get_data_from_url(get_url_json(builder.name, -1))
             if not last_build_data:
                 continue
             last_build_number = last_build_data['number']
-            build_number_loaded = BuildHistory.objects.filter(builder_name__name=buildername).order_by('-build_id')
-            if build_number_loaded:
-                build_in_database = build_number_loaded[0].build_id + 1
+            last_build_in_db = BuildHistory.objects.filter(builder_name_id=builder.id).order_by('-build_id').first()
+            if last_build_in_db:
+                build_in_database = last_build_in_db.build_id + 1
             else:
                 build_in_database = last_build_number - BUILDS_FETCHED_COUNT
-                # Temporarily being set to zero to allow fetching all builds for 10.15 builder.
-                # build_in_database = 0
 
             for build_number in range(build_in_database, last_build_number):
                 build_data = get_data_from_url(get_url_json(buildername, build_number))
+                installed_files = get_text_from_url(get_files_url(buildername, build_number))
                 if not build_data:
                     break
                 build_data_summary = return_summary(buildername, build_number, build_data)
-                load_database(build_data_summary)
+                build_obj = load_build_to_db(builder, build_data_summary)
+                load_files_to_db(build_obj, installed_files)
 
     @classmethod
     def populate_builders(cls):
@@ -147,3 +167,13 @@ class BuildHistory(models.Model):
 
             builders.append(Builder(name=key.split('-')[1]))
         Builder.objects.bulk_create(builders)
+
+
+class InstalledFile(models.Model):
+    build = models.ForeignKey('buildhistory.BuildHistory', on_delete=models.CASCADE, related_name='files')
+    file = models.TextField()
+
+    class Meta:
+        db_table = "installed_files"
+        verbose_name = "File"
+        verbose_name_plural = "Files"
