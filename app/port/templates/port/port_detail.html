@@ -121,13 +121,14 @@
                                     <span class="badge text-danger p-0"><i class="fa fa-times"></i></span>
                                 {% endif %}
                             {{ builder.display_name }}
+                            <span class="f10">({{ builder.name }})</span>
                             </a>
                             {% if latest_build.files.all|length > 0 %}
                                 <button class="btn btn-link text-secondary p-0 m-0 float-right" data-toggle="modal" data-target="#files{{ forloop.counter }}">Installed Files</button>
                             {% endif %}
                         </li>
                         {% if latest_build.files.all|length > 0 %}
-                            <div style="font-size: 12px" class="modal fade" id="files{{ forloop.counter }}" tabindex="-1" role="dialog"
+                            <div class="modal fade f12" id="files{{ forloop.counter }}" tabindex="-1" role="dialog"
                                      aria-hidden="true">
                                     <div class="modal-dialog modal-xl" role="document">
                                         <div class="modal-content">
@@ -149,34 +150,40 @@
                                     </div>
                                 </div>
                             {% endif %}
+                    {% else %}
+                        <li class="list-group-item py-1 text-secondary">
+                            <span class="badge text-secondary p-0"><i class="fa fa-question"></i></span>
+                            {{ builder.display_name }} <span class="f10">({{ builder.name }})</span>
+                        </li>
                     {% endif %}
                     {% endwith %}
                 {% endfor %}
                 </ul>
+                <p class="text-secondary p-0 mb-0 f10 text-right"><i class="fa fa-question"></i> - No history in app's database</p>
             </div>
             <div class="card bg-light p-0 mt-2">
                 <div class="card-body bg-light p-2">
-                    <h6 class="text-uppercase">Installations</h6>
+                    <h6 class="text-uppercase">Installations (30 days)</h6>
                     <h1 class="display-5 mb-0">{{count.all}}</h1>
                 </div>
             </div>
             <div class="card bg-light p-0 mt-2">
                 <div class="card-body bg-light p-2">
-                    <h6 class="text-uppercase">Requested Installations</h6>
+                    <h6 class="text-uppercase">Requested Installations (30 days)</h6>
                     <h1 class="display-5 mb-0">{{ count.requested }}</h1>
                 </div>
             </div>
             {% if port.livecheck.result %}
             <div class="rounded border p-2 mt-2">
                 <h5>Livecheck results</h5>
-                <p class="text-secondary" style="font-size: 14px">{{ port.livecheck.result }}</p>
-                <p style="font-size: 12px">livecheck ran at: <strong>{{ port.livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
+                <p class="text-secondary f14">{{ port.livecheck.result }}</p>
+                <p class="f12">livecheck ran at: <strong>{{ port.livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
             </div>
             {% elif port.livecheck.error %}
                 <div class="rounded border p-2">
                     <h5>Livecheck error</h5>
-                    <p class="text-secondary" style="font-size: 14px">{{ port.livecheck.error }}</p>
-                    <p style="font-size: 12px">livecheck ran at: <strong>{{ port.livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
+                    <p class="text-secondary" class="f14">{{ port.livecheck.error }}</p>
+                    <p class="f12">livecheck ran at: <strong>{{ port.livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
                 </div>
             {% endif %}
         </div>

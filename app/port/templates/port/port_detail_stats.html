@@ -27,8 +27,8 @@
         <option value="{{ i }}" {% if days == i %}selected{% endif %}>{{ i }} days</option>
     {% endfor %}
     </select>
-    <lable for="days-ago">until</lable>
-    <select onchange="this.form.submit()" id="days-ago" name="days-ago" class="form-control ml-2">
+    <lable for="days_ago">until</lable>
+    <select onchange="this.form.submit()" id="days_ago" name="days_ago" class="form-control ml-2">
         <option value="0" {% if days_ago == 0 %}selected{% endif %}>today</option>
     {% for i in allowed_days|slice:"1:" %}
         <option value="{{ i }}" {% if days_ago == i %}selected{% endif %}>{{ i }} days ago</option>
@@ -41,7 +41,7 @@
 </h6>
 <br>
 {% if count.all > 0 %}
-    <h4 class="border-bottom">Statistics: <span style="font-size:12px"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#statsHelp">Learn More</button></span> </h4>
+    <h4 class="border-bottom">Statistics: <span class="f12"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#statsHelp">Learn More</button></span> </h4>
     <table class="table table-striped border">
                 <tr>
                     <th scope="row">Total Installations</th>
@@ -89,7 +89,7 @@
     </table>
 
     <br><br>
-    <h4 class="border-bottom">Port installations by month <span style="font-size:12px"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#monthlyInstallationsHelp">Learn More</button></span> </h4>
+    <h4 class="border-bottom">Port installations by month <span class="f12"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#monthlyInstallationsHelp">Learn More</button></span></h4>
     <div class="chart" id="month-chart"></div>
     <br>
     <div class="chart" id="version-month-chart"></div>
