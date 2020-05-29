@@ -35,7 +35,7 @@ def port_detail(request, name):
         return render(request, 'port/exceptions/port_not_found.html', {'name': name})
 
     this_builds = BuildHistory.objects.filter(port_name__iexact=name).order_by('-time_start').prefetch_related('files')
-    builders = Builder.objects.all().prefetch_related(Prefetch('builds', queryset=this_builds, to_attr='latest_builds')).annotate(version_array=StringToArray('display_name'),).order_by('-version_array')
+    builders = Builder.objects.all().prefetch_related(Prefetch('builds', queryset=this_builds, to_attr='latest_builds')).annotate(version_array=StringToArray('name'),).order_by('-version_array')
     dependents = Dependency.objects.filter(dependencies__id=port.id).select_related('port_name').order_by(Lower('port_name__name'))
 
     last_30_days = datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=30)
