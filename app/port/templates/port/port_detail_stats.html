@@ -8,8 +8,8 @@
 {% block title %}Statistics - {{ port.name }} |{% endblock %}
 
 {% block head_scripts %}
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="{% static 'js/port-detail.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
     <script>
         loadTickets('{{ port.name }}');
     </script>
@@ -43,36 +43,42 @@
 {% if count.all > 0 %}
     <h4 class="border-bottom">Statistics: <span class="f12"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#statsHelp">Learn More</button></span> </h4>
     <table class="table table-striped border">
-                <tr>
-                    <th scope="row">Total Installations</th>
-                    <td>{{ count.all }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Requested Installations</th>
-                    <td>{{ count.requested }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Most Installed Version</th>
-                    <td>{% most_installed_version port_installations_by_port_version %}</td>
-                </tr>
-            </table>
+        <tr>
+            <th scope="row">Total Installations</th>
+            <td>{{ count.all }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Requested Installations</th>
+            <td>{{ count.requested }}</td>
+        </tr>
+    </table>
+    <br>
+
+
     <div class="row">
         <div class="col-lg-6">
-            <div class="chart" id="os-chart"></div>
+            <canvas id="os_version_chart"></canvas>
         </div>
         <div class="col-lg-6">
-            <div class="chart" id="version-chart"></div>
+            <canvas id="port_version_chart"></canvas>
         </div>
     </div>
+
+
+    <br>
+    <br>
     <div class="row">
         <div class="col-lg-6">
-            <div class="chart" id="xcode-chart"></div>
+            <canvas id="xcode_version_chart"></canvas>
         </div>
         <div class="col-lg-6">
-            <div class="chart" id="clt-version-chart"></div>
+            <canvas id="clt_version_chart"></canvas>
         </div>
     </div>
     <br>
+    <br>
+
+    <!-- TABLE FOR VARIANTS -->
     <table class="table table-striped">
         <thead>
         <tr class="p-0">
@@ -88,12 +94,7 @@
         {% endfor %}
     </table>
 
-    <br><br>
-    <h4 class="border-bottom">Port installations by month <span class="f12"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#monthlyInstallationsHelp">Learn More</button></span></h4>
-    <div class="chart" id="month-chart"></div>
-    <br>
-    <div class="chart" id="version-month-chart"></div>
-    <br>
+
 {% else %}
 <div class="text-center container" style="max-width: 700px;">
     <h5>No stats available for this selection.</h5>
@@ -155,186 +156,308 @@
 
     </div>
 </div>
+    <script>
+    function generateURI(){
+        const days = $("#days").val();
+        const days_ago = $("#days_ago").val();
+        const base = "/api/v1/statistics/port";
+        return base + "?name={{ port.name }}&days=" + days + "&days_ago=" + days_ago
 
+    }
 
-    <!-- PORT VERSION CHART -->
-    <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
+    function getColors(length) {
+        let pallet = ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA", "#7979ea", "#548e7d", "#53cc4d", "#e5ae22", "#3ecbd8"];
+        let colors = [];
 
-        function drawChart() {
-
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Version');
-            data.addColumn('number', 'Number of Users');
-            data.addRows([
-                {% for version in port_installations_by_port_version %}
-                ['{{ version.version }}', {{ version.num }}],
-                {% endfor %}
-            ]);
-
-        var options = {
-            'title':'Port Versions',
-            chartArea: {left: 50, width: "65%"}
-        };
-
-        var chart = new google.visualization.ColumnChart(document.getElementById('version-chart'));
-        chart.draw(data, options);
-      }
-    </script>
-
-    <!-- INSTALLATIONS BY MONTH -->
-    <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Month');
-            data.addColumn('number', 'Number of Users');
-            data.addRows([
-            {% for i in port_installations_by_month %}
-            ['{{ i.month|date:"M Y" }}', {{ i.num }}],
-            {% endfor %}
-        ]);
-
-        var options = {
-            'title':'Installations by month',
-            vAxis: {
-                viewWindow: {
-                    min:0
-                }
-            },
-            chartArea: {width: "65%"}
-
-        };
-
-        var chart = new google.visualization.AreaChart(document.getElementById('month-chart'));
-        chart.draw(data, options);
-      }
-    </script>
-
-    <!-- OS VERSIONS AND ARCHITECTURES -->
-    <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-            {% regroup port_installations_by_os_stdlib_build_arch by submission__os_version as os_chart_os_version_parent %}
-
-            var data = google.visualization.arrayToDataTable([
-                ['OS Version', {% for i in port_installations_by_os_stdlib_build_arch|unique_pairs:"submission__build_arch submission__cxx_stdlib" %}'{{ i.0 }}/{{ i.1 }}', {% endfor %} {role: 'annotation'}],
-                {% for os in os_chart_os_version_parent %}
-                ['OS: {{ os.grouper }}', {% for j in port_installations_by_os_stdlib_build_arch|unique_pairs:"submission__build_arch submission__cxx_stdlib" %}{% for i in os.list %}{% if j.0 == i.submission__build_arch and j.1 == i.submission__cxx_stdlib %}{{ i.num }}{% endif %}{% endfor %}{% if not forloop.last %}, {% endif %}{% endfor %}, '' ],
-                {% endfor %}
-            ]);
-
-        var options = {
-            'title':'OS Version and Build Architecture/STDLIB',
-            isStacked: true,
-            chartArea: {left: 50, width: "65%"}
-
-        };
-
-        var chart = new google.visualization.ColumnChart(document.getElementById('os-chart'));
-        chart.draw(data, options);
-      }
-    </script>
-
-    <!-- VERSION BY MONTH -->
-    <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            {% regroup port_installations_by_version_and_month by version as version_parent %}
-            {% regroup port_installations_by_version_and_month|dictsort:"month" by month|date:"M Y" as month_parent %}
-            // Create the data table.
-            var data = new google.visualization.DataTable();
-                data.addColumn('string', 'month');
-            {% for version in version_parent %}
-                data.addColumn('number', '{{ version.grouper }}');
-            {% endfor %}
-
-          data.addRows([
-              {% for i in month_parent %}
-                ['{{ i.grouper }}', {% for version in version_parent %}{% find_count_for_version i.list version.grouper %}, {% endfor %}],
-              {% endfor %}
-        ]);
-
-        var options = {
-            'title':'User vs Version for each month',
-            isStacked: true,
-            interpolateNulls: true,
-            vAxis: {
-                viewWindow: {
-                    min:0
-                }
-            },
-            chartArea: {width: "65%"}
-
-        };
-
-        var chart = new google.visualization.AreaChart(document.getElementById('version-month-chart'));
-        chart.draw(data, options);
-      }
-    </script>
-
-    <!-- XCODE VERSIONS -->
-    <script type="text/javascript">
-        google.charts.load('current', {'packages': ['corechart']});
-
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            {% regroup port_installations_by_os_and_xcode_version|sortversion:"submission__xcode_version" by submission__xcode_version as xcode_parent %}
-            {% regroup port_installations_by_os_and_xcode_version by submission__os_version as os_parent %}
-
-            var data = google.visualization.arrayToDataTable([
-                ['OS Version', {% for version in xcode_parent %}'{{ version.grouper }}', {% endfor %} { role: 'annotation' } ],
-                {% for os in os_parent %}
-                    ['OS: {{ os.grouper }}', {% for version in xcode_parent %}{% for i in os.list %}{% if i.submission__xcode_version == version.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
-                {% endfor %}
-        ]);
-
-        var options = {
-            'title': 'Xcode Version',
-            isStacked: true,
-            chartArea: {left: 50, width: "65%"}
-
-            };
-
-        var chart = new google.visualization.ColumnChart(document.getElementById('xcode-chart'));
-        chart.draw(data, options);
+        for (let i = 0; i < length; i++) {
+            colors.push(pallet[i % pallet.length]);
         }
-    </script>
 
-    <!-- CLT VERSIONS -->
-    <script type="text/javascript">
-        google.charts.load('current', {'packages': ['corechart']});
-
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            {% regroup port_installations_by_os_and_clt_version|sortversion:"submission__clt_version" by submission__clt_version as clt_parent %}
-            {% regroup port_installations_by_os_and_clt_version by submission__os_version as os_clt_parent %}
-
-            var data = google.visualization.arrayToDataTable([
-                ['OS Version', {% for version in clt_parent %}'{% if version.grouper == '' %}unknown{% else %}{{ version.grouper }}{% endif %}', {% endfor %} { role: 'annotation' } ],
-                {% for os in os_clt_parent %}
-                    ['OS: {{ os.grouper }}', {% for version in clt_parent %}{% for i in os.list %}{% if i.submission__clt_version == version.grouper %}{{ i.num }}{% endif %}{% endfor %}, {% endfor %} ''],
-                {% endfor %}
-        ]);
-
-        var options = {
-            'title': 'Command Line Tools Version',
-            isStacked: true,
-            chartArea: {left: 50, width: "65%"}
-            };
-
-        var chart = new google.visualization.ColumnChart(document.getElementById('clt-version-chart'));
-        chart.draw(data, options);
+        return colors;
+    }
+    async function getVersionsData() {
+        const response = await fetch(generateURI() + "&property=version&sort_by=version");
+        const data = await response.json();
+        const result = data.result;
+        let x = [];
+        let y = [];
+        for(var i=0; i < result.length; i++){
+            x.push(result[i].version);
+            y.push(result[i].count);
         }
+        return {x, y};
+    }
+    async function drawVersionsChart() {
+        const ctx = document.getElementById('port_version_chart').getContext('2d');
+        const data = await getVersionsData();
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.x,
+                datasets: [{
+                    label: 'Users',
+                    backgroundColor: getColors(1)[0],
+                    data: data.y,
+                }]
+            },
+            options: {
+					title: {
+						display: true,
+						text: 'Users vs Port Version'
+					},
+					tooltips: {
+						mode: 'index',
+						intersect: false
+					},
+					responsive: true,
+					scales: {
+						xAxes: [{
+							stacked: true,
+						}],
+						yAxes: [{
+							stacked: true
+						}]
+					}
+				}
+        });
+    }
+
+    async function getOSVersionsData() {
+        const response = await fetch(generateURI() + "&property=submission__os_version&property=submission__build_arch&property=submission__cxx_stdlib&sort_by=submission__os_version");
+        const data = await response.json();
+        const result = data.result;
+        for(let i=0; i<result.length; i++) {
+            result[i]["grouper"] = result[i].submission__build_arch + '/' + result[i].submission__cxx_stdlib;
+        }
+        let group = result.reduce((r, a) => {
+            r[a.grouper] = [...r[a.grouper] || [], a];
+            return r;
+        }, {});
+
+        const dataMap = {};
+        for(let i=0; i<result.length; i++) {
+            let key = result[i].submission__os_version;
+            dataMap[key] = 0;
+        }
+
+        let datasets = {};
+
+        for(let key in group) {
+            let d = Object.assign({}, dataMap);
+            if(group.hasOwnProperty(key)) {
+                let g = group[key];
+                for(let i=0; i<g.length; i++) {
+                    let keyInner = g[i].submission__os_version;
+                    d[keyInner] = g[i].count;
+                }
+            }
+            datasets[key] = d;
+        }
+        return datasets;
+    }
+    async function drawOSVersionsChart() {
+        const ctx = document.getElementById('os_version_chart').getContext('2d');
+        const result = await getOSVersionsData();
+        let keys = Object.keys(result);
+        let datasets = [];
+        let c = 0;
+        for(let key in result) {
+            if(result.hasOwnProperty(key)) {
+                let obj = {
+                    label: key,
+                    backgroundColor: getColors(keys.length)[c],
+                    data: Object.values(result[key])
+                };
+                c++;
+                datasets.push(obj);
+            }
+        }
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(result[keys[0]]),
+                datasets: datasets
+            },
+            options: {
+					title: {
+						display: true,
+						text: 'Users vs OS'
+					},
+					tooltips: {
+						mode: 'index',
+						intersect: false
+					},
+					responsive: true,
+					scales: {
+						xAxes: [{
+							stacked: true,
+						}],
+						yAxes: [{
+							stacked: true
+						}]
+					}
+				}
+        });
+    }
+
+    async function getXCodeVersionsData() {
+        const response = await fetch(generateURI() + "&property=submission__os_version&property=submission__xcode_version&sort_by=submission__os_version");
+        const data = await response.json();
+        const result = data.result;
+        let group = result.reduce((r, a) => {
+            r[a.submission__xcode_version] = [...r[a.submission__xcode_version] || [], a];
+            return r;
+        }, {});
+
+        const dataMap = {};
+        for(let i=0; i<result.length; i++) {
+            let key = result[i].submission__os_version;
+            dataMap[key] = 0;
+        }
+
+        let datasets = {};
+
+        for(let key in group) {
+            let d = Object.assign({}, dataMap);
+            if(group.hasOwnProperty(key)) {
+                let g = group[key];
+                for(let i=0; i<g.length; i++) {
+                    let keyInner = g[i].submission__os_version;
+                    d[keyInner] = g[i].count;
+                }
+            }
+            datasets[key] = d;
+        }
+        return datasets;
+    }
+    async function drawXcodeVersionsChart() {
+        const ctx = document.getElementById('xcode_version_chart').getContext('2d');
+        const result = await getXCodeVersionsData();
+        let keys = Object.keys(result);
+        let datasets = [];
+        let c = 0;
+        for(let key in result) {
+            if(result.hasOwnProperty(key)) {
+                let obj = {
+                    label: key,
+                    backgroundColor: getColors(keys.length)[c],
+                    data: Object.values(result[key])
+                };
+                c++;
+                datasets.push(obj);
+            }
+        }
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(result[keys[0]]),
+                datasets: datasets
+            },
+            options: {
+					title: {
+						display: true,
+						text: 'XCode Versions'
+					},
+					tooltips: {
+						mode: 'nearest',
+						intersect: true
+					},
+					responsive: true,
+					scales: {
+						xAxes: [{
+							stacked: true,
+						}],
+						yAxes: [{
+							stacked: true
+						}]
+					},
+                    legend: {
+					    display: false
+                    },
+				}
+        });
+    }
+
+    async function getCLTVersionsData() {
+        const response = await fetch(generateURI() + "&property=submission__os_version&property=submission__clt_version&sort_by=submission__os_version");
+        const data = await response.json();
+        const result = data.result;
+        let group = result.reduce((r, a) => {
+            r[a.submission__clt_version] = [...r[a.submission__clt_version] || [], a];
+            return r;
+        }, {});
+
+        const dataMap = {};
+        for(let i=0; i<result.length; i++) {
+            let key = result[i].submission__os_version;
+            dataMap[key] = 0;
+        }
+
+        let datasets = {};
+
+        for(let key in group) {
+            let d = Object.assign({}, dataMap);
+            if(group.hasOwnProperty(key)) {
+                let g = group[key];
+                for(let i=0; i<g.length; i++) {
+                    let keyInner = g[i].submission__os_version;
+                    d[keyInner] = g[i].count;
+                }
+            }
+            datasets[key] = d;
+        }
+        return datasets;
+    }
+    async function drawCLTVersionsChart() {
+        const ctx = document.getElementById('clt_version_chart').getContext('2d');
+        const result = await getCLTVersionsData();
+        let keys = Object.keys(result);
+        let datasets = [];
+        let c = 0;
+        for(let key in result) {
+            if(result.hasOwnProperty(key)) {
+                let obj = {
+                    label: key,
+                    backgroundColor: getColors(keys.length)[c],
+                    data: Object.values(result[key])
+                };
+                c++;
+                datasets.push(obj);
+            }
+        }
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(result[keys[0]]),
+                datasets: datasets
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'CLT Versions'
+                },
+                tooltips: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+            }
+        });
+    }
+    drawVersionsChart();
+    drawOSVersionsChart();
+    drawXcodeVersionsChart();
+    drawCLTVersionsChart();
     </script>
 {% endblock %}
