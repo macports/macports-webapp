@@ -24,4 +24,22 @@ function receiveTickets(data, textStatus, jqXHR) {
 // Mouse over for closed maintainer
 $(document).ready(function() {
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
+    $(".loadFiles").click(async function () {
+        let id = $(this).attr("id");
+        $("#" + id + "-modal").modal('show');
+        let build_id = id.split("-")[1];
+        const response = await fetch("/api/v1/files/" + build_id + "/");
+        const data = await response.json();
+        const files = data.files;
+        let ul = $("<ul></ul>");
+        ul.addClass("list-group");
+        for (let i = 0; i < files.length; i++) {
+            let li = $("<li></li>");
+            li.text(files[i].file);
+            li.addClass("list-group-item");
+            ul.append(li);
+        }
+        $("#" + id + "-modal-body").html(ul);
+    });
 });
