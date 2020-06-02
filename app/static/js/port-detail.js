@@ -2,7 +2,7 @@
 function loadTickets(port_name) {
     $.ajax({
         type: 'GET',
-        url: '/port/' + port_name + '/tickets',
+        url: '/port/' + port_name + '/tickets/',
         data: {
             'port_name': port_name,
             'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
