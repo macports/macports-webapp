@@ -1,7 +1,8 @@
 import datetime
 
 from rest_framework import serializers
-from django.db.models import Count, Subquery, Q
+from django.db.models import Count, Subquery, Value, CharField
+from django.db.models.functions import TruncMonth, Cast, ExtractMonth, ExtractYear, Concat
 
 from stats.models import PortInstallation
 from stats.models import Submission
@@ -88,4 +89,44 @@ class PortStatisticsSerializer(serializers.Serializer):
         self.validate_sorting()
         if self.sort_by:
             result = sort_list_of_dicts_by_version(list(result), self.sort_by)
+        return result
+
+
+
+class PortMonthlyInstallationsSerializer(serializers.Serializer):
+    result = serializers.SerializerMethodField()
+
+    port_name = None
+
+    class Meta:
+        fields = ('result', )
+
+    def validate_context(self):
+        port_name = self.context.get('name')
+        if port_name == "" or port_name is None:
+            return False
+        self.port_name = port_name
+        return True
+
+    def get_result(self, obj):
+        is_valid = self.validate_context()
+        if not is_valid:
+            return PortInstallation.objects.none()
+        today_day = datetime.datetime.now().day
+        last_12_months = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=int(today_day) + 365)
+
+        result = PortInstallation.objects \
+            .select_related('submission') \
+            .only('submission__user_id', 'submission__timestamp', 'port') \
+            .filter(port__iexact=self.port_name, submission__timestamp__gte=last_12_months) \
+            .annotate(datetime=TruncMonth('submission__timestamp')) \
+            .order_by('datetime') \
+            .annotate(
+                m=Cast(ExtractMonth('datetime'), CharField()),
+                y=Cast(ExtractYear('datetime'), CharField()),
+                month=Concat('y', Value(','), 'm')
+            ) \
+            .values('month', 'version') \
+            .annotate(count=Count('submission__user_id', distinct=True))
+
         return result

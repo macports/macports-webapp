@@ -81,21 +81,18 @@
     </div>
     <br>
     <br>
-
-    <!-- TABLE FOR VARIANTS -->
-    <table class="table table-striped">
+    <br>
+    <canvas id="monthly_chart"></canvas>
+    <p id="monthly_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/spinner.gif' %}"></p>
+    <br><br>
+     <!-- TABLE FOR VARIANTS -->
+    <table id="variants_table" class="table table-striped table-condensed">
         <thead>
         <tr class="p-0">
             <th class="pt-0 pb-0">Variants</th>
             <th class="pt-0 pb-0">Count</th>
         </tr>
         </thead>
-        {% for i in port_installations_by_variants %}
-            <tr>
-                <td class="pt-0 pb-0">{{ i.variants }}</td>
-                <td class="pt-0 pb-0">{{ i.num }}</td>
-            </tr>
-        {% endfor %}
     </table>
 
 
@@ -108,65 +105,13 @@
 {% endif %}
     </div>
 
-<!--Help Modals -->
-<div id="statsHelp" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">What Does the "Statistics" Block Display?</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p>The statistics block shows installations count and different charts to explain the system configuration of the
-            users of that port.<br><br>
-            These stats are displayed for the duration which has been selected. For this duration, each user's latest submission
-            is used to generate stats for that user. For example, if the selected has been made for "previous 30 days
-            starting 30 days ago", then this block would show stats for the period of 30-60 days in the past (considering today
-            as zero). If in this period, one user has made multiple submissions, then only is latest submission is considered.
-            </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-<div id="monthlyInstallationsHelp" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">How are monthly installations calculated?</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>
-                   For each month, a user is considered to have the port installed, if the port is present in one or more
-                   submissions made by that user in the given month.
-                </p>
-                <p>
-                    Suppose a user makes 4 submissions in a given month, and in any one or more than one submissions the
-                    port is present, then it is counted as an installation for that month.<br><br><strong> You may see
-                    different results when comparing with the "Statistics" section, because for statistics block only the
-                    4th submission (the latest one in the selected duration) will be counted, but in monthly
-                    installations, the scenario of submissions over the month is considered.</strong>
-                </p>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
-    </div>
-</div>
+    {% if count.all > 0 %}
     <script>
     function generateURI(){
         const days = $("#days").val();
         const days_ago = $("#days_ago").val();
         const base = "/api/v1/statistics/port";
-        return base + "?name={{ port.name }}&days=" + days + "&days_ago=" + days_ago
-
+        return base + "?name={{ port.name }}&days=" + days + "&days_ago=" + days_ago;
     }
 
     function BasicSort(a, b) {
@@ -498,9 +443,123 @@
         $("#clt_version_chart_loader").hide();
         myChart.update();
     }
+    async function getMonthlyData() {
+        const response = await fetch("/api/v1/statistics/port/monthly?name={{ port.name }}");
+        const data = await response.json();
+        const result = data.result;
+        const months = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        for (let i=0; i<result.length; i++) {
+            let m = result[i].month;
+            let segments = m.split(",");
+            let year = segments[0];
+            let month = segments[1];
+            result[i].month = months[parseInt(month)] + " " + year;
+        }
+
+        let group = result.reduce((r, a) => {
+            r[a.version] = [...r[a.version] || [], a];
+            return r;
+        }, {});
+        const dataMap = {};
+        for(let i=0; i<result.length; i++) {
+            let key = result[i].month;
+            dataMap[key] = 0;
+        }
+
+        let datasets = {};
+
+        for(let key in group) {
+            let d = Object.assign({}, dataMap);
+            if(group.hasOwnProperty(key)) {
+                let g = group[key];
+                for(let i=0; i<g.length; i++) {
+                    let keyInner = g[i].month;
+                    d[keyInner] = g[i].count;
+                }
+            }
+            datasets[key] = d;
+        }
+        console.log(datasets);
+        return datasets;
+    }
+    async function drawMonthlyChart() {
+        const ctx = document.getElementById('monthly_chart').getContext('2d');
+        let data = {
+            labels: [],
+            datasets: []
+        };
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Port Installations vs Month'
+                },
+                tooltips: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                },
+                legend: {
+                    display: true
+                },
+            }
+        });
+        const result = await getMonthlyData();
+        let keys = Object.keys(result);
+        let datasets = [];
+        let c = 0;
+        for(let key in result) {
+            if(result.hasOwnProperty(key)) {
+                let obj = {
+                    label: key,
+                    backgroundColor: getColors(keys.length)[c],
+                    data: Object.values(result[key])
+                };
+                c++;
+                datasets.push(obj);
+            }
+        }
+        datasets.sort(BasicSort);
+        data.datasets = datasets;
+        data.labels = Object.keys(result[keys[0]]);
+        $("#monthly_chart_loader").hide();
+        myChart.update();
+    }
     drawVersionsChart();
     drawOSVersionsChart();
     drawXcodeVersionsChart();
     drawCLTVersionsChart();
+    drawMonthlyChart();
+
+    async function drawVariantsTable() {
+        const response = await fetch(generateURI() + "&property=variants");
+        const data = await response.json();
+        const table = document.getElementById("variants_table");
+        const result = data.result;
+
+        for(let i=0; i < result.length; i++){
+            let row = table.insertRow(-1);
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+            row.setAttribute("class", "py-0");
+            cell1.setAttribute("class", "py-0");
+            cell2.setAttribute("class", "py-0");
+            cell1.innerHTML = result[i].variants;
+            cell2.innerHTML = result[i].count;
+        }
+    }
+    drawVariantsTable();
+
     </script>
+    {% endif %}
 {% endblock %}
