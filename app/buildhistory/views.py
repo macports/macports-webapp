@@ -8,7 +8,7 @@ import django_filters
 
 from buildhistory.models import BuildHistory, Builder
 from buildhistory.filters import BuildHistoryFilter
-from buildhistory.serializers import BuilderSerializer, BuildHistorySerializer
+from buildhistory.serializers import BuilderSerializer, BuildHistorySerializer, BuildFilesSerializer
 
 
 def all_builds(request):
@@ -68,3 +68,8 @@ class BuildHistoryView(viewsets.ReadOnlyModelViewSet):
     ordering_fields = ['builder_name__name', 'builder_name__display_name', 'status', 'build_id', 'time_start']
     ordering = ['-time_start']
     filterset_fields = ['builder_name__name', 'builder_name__display_name', 'status']
+
+
+class InstalledFilesView(viewsets.ReadOnlyModelViewSet):
+    queryset = BuildHistory.objects.all()
+    serializer_class = BuildFilesSerializer
