@@ -10,9 +10,6 @@
 {% block head_scripts %}
     <script type="text/javascript" src="{% static 'js/port-detail.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
-    <script>
-        loadTickets('{{ port.name }}');
-    </script>
 {% endblock %}
 
 {% block content %}
