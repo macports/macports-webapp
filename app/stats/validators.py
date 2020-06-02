@@ -16,6 +16,17 @@ ALLOWED_PROPERTIES = [
     'submission__cxx_stdlib'
 ]
 
+ALLOWED_GENERAL_PROPERTIES = [
+    'os_version',
+    'xcode_version',
+    'clt_version',
+    'os_arch',
+    'build_arch',
+    'platform',
+    'macports_version',
+    'cxx_stdlib'
+]
+
 
 def validate_stats_days(value):
     try:

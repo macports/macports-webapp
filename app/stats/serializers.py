@@ -8,7 +8,7 @@ from stats.models import PortInstallation
 from stats.models import Submission
 from stats.utilities.sort_by_version import sort_list_of_dicts_by_version
 from stats.validators import ALLOWED_DAYS_FOR_STATS as ALLOWED_DAYS
-from stats.validators import ALLOWED_PROPERTIES
+from stats.validators import ALLOWED_PROPERTIES, ALLOWED_GENERAL_PROPERTIES
 
 
 class PortStatisticsSerializer(serializers.Serializer):
@@ -128,4 +128,45 @@ class PortMonthlyInstallationsSerializer(serializers.Serializer):
             .values('month', 'version') \
             .annotate(count=Count('submission__user_id', distinct=True))
 
+        return result
+
+
+class GeneralStatisticsSerializer(PortStatisticsSerializer):
+    result = serializers.SerializerMethodField()
+
+    class Meta:
+        fields = ('result', )
+
+    def generate_time_range_query(self):
+        is_valid = self.validate_context()
+        if not is_valid:
+            return Submission.objects.none()
+
+        end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=self.days_ago)
+        start_date = end_date - datetime.timedelta(days=self.days)
+        submissions = Submission.objects.only('id').filter(timestamp__range=[start_date, end_date]).order_by('user', '-timestamp').distinct('user')
+        return Submission.objects.filter(id__in=Subquery(submissions.values('id')))
+
+    def validate_properties(self):
+        properties = self.context.get('property')
+        for p in properties:
+            if p not in ALLOWED_GENERAL_PROPERTIES:
+                return False
+        self.properties = properties
+        return True
+
+    def validate_sorting(self):
+        sort_by = self.context.get('sort_by')
+        if sort_by == "" or sort_by is None:
+            return
+        if sort_by not in ALLOWED_GENERAL_PROPERTIES or sort_by not in self.properties:
+            return
+        self.sort_by = sort_by
+        return
+
+    def get_result(self, obj):
+        result = self.generate_time_range_query().values(*self.properties).annotate(count=Count('user'))
+        self.validate_sorting()
+        if self.sort_by:
+            result = sort_list_of_dicts_by_version(list(result), self.sort_by)
         return result

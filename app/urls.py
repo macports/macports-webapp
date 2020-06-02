@@ -13,7 +13,7 @@ from category.urls import router as category_router
 from buildhistory.urls import router as buildhistory_router
 from maintainer.urls import router as maintainer_router
 from variant.urls import router as variants_router
-from stats.views import PortStatisticsAPIView, PortMonthlyInstallationsAPIView
+from stats.views import PortStatisticsAPIView, PortMonthlyInstallationsAPIView, GeneralStatisticsAPIView
 
 # Router for rest framework
 router = routers.DefaultRouter()
@@ -38,6 +38,7 @@ urlpatterns = [
     path('port/', include('port.urls')),
     url(r"api/v1/statistics/port/monthly", PortMonthlyInstallationsAPIView.as_view()),
     url(r"api/v1/statistics/port", PortStatisticsAPIView.as_view()),
+    url(r"api/v1/statistics/", GeneralStatisticsAPIView.as_view()),
     url(r"api/v1/", include(router.urls)),
     path('categories/', include('category.urls')),
     path('variants/', include('variant.urls')),
