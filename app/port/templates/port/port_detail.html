@@ -123,12 +123,12 @@
                             {{ builder.display_name }}
                             <span class="f10">({{ builder.name }})</span>
                             </a>
-                            {% if latest_build.files.all|length > 0 %}
-                                <button class="btn btn-link text-secondary p-0 m-0 float-right" data-toggle="modal" data-target="#files{{ forloop.counter }}">Installed Files</button>
+                            {% if latest_build.files.all %}
+                                <button id="build-{{ latest_build.id }}" class="btn btn-link text-secondary p-0 m-0 float-right loadFiles">Installed Files</button>
                             {% endif %}
                         </li>
-                        {% if latest_build.files.all|length > 0 %}
-                            <div class="modal fade f12" id="files{{ forloop.counter }}" tabindex="-1" role="dialog"
+                        {% if latest_build.files.all %}
+                            <div class="modal fade f12" id="build-{{ latest_build.id }}-modal" tabindex="-1" role="dialog"
                                      aria-hidden="true">
                                     <div class="modal-dialog modal-xl" role="document">
                                         <div class="modal-content">
@@ -139,12 +139,8 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <div class="modal-body">
-                                                <ul class="list-group">
-                                                {% for file in latest_build.files.all %}
-                                                    <li class="list-group-item p-1">{{ file.file }}</li>
-                                                {% endfor %}
-                                                </ul>
+                                            <div class="modal-body" id="build-{{ latest_build.id }}-modal-body">
+                                                <p class="text-center">Please wait...</p>
                                             </div>
                                         </div>
                                     </div>

@@ -19,7 +19,6 @@ from buildhistory.models import BuildHistory, Builder
 from stats.models import Submission, PortInstallation
 from buildhistory.filters import BuildHistoryFilter
 from stats.validators import validate_stats_days, ALLOWED_DAYS_FOR_STATS
-from stats.utilities.sort_by_version import sort_list_of_dicts_by_version
 from port.serializers import SearchSerializer
 
 
@@ -34,7 +33,7 @@ def port_detail(request, name):
     except Port.DoesNotExist:
         return render(request, 'port/exceptions/port_not_found.html', {'name': name})
 
-    this_builds = BuildHistory.objects.filter(port_name__iexact=name).order_by('-time_start').prefetch_related('files')
+    this_builds = BuildHistory.objects.filter(port_name__iexact=name).order_by('-time_start')
     builders = Builder.objects.all().prefetch_related(Prefetch('builds', queryset=this_builds, to_attr='latest_builds')).annotate(version_array=StringToArray('name'),).order_by('-version_array')
     dependents = Dependency.objects.filter(dependencies__id=port.id).select_related('port_name').order_by(Lower('port_name__name'))
 
