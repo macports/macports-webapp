@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from stats.models import Submission, PortInstallation
 from stats.validators import validate_stats_days, validate_columns_port_installations, validate_unique_columns_port_installations, ALLOWED_DAYS_FOR_STATS
 from stats.utilities.sort_by_version import sort_list_of_dicts_by_version
-from stats.serializers import PortStatisticsSerializer
+from stats.serializers import PortStatisticsSerializer, PortMonthlyInstallationsSerializer
 
 
 def stats(request):
@@ -197,6 +197,17 @@ class PortStatisticsAPIView(APIView):
                 'days_ago': request.GET.get('days_ago', "0"),
                 'property': request.GET.getlist('property'),
                 'sort_by': request.GET.get('sort_by')
+            }
+        )
+        return Response(result.data)
+
+
+class PortMonthlyInstallationsAPIView(APIView):
+    def get(self, request):
+        result = PortMonthlyInstallationsSerializer(
+            PortInstallation.objects.all(),
+            context={
+                'name': request.GET.get('name'),
             }
         )
         return Response(result.data)

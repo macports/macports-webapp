@@ -105,11 +105,9 @@ def port_detail_stats(request, name):
     submissions = Submission.objects.filter(timestamp__range=[start_date, end_date]).order_by('user', '-timestamp').distinct('user')
     port_installations = PortInstallation.objects.filter(submission_id__in=Subquery(submissions.values('id')), port__iexact=name)
     count = port_installations.aggregate(requested=Count('submission__user_id', filter=Q(requested=True)), all=Count('submission__user_id'))
-    port_installations_by_variants = port_installations.values('variants').annotate(num=Count('submission__user_id', distinct=True))
 
     return render(request, 'port/port_detail_stats.html', {
         'count': count,
-        'port_installations_by_variants': port_installations_by_variants,
         'days': days,
         'days_ago': days_ago,
         'end_date': end_date,
