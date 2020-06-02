@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% load staticfiles %}
+{% load static %}
 {% load url_replace %}
 {% load sort_version %}
 {% load permutations %}
@@ -58,9 +58,11 @@
     <div class="row">
         <div class="col-lg-6">
             <canvas id="os_version_chart"></canvas>
+            <p id="os_version_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/spinner.gif' %}"></p>
         </div>
         <div class="col-lg-6">
             <canvas id="port_version_chart"></canvas>
+            <p id="port_version_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/spinner.gif' %}"></p>
         </div>
     </div>
 
@@ -70,9 +72,11 @@
     <div class="row">
         <div class="col-lg-6">
             <canvas id="xcode_version_chart"></canvas>
+            <p id="xcode_version_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/spinner.gif' %}"></p>
         </div>
         <div class="col-lg-6">
             <canvas id="clt_version_chart"></canvas>
+            <p id="clt_version_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/spinner.gif' %}"></p>
         </div>
     </div>
     <br>
@@ -165,6 +169,18 @@
 
     }
 
+    function BasicSort(a, b) {
+        let a_segments = a.label.split(".");
+        let b_segments = b.label.split(".");
+        if (a_segments > b_segments) {
+            return 1;
+        } else if (a_segments === b_segments) {
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+
     function getColors(length) {
         let pallet = ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA", "#7979ea", "#548e7d", "#53cc4d", "#e5ae22", "#3ecbd8"];
         let colors = [];
@@ -189,17 +205,13 @@
     }
     async function drawVersionsChart() {
         const ctx = document.getElementById('port_version_chart').getContext('2d');
-        const data = await getVersionsData();
+        let data = {
+            labels: [],
+            datasets: []
+        };
         const myChart = new Chart(ctx, {
             type: 'bar',
-            data: {
-                labels: data.x,
-                datasets: [{
-                    label: 'Users',
-                    backgroundColor: getColors(1)[0],
-                    data: data.y,
-                }]
-            },
+            data: data,
             options: {
 					title: {
 						display: true,
@@ -220,6 +232,19 @@
 					}
 				}
         });
+        const result = await getVersionsData();
+        let keys = Object.keys(result);
+        let datasets = [
+            {
+                label: 'Users',
+                backgroundColor: getColors(1)[0],
+                data: result.y,
+            }
+        ];
+        data.labels = result.x;
+        data.datasets = datasets;
+        $("#port_version_chart_loader").hide();
+        myChart.update();
     }
 
     async function getOSVersionsData() {
@@ -257,27 +282,13 @@
     }
     async function drawOSVersionsChart() {
         const ctx = document.getElementById('os_version_chart').getContext('2d');
-        const result = await getOSVersionsData();
-        let keys = Object.keys(result);
-        let datasets = [];
-        let c = 0;
-        for(let key in result) {
-            if(result.hasOwnProperty(key)) {
-                let obj = {
-                    label: key,
-                    backgroundColor: getColors(keys.length)[c],
-                    data: Object.values(result[key])
-                };
-                c++;
-                datasets.push(obj);
-            }
-        }
+        let data = {
+            labels: [],
+            datasets: []
+        };
         const myChart = new Chart(ctx, {
             type: 'bar',
-            data: {
-                labels: Object.keys(result[keys[0]]),
-                datasets: datasets
-            },
+            data: data,
             options: {
 					title: {
 						display: true,
@@ -298,6 +309,26 @@
 					}
 				}
         });
+        const result = await getOSVersionsData();
+        let keys = Object.keys(result);
+        let datasets = [];
+        let c = 0;
+        for(let key in result) {
+            if(result.hasOwnProperty(key)) {
+                let obj = {
+                    label: key,
+                    backgroundColor: getColors(keys.length)[c],
+                    data: Object.values(result[key])
+                };
+                c++;
+                datasets.push(obj);
+            }
+        }
+        datasets.sort(BasicSort);
+        data.labels = Object.keys(result[keys[0]]);
+        data.datasets = datasets;
+        $("#os_version_chart_loader").hide();
+        myChart.update();
     }
 
     async function getXCodeVersionsData() {
@@ -332,27 +363,13 @@
     }
     async function drawXcodeVersionsChart() {
         const ctx = document.getElementById('xcode_version_chart').getContext('2d');
-        const result = await getXCodeVersionsData();
-        let keys = Object.keys(result);
-        let datasets = [];
-        let c = 0;
-        for(let key in result) {
-            if(result.hasOwnProperty(key)) {
-                let obj = {
-                    label: key,
-                    backgroundColor: getColors(keys.length)[c],
-                    data: Object.values(result[key])
-                };
-                c++;
-                datasets.push(obj);
-            }
-        }
+        let data = {
+            labels: [],
+            datasets: []
+        };
         const myChart = new Chart(ctx, {
             type: 'bar',
-            data: {
-                labels: Object.keys(result[keys[0]]),
-                datasets: datasets
-            },
+            data: data,
             options: {
 					title: {
 						display: true,
@@ -376,6 +393,26 @@
                     },
 				}
         });
+        const result = await getXCodeVersionsData();
+        let keys = Object.keys(result);
+        let datasets = [];
+        let c = 0;
+        for(let key in result) {
+            if(result.hasOwnProperty(key)) {
+                let obj = {
+                    label: key,
+                    backgroundColor: getColors(keys.length)[c],
+                    data: Object.values(result[key])
+                };
+                c++;
+                datasets.push(obj);
+            }
+        }
+        datasets.sort(BasicSort);
+        data.labels = Object.keys(result[keys[0]]);
+        data.datasets = datasets;
+        $("#xcode_version_chart_loader").hide();
+        myChart.update();
     }
 
     async function getCLTVersionsData() {
@@ -410,27 +447,13 @@
     }
     async function drawCLTVersionsChart() {
         const ctx = document.getElementById('clt_version_chart').getContext('2d');
-        const result = await getCLTVersionsData();
-        let keys = Object.keys(result);
-        let datasets = [];
-        let c = 0;
-        for(let key in result) {
-            if(result.hasOwnProperty(key)) {
-                let obj = {
-                    label: key,
-                    backgroundColor: getColors(keys.length)[c],
-                    data: Object.values(result[key])
-                };
-                c++;
-                datasets.push(obj);
-            }
-        }
+        let data = {
+            labels: [],
+            datasets: [],
+        };
         const myChart = new Chart(ctx, {
             type: 'bar',
-            data: {
-                labels: Object.keys(result[keys[0]]),
-                datasets: datasets
-            },
+            data: data,
             options: {
                 title: {
                     display: true,
@@ -454,6 +477,26 @@
                 },
             }
         });
+        const result = await getCLTVersionsData();
+        let keys = Object.keys(result);
+        let datasets = [];
+        let c = 0;
+        for(let key in result) {
+            if(result.hasOwnProperty(key)) {
+                let obj = {
+                    label: key,
+                    backgroundColor: getColors(keys.length)[c],
+                    data: Object.values(result[key])
+                };
+                c++;
+                datasets.push(obj);
+            }
+        }
+        datasets.sort(BasicSort);
+        data.labels = Object.values(result[keys[0]]);
+        data.datasets = datasets;
+        $("#clt_version_chart_loader").hide();
+        myChart.update();
     }
     drawVersionsChart();
     drawOSVersionsChart();
