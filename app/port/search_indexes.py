@@ -1,5 +1,7 @@
 from haystack import indexes
+
 from port.models import Port
+from buildhistory.models import BuildHistory
 
 
 class PortIndex(indexes.SearchIndex, indexes.Indexable):
@@ -15,6 +17,7 @@ class PortIndex(indexes.SearchIndex, indexes.Indexable):
     active = indexes.BooleanField(model_attr='active')
     categories = indexes.MultiValueField(faceted=True)
     version = indexes.CharField(model_attr='version', indexed=False)
+    files = indexes.MultiValueField()
 
     def get_model(self):
         return Port
@@ -45,3 +48,11 @@ class PortIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_categories(self, obj):
         return [c.name for c in obj.categories.all()]
+
+    def prepare_files(self, obj):
+        port_name = obj.name
+        latest_build = BuildHistory.objects.filter(port_name__iexact=port_name, status="build successful").order_by('-time_start').prefetch_related('files').first()
+        if latest_build:
+            return [f.file for f in latest_build.files.all()]
+        else:
+            return []
