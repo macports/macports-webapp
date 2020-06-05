@@ -111,28 +111,6 @@
         return base + "?name={{ port.name }}&days=" + days + "&days_ago=" + days_ago;
     }
 
-    function BasicSort(a, b) {
-        let a_segments = a.label.split(".");
-        let b_segments = b.label.split(".");
-        if (a_segments > b_segments) {
-            return 1;
-        } else if (a_segments === b_segments) {
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-
-    function getColors(length) {
-        let pallet = ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA", "#7979ea", "#548e7d", "#53cc4d", "#e5ae22", "#3ecbd8"];
-        let colors = [];
-
-        for (let i = 0; i < length; i++) {
-            colors.push(pallet[i % pallet.length]);
-        }
-
-        return colors;
-    }
     async function getVersionsData() {
         const response = await fetch(generateURI() + "&property=version&sort_by=version");
         const data = await response.json();
