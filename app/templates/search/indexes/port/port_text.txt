@@ -15,4 +15,7 @@
 {{ object.livecheck_outdated }}
 {{ object.livecheck_error }}
 {{ object.version }}
+{% for f in object.files.all %}
+{{ f }}
+{% endfor %}
 

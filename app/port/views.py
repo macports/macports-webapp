@@ -6,8 +6,8 @@ from bs4 import BeautifulSoup
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Subquery, Count, Prefetch, Q, Func
-from django.db.models.functions import TruncMonth, Lower
+from django.db.models import Subquery, Count, Prefetch, Q
+from django.db.models.functions import Lower
 from rest_framework import mixins, viewsets, filters
 import django_filters
 from drf_haystack.viewsets import HaystackViewSet
@@ -15,16 +15,12 @@ from drf_haystack.viewsets import HaystackViewSet
 from port.forms import AdvancedSearchForm
 from port.serializers import PortHaystackSerializer, PortSerializer
 from port.models import Port, Dependency
+from port.database import StringToArray
 from buildhistory.models import BuildHistory, Builder
 from stats.models import Submission, PortInstallation
 from buildhistory.filters import BuildHistoryFilter
 from stats.validators import validate_stats_days, ALLOWED_DAYS_FOR_STATS
 from port.serializers import SearchSerializer
-
-
-class StringToArray(Func):
-    template = "%(function)s(regexp_replace(%(expressions)s, '[^0-9.]', '','g'), '.')::int[]"
-    function = 'string_to_array'
 
 
 def port_detail(request, name):
