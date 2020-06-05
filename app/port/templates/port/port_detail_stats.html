@@ -135,7 +135,7 @@
             options: {
 					title: {
 						display: true,
-						text: 'Users vs Port Version'
+						text: 'Port Versions'
 					},
 					tooltips: {
 						mode: 'index',
@@ -212,7 +212,7 @@
             options: {
 					title: {
 						display: true,
-						text: 'Users vs OS'
+						text: 'MacOS Versions'
 					},
 					tooltips: {
 						mode: 'index',
@@ -413,7 +413,7 @@
             }
         }
         datasets.sort(BasicSort);
-        data.labels = Object.values(result[keys[0]]);
+        data.labels = Object.keys(result[keys[0]]);
         data.datasets = datasets;
         $("#clt_version_chart_loader").hide();
         myChart.update();

@@ -92,7 +92,6 @@ class PortStatisticsSerializer(serializers.Serializer):
         return result
 
 
-
 class PortMonthlyInstallationsSerializer(serializers.Serializer):
     result = serializers.SerializerMethodField()
 
@@ -116,7 +115,7 @@ class PortMonthlyInstallationsSerializer(serializers.Serializer):
         last_12_months = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=int(today_day) + 365)
 
         result = PortInstallation.objects \
-            .only('submission__user_id', 'submission__timestamp', 'port') \
+            .only('id') \
             .filter(port__iexact=self.port_name, submission__timestamp__gte=last_12_months) \
             .annotate(datetime=TruncMonth('submission__timestamp')) \
             .order_by('datetime') \
