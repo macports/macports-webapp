@@ -160,3 +160,10 @@ body{
 .f10 {
     font-size: 10px !important;
 }
+
+.full-width-chart-container {
+    padding: 0;
+    margin: auto;
+    display: block;
+    max-width: 800px;
+}
