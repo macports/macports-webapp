@@ -49,3 +49,58 @@ $(document).ready(function () {
             }
         });
 });
+
+function BasicSort(a, b) {
+    let a_segments = a.label.split(".");
+    let a_l = a_segments.length;
+    let b_segments = b.label.split(".");
+    let b_l = b_segments.length;
+    let i = 0;
+    while (i < a_l && i < b_l) {
+        let a = a_segments[i];
+        let b = b_segments[i];
+        i++;
+        // If both segments are numbers
+        if (!isNaN(a) && !isNaN(b)) {
+            if (parseInt(a) > parseInt(b))
+                return 1;
+            else if (parseInt(a) < parseInt(b))
+                return -1;
+            else
+                continue;
+        }
+
+        // If a is number, and b is not, a wins
+        if (!isNaN(a))
+            return 1;
+
+        // If b is numeric, and a is not, b wins
+        if (!isNaN(b))
+            return -1;
+
+        // If none is numeric, use Javascript's string comparator
+        if (a > b)
+            return 1;
+        if (b > a)
+            return -1;
+    }
+    // If i is equal to the length of both, then they are equal
+    if (i == a_l && i == b_l)
+        return 0;
+
+    if (a_l > b_l)
+        return 1;
+    else
+        return -1;
+}
+
+function getColors(length) {
+    let pallet = ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA", "#7979ea", "#548e7d", "#53cc4d", "#e5ae22", "#3ecbd8"];
+    let colors = [];
+
+    for (let i = 0; i < length; i++) {
+        colors.push(pallet[i % pallet.length]);
+    }
+
+    return colors;
+}
