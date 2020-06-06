@@ -33,7 +33,7 @@
                                 onclick="appendMaintainerFilter('');$('#super-submit').click();">Any
                             maintainer
                         </button>
-                        {% for maintainer in facets.fields.maintainers|slice:":7" %}
+                        {% for maintainer in facets.fields.maintainers|slice:":5" %}
                             <button class="btn btn-link p-0 m-0 btn-sm"
                                     onclick="appendMaintainerFilter('{{ maintainer.0 }}');$('#super-submit').click();">{{ maintainer.0 }}({{ maintainer.1 }})
                             </button>
@@ -56,12 +56,12 @@
                     </div>
                      {% if facets.fields.categories %}
                     <div class="filter-by-options mt-2">
-                        <span><strong>Categories:</strong> </span>
+                        <span><strong>Suggested:</strong> </span>
                         <button class="btn btn-link text-info p-0 m-0 btn-sm"
                                 onclick="appendCategoryFilter('');$('#super-submit').click();">All
                             categories
                         </button>
-                        {% for category in facets.fields.categories|slice:":7" %}
+                        {% for category in facets.fields.categories|slice:":5" %}
                             <button class="btn btn-link p-0 m-0 btn-sm"
                                     onclick="appendCategoryFilter('{{ category.0 }}');$('#super-submit').click();">{{ category.0 }}({{ category.1 }})
                             </button>
@@ -84,12 +84,12 @@
                     </div>
                     {% if facets.fields.variants %}
                     <div class="filter-by-options mt-2">
-                        <span><strong>Variants:</strong> </span>
+                        <span><strong>Suggested:</strong> </span>
                         <button class="btn btn-link text-info p-0 m-0 btn-sm"
                                 onclick="appendVariantFilter('');$('#super-submit').click();">All
                             variants
                         </button>
-                        {% for variant in facets.fields.variants|slice:":7" %}
+                        {% for variant in facets.fields.variants|slice:":5" %}
                             <button class="btn btn-link p-0 m-0 btn-sm"
                                     onclick="appendVariantFilter('{{ variant.0 }}');$('#super-submit').click();">{{ variant.0 }}({{ variant.1 }})
                             </button>
