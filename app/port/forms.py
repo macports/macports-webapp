@@ -58,6 +58,16 @@ class AdvancedSearchForm(FacetedSearchForm):
             "onchange": "this.form.submit();"
         })
     )
+
+    installed_file = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            "form": "super-form",
+            "class": "form-control",
+            "placeholder": "Enter full/ partial path"
+        })
+    )
+
     show_deleted_ports = forms.BooleanField(
         required=False,
         initial=False,
@@ -117,6 +127,9 @@ class AdvancedSearchForm(FacetedSearchForm):
 
         if self.cleaned_data['nomaintainer']:
             f = f & SQ(nomaintainer=True)
+
+        if self.cleaned_data['installed_file']:
+            f = f & SQ(files=self.cleaned_data['installed_file'])
 
         if f != SQ():
             sqs = sqs.filter(f)

@@ -99,6 +99,22 @@
                 </div>
             </div>
             <div class="card mt-2">
+                <div class="card-header p-2">
+                    File installed:
+                </div>
+                <div class="card-body p-2" form="super-form">
+                    {{ form.installed_file }}
+                    <button onclick="applyInstalledFilesFilter();" class="btn btn-primary btn-sm mt-2">Apply
+                    </button>
+                    <button style="display: none" id="clear-installed-files-filter" onclick="clearInstalledFilesFilter();" class="btn btn-link btn-sm mt-2"><i
+                            class="fa fa-window-close"></i> Clear
+                    </button>
+                    <button data-toggle="modal" data-target="#installed-files-help"
+                            class="btn text-secondary btn-link btn-sm mt-2"><i class="fa fa-exclamation-circle"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card mt-2">
                     <div class="card-header p-2">
                         Port version:
                     </div>
@@ -106,7 +122,7 @@
                         <label>{{ form.livecheck_uptodate }} Up to date</label><br>
                         <label>{{ form.livecheck_outdated }} Outdated</label><br>
                         <label>{{ form.livecheck_broken }} Broken check</label>
-                        <button onclick="clearLivecheck();" class="btn btn-sm btn-link p-0 m-0"><i class="fa fa-window-close"></i> Clear livecheck filters</button>
+                        <button style="display: none" id="clear-livecheck-filters" onclick="clearLivecheck();" class="btn btn-sm btn-link p-0 m-0"><i class="fa fa-window-close"></i> Clear livecheck filters</button>
                     </div>
                 </div>
         <div class="card mt-2">
@@ -140,7 +156,7 @@
                 {% if query %}
                     <h5>Results for "{{ query }}"</h5>
                 {% else %}
-                    <h5>No search query. You can still perform filtering</h5>
+                    <!-- Figuring out a nice descriptive message to put here for an empty query -->
                 {% endif %}
                 <p>{{ page.paginator.count }} results found | Showing results {{ page.start_index }}
                     to {{ page.end_index }}
@@ -285,9 +301,28 @@
                         </div>
                         <div class="modal-body">
                             If this is selected, then results are displayed by matching the query with only the port
-                            names.
-                            Otherwise
-                            "description" is also used to find results.
+                            names. Otherwise, "description" is also used to find results.<br>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="installed-files-help" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Important information regarding this filter</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            The application fetches data for installed files from the buildbot every time a port is
+                            built. The application does not have information about the ports which have never been built since its inception.
+
+                            <br><br>
+                            This filter searches for the files in the most recent successful build of a port, if available
+                            in application database.
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

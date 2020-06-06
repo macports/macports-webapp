@@ -2,7 +2,7 @@ $(function () {
     let searchParams = new URLSearchParams(window.location.search);
     if(searchParams.has("selected_facets")) {
         let values = searchParams.getAll("selected_facets");
-        for(index = 0; index<values.length; index++) {
+        for(let index = 0; index<values.length; index++) {
             let v = values[index];
             let sections = v.split(':');
             let facet_query = sections[0];
@@ -30,6 +30,22 @@ $(function () {
                     }
                     break;
             }
+        }
+    }
+
+    if(searchParams.has("installed_file")) {
+        let ifValue = searchParams.get("installed_file");
+        if (ifValue !== "") {
+            $('#clear-installed-files-filter').show();
+        }
+    }
+
+    if(searchParams.has("livecheck_outdated") || searchParams.has("livecheck_broken") || searchParams.has("livecheck_uptodate")) {
+        let loValue = searchParams.get("livecheck_outdated");
+        let lbValue = searchParams.get("livecheck_broken");
+        let luValue = searchParams.get("livecheck_uptodate");
+        if (loValue !== "" || lbValue !== "" || luValue !== "") {
+            $('#clear-livecheck-filters').show();
         }
     }
 
@@ -256,5 +272,14 @@ function clearLivecheck() {
     $("#id_livecheck_broken").prop("checked", false);
     $("#id_livecheck_outdated").prop("checked", false);
     $("#id_livecheck_uptodate").prop("checked", false);
+    $("#super-submit").click();
+}
+
+function applyInstalledFilesFilter() {
+    $("#super-submit").click();
+}
+
+function clearInstalledFilesFilter() {
+    $("#id_installed_file").val("");
     $("#super-submit").click();
 }
