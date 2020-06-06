@@ -2,6 +2,7 @@ from django import forms
 from django.utils.translation import gettext as _
 from haystack.forms import FacetedSearchForm
 from haystack.query import SearchQuerySet, SQ
+from haystack.inputs import Exact
 
 from port.models import Port
 
@@ -129,7 +130,7 @@ class AdvancedSearchForm(FacetedSearchForm):
             f = f & SQ(nomaintainer=True)
 
         if self.cleaned_data['installed_file']:
-            f = f & SQ(files=self.cleaned_data['installed_file'])
+            f = f & SQ(files=Exact(self.cleaned_data['installed_file']))
 
         if f != SQ():
             sqs = sqs.filter(f)
