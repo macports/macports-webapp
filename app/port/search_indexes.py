@@ -7,7 +7,8 @@ from buildhistory.models import BuildHistory
 class PortIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     name = indexes.NgramField(model_attr='name', boost=2.0)
-    name_l = indexes.IntegerField()
+    name_lower = indexes.CharField(indexed=False, stored=True)
+    name_length = indexes.IntegerField(indexed=False)
     maintainers = indexes.MultiValueField(boost=1.2, faceted=True)
     description = indexes.CharField(model_attr='description', boost=1.5)
     variants = indexes.MultiValueField(faceted=True)
@@ -22,8 +23,11 @@ class PortIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Port
 
-    def prepare_name_l(self, obj):
+    def prepare_name_length(self, obj):
         return len(obj.name)
+
+    def prepare_name_lower(self, obj):
+        return str(obj.name).lower()
 
     def prepare_maintainers(self, obj):
         return [m.github for m in obj.maintainers.all()]
