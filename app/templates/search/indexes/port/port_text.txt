@@ -11,11 +11,12 @@
 {% endfor %}
 {{ object.active }}
 {{ object.nomaintainer }}
-{{ object.name_l }}
+{{ object.name_length }}
 {{ object.livecheck_outdated }}
 {{ object.livecheck_error }}
 {{ object.version }}
 {% for f in object.files.all %}
 {{ f }}
 {% endfor %}
+{{ object.name_lower }}
 

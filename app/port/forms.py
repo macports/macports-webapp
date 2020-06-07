@@ -97,7 +97,7 @@ class AdvancedSearchForm(FacetedSearchForm):
             if value:
                 sqs = sqs.narrow('%s:"%s"' % (field, sqs.query.clean(value)))
 
-        do_sort = False
+        sort_by = "name_lower"
 
         # Filter out deleted ports, based on query
         if not self.cleaned_data.get('show_deleted_ports'):
@@ -107,12 +107,11 @@ class AdvancedSearchForm(FacetedSearchForm):
         if self.cleaned_data.get('q'):
             if self.cleaned_data['name']:
                 sqs = sqs.filter(name=self.cleaned_data['q'])
-                do_sort = True
+                sort_by = "name_length"
             else:
                 sqs = sqs.filter(SQ(name=self.cleaned_data['q']) | SQ(description=self.cleaned_data['q']))
 
-            if do_sort:
-                sqs = sqs.order_by('name_l')
+        sqs = sqs.order_by(sort_by)
 
         # Filter operations, perform even if a search query is absent
         # This is done to allow viewing all "outdated ports", "all ports with broken livecheck" etc.
