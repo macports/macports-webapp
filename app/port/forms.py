@@ -79,7 +79,7 @@ class AdvancedSearchForm(FacetedSearchForm):
     )
 
     def no_query_found(self):
-        return SearchQuerySet().models(Port)
+        return SearchQuerySet().models(Port).order_by("name_lower")
 
     def search(self):
         if not self.is_valid():
