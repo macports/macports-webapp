@@ -11,6 +11,7 @@ from config import BUILDERS_JSON_URL, BUILDBOT_URL_PREFIX, BUILDS_FETCHED_COUNT
 class Builder(models.Model):
     name = models.CharField(max_length=100, db_index=True, verbose_name="Name of the builder as per Buildbot")
     display_name = models.CharField(max_length=20, db_index=True, default='', verbose_name="Simplified builder name: 10.XX")
+    natural_name = models.CharField(max_length=50, default='', verbose_name="Name of the MacOS version, e.g. Catalina")
 
     def __str__(self):
         return "%s" % self.name
