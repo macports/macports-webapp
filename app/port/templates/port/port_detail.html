@@ -110,18 +110,17 @@
                     {% for builder in builders %}
                     {% with builder.latest_builds|first as latest_build %}
                     {% if latest_build %}
-                        <li class="list-group-item py-1">
-                            <a target="_blank" class="text-secondary" href="{% build_url builder.name latest_build.build_id %}">
+                        <li class="list-group-item py-0">
+                            <a target="_blank" class="text-dark" href="{% build_url builder.name latest_build.build_id %}">
                                 {% if latest_build.status == "build successful" %}
-                                    <span class="badge text-success p-0"><i class="fa fa-check"></i></span>
+                                    <span class="badge text-success p-0 mr-1"><i style="width: 10px" class="fa fa-check"></i></span>
                                 {% else %}
-                                    <span class="badge text-danger p-0"><i class="fa fa-times"></i></span>
+                                    <span class="badge text-danger p-0 mr-1"><i style="width: 10px" class="fa fa-times"></i></span>
                                 {% endif %}
-                            {{ builder.display_name }}
-                            <span class="f10">({{ builder.name }})</span>
+                            {{ builder.natural_name }}
                             </a>
                             {% if latest_build.files.all %}
-                                <button id="build-{{ latest_build.id }}" class="btn btn-link text-secondary p-0 m-0 float-right loadFiles">Installed Files</button>
+                                <button id="build-{{ latest_build.id }}" class="btn btn-link text-secondary p-0 m-0 float-right loadFiles">Files</button>
                             {% endif %}
                         </li>
                         {% if latest_build.files.all %}
@@ -144,9 +143,9 @@
                                 </div>
                             {% endif %}
                     {% else %}
-                        <li class="list-group-item py-1 text-secondary">
-                            <span class="badge text-secondary p-0"><i class="fa fa-question"></i></span>
-                            {{ builder.display_name }} <span class="f10">({{ builder.name }})</span>
+                        <li class="list-group-item py-0 text-dark">
+                            <span class="badge text-dark p-0 mr-1"><i style="width: 10px;" class="fa fa-question"></i></span>
+                            {{ builder.natural_name }}
                         </li>
                     {% endif %}
                     {% endwith %}
