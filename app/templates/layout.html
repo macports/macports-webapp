@@ -1,4 +1,5 @@
-{% load staticfiles %}
+{% load static %}
+{% load humanize %}
 
 <!doctype html>
 <html lang="en">
@@ -98,15 +99,15 @@
                 </ul>
             </div>
             <div class="col-lg-4">
-                Port Information was last updated at:<br>
-                <i class="footer-links">{{ port_info_updated_at|date:'Y-m-d H:i' }} (UTC)</i><br>
+                Port Information was updated:<br>
+                <i class="footer-links">{{ port_info_updated_at|naturaltime }}</i><br>
                 <i><a class="footer-links" target="_blank" href="https://github.com/macports/macports-ports/commits/{{ port_info_updated_till_commit }}/">{{ port_info_updated_till_commit|slice:":8" }}</a></i><br><br>
 
-                Latest build fetched has 'start time':<br>
-                <i><a class="footer-links" href="{% url 'all_builds' %}">{{ latest_build_fetched_at|date:'Y-m-d H:i' }} (UTC)</a></i><br><br>
+                Most recent build (in app's database) ran:<br>
+                <i><a class="footer-links" href="{% url 'all_builds' %}">{{ latest_build_fetched_at|naturaltime }}</a></i><br><br>
 
-                Latest stats submission was received at:<br>
-                <i><a class="footer-links" href="{% url 'stats' %}">{{ latest_submission_made_at|date:'Y-m-d H:i' }} (UTC)</a></i><br><br>
+                Latest stats submission was received:<br>
+                <i><a class="footer-links" href="{% url 'stats' %}">{{ latest_submission_made_at|naturaltime }}</a></i><br><br>
 
             </div>
     </div>
