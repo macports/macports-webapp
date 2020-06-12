@@ -3,6 +3,7 @@
 {% load format_names %}
 {% load url_generate %}
 {% load sort_version %}
+{% load humanize %}
 
 {% block title %}Install {{ port.name }} on MacOS with {% endblock %}
 
@@ -169,13 +170,13 @@
             <div class="rounded border p-2 mt-2">
                 <h5>Livecheck results</h5>
                 <p class="text-secondary f14">{{ port.livecheck.result }}</p>
-                <p class="f12">livecheck ran at: <strong>{{ port.livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
+                <p class="f12">livecheck ran at: <strong>{{ port.livecheck.updated_at|naturaltime }}</strong></p>
             </div>
             {% elif port.livecheck.error %}
-                <div class="rounded border p-2">
+                <div class="rounded border mt-2 p-2">
                     <h5>Livecheck error</h5>
                     <p class="text-secondary" class="f14">{{ port.livecheck.error }}</p>
-                    <p class="f12">livecheck ran at: <strong>{{ port.livecheck.updated_at|date:"y-m-d h:i" }}</strong></p>
+                    <p class="f12">last updated: <strong>{{ port.livecheck.updated_at|naturaltime }}</strong></p>
                 </div>
             {% endif %}
         </div>
