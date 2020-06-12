@@ -48,151 +48,33 @@ class Port(models.Model):
         return reverse('port_detail', args=[str(self.name)])
 
     @classmethod
-    def load(cls, data):
-        def open_portindex_json(path):
-            with open(path, "r", encoding='utf-8') as file:
-                data = json.load(file)
-            return data['ports']
-
-        # Add All the Categories to the Database using bulk_create
-        def load_categories_table(ports):
-            from category.models import Category
-
-            categories = set()
-            for port in ports:
-                try:
-                    for category in port['categories']:
-                        categories.add(Category(name=category))
-                except KeyError:
-                    pass
-            batch = list(categories)
-            Category.objects.bulk_create(batch)
-            return
-
-        port_id_map = {}
+    def add_or_update(cls, data):
+        from category.models import Category
 
         @transaction.atomic
-        def load_ports_and_maintainers_table(ports):
+        def load_ports_table(ports):
             from maintainer.models import Maintainer
             from variant.models import Variant
 
-            port_id = 1
             for port in ports:
-
-                # Add Ports to the Database One-by-One
-                new_port = Port()
+                # any json object missing name, portdir, version will be ignored
                 try:
-                    new_port.name = port['name']
-                    new_port.portdir = port['portdir']
-                    new_port.version = port['version']
+                    name = port['name']
+                    portdir = port['portdir']
+                    version = port['version']
                 except KeyError:
                     continue
 
-                new_port.description = port.get('description', '')
-                new_port.homepage = port.get('homepage', '')
-                new_port.epoch = port.get('epoch', 0)
-                new_port.platforms = port.get('platforms')
-                new_port.long_description = port.get('long_description', '')
-                new_port.revision = port.get('revision', 0)
-                new_port.closedmaintainer = port.get('closedmaintainer', False)
-                new_port.license = port.get('license', '')
-                new_port.replaced_by = port.get('replaced_by')
-                new_port.save()
-                port_id_map[port['name']] = port_id
-                port_id += 1
+                # get or create an object for this port
+                port_object, port_created = Port.objects.get_or_create(name__iexact=name, defaults={'name': name})
 
-                try:
-                    new_port.categories.add(*port['categories'])
-                except KeyError:
-                    pass
-
-                try:
-                    for maintainer in port['maintainers']:
-                        name = maintainer.get('email', {}).get('name', '')
-                        domain = maintainer.get('email', {}).get('domain', '')
-                        github = maintainer.get('github', '')
-
-                        maintainer_object, created = Maintainer.objects.get_or_create(
-                            name=name,
-                            domain=domain,
-                            github=github
-                        )
-
-                        maintainer_object.ports.add(new_port)
-                except KeyError:
-                    pass
-
-                try:
-                    for variant in port['variants']:
-                        variant_object = Variant()
-                        variant_object.port = new_port
-                        variant_object.variant = variant
-                        variant_object.save()
-                except KeyError:
-                    pass
-
-        @transaction.atomic
-        def load_dependencies_table(ports):
-            def load_depends(port_id, type_of_dependency, list_of_dependencies):
-                obj = Dependency()
-                dependencies = []
-                obj.type = type_of_dependency
-                obj.port_name_id = port_id
-                for i in list_of_dependencies:
-                    try:
-                        dependency_name = i.rsplit(':', 1)[-1]
-                        dependencies.append(port_id_map[dependency_name])
-                    except KeyError:
-                        pass
-                obj.save()
-                obj.dependencies.add(*dependencies)
-
-            for port in ports:
-                try:
-                    port_id = port_id_map[port['name']]
-                    for dependency_type in ["lib", "extract", "run", "patch", "build", "test", "fetch"]:
-                        key = "depends_" + dependency_type
-                        if key in port:
-                            load_depends(port_id, dependency_type, port[key])
-
-                except KeyError:
-                    pass
-
-        def populate(ports):
-            load_categories_table(ports)
-            load_ports_and_maintainers_table(ports)
-            load_dependencies_table(ports)
-
-        # If list of JSON objects in passed, start populating
-        if isinstance(data, list):
-            populate(data)
-        # If a path to JSON file is provided, open the file and then start populating
-        elif isinstance(data, str):
-            ports = open_portindex_json(data)
-            populate(ports)
-
-    @classmethod
-    def update(cls, data):
-        from category.models import Category
-        from maintainer.models import Maintainer
-        from variant.models import Variant
-
-        def open_portindex_json(path):
-            with open(path, "r", encoding='utf-8') as file:
-                data = json.load(file)
-            return data['ports']
-
-        def full_update_ports(ports):
-
-            for port in ports:
-                port_object, port_created = Port.objects.get_or_create(name=port['name'])
-
-                port_object.portdir = port['portdir']
-                port_object.version = port['version']
+                # add or update rest of the fields
+                port_object.portdir = portdir
+                port_object.version = version
                 port_object.description = port.get('description', '')
                 port_object.homepage = port.get('homepage', '')
                 port_object.epoch = port.get('epoch', 0)
-                port_object.platforms = port.get('platforms', '')
+                port_object.platforms = port.get('platforms')
                 port_object.long_description = port.get('long_description', '')
                 port_object.revision = port.get('revision', 0)
                 port_object.closedmaintainer = port.get('closedmaintainer', False)
@@ -201,107 +83,88 @@ class Port(models.Model):
                 port_object.active = True
                 port_object.save()
 
-                try:
-                    port_object.categories.clear()
-                    for category in port['categories']:
-                        category_object, category_created = Category.objects.get_or_create(name=category)
-                        port_object.categories.add(category_object)
-                except KeyError:
-                    pass
+                # first remove any related category and then add
+                port_object.categories.clear()  # remove any related objects
+                categories = set()
+                for category in port.get('categories', []):
+                    category_object, created = Category.objects.get_or_create(name__iexact=category, defaults={'name': category})
+                    categories.add(category_object)
+                port_object.categories.add(*categories)
 
-                try:
-                    variant_objects = Variant.objects.filter(port_id=port_object.id)
+                # remove any related maintainers and then add all
+                port_object.maintainers.clear()
+                for maintainer in port.get('maintainers', []):
+                    maintainer_name = maintainer.get('email', {}).get('name', '')
+                    maintainer_domain = maintainer.get('email', {}).get('domain', '')
+                    maintainer_github = maintainer.get('github', '')
 
-                    for variant_object in variant_objects:
-                        if variant_object not in port['variants']:
-                            variant_object.delete()
+                    maintainer_object, created = Maintainer.objects.get_or_create(
+                        name__iexact=maintainer_name,
+                        domain__iexact=maintainer_domain,
+                        github__iexact=maintainer_github,
+                        defaults={
+                            'name': maintainer_name,
+                            'domain': maintainer_domain,
+                            'github': maintainer_github
+                        }
+                    )
+                    maintainer_object.ports.add(port_object)
 
-                    for variant in port['variants']:
-                        v_obj, created = Variant.objects.get_or_create(port_id=port_object.id, variant=variant)
-                except KeyError:
-                    pass
+                # delete all related variants and then add all
+                port_object.variants.all().delete()
+                for variant in port.get('variants', []):
+                    v_obj, created = Variant.objects.get_or_create(port_id=port_object.id, variant__iexact=variant, defaults={'variant': variant})
 
-                try:
-                    port_object.maintainers.clear()
-                    for maintainer in port['maintainers']:
-                        name = maintainer.get('email', {}).get('name', '')
-                        domain = maintainer.get('email', {}).get('domain', '')
-                        github = maintainer.get('github', '')
+                print("Updated port: ", port_object.name)
 
-                        maintainer_object, created = Maintainer.objects.get_or_create(
-                            name=name,
-                            domain=domain,
-                            github=github
-                        )
+        @transaction.atomic
+        def load_dependencies_table(ports):
+            # To prevent repetitive queries for adding a relation between port and its dependency
+            # we prepare a map of port names and their primary keys in advance
+            port_id_map = {}
+            for port_object in Port.objects.all():
+                port_id_map[port_object.name.lower()] = port_object.id
 
-                        maintainer_object.ports.add(port_object)
-                except KeyError:
-                    pass
-
-        def full_update_dependencies(ports):
+            def load_depends(port_id, type_of_dependency, list_of_dependencies):
+                d_object, created = Dependency.objects.get_or_create(type=type_of_dependency, port_name_id=port_id)
+                d_object.dependencies.clear()
+                dependencies = set()
+                for i in list_of_dependencies:
+                    try:
+                        dependency_name = i.rsplit(':', 1)[-1]
+                        dependencies.add(port_id_map[dependency_name.lower()])
+                    except KeyError:
+                        pass
+                d_object.dependencies.add(*dependencies)
 
             for port in ports:
                 try:
-                    all_dependency_objects = Dependency.objects.filter(port_name__name__iexact=port['name'])
-                    port_object = Port.objects.get(name=port['name'])
-
-                    # Delete the dependency types from database that no longer exist in
-                    for dependency_object in all_dependency_objects:
-                        key = "depends_" + dependency_object.type
-                        if key not in port:
-                            dependency_object.delete()
-
-                    for dependency_type in ["lib", "extract", "run", "patch", "build", "test", "fetch"]:
-                        key = "depends_" + dependency_type
-                        if key in port:
-                            obj, created = Dependency.objects.get_or_create(port_name_id=port_object.id,
-                                                                            type=dependency_type)
-                            obj.type = dependency_type
-                            obj.port_name = port_object
-                            obj.dependencies.clear()
-                            dependencies = []
-
-                            for depends in port[key]:
-                                try:
-                                    dependencies.append(Port.objects.get(name__iexact=depends.rsplit(':', 1)[-1]))
-                                except Port.DoesNotExist:
-                                    print("Failed to append {} as a dependency to {}. Not Found.".format(
-                                        depends.rsplit(':', 1)[-1],
-                                        port['name']))
-                            obj.save()
-                            obj.dependencies.add(*dependencies)
-
+                    name = port['name']
+                except KeyError:
+                    continue
+                try:
+                    port_object = Port.objects.get(name=name)
                 except Port.DoesNotExist:
-                    print(
-                        "Failed to update depencies for {}. Port does not exist in the database.".format(port['name']))
+                    continue
 
-        # Takes in a list of JSON objects and runs the updates
-        def run_updates(ports):
-            full_update_ports(ports)
-            full_update_dependencies(ports)
+                for dependency_type in ["lib", "extract", "run", "patch", "build", "test", "fetch"]:
+                    key = "depends_" + dependency_type
+                    if key in port:
+                        load_depends(port_object.id, dependency_type, port[key])
 
-        # Block to find type of passed "data" and run updates accordingly
-        # ============ START ============
+                print("Updated port dependencies: ", port['name'])
 
-        # If a valid path is passed, open it and parse the JSON objects
-        if isinstance(data, str):
-            if os.path.exists(data):
-                ports = open_portindex_json(data)
-                run_updates(ports)
-            else:
-                print('File "{}" not found.'.format(data))
+        def run(ports):
+            load_ports_table(ports)
+            load_dependencies_table(ports)
 
-        # If a list is passed, run the updates directly
-        elif isinstance(data, list):
-            run_updates(data)
-
-        # ============ END ==============
+        run(data)
 
     @classmethod
     def mark_deleted(cls, dict_of_portdirs_with_ports):
         for portdir in dict_of_portdirs_with_ports:
             for port in Port.objects.filter(portdir__iexact=portdir).only('portdir', 'name', 'active'):
-                if port.name not in dict_of_portdirs_with_ports[portdir]:
+                if port.name.lower() not in dict_of_portdirs_with_ports[portdir]:
                     port.active = False
                     port.save()
 

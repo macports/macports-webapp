@@ -5,32 +5,35 @@ from port.models import Port, LastPortIndexUpdate
 
 
 class Command(BaseCommand):
-    help = "Populates the database with Initial data from portindex.json file"
+    help = "Updates the ports table by getting list of updated ports using git."
 
     def add_arguments(self, parser):
-        parser.add_argument('new_commit',
-                            nargs='?',
-                            default=None,
-                            help="Define a commit till which the update should be processed")
-        parser.add_argument('old_commit',
-                            nargs='?',
-                            default=None,
-                            help="Not recommended. Helps you provide a commit from which update should start")
+        parser.add_argument('--type',
+                            type=str,
+                            default="update",
+                            help="Specify the type of operation, update or full.")
 
     def handle(self, *args, **options):
-        # Fetch the latest version of PortIndex.json and open the file
-        data = Port.PortIndexUpdateHandler().sync_and_open_file()
+        type_of_run = options['type']
 
-        # If no argument is provided, use the commit-hash from JSON file:
-        if options['new_commit'] is None:
-            new_commit = data['info']['commit']
-        # If argument is provided
-        else:
-            new_commit = options['new_commit']
+        if type_of_run == 'full':
+            git_update.refresh_portindex_json()
+            data = git_update.get_portindex_json()
+            Port.add_or_update(data['ports'])
+            LastPortIndexUpdate.update_or_create_first_object(data['info']['commit'])
+            return
 
-        # If no argument is provided, options['old_commit'] will default to None
-        # The code will then use the commit from last update which is stored in the database
-        updated_portdirs = git_update.get_list_of_changed_ports(new_commit, options['old_commit'])
+        # It is an incremental update
+        # An incremental update is only possible when the database has a
+        # history of the commit till which it is up to date
+        old_commit_object = LastPortIndexUpdate.objects.all().first()
+        if old_commit_object is None:
+            raise CommandError("Failed to run incremental update. No old commit found, cannot generate range of commits.")
+
+        updated_portdirs = git_update.get_updated_portdirs()
+
+        # fetch the latest version of PortIndex.json and open the file
+        data = git_update.get_portindex_json()
 
         # Generate a dictionary containing all the portdirs and initialise their values
         # with empty sets. The set would contain the ports under that portdir.
@@ -52,7 +55,7 @@ class Command(BaseCommand):
         Port.mark_deleted(dict_of_portdirs_with_ports)
 
         # Run updates
-        Port.update(ports_to_be_updated_json)
+        Port.add_or_update(ports_to_be_updated_json)
 
         # Write the commit hash into database
         LastPortIndexUpdate.update_or_create_first_object(data['info']['commit'])
