@@ -23,7 +23,7 @@ MACPORTS_PORTS_URL = "https://github.com/macports/macports-ports.git"
 MACPORTS_CONTRIB_URL = "https://github.com/macports/macports-contrib"
 
 # configuration for locally generated portindex.json
-LOCAL_PORTINDEX = os.path.join(MACPORTS_PORTS_DIR, 'portindex')
+LOCAL_PORTINDEX = os.path.join(MACPORTS_PORTS_DIR, 'PortIndex')
 LOCAL_PORTINDEX_JSON = os.path.join(MACPORTS_PORTS_DIR, 'portindex.json')
 PORTINDEX2JSON = os.path.join(MACPORTS_CONTRIB_DIR, 'portindex2json', 'portindex2json.tcl')
 
