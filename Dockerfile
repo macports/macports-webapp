@@ -16,6 +16,7 @@ RUN apt-get update && \
         rsync \
         python-dev \
         libpq-dev \
+        tcllib \
         supervisor && \
     pip3 install -U pip setuptools && \
     rm -rf /var/lib/apt/lists/*
