@@ -12,22 +12,15 @@ from buildhistory.serializers import BuilderSerializer, BuildHistorySerializer, 
 
 
 def all_builds(request):
+    # get page state (filter parameters)
+    builder = request.GET.get('builder-filter', '')
+    status = request.GET.get('status-filter', '')
+    port_name = request.GET.get('name-filter', '')
+    page = request.GET.get('page', 1)
+
+    # generate querysets
     builders = list(Builder.objects.all().order_by('display_name').distinct('display_name').values_list('display_name', flat=True))
     builders.sort(key=LooseVersion, reverse=True)
-    jump_to_page = request.GET.get('page', 1)
-
-    return render(request, 'buildhistory/all_builds.html', {
-        'builders': builders,
-        'jump_to_page': jump_to_page
-    })
-
-
-def all_builds_filter(request):
-    builder = request.GET.get('builder_name__display_name')
-    status = request.GET.get('status')
-    port_name = request.GET.get('port_name')
-    page = request.GET.get('page')
-
     if status == 'unresolved':
         all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name__display_name', '-build_id').distinct('port_name', 'builder_name__display_name')
         builds = BuildHistoryFilter({
@@ -35,8 +28,13 @@ def all_builds_filter(request):
             'port_name': port_name,
         }, queryset=BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), status__icontains='failed').select_related('builder_name').order_by('-time_start')).qs
     else:
-        builds = BuildHistoryFilter(request.GET, queryset=BuildHistory.objects.all().select_related('builder_name').order_by('-time_start')).qs
+        builds = BuildHistoryFilter({
+            'builder_name__display_name': builder,
+            'port_name': port_name,
+            'status': status
+        }, queryset=BuildHistory.objects.all().select_related('builder_name').order_by('-time_start')).qs
 
+    # handle pagination
     paginated_builds = Paginator(builds, 100)
     try:
         result = paginated_builds.get_page(page)
@@ -45,7 +43,8 @@ def all_builds_filter(request):
     except EmptyPage:
         result = paginated_builds.get_page(paginated_builds.num_pages)
 
-    return render(request, 'buildhistory/builds_filtered_table.html', {
+    return render(request, 'buildhistory/all_builds.html', {
+        'builders': builders,
         'builds': result,
         'builder': builder,
         'status': status,

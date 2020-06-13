@@ -10,5 +10,4 @@ router.register('files', views.InstalledFilesView, basename='files')
 
 urlpatterns = [
     path('', views.all_builds, name='all_builds'),
-    path('filter/', views.all_builds_filter, name='all_builds_filter'),
 ]
