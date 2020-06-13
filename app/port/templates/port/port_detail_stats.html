@@ -78,9 +78,24 @@
     </div>
     <br>
     <br>
-    <br>
-    <canvas id="monthly_chart"></canvas>
-    <p id="monthly_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/spinner.gif' %}"></p>
+    <div class="row">
+        <div class="col-lg-8">
+            <canvas id="monthly_chart"></canvas>
+            <p id="monthly_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/spinner.gif' %}">
+            </p>
+        </div>
+        <div class="col-lg-3">
+        </div>
+    </div>
+    <br><br><hr><br><br>
+    <div class="row">
+        <div class="col-lg-8">
+            <canvas id="monthly_versions_chart"></canvas>
+            <p id="monthly_versions_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/spinner.gif' %}"></p>
+        </div>
+        <div class="col-lg-3" id="monthly_versions_table">
+        </div>
+    </div>
     <br><br>
      <!-- TABLE FOR VARIANTS -->
     <table id="variants_table" class="table table-striped table-condensed">
@@ -149,7 +164,10 @@
 						yAxes: [{
 							stacked: true
 						}]
-					}
+					},
+                    legend: {
+                        display: false
+                    }
 				}
         });
         const result = await getVersionsData();
@@ -226,7 +244,10 @@
 						yAxes: [{
 							stacked: true
 						}]
-					}
+					},
+                    legend: {
+					    display: false
+                    }
 				}
         });
         const result = await getOSVersionsData();
@@ -418,11 +439,79 @@
         $("#clt_version_chart_loader").hide();
         myChart.update();
     }
+
+    const months = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     async function getMonthlyData() {
         const response = await fetch("/api/v1/statistics/port/monthly?name={{ port.name }}");
         const data = await response.json();
         const result = data.result;
-        const months = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        for (let i=0; i<result.length; i++) {
+            let m = result[i].month;
+            let segments = m.split(",");
+            let year = segments[0];
+            let month = segments[1];
+            result[i].month = months[parseInt(month)] + " " + year;
+        }
+        let x = [];
+        let y = [];
+        for (let i=0; i<result.length; i++) {
+            x.push(result[i].month);
+            y.push(result[i].count);
+        }
+        return {
+            x: x,
+            y: y
+        }
+    }
+
+    async function drawMonthlyChart() {
+        const ctx = document.getElementById('monthly_chart').getContext('2d');
+        let data = {
+            labels: [],
+            datasets: [{
+                label: "Users",
+                backgroundColor: 'rgba(210, 210, 210, 0.5)',
+                fill: true,
+                data: []
+            }]
+        };
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Port installations by month'
+                },
+                tooltips: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
+        const result = await getMonthlyData();
+        data.labels = result.x;
+        data.datasets[0].data = result.y;
+        $("#monthly_chart_loader").hide();
+        myChart.update()
+    }
+
+    async function getMonthlyVersionsData() {
+        const response = await fetch("/api/v1/statistics/port/monthly?name={{ port.name }}&include_versions=yes");
+        const data = await response.json();
+        const result = data.result;
         for (let i=0; i<result.length; i++) {
             let m = result[i].month;
             let segments = m.split(",");
@@ -454,11 +543,22 @@
             }
             datasets[key] = d;
         }
-        console.log(datasets);
+
+        // Convert to percentages
+        for(let key in dataMap) {
+            let monthlySum = 0;
+            for(let version in datasets) {
+                monthlySum = monthlySum + parseInt(datasets[version][key]);
+            }
+            for(let version in datasets) {
+                datasets[version][key] = ((datasets[version][key]/monthlySum)*100).toFixed(1);
+            }
+        }
+
         return datasets;
     }
-    async function drawMonthlyChart() {
-        const ctx = document.getElementById('monthly_chart').getContext('2d');
+    async function drawMonthlyVersionsChart() {
+        const ctx = document.getElementById('monthly_versions_chart').getContext('2d');
         let data = {
             labels: [],
             datasets: []
@@ -469,7 +569,7 @@
             options: {
                 title: {
                     display: true,
-                    text: 'Port Installations vs Month'
+                    text: 'Percentage of users per version per month'
                 },
                 tooltips: {
                     mode: 'nearest',
@@ -481,15 +581,28 @@
                         stacked: true,
                     }],
                     yAxes: [{
-                        stacked: true
+                        stacked: true,
+                        ticks: {
+                            max: 100,
+                            min: 0,
+                            callback: function (value, index, values) {
+                                return value + " %";
+                            }
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Percentage of submissions'
+                        }
                     }]
                 },
                 legend: {
-                    display: true
+                    display: false,
+                    position: 'right'
                 },
             }
         });
-        const result = await getMonthlyData();
+
+        const result = await getMonthlyVersionsData();
         let keys = Object.keys(result);
         let datasets = [];
         let c = 0;
@@ -507,13 +620,28 @@
         datasets.sort(BasicSort);
         data.datasets = datasets;
         data.labels = Object.keys(result[keys[0]]);
-        $("#monthly_chart_loader").hide();
+        $("#monthly_versions_chart_loader").hide();
+
+        let month = data.labels[data.labels.length - 1];
+        let tableHeader = '<thead><tr class="py-1"><th class="py-1">Version</th><th class="py-1">Percentage</th></tr></thead>';
+        let tableBody = '<tbody>';
+        for(let i = 0; i < datasets.length; i++) {
+            let count = datasets[i].data[datasets[i].data.length - 1];
+            if(count > 0) {
+                tableBody += '<tr class="py-1"><td class="py-1">' + datasets[i].label + '</td><td class="py-1">' + count + ' %</td>';
+            }
+        }
+        tableBody += '</tbody>';
+        const table = '<h5>For ' + month + '</h5><table class="table table-condensed">' + tableHeader +  tableBody + '</table>';
+        $('#monthly_versions_table').html(table);
+
         myChart.update();
     }
     drawVersionsChart();
     drawOSVersionsChart();
     drawXcodeVersionsChart();
     drawCLTVersionsChart();
+    drawMonthlyVersionsChart();
     drawMonthlyChart();
 
     async function drawVariantsTable() {

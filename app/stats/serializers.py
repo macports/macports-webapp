@@ -96,6 +96,8 @@ class PortMonthlyInstallationsSerializer(serializers.Serializer):
     result = serializers.SerializerMethodField()
 
     port_name = None
+    values = None
+
 
     class Meta:
         fields = ('result', )
@@ -105,6 +107,13 @@ class PortMonthlyInstallationsSerializer(serializers.Serializer):
         if port_name == "" or port_name is None:
             return False
         self.port_name = port_name
+
+        include_versions = self.context.get('include_versions')
+        if include_versions == "yes":
+            self.values = ['month', 'version']
+        else:
+            self.values = ['month']
+
         return True
 
     def get_result(self, obj):
@@ -113,7 +122,7 @@ class PortMonthlyInstallationsSerializer(serializers.Serializer):
             return PortInstallation.objects.none()
         today_day = datetime.datetime.now().day
         last_12_months = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=int(today_day) + 365)
-
+        print(self.values)
         result = PortInstallation.objects \
             .only('id') \
             .filter(port__iexact=self.port_name, submission__timestamp__gte=last_12_months) \
@@ -124,7 +133,7 @@ class PortMonthlyInstallationsSerializer(serializers.Serializer):
                 y=Cast(ExtractYear('datetime'), CharField()),
                 month=Concat('y', Value(','), 'm')
             ) \
-            .values('month', 'version') \
+            .values(*self.values) \
             .annotate(count=Count('submission__user_id', distinct=True))
 
         return result

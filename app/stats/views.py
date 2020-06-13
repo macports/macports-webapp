@@ -192,6 +192,7 @@ class PortMonthlyInstallationsAPIView(APIView):
             PortInstallation.objects.all(),
             context={
                 'name': request.GET.get('name'),
+                'include_versions': request.GET.get('include_versions')
             }
         )
         return Response(result.data)
