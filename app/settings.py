@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'category',
     'variant',
     'django_filters',
-    'api_v1',
     'django.contrib.admindocs'
 ]
 
