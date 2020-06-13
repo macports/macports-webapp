@@ -1,8 +1,7 @@
 from django.test import TransactionTestCase, Client
 from django.urls import reverse
 
-from port.models import Port
-from config import TEST_PORTINDEX_JSON
+from tests import setup
 
 
 class TestURLsBuilds(TransactionTestCase):
@@ -10,16 +9,10 @@ class TestURLsBuilds(TransactionTestCase):
 
     def setUp(self):
         self.client = Client()
-        Port.load(TEST_PORTINDEX_JSON)
+        setup.setup_test_data()
 
     def test_all_builds(self):
         response = self.client.get(reverse('all_builds'))
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='buildhistory/all_builds.html')
-
-    def test_all_builds_filter(self):
-        response = self.client.get(reverse('all_builds_filter'))
-
-        self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name='buildhistory/builds_filtered_table.html')

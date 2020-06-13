@@ -1,8 +1,8 @@
+import json
 from django.test import TransactionTestCase, Client
 from django.urls import reverse
 
-from port.models import Port
-from config import TEST_PORTINDEX_JSON
+from tests import setup
 
 
 class TestURLsStats(TransactionTestCase):
@@ -10,7 +10,7 @@ class TestURLsStats(TransactionTestCase):
 
     def setUp(self):
         self.client = Client()
-        Port.load(TEST_PORTINDEX_JSON)
+        setup.setup_test_data()
 
     def test_stats(self):
         response = self.client.get(reverse('stats'))

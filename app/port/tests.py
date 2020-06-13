@@ -1,9 +1,9 @@
 from django.test import TransactionTestCase, Client
 from django.urls import reverse
-from django.core.management import call_command
 
 from port.models import Port, Dependency
 from config import TEST_PORTINDEX_JSON
+from tests import setup
 
 
 class TestURLsPortDetail(TransactionTestCase):
@@ -11,7 +11,7 @@ class TestURLsPortDetail(TransactionTestCase):
 
     def setUp(self):
         self.client = Client()
-        Port.load(TEST_PORTINDEX_JSON)
+        setup.setup_test_data()
 
     def test_port_detail(self):
         response = self.client.get(reverse('port_detail', kwargs={
@@ -19,7 +19,7 @@ class TestURLsPortDetail(TransactionTestCase):
         }))
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name='port/port_detail_parent.html')
+        self.assertTemplateUsed(response, template_name='port/port_detail.html')
 
     def test_port_not_found(self):
         response = self.client.get(reverse('port_detail', kwargs={
@@ -29,29 +29,18 @@ class TestURLsPortDetail(TransactionTestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='port/exceptions/port_not_found.html')
 
-    def test_port_detail_tabbed(self):
-        response = self.client.get(reverse('port_detail_tabbed', kwargs={
-            'name': 'port-A1',
-            'slug': 'summary'
-        }))
-
-        self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name='port/port_detail_parent.html')
-
-    def test_port_detail_summary(self):
-        response = self.client.get('/port/ajax-call/summary/?port_name=port-A1')
-
-        self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name='port/port_detail_summary.html')
-
     def test_port_detail_stats(self):
-        response = self.client.get('/port/ajax-call/stats/?port_name=port-A1')
+        response = self.client.get(reverse('port_stats', kwargs={
+            'name': 'port-A1'
+        }))
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='port/port_detail_stats.html')
 
     def test_port_detail_builds(self):
-        response = self.client.get('/port/ajax-call/builds/?port_name=port-A1')
+        response = self.client.get(reverse('port_builds', kwargs={
+            'name': 'port-A1'
+        }))
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='port/port_detail_builds.html')
@@ -62,20 +51,10 @@ class TestDependencies(TransactionTestCase):
 
     def setUp(self):
         self.client = Client()
-        Port.load(TEST_PORTINDEX_JSON)
+        setup.setup_test_data()
 
     def test_rows_created(self):
         self.assertEquals(Dependency.objects.all().count(), 6)
-
-    def test_dependencies_fetched(self):
-        response = self.client.get(reverse('port_detail_summary_ajax'), data={'port_name': 'port-A1'})
-        dependencies = response.context['dependencies']
-        self.assertEquals(dependencies.get(type='lib').dependencies.all().count(), 2)
-        total_dependencies = []
-        for d_type in dependencies:
-            for dependency in d_type.dependencies.all():
-                total_dependencies.append(dependency)
-        self.assertEquals(len(total_dependencies), 3)
 
     def test_updates(self):
         updated_port = [{
@@ -85,64 +64,24 @@ class TestDependencies(TransactionTestCase):
             "depends_extract": ["bin:port-C1:port-C1"],
             "depends_run": ["port:port-A1"],
         }]
-        Port.update(updated_port)
+        Port.add_or_update(updated_port)
         dependencies = Dependency.objects.filter(port_name__name__iexact='port-A5')
         self.assertEquals(dependencies.get(type='run').dependencies.all().count(), 1)
         self.assertEquals(dependencies.get(type='run').dependencies.all().first().name, 'port-A1')
         self.assertEquals(dependencies.count(), 2)
 
 
-class TestPortsSearch(TransactionTestCase):
-    reset_sequences = True
-
-    def setUp(self):
-        self.client = Client()
-        Port.load(TEST_PORTINDEX_JSON)
-
-    def test_ports_search(self):
-        response1 = self.client.get(reverse('ports_search'), data={
-            'search_by': 'name',
-            'name': 'port',
-            'search_text': 'port'
-        })
-
-        response2 = self.client.get(reverse('ports_search'), data={
-            'search_by': 'description',
-            'description': 'categoryA',
-            'search_text': 'categoryA'
-        })
-
-        response3 = self.client.get(reverse('ports_search'), data={
-            'search_by': 'name',
-            'name': 'port-A5',
-            'search_text': 'port-A5'
-        })
-
-        self.assertEquals(response1.context['ports'].count(), 8)
-        self.assertEquals(response2.context['ports'].count(), 6)
-        self.assertEquals(response3.context['ports'].count(), 1)
-
-
 class TestPortsQueryAndUpdate(TransactionTestCase):
     reset_sequences = True
 
     def setUp(self):
-        Port.load(TEST_PORTINDEX_JSON)
-
-    def test_updates(self):
-        call_command('update-portinfo', '3c6f37828d091670e7b9a2676757b2e468ee3d52', 'cb7086953124c73ffb616e955653176e3c4be02c')
-        try:
-            port1 = Port.objects.get(name='youtube-dl')
-            port2 = Port.objects.get(name='py-yapf')
-            update_success = True
-        except Port.DoesNotExist:
-            update_success = False
-        self.assertEquals(update_success, True)
+        setup.setup_test_data()
 
     def test_deleted(self):
+        # mark_deleted function expects everything to be in lower case
         Port.mark_deleted({
-            'categoryA/port-A1': {
-                'port-A1'
+            'categorya/port-a1': {
+                'port-a1'
             }
         })
 
@@ -152,7 +91,7 @@ class TestPortsQueryAndUpdate(TransactionTestCase):
         self.assertEquals(port_status_subport, False)
 
     def test_moved(self):
-        Port.update([
+        Port.add_or_update([
             {
                 "variants": ["universal"],
                 "portdir": "categoryA/port-A1",
@@ -222,7 +161,7 @@ class TestPortsQueryAndUpdate(TransactionTestCase):
         self.assertEquals(port_status_subport3, False)
 
         # The moved ports would be found at the new location and will be appended to the list of JSON objects
-        Port.update([
+        Port.add_or_update([
             {
                 "variants": ["universal"],
                 "portdir": "categoryTemp/newPorts",
@@ -282,7 +221,7 @@ class TestPortsQueryAndUpdate(TransactionTestCase):
                 'port-A1'
             }
         })
-        Port.update([
+        Port.add_or_update([
             {
                 "variants": ["universal"],
                 "portdir": "categoryA\/port-A1",
