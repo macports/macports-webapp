@@ -31,21 +31,19 @@ def stats(request):
 
     end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=days_ago)
     start_date = end_date - datetime.timedelta(days=days)
+    today_day = datetime.datetime.now().day
+    last_12_months = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=int(today_day) + 365)
 
     current_week = datetime.datetime.today().isocalendar()[1]
-    all_submissions = Submission.objects.all()
+    all_submissions = Submission.objects.all().only('id')
     total_unique_users = all_submissions.distinct('user').count()
     current_week_unique = all_submissions.filter(timestamp__week=current_week).distinct('user').count()
     last_week_unique = all_submissions.filter(timestamp__week=current_week - 1).distinct('user').count()
 
     # Number of unique users vs month
-    users_by_month = Submission.objects.annotate(month=TruncMonth('timestamp')).values('month').annotate(
-        num=Count('user_id', distinct=True))[:12]
+    users_by_month = Submission.objects.only('id').filter(timestamp__gte=last_12_months).annotate(month=TruncMonth('timestamp')).values('month').annotate(num=Count('user_id', distinct=True))
 
-    # System Stats for Current Users
-    submissions_last_x_days = Submission.objects.filter(timestamp__range=[start_date, end_date]).order_by('user',
-                                                                                                          '-timestamp').distinct(
-        'user')
+    submissions_last_x_days = Submission.objects.only('id').filter(timestamp__range=[start_date, end_date]).order_by('user', '-timestamp').distinct('user')
 
     return render(request, 'stats/stats.html', {
         'total_submissions': all_submissions.count(),
