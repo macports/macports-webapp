@@ -1,10 +1,11 @@
 from django.shortcuts import HttpResponseRedirect, reverse
 from rest_framework import viewsets, filters, mixins
+from rest_framework.response import Response
 import django_filters
 
 from maintainer.models import Maintainer
 from maintainer.forms import MaintainerAutocompleteForm
-from maintainer.serializers import MaintainerSerializer, MaintainerHaystackSerializer
+from maintainer.serializers import MaintainerListSerializer, MaintainerDetailSerializer, MaintainerHaystackSerializer
 
 
 def maintainer(request, m):
@@ -15,12 +16,17 @@ def maintainer(request, m):
 
 
 class MaintainerView(viewsets.ReadOnlyModelViewSet):
-    serializer_class = MaintainerSerializer
+    serializer_class = MaintainerListSerializer
     queryset = Maintainer.objects.all()
+    lookup_field = 'github'
     lookup_value_regex = '[a-zA-Z0-9_.]+'
     filter_backends = [filters.SearchFilter, django_filters.rest_framework.DjangoFilterBackend]
     search_fields = ['name', 'domain', 'github']
     filterset_fields = ['name', 'domain', 'github']
+
+    def retrieve(self, request, *args, **kwargs):
+        result = MaintainerDetailSerializer(self.get_object())
+        return Response(result.data)
 
 
 class MaintainerAutocompleteView(mixins.ListModelMixin, viewsets.GenericViewSet):

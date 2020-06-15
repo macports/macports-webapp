@@ -1,7 +1,7 @@
 from drf_haystack.serializers import HaystackSerializer
 from rest_framework import serializers
 
-from maintainer.serializers import MaintainerSerializer
+from maintainer.serializers import MaintainerListSerializer
 from variant.serializers import VariantSerializer
 from port.models import Port
 from port.search_indexes import PortIndex
@@ -15,7 +15,7 @@ class PortHaystackSerializer(serializers.Serializer):
 
 
 class PortSerializer(serializers.ModelSerializer):
-    maintainers = MaintainerSerializer(read_only=True, many=True)
+    maintainers = MaintainerListSerializer(read_only=True, many=True)
     variants = VariantSerializer(read_only=True, many=True)
 
     class Meta:
