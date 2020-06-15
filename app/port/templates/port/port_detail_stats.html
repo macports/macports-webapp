@@ -469,14 +469,14 @@
         let data = {
             labels: [],
             datasets: [{
-                label: "Users",
+                label: "Installations",
                 backgroundColor: 'rgba(210, 210, 210, 0.5)',
                 fill: true,
                 data: []
             }]
         };
         const myChart = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: data,
             options: {
                 title: {
@@ -564,12 +564,12 @@
             datasets: []
         };
         const myChart = new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: data,
             options: {
                 title: {
                     display: true,
-                    text: 'Percentage of users per version per month'
+                    text: 'Percentage of installations per version per month'
                 },
                 tooltips: {
                     mode: 'nearest',
