@@ -1,9 +1,10 @@
 from django.shortcuts import HttpResponseRedirect, reverse
 from rest_framework import viewsets, mixins
+from rest_framework.response import Response
 
 from category.models import Category
 from category.forms import CategoryAutocompleteForm
-from category.serializers import CategoriesListSerializer, CategoryHaystackSerializer
+from category.serializers import CategoriesListSerializer, CategoryHaystackSerializer, CategoryDetailSerializer
 
 
 def category(request, cat):
@@ -13,6 +14,10 @@ def category(request, cat):
 class CategoriesListView(viewsets.ReadOnlyModelViewSet):
     serializer_class = CategoriesListSerializer
     queryset = Category.objects.all()
+
+    def retrieve(self, request, *args, **kwargs):
+        result = CategoryDetailSerializer(self.get_object())
+        return Response(result.data)
 
 
 class CategoryAutocompleteView(mixins.ListModelMixin, viewsets.GenericViewSet):
