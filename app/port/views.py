@@ -153,7 +153,7 @@ class PortAutocompleteView(mixins.ListModelMixin, viewsets.GenericViewSet):
         return self.form.search()
 
 
-class PortInfoView(viewsets.ReadOnlyModelViewSet):
+class PortAPIView(viewsets.ReadOnlyModelViewSet):
     serializer_class = PortSerializer
     queryset = Port.objects.all()
     lookup_field = 'name__iexact'
@@ -163,7 +163,7 @@ class PortInfoView(viewsets.ReadOnlyModelViewSet):
     filterset_fields = ['name', 'categories', 'maintainers__github', 'variants__variant']
 
 
-class SearchView(HaystackViewSet):
+class SearchAPIView(HaystackViewSet):
     index_models = [Port]
 
     serializer_class = SearchSerializer

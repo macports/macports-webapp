@@ -6,7 +6,7 @@ from haystack.query import SearchQuerySet
 from rest_framework import routers
 
 import views
-from port.views import SearchView
+from port.views import SearchAPIView
 from port.forms import AdvancedSearchForm
 from port.urls import router as port_router
 from category.urls import router as category_router
@@ -17,7 +17,7 @@ from stats.views import PortStatisticsAPIView, PortMonthlyInstallationsAPIView, 
 
 # Router for rest framework
 router = routers.DefaultRouter()
-router.register('search', SearchView, basename='search')
+router.register('search', SearchAPIView, basename='search')
 router.registry.extend(port_router.registry)
 router.registry.extend(category_router.registry)
 router.registry.extend(buildhistory_router.registry)

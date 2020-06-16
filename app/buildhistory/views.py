@@ -52,14 +52,14 @@ def all_builds(request):
     })
 
 
-class BuilderView(viewsets.ReadOnlyModelViewSet):
+class BuilderAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = Builder.objects.all()
     serializer_class = BuilderSerializer
     detail_serializer_class = BuildHistorySerializer
     lookup_value_regex = '[a-zA-Z0-9_.]+'
 
 
-class BuildHistoryView(viewsets.ReadOnlyModelViewSet):
+class BuildHistoryAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = BuildHistory.objects.all()
     serializer_class = BuildHistorySerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.OrderingFilter]
@@ -69,6 +69,6 @@ class BuildHistoryView(viewsets.ReadOnlyModelViewSet):
     filterset_fields = ['builder_name__name', 'builder_name__display_name', 'status']
 
 
-class InstalledFilesView(viewsets.ReadOnlyModelViewSet):
+class InstalledFilesAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = BuildHistory.objects.all()
     serializer_class = BuildFilesSerializer
