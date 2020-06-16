@@ -42,6 +42,7 @@ pyparsing==2.4.7
 pysolr==3.9.0
 python-coveralls==2.9.3
 python-dateutil==2.8.0
+python-memcached==1.59
 pytz==2018.9
 PyYAML==5.3
 requests==2.23.0
