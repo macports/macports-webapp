@@ -9,6 +9,8 @@ from django.db.models import Subquery, Count, Case, IntegerField, When
 from django.db.models.functions import TruncMonth
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 from stats.models import Submission, PortInstallation
 from stats.validators import validate_stats_days, validate_columns_port_installations, validate_unique_columns_port_installations, ALLOWED_DAYS_FOR_STATS
@@ -170,6 +172,7 @@ def stats_submit(request):
 
 
 class PortStatisticsAPIView(APIView):
+    @method_decorator(cache_page(60 * 60))
     def get(self, request):
         result = PortStatisticsSerializer(
             PortInstallation.objects.all(),
@@ -185,6 +188,7 @@ class PortStatisticsAPIView(APIView):
 
 
 class PortMonthlyInstallationsAPIView(APIView):
+    @method_decorator(cache_page(60 * 60))
     def get(self, request):
         result = PortMonthlyInstallationsSerializer(
             PortInstallation.objects.all(),
