@@ -1,9 +1,9 @@
 from drf_haystack.serializers import HaystackSerializer
 from rest_framework import serializers
+from django.contrib.postgres.aggregates import ArrayAgg
 
 from maintainer.serializers import MaintainerListSerializer
-from variant.serializers import VariantSerializer
-from port.models import Port
+from port.models import Port, Dependency
 from port.search_indexes import PortIndex
 from maintainer.search_indexes import MaintainerIndex
 
@@ -16,16 +16,15 @@ class PortHaystackSerializer(serializers.Serializer):
 
 class PortSerializer(serializers.ModelSerializer):
     maintainers = MaintainerListSerializer(read_only=True, many=True)
-    variants = VariantSerializer(read_only=True, many=True)
+    variants = serializers.SerializerMethodField()
+    dependencies = serializers.SerializerMethodField()
+    depends_on = serializers.SerializerMethodField()
 
     class Meta:
         model = Port
         fields = ('name',
                   'portdir',
-                  'categories',
-                  'maintainers',
                   'version',
-                  'variants',
                   'license',
                   'platforms',
                   'epoch',
@@ -33,7 +32,22 @@ class PortSerializer(serializers.ModelSerializer):
                   'homepage',
                   'description',
                   'long_description',
-                  'active')
+                  'active',
+                  'categories',
+                  'maintainers',
+                  'variants',
+                  'dependencies',
+                  'depends_on'
+                  )
+
+    def get_variants(self, obj):
+        return obj.variants.all().values_list('variant', flat=True)
+
+    def get_dependencies(self, obj):
+        return obj.dependent_port.all().values('type').annotate(ports=ArrayAgg('dependencies__name'))
+
+    def get_depends_on(self, obj):
+        return Dependency.objects.filter(dependencies__id=obj.id).values('type').annotate(ports=ArrayAgg('port_name__name'))
 
 
 class SearchSerializer(HaystackSerializer):
