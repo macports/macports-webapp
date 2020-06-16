@@ -19,7 +19,7 @@ class MaintainerView(viewsets.ReadOnlyModelViewSet):
     serializer_class = MaintainerListSerializer
     queryset = Maintainer.objects.all()
     lookup_field = 'github'
-    lookup_value_regex = '[a-zA-Z0-9_.]+'
+    lookup_value_regex = '[a-zA-Z0-9_.-]+'
     filter_backends = [filters.SearchFilter, django_filters.rest_framework.DjangoFilterBackend]
     search_fields = ['name', 'domain', 'github']
     filterset_fields = ['name', 'domain', 'github']
