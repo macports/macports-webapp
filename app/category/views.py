@@ -11,7 +11,7 @@ def category(request, cat):
     return HttpResponseRedirect("{}?selected_facets=categories_exact:{}".format(reverse('search'), cat))
 
 
-class CategoriesListView(viewsets.ReadOnlyModelViewSet):
+class CategoryAPIView(viewsets.ReadOnlyModelViewSet):
     serializer_class = CategoriesListSerializer
     queryset = Category.objects.all()
 

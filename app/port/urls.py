@@ -3,11 +3,10 @@ from django.conf.urls import url
 from rest_framework import routers
 
 from port import views
-from port.views import PortInfoView
 
 router = routers.DefaultRouter()
 router.register("autocomplete/port", views.PortAutocompleteView, basename="autocomplete_port")
-router.register('ports', PortInfoView, basename="port")
+router.register('ports', views.PortAPIView, basename="port")
 
 urlpatterns = [
     url(r'^(?P<name>[-a-zA-Z0-9_.]+)/builds/$', views.port_detail_build_information, name='port_builds'),

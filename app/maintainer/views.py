@@ -15,7 +15,7 @@ def maintainer(request, m):
 # VIEWS FOR DJANGO REST FRAMEWORK
 
 
-class MaintainerView(viewsets.ReadOnlyModelViewSet):
+class MaintainerAPIView(viewsets.ReadOnlyModelViewSet):
     serializer_class = MaintainerListSerializer
     queryset = Maintainer.objects.all()
     lookup_field = 'github'
