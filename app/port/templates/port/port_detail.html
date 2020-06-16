@@ -90,13 +90,13 @@
                     <th scope="row">Dependency of:</th>
                     <td>{% if not dependents|length > 0 %}-{% endif %}</td>
                 </tr>
-                {% regroup dependents|dictsort:"type" by type as dependent_parent %}
-                {% for type in dependent_parent %}
+                {% for d in dependents %}
                     <tr>
-                        <td class="pt-0 pb-0 text-right">{{ type.grouper }}:</td>
+                        <td class="pt-0 pb-0 text-right">{{ d.type }}:</td>
                         <td class="pt-0 pb-0">
-                        {% for i in type.list %}
-                            <a href="{% url 'port_detail' i.port_name.name %}">{{ i.port_name.name }}</a>{% if not forloop.last %},{% endif %}
+                        {{ ports }}
+                        {% for i in d.ports %}
+                            <a href="{% url 'port_detail' i %}">{{ i }}</a>{% if not forloop.last %},{% endif %}
                         {% endfor %}
                         </td>
                     </tr>
