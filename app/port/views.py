@@ -7,9 +7,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery, Count, Prefetch, Q
-from django.db.models.functions import Lower
+from django.contrib.postgres.aggregates import ArrayAgg
 from rest_framework import mixins, viewsets, filters
-import django_filters
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_haystack.viewsets import HaystackViewSet
 
 from port.forms import AdvancedSearchForm
@@ -31,7 +31,7 @@ def port_detail(request, name):
 
     this_builds = BuildHistory.objects.filter(port_name__iexact=name).order_by('-time_start')
     builders = Builder.objects.all().prefetch_related(Prefetch('builds', queryset=this_builds, to_attr='latest_builds')).annotate(version_array=StringToArray('name'),).order_by('-version_array')
-    dependents = Dependency.objects.filter(dependencies__id=port.id).select_related('port_name').order_by(Lower('port_name__name'))
+    dependents = Dependency.objects.filter(dependencies__id=port.id).values('type').annotate(ports=ArrayAgg('port_name__name'))
 
     last_30_days = datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=30)
     submissions_last_30_days = Submission.objects.filter(timestamp__gte=last_30_days).order_by('user', '-timestamp').distinct('user')
@@ -158,7 +158,7 @@ class PortAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = Port.objects.all()
     lookup_field = 'name__iexact'
     lookup_value_regex = '[a-zA-Z0-9_.-]+'
-    filter_backends = [filters.SearchFilter, django_filters.rest_framework.DjangoFilterBackend]
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['name', 'maintainers__github', 'variants__variant', 'categories__name']
     filterset_fields = ['name', 'categories', 'maintainers__github', 'variants__variant']
 
