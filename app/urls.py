@@ -3,7 +3,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from haystack.views import FacetedSearchView
 from haystack.query import SearchQuerySet
-from rest_framework import routers
+from rest_framework.routers import DefaultRouter
+from django.views.generic.base import RedirectView
 
 import views
 from port.views import SearchAPIView
@@ -16,7 +17,7 @@ from variant.urls import router as variants_router
 from stats.views import PortStatisticsAPIView, PortMonthlyInstallationsAPIView, GeneralStatisticsAPIView
 
 # Router for rest framework
-router = routers.DefaultRouter()
+router = DefaultRouter()
 router.register('search', SearchAPIView, basename='search')
 router.registry.extend(port_router.registry)
 router.registry.extend(category_router.registry)
@@ -45,4 +46,10 @@ urlpatterns = [
     path('ports/search/', views.search, name='ports_search'),
     path('all_builds/', include('buildhistory.urls')),
     path('about/', views.about_page, name='about_page'),
+
+    # redirects to keep the old urls alive
+    url(r'^maintainer/github/(?P<m>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='maintainer')),
+    url(r'^ports/category/(?P<cat>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='category')),
+    url(r'^ports/variant/(?P<v>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='variant')),
+    url(r'^ports/all_builds/$', RedirectView.as_view(pattern_name='all_builds')),
 ]
