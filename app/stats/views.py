@@ -14,7 +14,6 @@ from django.utils.decorators import method_decorator
 
 from stats.models import Submission, PortInstallation
 from stats.validators import validate_stats_days, validate_columns_port_installations, validate_unique_columns_port_installations, ALLOWED_DAYS_FOR_STATS
-from stats.utilities.sort_by_version import sort_list_of_dicts_by_version
 from stats.serializers import PortStatisticsSerializer, PortMonthlyInstallationsSerializer, GeneralStatisticsSerializer
 
 
@@ -93,6 +92,7 @@ def stats_port_installations(request):
     })
 
 
+@cache_page(60 * 60 * 24)
 def stats_port_installations_filter(request):
     days = request.GET.get('days', 30)
     order_by_1 = str(request.GET.get('order_by_1', '-total_count'))
@@ -188,7 +188,7 @@ class PortStatisticsAPIView(APIView):
 
 
 class PortMonthlyInstallationsAPIView(APIView):
-    @method_decorator(cache_page(60 * 60))
+    @method_decorator(cache_page(60 * 60 * 24))
     def get(self, request):
         result = PortMonthlyInstallationsSerializer(
             PortInstallation.objects.all(),

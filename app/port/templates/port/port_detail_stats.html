@@ -17,7 +17,8 @@
     {% include 'port/includes/port-header.html' with port=port %}
     {% include 'port/includes/port-tabs.html' with port_name=port.name active="stats" %}
 <br>
-<form method="get" action="." class="bg-light p-2 form form-inline justify-content-center">
+    <a class="btn btn-link my-0 py-0 btn-sm" href="{% url 'stats_faq' %}">FAQ</a>
+<form method="get" action="." class="p-2 form form-inline justify-content-center">
     <lable for="days">Displaying statistics for <strong>{{ users_in_duration_count }} users</strong> who made submissions during:</lable>
     <select onchange="this.form.submit()" id="days" name="days" class="form-control mx-2">
     {% for i in allowed_days|slice:"1:" %}
@@ -33,25 +34,26 @@
     </select>
 </form>
 <br>
-<h6 class="text-center">
-    <span class="text-muted">Duration selected:</span> <u>{{ start_date|date:"Y-m-d" }}</u> <span class="text-muted">to</span> <u>{{ end_date|date:"Y-m-d" }}</u>
-</h6>
-<br>
-{% if count.all > 0 %}
-    <h4 class="border-bottom">Statistics: <span class="f12"><button type="button" class="bg-light border-0 p-1" data-toggle="modal" data-target="#statsHelp">Learn More</button></span> </h4>
-    <table class="table table-striped border">
-        <tr>
-            <th scope="row">Total Installations</th>
-            <td>{{ count.all }}</td>
-        </tr>
-        <tr>
-            <th scope="row">Requested Installations</th>
-            <td>{{ count.requested }}</td>
-        </tr>
-    </table>
+<h3 class="text-center bg-light p-2 rounded">Statistics for selected duration</h3>
+<p class="text-center"><u>{{ start_date|date:"Y-M-d" }}</u> <span class="text-muted">to</span> <u>{{ end_date|date:"Y-M-d" }}</u></p>
     <br>
-
-
+{% if count.all > 0 %}
+    <div class="row">
+        <div class="col-lg-6">
+            <table class="table border">
+                <tr>
+                    <th scope="row">Total Installations</th>
+                    <td>{{ count.all }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Requested Installations</th>
+                    <td>{{ count.requested }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <br>
+    <br>
     <div class="row">
         <div class="col-lg-6">
             <canvas id="os_version_chart"></canvas>
@@ -62,8 +64,6 @@
             <p id="port_version_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/spinner.gif' %}"></p>
         </div>
     </div>
-
-
     <br>
     <br>
     <div class="row">
@@ -77,6 +77,20 @@
         </div>
     </div>
     <br>
+    <br>
+    <!-- TABLE FOR VARIANTS -->
+    <table id="variants_table" class="table table-striped table-condensed">
+        <thead>
+        <tr class="p-0">
+            <th class="pt-0 pb-0">Variants</th>
+            <th class="pt-0 pb-0">Count</th>
+        </tr>
+        </thead>
+    </table>
+    <br>
+    <br>
+    <h3 class="bg-light p-2 rounded text-center">Monthly Statistics</h3>
+    <p class="text-center">Can remain cached upto 24 hours</p>
     <br>
     <div class="row">
         <div class="col-lg-8">
@@ -97,15 +111,6 @@
         </div>
     </div>
     <br><br>
-     <!-- TABLE FOR VARIANTS -->
-    <table id="variants_table" class="table table-striped table-condensed">
-        <thead>
-        <tr class="p-0">
-            <th class="pt-0 pb-0">Variants</th>
-            <th class="pt-0 pb-0">Count</th>
-        </tr>
-        </thead>
-    </table>
 
 
 {% else %}
