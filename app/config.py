@@ -32,7 +32,7 @@ BUILDERS_JSON_URL = "https://build.macports.org/json/builders/"
 
 # configuration for fetching builds
 BUILDBOT_URL_PREFIX = "https://build.macports.org"
-BUILDS_FETCHED_COUNT = 20
+BUILDS_FETCHED_COUNT = 5
 
 # configuration for tests
 TEST_SAMPLE_DATA = os.path.join(BASE_DIR, 'tests', 'sample_data')

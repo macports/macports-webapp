@@ -5,7 +5,7 @@ from buildhistory import views
 
 router = routers.DefaultRouter()
 router.register('builders', views.BuilderAPIView, basename='builders')
-router.register('buildhistory', views.BuildHistoryAPIView, basename='buildhistory')
+router.register('builds', views.BuildHistoryAPIView, basename='builds')
 router.register('files', views.InstalledFilesAPIView, basename='files')
 
 urlpatterns = [
