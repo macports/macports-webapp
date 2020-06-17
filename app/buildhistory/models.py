@@ -150,26 +150,6 @@ class BuildHistory(models.Model):
                 build_obj = load_build_to_db(builder, build_data_summary)
                 load_files_to_db(build_obj, installed_files)
 
-    @classmethod
-    def populate_builders(cls):
-        gcontext = ssl.SSLContext()
-        with urllib.request.urlopen(BUILDERS_JSON_URL, context=gcontext) as u:
-            data = json.loads(u.read().decode())
-
-        builders = []
-        for key in data:
-            if not key.split('-')[0] == 'ports':
-                continue
-
-            if not key.split('-')[2] == 'builder':
-                continue
-
-            if not len(data[key]['cachedBuilds']) > 0:
-                continue
-
-            builders.append(Builder(name=key.split('-')[1]))
-        Builder.objects.bulk_create(builders)
-
 
 class InstalledFile(models.Model):
     build = models.ForeignKey('buildhistory.BuildHistory', on_delete=models.CASCADE, related_name='files')

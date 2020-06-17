@@ -66,7 +66,7 @@ class BuildHistoryAPIView(viewsets.ReadOnlyModelViewSet):
     lookup_value_regex = '[a-zA-Z0-9_.]+'
     ordering_fields = ['builder_name__name', 'builder_name__display_name', 'status', 'build_id', 'time_start']
     ordering = ['-time_start']
-    filterset_fields = ['builder_name__name', 'builder_name__display_name', 'status']
+    filterset_fields = ['builder_name__name', 'builder_name__display_name', 'status', 'port_name']
 
 
 class InstalledFilesAPIView(viewsets.ReadOnlyModelViewSet):
