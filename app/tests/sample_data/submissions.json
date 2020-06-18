@@ -1,0 +1,212 @@
+[
+    {
+        "id": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX1",
+        "os": {
+            "macports_version": "2.5.4",
+            "osx_version": "10.14",
+            "os_arch": "i386",
+            "os_platform": "darwin",
+            "cxx_stdlib": "libc++",
+            "build_arch": "x86_64",
+            "gcc_version": "none",
+            "prefix": "/opt/local",
+            "xcode_version": "10.3",
+            "clt_version": "10.3.0.0.1.1562985497"
+        },
+        "active_ports": [
+            {
+                "name": "port-A1",
+                "version": "1.1"
+            },
+            {
+                "name": "port-B1",
+                "version": "1.2"
+            },
+            {
+                "name": "port-C1",
+                "version": "1.0"
+            },
+            {
+                "name": "port-C2",
+                "version": "1.12",
+                "requested": "true"
+            }
+        ]
+    },
+    {
+        "id": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX2",
+        "os": {
+            "macports_version": "2.5.1",
+            "osx_version": "10.13",
+            "os_arch": "i386",
+            "os_platform": "darwin",
+            "cxx_stdlib": "libc++",
+            "build_arch": "x86_64",
+            "gcc_version": "none",
+            "prefix": "/opt/local",
+            "xcode_version": "10.2.1",
+            "clt_version": "10.3.0.0.2"
+        },
+        "active_ports": [
+            {
+                "name": "port-A1",
+                "version": "1.1",
+                "requested": "true"
+            },
+            {
+                "name": "port-B2",
+                "version": "1.2"
+            },
+            {
+                "name": "port-C1",
+                "version": "1.0"
+            },
+            {
+                "name": "port-C2",
+                "version": "1.12",
+                "requested": "true"
+            }
+        ]
+    },
+    {
+        "id": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX3",
+        "os": {
+            "macports_version": "2.5.1",
+            "osx_version": "10.12",
+            "os_arch": "i386",
+            "os_platform": "darwin",
+            "cxx_stdlib": "libc++",
+            "build_arch": "x86_64",
+            "gcc_version": "none",
+            "prefix": "/opt/local",
+            "xcode_version": "10.2.1",
+            "clt_version": "10.3.0.0.2"
+        },
+        "active_ports": [
+            {
+                "name": "port-A1",
+                "version": "1.1",
+                "requested": "true"
+            },
+            {
+                "name": "port-A2",
+                "version": "1.2"
+            },
+            {
+                "name": "port-A4",
+                "version": "1.0",
+                "requested": "true"
+            },
+            {
+                "name": "port-A3-diff",
+                "version": "1.12",
+                "requested": "true"
+            }
+        ]
+    },
+    {
+        "id": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX4",
+        "os": {
+            "macports_version": "2.5.1",
+            "osx_version": "10.14",
+            "os_arch": "i386",
+            "os_platform": "darwin",
+            "cxx_stdlib": "libc++",
+            "build_arch": "x86_64",
+            "gcc_version": "none",
+            "prefix": "/opt/local",
+            "xcode_version": "10.2.1",
+            "clt_version": "10.3.0.0.2"
+        },
+        "active_ports": [
+            {
+                "name": "port-A1",
+                "version": "1.1"
+            },
+            {
+                "name": "port-A2",
+                "version": "1.2",
+                "requested": "true"
+            },
+            {
+                "name": "port-A4",
+                "version": "1.0",
+                "requested": "true"
+            },
+            {
+                "name": "port-A3-diff",
+                "version": "1.12"
+            }
+        ]
+    },
+    {
+        "id": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX5",
+        "os": {
+            "macports_version": "2.5.1",
+            "osx_version": "10.14",
+            "os_arch": "i386",
+            "os_platform": "darwin",
+            "cxx_stdlib": "libc++",
+            "build_arch": "x86_64",
+            "gcc_version": "none",
+            "prefix": "/opt/local",
+            "xcode_version": "10.3",
+            "clt_version": "10.3.0.0.3"
+        },
+        "active_ports": [
+            {
+                "name": "port-A2",
+                "version": "1.1"
+            },
+            {
+                "name": "port-C1",
+                "version": "1.2",
+                "requested": "true"
+            },
+            {
+                "name": "port-A4",
+                "version": "1.0",
+                "requested": "true"
+            },
+            {
+                "name": "port-A3-diff",
+                "version": "1.12"
+            }
+        ]
+    },
+    {
+        "id": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX1",
+        "os": {
+            "macports_version": "2.5.1",
+            "osx_version": "10.14",
+            "os_arch": "i386",
+            "os_platform": "darwin",
+            "cxx_stdlib": "libc++",
+            "build_arch": "x86_64",
+            "gcc_version": "none",
+            "prefix": "/opt/local",
+            "xcode_version": "10.3",
+            "clt_version": "10.3.0.0.1.1562985497"
+        },
+        "active_ports": [
+            {
+                "name": "port-A1",
+                "version": "1.1"
+            },
+            {
+                "name": "port-C1",
+                "version": "1.2",
+                "requested": "true"
+            },
+            {
+                "name": "port-A2",
+                "version": "1.0",
+                "requested": "true"
+            },
+            {
+                "name": "port-A3-diff",
+                "version": "1.12"
+            }
+        ]
+    }
+]

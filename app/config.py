@@ -37,6 +37,7 @@ BUILDS_FETCHED_COUNT = 5
 # configuration for tests
 TEST_SAMPLE_DATA = os.path.join(BASE_DIR, 'tests', 'sample_data')
 TEST_PORTINDEX_JSON = os.path.join(TEST_SAMPLE_DATA, 'portindex.json')
+TEST_SUBMISSION_JSON = os.path.join(TEST_SAMPLE_DATA, 'submissions.json')
 
 # port command
 PORT_COMMAND = "/opt/local/bin/port"
