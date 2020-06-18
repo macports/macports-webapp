@@ -56,6 +56,11 @@ class TestURLsBuilds(TransactionTestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='buildhistory/all_builds.html')
 
+    def test_old_url_redirect(self):
+        response = self.client.get(reverse('all_build_old'))
+
+        self.assertRedirects(response, reverse('all_builds'), status_code=302, target_status_code=200)
+
 
 class TestBuildbotFetch(TransactionTestCase):
     # this is a dynamic test case and depends on being able to fetch buildhistory from buildbot

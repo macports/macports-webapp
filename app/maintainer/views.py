@@ -21,11 +21,15 @@ class MaintainerAPIView(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'github'
     lookup_value_regex = '[a-zA-Z0-9_.-]+'
     filter_backends = [filters.SearchFilter, django_filters.rest_framework.DjangoFilterBackend]
-    search_fields = ['name', 'domain', 'github']
-    filterset_fields = ['name', 'domain', 'github']
+    search_fields = ['name', 'github']
+    filterset_fields = ['name', 'github']
 
     def retrieve(self, request, *args, **kwargs):
-        result = MaintainerDetailSerializer(self.get_object())
+        # Due to inconsistencies in name - domain - GitHub combinations used by maintainer's
+        # in PortFiles, multiple objects might be returned when searching for a maintainer by
+        # their GitHub id. Hence, we return a list instead of a single object.
+        queryset = Maintainer.objects.filter(github=kwargs['github'])
+        result = MaintainerDetailSerializer(queryset, many=True)
         return Response(result.data)
 
 

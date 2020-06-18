@@ -48,8 +48,8 @@ urlpatterns = [
     path('about/', views.about_page, name='about_page'),
 
     # redirects to keep the old urls alive
-    url(r'^maintainer/github/(?P<m>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='maintainer')),
-    url(r'^ports/category/(?P<cat>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='category')),
-    url(r'^ports/variant/(?P<v>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='variant')),
-    url(r'^ports/all_builds/$', RedirectView.as_view(pattern_name='all_builds')),
+    url(r'^maintainer/github/(?P<m>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='maintainer'), name='maintainer_old'),
+    url(r'^ports/category/(?P<cat>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='category'), name='category_old'),
+    url(r'^ports/variant/(?P<v>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='variant'), name='variant_old'),
+    url(r'^ports/all_builds/$', RedirectView.as_view(pattern_name='all_builds'), name='all_build_old'),
 ]
