@@ -8,7 +8,7 @@ class MaintainerListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Maintainer
-        fields = ('name', 'domain', 'github', 'ports_count')
+        fields = ('name', 'github', 'ports_count')
 
     def get_ports_count(self, obj):
         return obj.ports.all().count()
@@ -20,7 +20,7 @@ class MaintainerDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Maintainer
-        fields = ('name', 'domain', 'github', 'ports_count', 'ports')
+        fields = ('name', 'github', 'ports_count', 'ports')
 
     def get_ports_count(self, obj):
         return obj.ports.all().count()
