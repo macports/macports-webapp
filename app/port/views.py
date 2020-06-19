@@ -11,6 +11,7 @@ from django.contrib.postgres.aggregates import ArrayAgg
 from rest_framework import mixins, viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_haystack.viewsets import HaystackViewSet
+from django.views.decorators.cache import cache_page
 
 from port.forms import AdvancedSearchForm
 from port.serializers import PortHaystackSerializer, PortSerializer
@@ -114,6 +115,9 @@ def port_detail_stats(request, name):
 
 
 # Respond to ajax call for loading tickets
+# Tickets are fetched from trac.macports.org, to prevent multiple hits to trac, tickets
+# should be cached. The can tolerate caching for an hour easily
+@cache_page(60 * 60)
 def port_detail_tickets(request, name):
     port_name = request.GET.get('port_name')
     URL = "https://trac.macports.org/report/16?max=1000&PORT=(%5E%7C%5Cs){}($%7C%5Cs)".format(port_name)
