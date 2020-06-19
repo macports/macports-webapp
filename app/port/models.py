@@ -1,9 +1,12 @@
 import json
-import os
 import subprocess
 
 from django.db import models, transaction
 from django.urls import reverse
+
+from category.models import Category
+from maintainer.models import Maintainer
+from variant.models import Variant
 import config
 
 
@@ -49,13 +52,8 @@ class Port(models.Model):
 
     @classmethod
     def add_or_update(cls, data):
-        from category.models import Category
-
         @transaction.atomic
         def load_ports_table(ports):
-            from maintainer.models import Maintainer
-            from variant.models import Variant
-
             for port in ports:
                 # any json object missing name, portdir, version will be ignored
                 try:
