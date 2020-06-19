@@ -182,7 +182,6 @@
             "os_arch": "i386",
             "os_platform": "darwin",
             "cxx_stdlib": "libc++",
-            "build_arch": "x86_64",
             "gcc_version": "none",
             "prefix": "/opt/local",
             "xcode_version": "10.3",
