@@ -118,10 +118,7 @@ def stats_port_installations_filter(request):
 
     days = int(days)
 
-    submissions_unique = Submission.objects.filter(
-        timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=days)).order_by('user',
-                                                                                                                 '-timestamp').distinct(
-        'user')
+    submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=days)).order_by('user','-timestamp').distinct('user')
     installations = PortInstallation.objects.order_by('port') \
         .filter(submission_id__in=Subquery(submissions_unique.values('id'))) \
         .values('port').annotate(total_count=Count('port')) \
