@@ -31,8 +31,8 @@
         <label for="builder-filter">Filter based on builder: </label>
         <select onchange="this.form.submit()" class="form-control ml-2 filter" id="builder_name__display_name" name="builder_name__display_name">
             <option value="">All</option>
-            {% for builder_option in builders_list %}
-                <option value="{{ builder_option }}" {%  if builder == builder_option %}selected{% endif %}>{{ builder_option }}</option>
+            {% for b in builders %}
+                <option value="{{ b.display_name }}" {%  if builder == b.display_name %}selected{% endif %}>{{ b.name }}</option>
             {% endfor %}
         </select>
     </div>
