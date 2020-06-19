@@ -119,11 +119,11 @@
                                 {% endif %}
                             {{ builder.natural_name }}
                             </a>
-                            {% if latest_build.files.all %}
-                                <button id="build-{{ latest_build.id }}" class="btn btn-link text-secondary p-0 m-0 float-right loadFiles">Files</button>
+                            {% if latest_build.files_count > 0 %}
+                                <button id="build-{{ latest_build.id }}" class="btn btn-sm btn-link text-secondary p-0 m-0 float-right loadFiles">Files ({{latest_build.files_count}})</button>
                             {% endif %}
                         </li>
-                        {% if latest_build.files.all %}
+                        {% if latest_build.files_count > 0 %}
                             <div class="modal fade f12" id="build-{{ latest_build.id }}-modal" tabindex="-1" role="dialog"
                                      aria-hidden="true">
                                     <div class="modal-dialog modal-xl" role="document">
@@ -169,7 +169,7 @@
             <div class="rounded border p-2 mt-2">
                 <h5>Livecheck results</h5>
                 <p class="text-secondary f14">{{ port.livecheck.result }}</p>
-                <p class="f12">livecheck ran at: <strong>{{ port.livecheck.updated_at|naturaltime }}</strong></p>
+                <p class="f12">livecheck ran: <strong>{{ port.livecheck.updated_at|naturaltime }}</strong></p>
             </div>
             {% elif port.livecheck.error %}
                 <div class="rounded border mt-2 p-2">

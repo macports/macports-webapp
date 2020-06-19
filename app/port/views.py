@@ -30,7 +30,7 @@ def port_detail(request, name):
     except Port.DoesNotExist:
         return render(request, 'port/exceptions/port_not_found.html', {'name': name})
 
-    this_builds = BuildHistory.objects.filter(port_name__iexact=name).order_by('-time_start')
+    this_builds = BuildHistory.objects.filter(port_name__iexact=name).annotate(files_count=Count('files')).order_by('-time_start')
     builders = Builder.objects.all().prefetch_related(Prefetch('builds', queryset=this_builds, to_attr='latest_builds')).annotate(version_array=StringToArray('name'),).order_by('-version_array')
     dependents = Dependency.objects.filter(dependencies__id=port.id).values('type').annotate(ports=ArrayAgg('port_name__name'))
 
