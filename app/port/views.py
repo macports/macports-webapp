@@ -55,8 +55,7 @@ def port_detail_build_information(request, name):
     status = request.GET.get('status', '')
     builder = request.GET.get('builder_name__display_name', '')
     page = request.GET.get('page', 1)
-    builders = list(Builder.objects.all().order_by('display_name').distinct('display_name').values_list('display_name', flat=True))
-    builders.sort(key=LooseVersion, reverse=True)
+    builders = Builder.objects.all().annotate(version_array=StringToArray('name'),).order_by('-version_array')
     builds = BuildHistoryFilter(
         request.GET
     , queryset=BuildHistory.objects.filter(port_name__iexact=port.name).select_related('builder_name').order_by('-time_start')).qs
@@ -72,7 +71,7 @@ def port_detail_build_information(request, name):
         'port': port,
         'builds': result,
         'builder': builder,
-        'builders_list': builders,
+        'builders': builders,
         'status': status,
     })
 
