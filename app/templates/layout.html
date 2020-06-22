@@ -58,14 +58,31 @@
             <li class="nav-item topnav-li {% if request.path == "/all_builds/" %}active{% endif %}">
                 <a class="nav-link topnav-a" href="/all_builds">All Builds</a>
             </li>
-            <li class="nav-item topnav-li {% if request.path == "/statistics/" %}active{% endif %}" style="border: 0;">
+            <li class="nav-item topnav-li {% if '/statistics/' in request.path %}active{% endif %}" style="border: 0;">
                 <a class="nav-link topnav-a" href="/statistics">Statistics</a>
             </li>
         </ul>
     </div>
     </div>
 </nav>
+<div class="container text-right">
+    {% if user.is_authenticated %}
+        <span class="f12">Hi, {{ user.first_name }}</span>
+        <a href="{% url 'account_profile' %}" class="btn btn-link btn-sm p-0 m-0">Account</a> |
+        <a href="{% url 'account_profile' %}" class="btn btn-link btn-sm p-0 m-0">Watchlist</a> |
+        <a href="{% url 'account_logout' %}" class="btn btn-link btn-sm p-0 m-0">Logout</a>
+    {% else %}
+    <a href="{% url 'account_login' %}" class="btn btn-link btn-sm p-0">Login</a>
+    {% endif %}
+</div>
 <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-primary mt-2" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     {% block content %}
     {% endblock %}
     <div id="searching-image" class="container text-center" style="height: 500px; display: none">

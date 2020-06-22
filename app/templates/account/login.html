@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load account socialaccount %}
 
-{% block title %}Login to your account {% endblock %}
+{% block title %}Login to your account |{% endblock %}
 
 {% block head_scripts %}
     {% include 'account/style.html' %}
@@ -12,8 +12,8 @@
 {% block content %}
       <div class="container">
     <div class="row">
-      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-        <div class="card card-signin my-5">
+      <div class="col-sm-10 col-md-10 col-lg-7 mx-auto">
+        <div class="card card-signin my-2">
           <div class="card-body">
             <h5 class="card-title text-center">Sign In</h5>
             <form class="form-signin login" method="POST" action="{% url 'account_login' %}">
@@ -29,7 +29,7 @@
                     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
                 {% endif %}
               <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
-              <a href="{{ signup_url }}" class="btn btn-lg btn-light btn-block text-uppercase" type="submit">Sign Up</a>
+              <a href="{{ signup_url }}" class="btn btn-lg btn-light text-uppercase fw">Don't have an account? Sign Up</a>
                 <a href="{% url 'account_reset_password' %}" class="btn btn-link">Reset Password</a>
             </form>
           </div>

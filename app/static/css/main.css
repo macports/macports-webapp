@@ -167,3 +167,7 @@ body{
     display: block;
     max-width: 800px;
 }
+
+.errorlist {
+    color: red !important;
+}

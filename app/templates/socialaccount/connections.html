@@ -1,0 +1,54 @@
+{% extends 'account/account_layout.html' %}
+
+{% load i18n %}
+
+{% block account_title %}Manage GitHub Connections |{% endblock %}
+
+{% block account_content %}
+    <h3>Manage GitHub Connections:</h3>
+    <p class="p-0 m-0">All ports associated with the GitHub handles that are connected to this account will be displayed in "Maintained by me" section.</p>
+    <p class="p-0">The connected GitHub handles can also be used to sign in to this account on MacPorts Webapp.</p>
+
+    {% if form.accounts %}
+        <form method="post" action="{% url 'socialaccount_connections' %}">
+            {% csrf_token %}
+
+            <fieldset>
+                {% if form.non_field_errors %}
+                    <div id="errorMsg">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                <div class="p-2">
+                    <button class="btn btn-danger btn-sm" type="submit">{% trans 'Remove' %}</button>
+                </div>
+
+                {% for base_account in form.accounts %}
+                    {% with base_account.get_provider_account as account %}
+                        <div>
+                            <label for="id_account_{{ base_account.id }}">
+                                <input id="id_account_{{ base_account.id }}" type="radio" name="account"
+                                       value="{{ base_account.id }}"/>
+                                <span class="socialaccount_provider {{ base_account.provider }} {{ account.get_brand.id }}">{{ account.get_brand.name }}: </span>
+                                <span class="mx-2">{{ account }}</span>
+                            </label>
+                        </div>
+                    {% endwith %}
+                {% endfor %}
+
+            </fieldset>
+
+        </form>
+
+    {% else %}
+        <p class="text-danger">No GitHub account connected</p>
+    {% endif %}
+    <br><hr>
+    <h3>Add another GitHub account</h3>
+    <a class="btn btn-warning" href="/accounts/github/login/?process=connect">Add</a>
+
+    {% include "socialaccount/snippets/login_extra.html" %}
+{% endblock %}
+
+
+{% block account_script %}
+{% endblock %}

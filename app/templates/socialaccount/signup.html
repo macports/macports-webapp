@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block title %}Email already in use |{% endblock %}
+
+{% block head_scripts %}
+    {% include 'account/style.html' %}
+{% endblock %}
+
+{% block content %}
+      <div class="container">
+    <div class="row">
+      <div class="col-sm-10 col-md-9 col-lg-7 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center text-danger">Email already in use!</h5>
+            <p>
+                This is an unexpected situation! The email associated with your GitHub account is already in our database.
+                If you want to connect GitHub to an existing account, please login first and then connect GitHub.
+            </p>
+              <p>If you have forgotten your password, you can <a href="{% url 'account_reset_password' %}">reset it.</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
