@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'django.contrib.humanize',
+    'django.contrib.sites',
+    'django.contrib.admindocs',
     'rest_framework',
     'haystack',
     'port',
@@ -51,7 +53,13 @@ INSTALLED_APPS = [
     'category',
     'variant',
     'django_filters',
-    'django.contrib.admindocs'
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    # needed for GitHub login
+    'allauth.socialaccount.providers.github',
 ]
 
 MIDDLEWARE = [
@@ -85,6 +93,27 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = [
+    # needed by django admin panel
+    'django.contrib.auth.backends.ModelBackend',
+
+    # needed for django-allauth
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        'SCOPE': [
+            'user'
+        ],
+    }
+}
+
+SITE_ID = 1
+ACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_AUTO_SIGNUP = True
+LOGIN_REDIRECT_URL = '/'
 
 WSGI_APPLICATION = 'wsgi.application'
 
