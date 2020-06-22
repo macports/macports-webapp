@@ -5,9 +5,9 @@
 {% for provider in socialaccount_providers %}
 {% if provider.id == "openid" %}
 {% for brand in provider.get_brands %}
-    <a href="{% provider_login_url provider.id openid=brand.openid_url process=process %}" class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i class="fab fa-{{brand.name}} mr-2"></i> Sign in with {{brand.name}}</a>
+    <a href="{% provider_login_url provider.id openid=brand.openid_url process=process %}" class="btn btn-lg text-uppercase"><i class="fab fa-{{brand.name}} mr-2"></i> Sign in with {{brand.name}}</a>
 {% endfor %}
 {% endif %}
     <p class="text-center text-muted f12">We highly recommend that you login with GitHub. Although, you can always connect your GitHub account later.</p>
-<a href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}" class="btn btn-lg btn-warning btn-block text-uppercase" type="submit"><i class="fab fa-{{provider.name|lower}} mr-2"></i> Sign in with {{provider.name}}</a>
+<a href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}" class="btn btn-lg btn-warning fw text-uppercase"><i class="fab fa-{{provider.name|lower}} mr-2"></i> Sign in with {{provider.name}}</a>
 {% endfor %}

@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block head_scripts %}{% block account_head_scripts %}{% endblock %}{% endblock %}
+{% block title %}{% block account_title %}{% endblock %}{% endblock %}
+
+{% block content %}
+    <div class="row mt-2">
+        <div class="col-md-3">
+            <div class="bg-light border rounded">
+                <div class="bg-white p-2">
+                    <h5 class="m-0">My Ports</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action bg-light">Maintained by me</a>
+                    <a href="#" class="list-group-item list-group-item-action bg-light">Followed by me</a>
+                    <a href="#" class="list-group-item list-group-item-action bg-light">Notifications</a>
+                </div>
+            </div>
+            <br>
+            <div class="bg-light border rounded">
+                <div class="bg-white p-2">
+                    <h5 class="m-0">Account Settings</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'socialaccount_connections' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/social/connections/' %}bg-secondary text-white{% else %}bg-light{% endif %}">Connected GitHub Accounts</a>
+                    <a href="{% url 'account_email' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/email/' %}bg-secondary text-white{% else %}bg-light{% endif %}">Connected Emails</a>
+                    <a href="{% url 'account_change_password' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/password/change/' %}bg-secondary text-white{% else %}bg-light{% endif %}">Change Password</a>
+                    <a href="{% url 'account_logout' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/logout/' %}bg-secondary text-white{% else %}bg-light{% endif %}">Logout</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            {% block account_content %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+{% block account_script %}
+{% endblock %}
+{% endblock %}

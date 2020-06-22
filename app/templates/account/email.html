@@ -1,0 +1,81 @@
+{% extends 'account/account_layout.html' %}
+
+{% load i18n %}
+
+{% block account_head_scripts %}{% include 'account/style.html' %}{% endblock %}
+{% block account_title %}Manage Emails |{% endblock %}
+
+{% block account_content %}
+    <h3>Manage Emails:</h3>
+    <p>All the verified emails are used to track the ports for the "Maintained by me" section.</p>
+
+    {% if user.emailaddress_set.all %}
+        <h5>Existing Emails:</h5>
+        <form action="{% url 'account_email' %}" class="email_list" method="post">
+            {% csrf_token %}
+            <fieldset class="blockLabels">
+                <div class="p-2">
+                    <button class="btn btn-primary btn-sm" type="submit"
+                            name="action_primary">{% trans 'Make Primary' %}</button>
+                    <button class="btn btn-warning btn-sm" type="submit"
+                            name="action_send">{% trans 'Re-send Verification' %}</button>
+                    <button class="btn btn-danger btn-sm" type="submit"
+                            name="action_remove">{% trans 'Remove' %}</button>
+                </div>
+                {% for emailaddress in user.emailaddress_set.all %}
+                    <div>
+                        <label for="email_radio_{{ forloop.counter }}"
+                               class="{% if emailaddress.primary %}primary_email{% endif %}">
+
+                            <input id="email_radio_{{ forloop.counter }}" type="radio" name="email"
+                                   {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{% endif %}
+                                   value="{{ emailaddress.email }}"/>
+
+                            {{ emailaddress.email }}
+                            {% if emailaddress.verified %}
+                                <span class="text-success mx-2">Verified</span>
+                            {% else %}
+                                <span class="text-danger mx-2">Unverified</span>
+                            {% endif %}
+                            {% if emailaddress.primary %}<span class="text-primary mx-2">Primary</span>{% endif %}
+                        </label>
+                    </div>
+                {% endfor %}
+            </fieldset>
+        </form>
+
+    {% else %}
+        <p><strong>Warning</strong> You currently do not have any e-mail address set up. You should really add an e-mail
+            address so you can receive notifications, reset your password, etc.</p>
+    {% endif %}
+
+    <br>
+    <hr>
+    <h5>Add email address</h5>
+    <p>If you are using multiple emails in Portfiles, you can add more emails. Once an email is verified, all ports with
+        these emails will be displayed in the "Maintained by me" section.</p>
+
+    <form method="post" action="{% url 'account_email' %}" class="col-md-6">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-sm btn-primary" name="action_add" type="submit">{% trans "Add E-mail" %}</button>
+    </form>
+
+{% endblock %}
+
+
+{% block account_script %}
+    <script type="text/javascript">
+        (function () {
+            var message = "{% trans 'Do you really want to remove the selected e-mail address?' %}";
+            var actions = document.getElementsByName('action_remove');
+            if (actions.length) {
+                actions[0].addEventListener("click", function (e) {
+                    if (!confirm(message)) {
+                        e.preventDefault();
+                    }
+                });
+            }
+        })();
+    </script>
+{% endblock %}
