@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block title %}Sign up for a new account |{% endblock %}
+
+{% block head_scripts %}
+    {% include 'account/style.html' %}
+{% endblock %}
+
+{% block content %}
+      <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Sign Up</h5>
+            <form class="form-signin login" method="POST" action="{% url 'account_signup' %}">
+            {% csrf_token %}
+                {% get_providers as socialaccount_providers %}
+              {% if socialaccount_providers %}
+                {% include "account/social_list.html" with process="login" %}
+              {% endif %}
+                <hr>
+            {{ form.as_p }}
+
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                {% endif %}
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign Up</button>
+                <a href="{{ login_url }}" class="text-center btn btn-link">Login</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
