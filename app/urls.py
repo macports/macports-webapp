@@ -46,6 +46,7 @@ urlpatterns = [
     path('ports/search/', views.search, name='ports_search'),
     path('all_builds/', include('buildhistory.urls')),
     path('about/', views.about_page, name='about_page'),
+    path('accounts/', include('allauth.urls')),
 
     # redirects to keep the old urls alive
     url(r'^maintainer/github/(?P<m>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='maintainer'), name='maintainer_old'),
