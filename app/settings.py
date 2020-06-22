@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'maintainer',
     'category',
     'variant',
+    'user',
     'django_filters',
 
     'allauth',
