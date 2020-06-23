@@ -13,14 +13,22 @@
       <div class="container">
     <div class="row">
       <div class="col-sm-10 col-md-9 col-lg-7 mx-auto">
-        <div class="card card-signin my-5">
+        <div class="card card-signin my-2">
           <div class="card-body">
-            <h5 class="card-title text-center text-danger">Email already in use!</h5>
-            <p>
-                This is an unexpected situation! The email associated with your GitHub account is already in our database.
-                If you want to connect GitHub to an existing account, please login first and then connect GitHub.
-            </p>
-              <p>If you have forgotten your password, you can <a href="{% url 'account_reset_password' %}">reset it.</a></p>
+            <h5 class="card-title text-center text-danger">Email or Username already in use!</h5>
+              <p><strong>Here is what just happened:</strong> We tried creating an account using your email
+              and username from GitHub. But turns out that either your email or username is already in use. If you already have
+                  an account, please <a href="{% url 'account_login' %}">login</a> or <a href="{% url 'account_reset_password' %}">reset your password</a>.</p>
+                <p>However, if you do not have an existing account, please select a different email or username and we will create an
+                account with these details, your GitHub will be automatically connected to this account.</p>
+              <form class="signup form-signin" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                  {% if redirect_field_value %}
+                      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                  {% endif %}
+                  <button class="btn btn-primary btn-lg fw text-uppercase" type="submit">Sign Up & Connect GitHub</button>
+              </form>
           </div>
         </div>
       </div>
