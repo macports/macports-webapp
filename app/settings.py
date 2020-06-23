@@ -123,6 +123,7 @@ ACCOUNT_USERNAME_BLACKLIST = [
     'port',
     'ports'
 ]
+ACCOUNT_AUTHENTICATION_METHOD ="username_email"
 
 WSGI_APPLICATION = 'wsgi.application'
 
