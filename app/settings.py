@@ -114,7 +114,15 @@ SOCIALACCOUNT_PROVIDERS = {
 SITE_ID = 1
 ACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
-LOGIN_REDIRECT_URL = '/'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_USERNAME_BLACKLIST = [
+    'macports',
+    'macports-ports',
+    'macports-org',
+    'macports-webapp',
+    'port',
+    'ports'
+]
 
 WSGI_APPLICATION = 'wsgi.application'
 
