@@ -66,26 +66,27 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle {% if '/accounts/' in request.path %}active{% endif %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    {{user.first_name|truncatechars:10}}
+                    {{user.username|truncatechars:10}}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'account_profile' %}">Notifications</a>
                     <a class="dropdown-item" href="{% url 'account_profile' %}">My Watchlist</a>
                     <div class="dropdown-divider"></div>
-
+                    <a class="dropdown-item" href="{% url 'account_profile' %}">Account Settings</a>
                     <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
                 </div>
             </li>
             {% else %}
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown topnav-li">
                 <a class="nav-link dropdown-toggle {% if '/accounts/' in request.path %}active{% endif %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
                     Watchlist
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{% url 'account_login' %}">Login</a>
-                    <div class="dropdown-divider"></div>
-
                     <a class="dropdown-item" href="{% url 'account_signup' %}">Sign up</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item bg-warning" href="/accounts/github/login/?process=login">Quick GitHub Login<i class="fab fa-github ml-2"></i></a>
                 </div>
             </li>
         {% endif %}
