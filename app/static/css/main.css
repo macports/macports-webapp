@@ -2,6 +2,21 @@ body{
     padding: 0;
 }
 
+.topnav-li {
+    margin-left: 4px !important;
+    margin-right: 4px !important;
+}
+
+.topnav-form {
+    width: 50% !important;
+}
+
+@media only screen and (max-width: 980px) {
+  .topnav-form {
+      width: 100% !important;
+  }
+}
+
 .category-grid-container {
   display: grid;
   justify-content: space-evenly;

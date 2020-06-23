@@ -27,55 +27,73 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
     <a class="navbar-brand" href="/"><img width="120px" src="{% static 'images/macports-logo.png' %}" class="img-fluid"></a>
-    {% if request.path != '/' and request.path != '/search/' %}
-        <form style="width: 50%" class="ml-4" method="get" action="/search">
-            <div class="form-row">
-                <div class="col-12" id="bloodhound">
-                    <input type="text" class="quick-input-search form-control rounded-pill typeahead" id="q" name="q"
-                           placeholder="Search for ports...">
-                    <img class="quick-input-search-spinner" id="search-spinner" src="{% static 'images/spinner.gif' %}">
-                    <button type="submit" class="quick-input-search-icon btn" id="search_submit"><i
-                            class="fa fa-search"></i></button>
-                    <input type="hidden" value="on" name="name">
-                </div>
-            </div>
-        </form>
-    {% endif %}
-
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
+    <div class="p-0 collapse navbar-collapse" id="navbarSupportedContent">
+        {% if request.path != '/' and request.path != '/search/' %}
+            <form class="topnav-form" method="get" action="{% url 'search' %}">
+                <div class="form-row">
+                    <div class="col-12" id="bloodhound">
+                        <input type="text" class="quick-input-search form-control rounded-pill typeahead" id="q"
+                               name="q"
+                               placeholder="Search for ports...">
+                        <img class="quick-input-search-spinner" id="search-spinner"
+                             src="{% static 'images/spinner.gif' %}">
+                        <button type="submit" class="quick-input-search-icon btn" id="search_submit"><i
+                                class="fa fa-search"></i></button>
+                        <input type="hidden" value="on" name="name">
+                    </div>
+                </div>
+            </form>
+        {% endif %}
+        <ul class="navbar-nav ml-auto p-0">
             <li class="nav-item topnav-li {% if request.path == "/" %}active{% endif %}">
                 <a class="nav-link topnav-a" href="/">Home</a>
             </li>
             <li class="nav-item topnav-li {% if request.path == "/search/" %}active{% endif %}">
-                <a class="nav-link topnav-a" href="/search/">Ports</a>
+                <a class="nav-link topnav-a" href="{% url 'search' %}">Ports</a>
             </li>
             <li class="nav-item topnav-li {% if request.path == "/all_builds/" %}active{% endif %}">
-                <a class="nav-link topnav-a" href="/all_builds">All Builds</a>
+                <a class="nav-link topnav-a" href="{% url 'all_builds' %}">Builds</a>
             </li>
             <li class="nav-item topnav-li {% if '/statistics/' in request.path %}active{% endif %}" style="border: 0;">
-                <a class="nav-link topnav-a" href="/statistics">Statistics</a>
+                <a class="nav-link topnav-a" href="{% url 'stats' %}">Statistics</a>
             </li>
+        {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle {% if '/accounts/' in request.path %}active{% endif %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    {{user.first_name|truncatechars:10}}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'account_profile' %}">My Watchlist</a>
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
+                </div>
+            </li>
+            {% else %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle {% if '/accounts/' in request.path %}active{% endif %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Watchlist
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'account_login' %}">Login</a>
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item" href="{% url 'account_signup' %}">Sign up</a>
+                </div>
+            </li>
+        {% endif %}
         </ul>
     </div>
     </div>
 </nav>
-<div class="container text-right">
-    {% if user.is_authenticated %}
-        <span class="f12">Hi, {{ user.first_name }}</span>
-        <a href="{% url 'account_profile' %}" class="btn btn-link btn-sm p-0 m-0">Account</a> |
-        <a href="{% url 'account_profile' %}" class="btn btn-link btn-sm p-0 m-0">Watchlist</a> |
-        <a href="{% url 'account_logout' %}" class="btn btn-link btn-sm p-0 m-0">Logout</a>
-    {% else %}
-    <a href="{% url 'account_login' %}" class="btn btn-link btn-sm p-0">Login</a>
-    {% endif %}
-</div>
-<div class="container">
+<div class="container" style="max-width: 800px">
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-primary mt-2" role="alert">
@@ -83,11 +101,10 @@
             </div>
         {% endfor %}
     {% endif %}
+</div>
+<div class="container">
     {% block content %}
     {% endblock %}
-    <div id="searching-image" class="container text-center" style="height: 500px; display: none">
-        <img src="{% static 'images/giphy.gif' %}">
-    </div>
 </div>
 <br><br>
 <div class="bg-secondary">
