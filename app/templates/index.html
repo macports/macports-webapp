@@ -4,37 +4,69 @@
 {% block title %}Ports |{% endblock %}
 
 {% block content %}
-    <div class="container text-center" style="max-width: 800px">
-        <img src="{% static 'images/macports-logo.png' %}" class="img-fluid home-logo">
-        <br>
-        <form class="pt-3" method="get" action="/search">
+        <h4 class="text-left p-0 mb-0 text-secondary mt-5">Available Ports for <ins>The MacPorts Project</ins></h4>
+        <h1 class="display-4 font-weight-bold text-left">
+            Install and upgrade open source software on macOS.
+        </h1>
+        <form class="mt-4" method="get" action="/search">
             <div class="form-row">
-                <div class="col-12" id="bloodhound">
-                    <input type="text" class="quick-input-search form-control rounded-pill typeahead" id="q" name="q" placeholder="Search for ports..." autofocus>
+                <div class="col-md-8 col-12" id="bloodhound">
+                    <input type="text" class="quick-input-search form-control rounded-pill typeahead" id="q" name="q"
+                           placeholder="Start typing..." autofocus>
                     <img class="quick-input-search-spinner" id="search-spinner" src="{% static 'images/spinner.gif' %}">
-                    <button type="submit" class="quick-input-search-icon btn" id="search_submit"><i class="fa fa-search"></i></button>
+                    <button type="submit" class="quick-input-search-icon btn" id="search_submit"><i
+                            class="fa fa-search"></i></button>
                     <input type="hidden" value="on" name="name">
+                    <div class="my-4 text-center text-md-left">
+                    <a class="btn btn-lg btn-light font-weight-bold border-dark rounded-pill mt-1" href="{% url 'search' %}">All
+                        Ports</a>
+                    <a class="btn btn-lg btn-light font-weight-bold border-dark rounded-pill mt-1"
+                       href="https://www.macports.org">MacPorts
+                        Home</a>
+                    <a class="btn btn-lg btn-light font-weight-bold border-dark rounded-pill mt-1"
+                       href="https://www.macports.org/install.php">Install MacPorts</a>
+                    </div>
                 </div>
             </div>
         </form>
-        <a class="btn btn-sm text-primary btn-link" href="{% url 'search' %}">Advanced search</a>
-        <a class="btn btn-sm text-primary btn-link" href="https://www.macports.org">MacPorts Home</a>
-        <a class="btn btn-sm text-primary btn-link" href="https://www.macports.org/install.php">Install MacPorts</a>
-        <br>
-        <div class="row pt-3">
-            <div class="col-6 text-left">
-            <h5><ins>Popular ports</ins></h5>
-                    {% for top_port in top_ports %}
-                        <span class="top-ports-list"><a href="{% url 'port_detail' top_port.port %}">{{ top_port.port }}</a></span><br>
-                    {% endfor %}
-                </ul>
-                <a class="btn btn-link" href="{% url 'stats_port_installations' %}">More...</a>
+        <div class="row">
+            <div class="col-md-4 mt-md-0 mt-3">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h6 class="text-uppercase mb-0">Popular ports</h6>
+                    </div>
+                    <div class="card-body px-3 py-1">
+                        {% for top_port in top_ports %}
+                            <a class="btn btn-link btn-lg text-dark p-0"
+                               href="{% url 'port_detail' top_port.port %}">{{ top_port.port }}</a></span><br>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
-            <div class="col-6">
-
+            <div class="col-md-4 mt-md-0 mt-3">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h6 class="text-uppercase mb-0">Recently Added</h6>
+                    </div>
+                    <div class="card-body px-3 py-1">
+                        {% for top_port in top_ports %}
+                            <a class="btn btn-link btn-lg text-dark p-0"
+                               href="{% url 'port_detail' top_port.port %}">{{ top_port.port }}</a></span><br>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-md-0 mt-3">
+                <div class="card p-0">
+                    <div class="card-header bg-light">
+                        <h6 class="text-uppercase mb-0">Active Ports</h6>
+                    </div>
+                    <div class="card-body px-3 py-1">
+                        <h1 class="display-6 mb-0">{{ ports_count }}</h1>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
 
 {% endblock %}

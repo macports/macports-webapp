@@ -31,8 +31,8 @@ $(document).ready(function () {
                 suggestion: Handlebars.compile(
                     '<div class="border-bottom search-result-item text-left">' +
                     '<div class="card-body py-1 px-2">' +
-                    '<h6 class="mb-0 pb-0"><i class="fa fa-search mr-2 my-0"></i>{{name}} <a class="ml-2 btn btn-link text-secondary p-0 m-0" href="/port/{{name}}"><i class="fa fa-sign-in-alt"></i></a></h6>' +
-                    '<span style="font-size: 13px" class="text-secondary">{{description}}</span>' +
+                    '<h5 class="mb-0 pb-0"><i class="fa fa-search mr-2 my-0"></i>{{name}} <a class="ml-2 btn btn-link text-secondary p-0 m-0" href="/port/{{name}}"><i class="fa fa-sign-in-alt"></i></a></h5>' +
+                    '<span style="font-size: 15px" class="text-secondary">{{description}}</span>' +
                     '</div>' +
                     '</div>'
                 )
