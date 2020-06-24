@@ -17,10 +17,10 @@
 
     <div class="row mt-4">
         <div class="col-lg-8">
-        <h5>Description: </h5>
-            <p class="bg-el border p-2 rounded">{{ port.long_description }}</p>
-
-        <table class="table table-condensed">
+        <button class="btn btn-light text-dark" type="button" data-toggle="collapse" data-target="#fullDescription" aria-expanded="false" aria-controls="fullDescription">Full Description <i class="fas fa-angle-down"></i> </button>
+        <a href="{% url 'port-detail' port.name %}" class="btn btn-light text-dark">API</a>
+            <p id="fullDescription" class="border p-2 rounded collapse">{{ port.long_description }}</p>
+        <table class="table table-striped mt-2">
             <tr>
                 <td><strong>Maintainers</strong></td>
                 <td>
@@ -68,40 +68,99 @@
                 {% endif %}
                 </td>
             </tr>
+            <tr>
+                <td><strong>Homepage</strong></td>
+                <td>
+                    <a href="{{ port.homepage }}">{{ port.homepage }}</a>
+                </td>
+            </tr>
+        <tr>
+                <td><strong>Platforms</strong></td>
+                <td>
+                    {{ port.platforms }}
+                </td>
+            </tr>
         </table>
-            <table class="table border border-top border-muted">
-                <tr>
-                    <td scope="row"><strong>Depends on:</strong><br>
-                    </td>
-                    <td></td>
-                </tr>
-                {% for dependency in port.dependent_port.all %}
-                    <tr>
-                        <td class="pt-0 pb-0 text-right">{{ dependency.type }}:</td>
-                        <td class="pt-0 pb-0">
-                            {% for port in dependency.dependencies.all %}
-                                <a href="{% url 'port_detail' port.name %}">{{ port.name }}</a>{% if not forloop.last %},{% endif %}
+            <br>
+            <h5>
+                <ins>"{{ port.name }}" depends on</ins>
+            </h5>
+            {% if port.dependent_port.all.count > 0 %}
+                <div class="row">
+                    <div class="col-3">
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
+                             aria-orientation="vertical">
+                            {% for d in port.dependent_port.all %}
+                                <a class="nav-link {% if forloop.first %}active{% endif %}" id="vp-{{ d.type }}"
+                                   data-toggle="pill" href="#v-{{ d.type }}"
+                                   role="tab" aria-controls="v-{{ d.type }}" aria-selected="true">{{ d.type }}
+                                    ({{ d.dependencies.all|length }})</a>
                             {% endfor %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                <tr>
-                    <th scope="row">Dependency of:</th>
-                    <td>{% if not dependents|length > 0 %}-{% endif %}</td>
-                </tr>
-                {% for d in dependents %}
-                    <tr>
-                        <td class="pt-0 pb-0 text-right">{{ d.type }}:</td>
-                        <td class="pt-0 pb-0">
-                        {{ ports }}
-                        {% for i in d.ports %}
-                            <a href="{% url 'port_detail' i %}">{{ i }}</a>{% if not forloop.last %},{% endif %}
-                        {% endfor %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tr>
-            </table>
+                        </div>
+                    </div>
+                    <div class="col-9 rounded border p-2">
+                        <div class="tab-content" id="v-pills-Content">
+                            {% for d in port.dependent_port.all %}
+                                <div class="tab-pane fade {% if forloop.first %}show active{% endif %}"
+                                     id="v-{{ d.type }}"
+                                     role="tabpanel"
+                                     aria-labelledby="vp-{{ d.type }}">
+                                    <div class="row">
+                                        {% for i in d.dependencies.all|dictsort:"name.lower" %}
+                                            <div class="col-4">
+                                                <a class="f15"
+                                                   href="{% url 'port_detail' i.name %}">{{ i.name }}</a><br>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>No ports</p>
+            {% endif %}
+            <br>
+            <hr>
+            <br>
+            <h5>
+                <ins>Ports that depend on "{{ port.name }}"</ins>
+            </h5>
+            {% if dependents|length > 0 %}
+                <div class="row">
+                    <div class="col-3">
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
+                             aria-orientation="vertical">
+                            {% for d in dependents %}
+                                <a class="nav-link {% if forloop.first %}active{% endif %}" id="vpd-{{ d.type }}"
+                                   data-toggle="pill" href="#vd-{{ d.type }}"
+                                   role="tab" aria-controls="vd-{{ d.type }}" aria-selected="true">{{ d.type }}
+                                    ({{ d.ports|length }})</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-9 rounded border p-2">
+                        <div class="tab-content" id="v-pills-depContent">
+                            {% for d in dependents %}
+                                <div class="tab-pane fade {% if forloop.first %}show active{% endif %}"
+                                     id="vd-{{ d.type }}" role="tabpanel"
+                                     aria-labelledby="vpd-{{ d.type }}">
+                                    <div class="row">
+                                        {% for i in d.ports|dictsort:"0.lower" %}
+                                            <div class="col-4">
+                                                <a class="f15" href="{% url 'port_detail' i %}">{{ i }}</a><br>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>No ports</p>
+            {% endif %}
         </div>
         <div class="col-lg-4">
             <div>
