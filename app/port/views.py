@@ -1,6 +1,5 @@
 import datetime
 import requests
-from distutils.version import LooseVersion
 
 from bs4 import BeautifulSoup
 from django.shortcuts import render
