@@ -35,6 +35,8 @@ class Port(models.Model):
     license = models.CharField(max_length=100, default='')
     replaced_by = models.CharField(max_length=100, null=True)
     active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     objects = PortManager()
     get_active = ActivePortsManager()
