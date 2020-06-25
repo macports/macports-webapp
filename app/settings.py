@@ -106,7 +106,7 @@ AUTHENTICATION_BACKENDS = [
 SOCIALACCOUNT_PROVIDERS = {
     'github': {
         'SCOPE': [
-            'user'
+            'read:user'
         ],
     }
 }
