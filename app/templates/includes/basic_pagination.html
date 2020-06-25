@@ -1,0 +1,40 @@
+{% if items.has_other_pages %}
+    <p class="f15">Page {{ items.number }} of {{ items.paginator.num_pages }} | Showing {{contents}} {{ items.start_index }} to
+        {{ items.end_index }}</p>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if items.has_previous %}
+                <li class="page-item"><a class="page-link"
+                                         href="?page={{ items.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+            {% endif %}
+
+            {% if items.number|add:'-4' > 1 %}
+                <li class="page-item"><a class="page-link" href="?page={{ items.number|add:'-5' }}">&hellip;</a>
+                </li>
+            {% endif %}
+
+            {% for i in items.paginator.page_range %}
+                {% if items.number == i %}
+                    <li class="active page-item"><span class="page-link">{{ i }} <span
+                            class="sr-only">(current)</span></span></li>
+                {% elif i > items.number|add:'-5' and i < items.number|add:'5' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if items.paginator.num_pages > items.number|add:'4' %}
+                <li class="page-item"><a class="page-link" href="?page={{ items.number|add:'5' }}">&hellip;</a>
+                </li>
+            {% endif %}
+
+            {% if items.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ items.next_page_number }}">&raquo;</a>
+                </li>
+            {% else %}
+                <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}

@@ -11,7 +11,7 @@
                     <h5 class="m-0">My Ports</h5>
                 </div>
                 <div class="list-group list-group-flush">
-                    <a href="#" class="list-group-item list-group-item-action bg-light">Maintained by me</a>
+                    <a href="{% url 'my_ports' %}" class="list-group-item list-group-item-action {% if 'my_ports' in request.path %}bg-secondary text-white{% else %}bg-light{% endif %}">Maintained by me</a>
                     <a href="#" class="list-group-item list-group-item-action bg-light">Followed by me</a>
                     <a href="#" class="list-group-item list-group-item-action bg-light">Notifications</a>
                 </div>
