@@ -106,8 +106,10 @@ AUTHENTICATION_BACKENDS = [
 SOCIALACCOUNT_PROVIDERS = {
     'github': {
         'SCOPE': [
-            'read:user'
+            'read:user',
+            'user:email'
         ],
+        'VERIFIED_EMAIL': True
     }
 }
 
@@ -126,8 +128,6 @@ ACCOUNT_USERNAME_BLACKLIST = [
 ACCOUNT_AUTHENTICATION_METHOD ="username_email"
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 SOCIALACCOUNT_EMAIL_VERIFICATION = False
-SOCIALACCOUNT_EMAIL_REQUIRED = False
-SOCIALACCOUNT_QUERY_EMAIL = False
 
 WSGI_APPLICATION = 'wsgi.application'
 
