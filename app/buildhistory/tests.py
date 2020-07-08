@@ -107,10 +107,10 @@ class TestBuildHistoryViews(TransactionTestCase):
         response_all_failed = self.client.get(reverse('all_builds'), {'status-filter': 'failed'})
         self.assertEquals(len(response_all_failed.context['builds']), 2)
 
-        response_valid_builder = self.client.get(reverse('all_builds'), {'builder-filter': '10.15'})
+        response_valid_builder = self.client.get(reverse('all_builds'), {'builder-filter': '10.15_x86_64'})
         self.assertEquals(len(response_valid_builder.context['builds']), 3)
 
-        response_invalid_builder = self.client.get(reverse('all_builds'), {'builder-filter': '10.14'})
+        response_invalid_builder = self.client.get(reverse('all_builds'), {'builder-filter': '10.14_x86_64'})
         self.assertEquals(len(response_invalid_builder.context['builds']), 0)
 
         response_port = self.client.get(reverse('all_builds'), {'name-filter': 'port-A2'})

@@ -1,5 +1,3 @@
-from distutils.version import LooseVersion
-
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery
@@ -19,17 +17,16 @@ def all_builds(request):
     page = request.GET.get('page', 1)
 
     # generate querysets
-    builders = list(Builder.objects.all().order_by('display_name').distinct('display_name').values_list('display_name', flat=True))
-    builders.sort(key=LooseVersion, reverse=True)
+    builders = Builder.objects.all()
     if status == 'unresolved':
         all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name__display_name', '-build_id').distinct('port_name', 'builder_name__display_name')
         builds = BuildHistoryFilter({
-            'builder_name__display_name': builder,
+            'builder_name__name': builder,
             'port_name': port_name,
         }, queryset=BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), status__icontains='failed').select_related('builder_name').order_by('-time_start')).qs
     else:
         builds = BuildHistoryFilter({
-            'builder_name__display_name': builder,
+            'builder_name__name': builder,
             'port_name': port_name,
             'status': status
         }, queryset=BuildHistory.objects.all().select_related('builder_name').order_by('-time_start')).qs

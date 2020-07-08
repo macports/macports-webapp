@@ -39,7 +39,7 @@
                 <select onchange="this.form.submit()" class="form-control ml-2 filter" id="builder-filter" name="builder-filter">
                     <option value="" {% if builder == "" %}selected{% endif %}>All</option>
                     {% for b in builders %}
-                        <option value="{{ b }}" {% if b == builder %}selected{% endif %}>{{ b }}</option>
+                        <option value="{{ b.name }}" {% if b.name == builder %}selected{% endif %}>{{ b.name }}</option>
                     {% endfor %}
                 </select>
             </div>
