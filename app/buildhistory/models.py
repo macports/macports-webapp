@@ -6,6 +6,12 @@ import datetime
 from django.db import models, transaction
 
 from config import BUILDERS_JSON_URL, BUILDBOT_URL_PREFIX, BUILDS_FETCHED_COUNT
+from port.database import StringToArray
+
+
+class BuilderModelManager(models.Manager):
+    def get_queryset(self):
+        return super(BuilderModelManager, self).get_queryset().annotate(version_array=StringToArray('name'),).order_by('-version_array')
 
 
 class Builder(models.Model):
@@ -15,6 +21,8 @@ class Builder(models.Model):
 
     def __str__(self):
         return "%s" % self.name
+
+    objects = BuilderModelManager()
 
     class Meta:
         db_table = "builder"

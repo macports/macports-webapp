@@ -9,4 +9,4 @@ class BuildHistoryFilter(django_filters.FilterSet):
 
     class Meta:
         model = BuildHistory
-        fields = ['builder_name__display_name']
+        fields = ['builder_name__name']

@@ -15,7 +15,6 @@ from django.views.decorators.cache import cache_page
 from port.forms import AdvancedSearchForm
 from port.serializers import PortHaystackSerializer, PortSerializer
 from port.models import Port, Dependency
-from port.database import StringToArray
 from buildhistory.models import BuildHistory, Builder
 from stats.models import Submission, PortInstallation
 from buildhistory.filters import BuildHistoryFilter
@@ -30,7 +29,7 @@ def port_detail(request, name):
         return render(request, 'port/exceptions/port_not_found.html', {'name': name})
 
     this_builds = BuildHistory.objects.filter(port_name__iexact=name).annotate(files_count=Count('files')).order_by('-time_start')
-    builders = Builder.objects.all().prefetch_related(Prefetch('builds', queryset=this_builds, to_attr='latest_builds')).annotate(version_array=StringToArray('name'),).order_by('-version_array')
+    builders = Builder.objects.all().prefetch_related(Prefetch('builds', queryset=this_builds, to_attr='latest_builds'))
     dependents = Dependency.objects.filter(dependencies__id=port.id).values('type').annotate(ports=ArrayAgg('port_name__name'))
 
     last_30_days = datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=30)
@@ -54,7 +53,7 @@ def port_detail_build_information(request, name):
     status = request.GET.get('status', '')
     builder = request.GET.get('builder_name__display_name', '')
     page = request.GET.get('page', 1)
-    builders = Builder.objects.all().annotate(version_array=StringToArray('name'),).order_by('-version_array')
+    builders = Builder.objects.all()
     builds = BuildHistoryFilter(
         request.GET
     , queryset=BuildHistory.objects.filter(port_name__iexact=port.name).select_related('builder_name').order_by('-time_start')).qs
