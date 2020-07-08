@@ -18,6 +18,38 @@
                 <strong>{% for i in connections %}{{ i }}{% if not forloop.last %}, {% endif %}</strong>
             {% endfor %}
             </p>
+                <hr>
+                <form method="get" action=".">
+                    <div class="form-row">
+                    <div class="col-lg-4">
+                        <div class="form-check">
+                            <label class="form-check-label">{{ form.livecheck_outdated }} Livecheck outdated</label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">{{ form.livecheck_errored }} Livecheck errored</label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">{{ form.hide_deleted }} Hide deleted</label>
+                        </div>
+                    </div>
+                        <div class="col-lg-4">
+                            <label for="builder">Choose a builder:</label>
+                            {{ form.builder }}
+                        </div>
+                        <div class="col-lg-4">
+                        <div class="form-check">
+                            <label class="form-check-label">{{ form.build_broken }} Latest build broken</label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">{{ form.build_ok }} Latest build OK</label>
+                        </div>
+                            <div class="form-check">
+                            <label class="form-check-label">{{ form.no_build }} No build history</label>
+                        </div>
+                    </div>
+                    </div>
+                </form>
+                <hr>
                 {% include 'includes/basic_pagination.html' with items=ports contents="ports" %}
                 <table class="f15 table table-condensed table-striped mt-2">
                     <thead>
@@ -25,28 +57,41 @@
                         <td>Name</td>
                         <td>Version</td>
                         <td>Livecheck</td>
+                        <td>Latest build ({{ builder }})</td>
                     </tr>
                     </thead>
                 {% for port in ports %}
                 <tr class="p-0">
-                    <td class="py-1"><a href="{% url 'port_detail' port.name %}">{{ port.name }}</a></td>
+                    <td class="py-1">
+                        <a href="{% url 'port_detail' port.name %}">
+                            {{ port.name }}
+                            {% if port.active is False %}
+                                <span class="badge badge-danger">Deleted</span>
+                            {% elif port.replaced_by is not None %}
+                                <span class="badge badge-warning">Obsolete</span>
+                            {% endif %}
+                        </a>
+                    </td>
                     <td class="py-1">{{ port.version }}</td>
                     <td class="py-1">
                         {% if port.livecheck %}
                             {% if port.livecheck.has_updates %}<span class="badge badge-warning">Outdated</span>
-                            {% elif port.livecheck.error %}<span class="badge badge-warning">Errored</span>
+                            {% elif port.livecheck.error %}<span class="badge badge-danger">Errored</span>
                             {% else %}<span class="badge badge-success">OK</span>
                             {% endif %}
                         {% else %}
                             <span class="badge badge-secondary">No Results</span>
                         {% endif %}
                     </td>
+                    <td class="py-1">
+                        <span class="badge {% if port.build is None %}badge-secondary {% elif port.build == "build successful" %}badge-success{% else %}badge-danger{% endif %}">{{ port.build }}</span>
+                    </td>
                 </tr>
                 {% endfor %}
                 </table>
                 {% include 'includes/basic_pagination.html' with items=ports contents="ports" %}
                     {% if ports_github == 0 and ports_email == 0 %}
-                    <p class="lead text-danger">No ports found. The <a href="https://guide.macports.org">MacPorts Guide</a> might help you get started.
+                    <p class="lead text-danger">No ports found.
                     {% endif %}
             {% else %}
             <p class="text-danger mt-2">You have not connected any {{using}} account. Make sure that GitHub connection is active and emails are verified.</p>
