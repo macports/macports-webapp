@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from notifications.signals import notify
 
-from user.utilities import get_my_ports_context
+from user.utilities import get_my_ports_context, get_followed_ports_context
 from user.forms import MyPortsForm
 
 
@@ -37,3 +38,25 @@ def my_ports_email(request):
         'builder': builder,
         'form': MyPortsForm(request.GET)
     })
+
+
+@login_required
+def followed_ports(request):
+    ports, builder = get_followed_ports_context(request)
+
+    return render(request, 'account/followed_ports.html', {
+        'ports': ports,
+        'builder': builder,
+        'form': MyPortsForm(request.GET)
+    })
+
+
+@login_required
+def notifications_all(request):
+    usr = request.user
+    notifications = usr.notifications.all()
+
+    return render(request, 'account/notifications.html', {
+        'notifications': notifications,
+    })
+

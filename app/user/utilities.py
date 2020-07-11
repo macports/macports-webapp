@@ -20,6 +20,21 @@ def get_my_ports_context(request, using):
     # Determine if the current request is made for fetching ports using Github or emails.
     # Then supply the requested ports to req_ports
     req_ports = ports_email if using == 'email' else ports_github
+    ports = get_ports_context(request, req_ports, builder)
+
+    return handles, emails, ports_github.count(), ports_email.count(), ports, builder
+
+
+def get_followed_ports_context(request):
+    user = request.user
+    builder = request.GET.get('builder', Builder.objects.first().name)
+
+    ports = get_ports_context(request, user.ports, builder)
+
+    return ports, builder
+
+
+def get_ports_context(request, req_ports, builder):
     builds = BuildHistory.objects.filter(port_name=OuterRef('name'), builder_name__name=builder).order_by('time_start')
     req_ports = req_ports.order_by(Lower('name')).select_related('livecheck').annotate(build=Subquery(builds.values_list('status')[:1]))
     req_ports = apply_filters(request, req_ports)
@@ -34,7 +49,7 @@ def get_my_ports_context(request, using):
     except EmptyPage:
         ports = paginated_ports.get_page(paginated_ports.num_pages)
 
-    return handles, emails, ports_github.count(), ports_email.count(), ports, builder
+    return ports
 
 
 def get_ports_by_email(emails_list):
