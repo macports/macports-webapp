@@ -1,0 +1,30 @@
+<form method="get" action=".">
+    <div class="form-row">
+        <div class="col-lg-4">
+            <div class="form-check">
+                <label class="form-check-label">{{ form.livecheck_outdated }} Livecheck outdated</label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">{{ form.livecheck_errored }} Livecheck errored</label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">{{ form.hide_deleted }} Hide deleted</label>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <label for="builder">Choose a builder:</label>
+            {{ form.builder }}
+        </div>
+        <div class="col-lg-4">
+            <div class="form-check">
+                <label class="form-check-label">{{ form.build_broken }} Latest build broken</label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">{{ form.build_ok }} Latest build OK</label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">{{ form.no_build }} No build history</label>
+            </div>
+        </div>
+    </div>
+</form>

@@ -61,6 +61,9 @@ INSTALLED_APPS = [
 
     # needed for GitHub login
     'allauth.socialaccount.providers.github',
+
+    # django-notifications-hq
+    'notifications'
 ]
 
 MIDDLEWARE = [

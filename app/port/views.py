@@ -3,7 +3,7 @@ import requests
 
 from bs4 import BeautifulSoup
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery, Count, Prefetch, Q
 from django.contrib.postgres.aggregates import ArrayAgg
@@ -11,6 +11,7 @@ from rest_framework import mixins, viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_haystack.viewsets import HaystackViewSet
 from django.views.decorators.cache import cache_page
+from django.contrib.auth.decorators import login_required
 
 from port.forms import AdvancedSearchForm
 from port.serializers import PortHaystackSerializer, PortSerializer
@@ -40,7 +41,8 @@ def port_detail(request, name):
         'port': port,
         'builders': builders,
         'dependents': dependents,
-        'count': count
+        'count': count,
+        'is_followed': port.is_followed(request)
     })
 
 
@@ -71,6 +73,7 @@ def port_detail_build_information(request, name):
         'builder': builder,
         'builders': builders,
         'status': status,
+        'is_followed': port.is_followed(request)
     })
 
 
@@ -107,7 +110,8 @@ def port_detail_stats(request, name):
         'start_date': start_date,
         'users_in_duration_count': submissions.count(),
         'allowed_days': ALLOWED_DAYS_FOR_STATS,
-        'port': port
+        'port': port,
+        'is_followed': port.is_followed(request)
     })
 
 
@@ -134,6 +138,31 @@ def port_detail_tickets(request, name):
         'tickets': all_tickets,
     })
 
+
+@login_required
+def follow_port(request, name):
+    try:
+        port = Port.objects.get(name__iexact=name)
+    except Port.DoesNotExist:
+        return render(request, 'port/exceptions/port_not_found.html', {'name': name})
+
+    usr = request.user
+    port.subscribers.add(usr)
+
+    return HttpResponseRedirect(port.get_absolute_url())
+
+
+@login_required
+def unfollow_port(request, name):
+    try:
+        port = Port.objects.get(name__iexact=name)
+    except Port.DoesNotExist:
+        return render(request, 'port/exceptions/port_not_found.html', {'name': name})
+
+    usr = request.user
+    port.subscribers.remove(usr)
+
+    return HttpResponseRedirect(port.get_absolute_url())
 
 # VIEWS FOR DJANGO REST-FRAMEWORK
 

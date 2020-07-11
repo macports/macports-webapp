@@ -17,7 +17,15 @@
     </div>
 {% endif %}
 <!-- Deleted port warning end-->
-<h2 class="mb-1"><span id="port_name" class="font-weight-bold">{{ port.name }}</span> <span class="text-secondary" style="font-size: 14px">({{ port.portdir }})</span></h2>
+<h2 class="mb-1">
+    <span id="port_name" class="font-weight-bold">{{ port.name }}</span>
+    <span class="text-secondary" style="font-size: 14px">({{ port.portdir }})</span>
+    <span class="float-right">
+        {% if is_followed %}<a href="{% url 'unfollow_port' port.name %}" class="btn btn-sm btn-light"><i class="fa fa-minus-circle"></i> Unfollow</a>
+        {% else %}<a href="{% url 'follow_port' port.name %}" class="btn btn-sm btn-light"><i class="fa fa-plus"></i> Add to my watchlist</a>{% endif %}
+        <button class="btn btn-sm btn-light" disabled>{{ port.subscribers.count }}</button>
+    </span>
+</h2>
 <p class="lead mb-0 mt-0">{{ port.description }}</p>
 <span class="f14 mr-md-4 mr-3"><strong>Version: </strong>{{ port.version }}
     {% if port.livecheck.has_updates %}

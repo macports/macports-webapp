@@ -3,6 +3,8 @@
 {% block head_scripts %}{% block account_head_scripts %}{% endblock %}{% endblock %}
 {% block title %}{% block account_title %}{% endblock %}{% endblock %}
 
+{% load notifications_tags %}
+
 {% block content %}
     <div class="row mt-2">
         <div class="col-md-3">
@@ -11,9 +13,9 @@
                     <h5 class="m-0">My Ports</h5>
                 </div>
                 <div class="list-group list-group-flush">
+                    <a href="" class="list-group-item list-group-item-action {% if 'notifications' in request.path %}bg-secondary text-white{% else %}bg-light{% endif %}">Notifications ({% notifications_unread %})</a>
                     <a href="{% url 'my_ports' %}" class="list-group-item list-group-item-action {% if 'my_ports' in request.path %}bg-secondary text-white{% else %}bg-light{% endif %}">Maintained by me</a>
-                    <a href="#" class="list-group-item list-group-item-action bg-light">Followed by me</a>
-                    <a href="#" class="list-group-item list-group-item-action bg-light">Notifications</a>
+                    <a href="{% url 'followed_ports' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/followed_ports' %}bg-secondary text-white{% else %}bg-light{% endif %}">Followed by me</a>
                 </div>
             </div>
             <br>
@@ -29,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9 pt-4">
+        <div class="col-md-9 pt-lg-1 pt-4">
             {% block account_content %}
             {% endblock %}
         </div>

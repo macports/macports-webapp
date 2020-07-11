@@ -7,5 +7,6 @@ urlpatterns = [
     path('profile/', views.profile, name='account_profile'),
     path('my_ports/github/', views.my_ports_github, name='my_ports_github'),
     path('my_ports/', RedirectView.as_view(pattern_name='my_ports_github'), name='my_ports'),
-    path('my_ports/email/', views.my_ports_email, name='my_ports_email')
+    path('my_ports/email/', views.my_ports_email, name='my_ports_email'),
+    path('followed_ports/', views.followed_ports, name='followed_ports')
 ]

@@ -3,6 +3,7 @@ import subprocess
 
 from django.db import models, transaction
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 from category.models import Category
 from maintainer.models import Maintainer
@@ -37,6 +38,7 @@ class Port(models.Model):
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    subscribers = models.ManyToManyField(User, related_name='ports', verbose_name="Subscribers of the port")
 
     objects = PortManager()
     get_active = ActivePortsManager()
@@ -51,6 +53,16 @@ class Port(models.Model):
 
     def get_absolute_url(self):
         return reverse('port_detail', args=[str(self.name)])
+
+    def is_followed(self, request):
+        if request.user.is_authenticated:
+            usr = request.user
+        else:
+            return False
+
+        if self.subscribers.all().filter(id=usr.id).exists():
+            return True
+        return False
 
     @classmethod
     def add_or_update(cls, data):

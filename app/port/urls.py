@@ -1,4 +1,3 @@
-from django.urls import path
 from django.conf.urls import url
 from rest_framework import routers
 from django.views.generic.base import RedirectView
@@ -11,6 +10,8 @@ router.register('ports', views.PortAPIView, basename="port")
 
 urlpatterns = [
     url(r'^(?P<name>[-a-zA-Z0-9_.]+)/builds/$', views.port_detail_build_information, name='port_builds'),
+    url(r'^(?P<name>[-a-zA-Z0-9_.]+)/follow/$', views.follow_port, name='follow_port'),
+    url(r'^(?P<name>[-a-zA-Z0-9_.]+)/unfollow/$', views.unfollow_port, name='unfollow_port'),
     url(r'^(?P<name>[-a-zA-Z0-9_.]+)/stats/$', views.port_detail_stats, name='port_stats'),
     url(r'^(?P<name>[-a-zA-Z0-9_.]+)/tickets/$', views.port_detail_tickets, name='port_tickets'),
     url(r'^(?P<name>[-a-zA-Z0-9_.]+)/$', views.port_detail, name='port_detail'),
