@@ -23,6 +23,9 @@ class PortIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Port
 
+    def get_updated_field(self):
+        return 'updated_at'
+
     def prepare_name_length(self, obj):
         return len(obj.name)
 
