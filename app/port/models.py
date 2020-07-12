@@ -40,6 +40,7 @@ class Port(models.Model):
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    version_updated_at = models.DateTimeField(null=True)
     subscribers = models.ManyToManyField(User, related_name='ports', verbose_name="Subscribers of the port")
 
     objects = PortManager()
@@ -104,6 +105,8 @@ class Port(models.Model):
                 port_object.active = True
                 port_object.save()
 
+                # This function also updates the version_update_at field if the the version
+                # has changed.
                 notification_verb = generate_notifications_verb(old_object, port_object)
                 if not notification_verb == "":
                     notify.send(
