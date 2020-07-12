@@ -13,17 +13,18 @@
                     <h5 class="m-0">My Ports</h5>
                 </div>
                 <div class="list-group list-group-flush">
-                    <a href="" class="list-group-item list-group-item-action {% if 'notifications' in request.path %}bg-secondary text-white{% else %}bg-light{% endif %}">Notifications ({% notifications_unread %})</a>
+                    <a href="{% url 'notifications' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/notifications/' %}bg-secondary text-white{% else %}bg-light{% endif %}">Notifications ({% notifications_unread %})</a>
                     <a href="{% url 'my_ports' %}" class="list-group-item list-group-item-action {% if 'my_ports' in request.path %}bg-secondary text-white{% else %}bg-light{% endif %}">Maintained by me</a>
-                    <a href="{% url 'followed_ports' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/followed_ports' %}bg-secondary text-white{% else %}bg-light{% endif %}">Followed by me</a>
+                    <a href="{% url 'followed_ports' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/followed_ports/' %}bg-secondary text-white{% else %}bg-light{% endif %}">Followed by me</a>
                 </div>
             </div>
             <br>
             <div class="bg-light border rounded">
                 <div class="bg-white p-2">
-                    <h5 class="m-0">Account Settings</h5>
+                    <h5 class="m-0">Account</h5>
                 </div>
                 <div class="list-group list-group-flush">
+                    <a href="{% url 'account_profile' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/profile/' %}bg-secondary text-white{% else %}bg-light{% endif %}">Profile</a>
                     <a href="{% url 'socialaccount_connections' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/social/connections/' %}bg-secondary text-white{% else %}bg-light{% endif %}">Connected GitHub Accounts</a>
                     <a href="{% url 'account_email' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/email/' %}bg-secondary text-white{% else %}bg-light{% endif %}">Connected Emails</a>
                     <a href="{% url 'account_change_password' %}" class="list-group-item list-group-item-action {% if request.path == '/accounts/password/change/' %}bg-secondary text-white{% else %}bg-light{% endif %}">Change Password</a>

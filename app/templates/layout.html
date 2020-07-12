@@ -1,5 +1,6 @@
 {% load static %}
 {% load humanize %}
+{% load notifications_tags %}
 
 <!doctype html>
 <html lang="en">
@@ -26,7 +27,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-    <a class="navbar-brand" href="/"><img width="120px" src="{% static 'images/macports-flat-logo.svg' %}" class="img-fluid"></a>
+    <a class="navbar-brand py-2" href="/"><img width="140px" src="{% static 'images/macports-flat-logo.svg' %}" class="img-fluid"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -69,10 +70,10 @@
                     {{user.username|truncatechars:10}}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{% url 'account_profile' %}">Notifications</a>
-                    <a class="dropdown-item" href="{% url 'account_profile' %}">My Watchlist</a>
+                    <a class="dropdown-item" href="{% url 'notifications' %}">Notifications ({% notifications_unread %})</a>
+                    <a class="dropdown-item" href="{% url 'followed_ports' %}">My Watchlist</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'account_profile' %}">Account Settings</a>
+                    <a class="dropdown-item" href="{% url 'account_profile' %}">Profile</a>
                     <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
                 </div>
             </li>

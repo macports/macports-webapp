@@ -1,0 +1,43 @@
+{% extends 'account/account_layout.html' %}
+
+{% load i18n %}
+{% load notifications_tags %}
+{% load humanize %}
+
+{% block account_head_scripts %}{% include 'account/style.html' %}{% endblock %}
+{% block account_title %}{% notifications_unread %} Notifications |{% endblock %}
+
+{% block account_content %}
+    <h3>Notifications</h3>
+    <div class="float-right my-2">
+        <a class="btn btn-primary btn-sm" href="{% url 'notifications:mark_all_as_read' %}">Mark all as read</a>
+    </div>
+<table class="f15 table table-condensed mt-2">
+    <thead>
+    <tr>
+        <td>Port</td>
+        <td>Changes</td>
+        <td>Actions</td>
+    </tr>
+    </thead>
+    {% for i in notifications %}
+        <tr class="p-0 {% if i.unread %}bg-light{% endif %}">
+            <td class="py-2">
+                <a href="{% url 'port_detail' i.actor %}">
+                    <strong>{{ i.actor }}</strong>
+                </a>
+                <span class="f10">({{ i.timestamp|naturaltime }})</span>
+            </td>
+            <td class="py-2">{{ i.verb }}</td>
+            <td class="py-2">
+                {% if i.unread %}
+                    <a href="{% url 'notifications:mark_as_read' i.slug %}"><span class="badge badge-secondary">Read</span></a>
+                {% else %}
+                    <a href="{% url 'notifications:mark_as_unread' i.slug %}"><span class="badge badge-secondary">Unread</span></a>
+                {% endif %}
+                <a href="https://github.com/macports/macports-ports/commits/master/{{ i.data.portdir }}"><span class="badge badge-warning">Commits</span></a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
