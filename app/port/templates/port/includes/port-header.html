@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 
 <!-- Obsolete port warning start-->
 {% if port.replaced_by %}
@@ -20,6 +21,9 @@
 <h2 class="mb-1">
     <span id="port_name" class="font-weight-bold">{{ port.name }}</span>
     <span class="text-secondary" style="font-size: 14px">({{ port.portdir }})</span>
+    {% if port.version_updated_at %}
+    <span class="text-secondary" style="font-size: 14px"><ins>Updated: {{ port.version_updated_at|naturaltime }}</ins></span>
+    {% endif %}
     <span class="float-right">
         {% if is_followed %}<a href="{% url 'unfollow_port' port.name %}" class="btn btn-sm btn-light"><i class="fa fa-minus-circle"></i> Unfollow</a>
         {% else %}<a href="{% url 'follow_port' port.name %}" class="btn btn-sm btn-light"><i class="fa fa-plus"></i> Add to my watchlist</a>{% endif %}
