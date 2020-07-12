@@ -9,8 +9,10 @@
 
 {% block account_content %}
     <h3>Notifications</h3>
-    <div class="float-right my-2">
-        <a class="btn btn-primary btn-sm" href="{% url 'notifications:mark_all_as_read' %}">Mark all as read</a>
+    {% if notifications.count > 0 %}
+    <div class="my-2">
+        <span class="lead">You have {% notifications_unread %} unread notification(s)</span>
+        <a class="btn btn-primary btn-sm float-right" href="{% url 'notifications:mark_all_as_read' %}">Mark all as read</a>
     </div>
 <table class="f15 table table-condensed mt-2">
     <thead>
@@ -39,5 +41,8 @@
             </td>
         </tr>
     {% endfor %}
+    {% else %}
+    <p class="lead">You have no notifications.</p>
+    {% endif %}
 </table>
 {% endblock %}
