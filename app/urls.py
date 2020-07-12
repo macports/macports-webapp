@@ -5,6 +5,7 @@ from haystack.views import FacetedSearchView
 from haystack.query import SearchQuerySet
 from rest_framework.routers import DefaultRouter
 from django.views.generic.base import RedirectView
+import notifications.urls
 
 import views
 from port.views import SearchAPIView
@@ -48,6 +49,7 @@ urlpatterns = [
     path('about/', views.about_page, name='about_page'),
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('user.urls')),
+    url('^accounts/notifications/', include(notifications.urls, namespace='notifications')),
 
     # redirects to keep the old urls alive
     url(r'^maintainer/github/(?P<m>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='maintainer'), name='maintainer_old'),

@@ -1,1 +1,68 @@
 {% extends 'account/account_layout.html' %}
+
+{% load notifications_tags %}
+
+{% block account_head_scripts %}{% include 'account/style.html' %}{% endblock %}
+{% block account_title %}Profile |{% endblock %}
+
+{% block account_content %}
+    <h3>Hello, {{ user.username }}</h3>
+    <p class="lead">You have {% notifications_unread %} new notification(s). <a href="{% url 'notifications' %}">View all</a></p>
+
+    <hr>
+
+    {% if followed_count > 0 %}
+    <p class="lead">You are following {{ followed_count }} port(s). <a href="{% url 'followed_ports' %}">View</a></p>
+    {% else %}
+    <p class="lead">You are not following any ports. To receive notifications about changes to the
+    ports that interest you, add them to your watchlist.</p>
+    {% endif %}
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-0">
+                <div class="card-header bg-light">
+                    <h6 class="text-uppercase mb-0">Connected GitHub</h6>
+                </div>
+                <div class="card-body px-2 py-1">
+                    {% if github_handles|length > 0 %}
+                        <ul class="list-group list-group-flush mb-2">
+                        {% for handle in github_handles %}
+                            <li class="list-group-item">{{ handle }}</li>
+                        {% endfor %}
+                        </ul>
+                        <a href="{% url 'my_ports_github' %}" class="btn btn-sm btn-primary">View ports ({{ ports_by_github_count }})</a>
+                        <a href="{% url 'socialaccount_connections' %}" class="btn btn-sm btn-warning">Mange GitHub connections</a>
+                    {% else %}
+                        <p>You have no GitHub accounts connected. To track the ports maintained by you, please add a GitHub account.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-0">
+                <div class="card-header bg-light">
+                    <h6 class="text-uppercase mb-0">Connected Emails</h6>
+                </div>
+                <div class="card-body px-2 py-1">
+                    {% if emails|length > 0 %}
+                        <ul class="list-group list-group-flush mb-2">
+                            {% for email in emails %}
+                                <li class="list-group-item">{{ email }}</li>
+                            {% endfor %}
+                        </ul>
+                        <a href="{% url 'my_ports_email' %}" class="btn btn-sm btn-primary">View ports ({{ ports_by_emails_count }})</a>
+                        <a href="{% url 'account_email' %}" class="btn btn-sm btn-warning">Mange Emails</a>
+                    {% else %}
+                        <p>You have no emails added to your account. To track the ports maintained by you, please add
+                            emails that you use in Portfiles.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

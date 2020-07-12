@@ -4,10 +4,12 @@ import subprocess
 from django.db import models, transaction
 from django.urls import reverse
 from django.contrib.auth.models import User
+from notifications.signals import notify
 
 from category.models import Category
 from maintainer.models import Maintainer
 from variant.models import Variant
+from port.notif import generate_notifications_verb
 import config
 
 
@@ -80,6 +82,13 @@ class Port(models.Model):
                 # get or create an object for this port
                 port_object, port_created = Port.objects.get_or_create(name__iexact=name, defaults={'name': name})
 
+                # cache the original object for comparison
+                old_object = {
+                    'version': port_object.version,
+                    'replaced_by': port_object.replaced_by,
+                    'license': port_object.license
+                }
+
                 # add or update rest of the fields
                 port_object.portdir = portdir
                 port_object.version = version
@@ -94,6 +103,16 @@ class Port(models.Model):
                 port_object.replaced_by = port.get('replaced_by')
                 port_object.active = True
                 port_object.save()
+
+                notification_verb = generate_notifications_verb(old_object, port_object)
+                if not notification_verb == "":
+                    notify.send(
+                        port_object,
+                        recipient=port_object.subscribers.all(),
+                        verb=notification_verb,
+                        portdir=port_object.portdir,
+                        version=port_object.version
+                    )
 
                 # first remove any related category and then add
                 port_object.categories.clear()  # remove any related objects
@@ -178,6 +197,7 @@ class Port(models.Model):
             for port in Port.objects.filter(portdir__iexact=portdir).only('portdir', 'name', 'active'):
                 if port.name.lower() not in dict_of_portdirs_with_ports[portdir]:
                     port.active = False
+                    notify.send(port, recipient=port.subscribers.all(), verb="Port has been deleted.")
                     port.save()
 
     class PortIndexUpdateHandler:

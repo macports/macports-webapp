@@ -1,13 +1,29 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from notifications.signals import notify
+from allauth.account.models import EmailAddress
+from allauth.socialaccount.models import SocialAccount
 
-from user.utilities import get_my_ports_context, get_followed_ports_context
+from user.utilities import get_my_ports_context, get_followed_ports_context, get_ports_by_email, get_ports_by_github
 from user.forms import MyPortsForm
 
 
+@login_required
 def profile(request):
-    return render(request, 'account/profile.html')
+    usr = request.user
+
+    usr_emails = EmailAddress.objects.filter(user=usr, verified=True).values_list('email', flat=True)
+    usr_github = SocialAccount.objects.filter(user=usr).values_list('extra_data', flat=True)
+
+    github, ports_by_github = get_ports_by_github(usr_github)
+    ports_by_email = get_ports_by_email(usr_emails)
+
+    return render(request, 'account/profile.html', {
+        'followed_count': usr.ports.all().count(),
+        'emails': usr_emails,
+        'ports_by_emails_count': ports_by_email.count(),
+        'github_handles': github,
+        'ports_by_github_count': ports_by_github.count()
+    })
 
 
 @login_required
@@ -59,4 +75,3 @@ def notifications_all(request):
     return render(request, 'account/notifications.html', {
         'notifications': notifications,
     })
-
