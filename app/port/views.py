@@ -32,7 +32,7 @@ def port_landing(request, name):
 
     default_port_page = request.COOKIES.get('default_port_page')
     if default_port_page == "summary":
-        return HttpResponseRedirect(reverse('port_detail_summary', {'name': name}))
+        return HttpResponseRedirect(reverse('port_summary', kwargs={'name': name}))
 
     count = get_install_count(port.name, 60)
 
@@ -59,7 +59,8 @@ def port_detail_summary(request, name):
         'builders': builders,
         'dependents': dependents,
         'count': count,
-        'is_followed': port.is_followed(request)
+        'is_followed': port.is_followed(request),
+        'is_default': request.COOKIES.get('default_port_page')
     })
 
 
@@ -130,6 +131,29 @@ def port_detail_stats(request, name):
         'port': port,
         'is_followed': port.is_followed(request)
     })
+
+
+def default_port_page_toggle(request, name):
+    try:
+        port = Port.objects.get(name__iexact=name)
+    except Port.DoesNotExist:
+        return render(request, 'port/exceptions/port_not_found.html', {'name': name})
+
+    # if the cookie exists, delete it else set it
+    default_port_page = request.COOKIES.get('default_port_page')
+    response = HttpResponseRedirect(reverse('port_summary', kwargs={'name': port.name}))
+    if default_port_page:
+        response.delete_cookie('default_port_page')
+        return response
+    else:
+        max_age = 365 * 24 * 60 * 60 #one year
+        expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
+        response.set_cookie('default_port_page', 'summary', max_age=max_age, expires=expires)
+        return response
+
+
+
+
 
 
 # Respond to ajax call for loading tickets
