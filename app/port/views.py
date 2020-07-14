@@ -2,7 +2,7 @@ import datetime
 import requests
 
 from bs4 import BeautifulSoup
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery, Count, Prefetch, Q
@@ -18,12 +18,32 @@ from port.serializers import PortHaystackSerializer, PortSerializer
 from port.models import Port, Dependency
 from buildhistory.models import BuildHistory, Builder
 from stats.models import Submission, PortInstallation
+from stats.utilities.port_installs import get_install_count
 from buildhistory.filters import BuildHistoryFilter
 from stats.validators import validate_stats_days, ALLOWED_DAYS_FOR_STATS
 from port.serializers import SearchSerializer
 
 
-def port_detail(request, name):
+def port_landing(request, name):
+    try:
+        port = Port.objects.get(name__iexact=name)
+    except Port.DoesNotExist:
+        return render(request, 'port/exceptions/port_not_found.html', {'name': name})
+
+    default_port_page = request.COOKIES.get('default_port_page')
+    if default_port_page == "summary":
+        return HttpResponseRedirect(reverse('port_detail_summary', {'name': name}))
+
+    count = get_install_count(port.name, 60)
+
+    return render(request, 'port/port_basic.html', {
+        'port': port,
+        'count': count,
+        'is_followed': port.is_followed(request)
+    })
+
+
+def port_detail_summary(request, name):
     try:
         port = Port.objects.get(name__iexact=name)
     except Port.DoesNotExist:
@@ -33,10 +53,7 @@ def port_detail(request, name):
     builders = Builder.objects.all().prefetch_related(Prefetch('builds', queryset=this_builds, to_attr='latest_builds'))
     dependents = Dependency.objects.filter(dependencies__id=port.id).values('type').annotate(ports=ArrayAgg('port_name__name'))
 
-    last_30_days = datetime.datetime.now(tz=datetime.timezone.utc)-datetime.timedelta(days=30)
-    submissions_last_30_days = Submission.objects.filter(timestamp__gte=last_30_days).order_by('user', '-timestamp').distinct('user')
-    installations = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_last_30_days.values('id')), port__iexact=port.name).select_related('submission').defer('submission__raw_json')
-    count = installations.aggregate(requested=Count('submission__user_id', filter=Q(requested=True)), all=Count('submission__user_id'))
+    count = get_install_count(port.name, 30)
     return render(request, 'port/port_detail.html', {
         'port': port,
         'builders': builders,
