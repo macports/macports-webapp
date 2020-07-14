@@ -11,4 +11,13 @@
     <li class="nav-item">
         <a href="#" data-toggle="modal" data-target="#tickets-modal" class="nav-link text-dark">Trac Tickets <span id="tickets-count" class="badge badge-light border border-secondary"></span></a>
     </li>
+    {% if "summary" in request.path %}
+    <li class="nav-item ml-auto">
+        <a href="{% url 'default_port_page_toggle' port.name %}" class="nav-link text-muted">
+            {% if is_default %}Remove default
+            {% else %}Make default page
+            {% endif %}
+        </a>
+    </li>
+    {% endif %}
 </ul>

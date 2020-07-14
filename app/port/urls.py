@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'^(?P<name>[-a-zA-Z0-9_.]+)/tickets/$', views.port_detail_tickets, name='port_tickets'),
     url(r'^(?P<name>[-a-zA-Z0-9_.]+)/follow/$', views.follow_port, name='follow_port'),
     url(r'^(?P<name>[-a-zA-Z0-9_.]+)/unfollow/$', views.unfollow_port, name='unfollow_port'),
+    url(r'^(?P<name>[-a-zA-Z0-9_.]+)/default_page_toggle/$', views.default_port_page_toggle, name='default_port_page_toggle'),
     url(r'^(?P<name>[-a-zA-Z0-9_.]+)/$', views.port_landing, name='port_detail'),
 ]
