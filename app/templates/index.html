@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 {% load staticfiles %}
+{% load humanize %}
 
 {% block title %}Ports |{% endblock %}
 
@@ -18,12 +19,9 @@
                             class="fa fa-search"></i></button>
                     <input type="hidden" value="on" name="name">
                     <div class="my-4 text-center text-md-left">
-                    <a class="btn btn-light font-weight-bold border-dark rounded-pill mt-1" href="{% url 'search' %}">All
+                    <a class="btn btn-outline-dark font-weight-bold rounded-pill mt-1" href="{% url 'search' %}">All
                         Ports</a>
-                    <a class="btn btn-light font-weight-bold border-dark rounded-pill mt-1"
-                       href="https://www.macports.org">MacPorts
-                        Home</a>
-                    <a class="btn btn-light font-weight-bold border-dark rounded-pill mt-1"
+                    <a class="btn btn-outline-secondary font-weight-bold rounded-pill mt-1"
                        href="https://www.macports.org/install.php">Install MacPorts</a>
                     </div>
                 </div>
@@ -41,6 +39,7 @@
                                href="{% url 'port_detail' top_port.port %}">{{ top_port.port }}</a></span><br>
                         {% endfor %}
                     </div>
+                    <a href="{% url 'stats_port_installations' %}" class="btn text-dark btn-outline-light">More...</a>
                 </div>
             </div>
             <div class="col-md-4 mt-md-0 mt-3">
@@ -51,7 +50,7 @@
                     <div class="card-body px-3 py-1">
                         {% for port in recently_added %}
                             <a class="btn btn-link btn-lg text-dark p-0"
-                               href="{% url 'port_detail' port.name %}">{{ port.name }}</a></span><br>
+                               href="{% url 'port_detail' port.name %}">{{ port.name }} <span class="f14 text-muted">({{ port.updated_at|naturaltime }})</span></a></span><br>
                         {% endfor %}
                     </div>
                 </div>
@@ -64,6 +63,7 @@
                     <div class="card-body px-3 py-1">
                         <h1 class="display-6 mb-0">{{ ports_count }}</h1>
                     </div>
+                    <a href="{% url 'search' %}" class="btn text-dark btn-outline-light">View all</a>
                 </div>
             </div>
         </div>
