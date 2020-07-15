@@ -158,58 +158,7 @@
                 {% else %}
                     <!-- Figuring out a nice descriptive message to put here for an empty query -->
                 {% endif %}
-                <p>{{ page.paginator.count }} results found | Showing results {{ page.start_index }}
-                    to {{ page.end_index }}
-                    {% if page.has_other_pages %}
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination pagination-sm">
-                                {% if builds.has_previous %}
-                                    <li class="page-item">
-                                        <a class="page-link" href="?{% url_replace page=page.previous_page_number %}">
-                                            &laquo;
-                                        </a>
-                                    </li>
-                                {% else %}
-                                    <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
-                                {% endif %}
-
-                                {% if builds.number|add:'-4' > 1 %}
-                                    <li class="page-item">
-                                        <a class="page-link" href="?{% url_replace page=page.number|add:'-5' %}">&hellip;
-                                        </a>
-                                    </li>
-                                {% endif %}
-
-                                {% for i in page.paginator.page_range %}
-                                    {% if page.number == i %}
-                                        <li class="active page-item"><span class="page-link">{{ i }} <span
-                                                class="sr-only">(current)</span></span></li>
-                                    {% elif i > page.number|add:'-5' and i < page.number|add:'5' %}
-                                        <li class="page-item">
-                                            <a class="page-link" href="?{% url_replace page=i %}">{{ i }}</a>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-
-                                {% if page.paginator.num_pages > page.number|add:'4' %}
-                                    <li class="page-item">
-                                        <a class="page-link" href="?{% url_replace page=page.number|add:'5' %}">&hellip;
-                                        </a>
-                                    </li>
-                                {% endif %}
-
-                                {% if page.has_next %}
-                                    <li class="page-item">
-                                        <a class="page-link" href="?{% url_replace page=page.next_page_number %}">&raquo;
-                                        </a>
-                                    </li>
-                                {% else %}
-                                    <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
-                                {% endif %}
-                            </ul>
-                        </nav>
-                    {% endif %}
-                </p>
+                    {% include 'includes/basic_pagination.html' with items=page contents="port(s)" %}
                 <hr>
                 {% for result in page.object_list %}
                     <div>
@@ -242,55 +191,7 @@
                     <p>No results found.</p>
                 {% endfor %}
 
-                {% if page.has_other_pages %}
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-sm">
-                            {% if builds.has_previous %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?{% url_replace page=page.previous_page_number %}">
-                                        &laquo;
-                                    </a>
-                                </li>
-                            {% else %}
-                                <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
-                            {% endif %}
-
-                            {% if builds.number|add:'-4' > 1 %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?{% url_replace page=page.number|add:'-5' %}">&hellip;
-                                    </a>
-                                </li>
-                            {% endif %}
-
-                            {% for i in page.paginator.page_range %}
-                                {% if page.number == i %}
-                                    <li class="active page-item"><span class="page-link">{{ i }} <span
-                                            class="sr-only">(current)</span></span></li>
-                                {% elif i > page.number|add:'-5' and i < page.number|add:'5' %}
-                                    <li class="page-item">
-                                        <a class="page-link" href="?{% url_replace page=i %}">{{ i }}</a>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-
-                            {% if page.paginator.num_pages > page.number|add:'4' %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?{% url_replace page=page.number|add:'5' %}">&hellip;
-                                    </a>
-                                </li>
-                            {% endif %}
-
-                            {% if page.has_next %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?{% url_replace page=page.next_page_number %}">&raquo;
-                                    </a>
-                                </li>
-                            {% else %}
-                                <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
-                            {% endif %}
-                        </ul>
-                    </nav>
-                {% endif %}
+                {% include 'includes/basic_pagination.html' with items=page contents="port(s)" %}
             </div>
             <div id="search-help" class="modal fade" role="dialog">
                 <div class="modal-dialog">
