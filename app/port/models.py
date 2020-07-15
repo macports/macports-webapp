@@ -197,11 +197,11 @@ class Port(models.Model):
     @classmethod
     def mark_deleted(cls, dict_of_portdirs_with_ports):
         for portdir in dict_of_portdirs_with_ports:
-            for port in Port.objects.filter(portdir__iexact=portdir).only('portdir', 'name', 'active'):
+            for port in Port.objects.filter(portdir__iexact=portdir).only('portdir', 'name', 'active', 'updated_at'):
                 if port.name.lower() not in dict_of_portdirs_with_ports[portdir]:
                     port.active = False
-                    notify.send(port, recipient=port.subscribers.all(), verb="Port has been deleted.")
                     port.save()
+                    notify.send(port, recipient=port.subscribers.all(), verb="Port has been deleted.")
 
     class PortIndexUpdateHandler:
         @staticmethod
