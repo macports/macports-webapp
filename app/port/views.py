@@ -22,6 +22,7 @@ from stats.utilities.port_installs import get_install_count
 from buildhistory.filters import BuildHistoryFilter
 from stats.validators import validate_stats_days, ALLOWED_DAYS_FOR_STATS
 from port.serializers import SearchSerializer
+from port.utilities import redirect_back
 
 
 def port_landing(request, name):
@@ -152,10 +153,6 @@ def default_port_page_toggle(request, name):
         return response
 
 
-
-
-
-
 # Respond to ajax call for loading tickets
 # Tickets are fetched from trac.macports.org, to prevent multiple hits to trac, tickets
 # should be cached. The can tolerate caching for an hour easily
@@ -190,7 +187,7 @@ def follow_port(request, name):
     usr = request.user
     port.subscribers.add(usr)
 
-    return HttpResponseRedirect(port.get_absolute_url())
+    return redirect_back(request, port.get_absolute_url())
 
 
 @login_required
@@ -203,7 +200,7 @@ def unfollow_port(request, name):
     usr = request.user
     port.subscribers.remove(usr)
 
-    return HttpResponseRedirect(port.get_absolute_url())
+    return redirect_back(request, port.get_absolute_url())
 
 # VIEWS FOR DJANGO REST-FRAMEWORK
 

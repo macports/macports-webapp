@@ -33,6 +33,7 @@
             </td>
             <td class="py-1">
                 <span class="badge {% if port.build is None %}badge-secondary {% elif port.build == "build successful" %}badge-success{% else %}badge-danger{% endif %}">{{ port.build }}</span>
+                {% if followed_ports is True %}<span class="float-right"><a class="text-secondary" href="{% url 'unfollow_port' port.name %}"><i class="fa fa-minus-circle"></i></a></span>{% endif %}
             </td>
         </tr>
     {% endfor %}
