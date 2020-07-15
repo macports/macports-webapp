@@ -19,12 +19,14 @@
 
         <p class="text-center"><a href="{{ port.homepage }}">{{ port.homepage }}</a></p>
 
+        {% if port.active == True and port.replaced_by == None %}
         <div class="text-center mt-4">
             <p class="f14 text-muted mb-1">To install {{ port.name }}, paste this in macOS terminal after <a href="https://www.macports.org/install.php">installing MacPorts</a></p>
-            <code id="install" style="height: 50px" class="text-center bg-light text-dark py-3 px-4">
-                sudo port install {{ port.name }}</code>
-            <button onclick="copyText('install')" style="height: 50px;" class="btn btn-light btn-sm mx-0">Copy</button>
-            <br>
+            <div style="display: inline-block" class="text-center bg-light rounded-lg py-3 px-2 mt-3">
+                <code id="install" class="text-dark">sudo port install {{ port.name }}</code>
+                <button onclick="copyText('install')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
+            </div>
+                <br>
             <button class="btn btn-link text-secondary" data-toggle="modal" data-target="#instructions">More instructions
             </button>
             <div class="modal fade" id="instructions" tabindex="-1" role="dialog" aria-labelledby="insLabel"
@@ -41,22 +43,24 @@
                             <ul>
                                 <li class="py-2">If not done already, <a href="https://www.macports.org/install.php">install MacPorts</a>.</li>
                                 <li class="py-2">To <strong>install</strong> {{ port.name }}, run the following command in MacOS terminal (Applications->Utilities->Terminal)<br>
-                                    <code id="install-2" style="height: 50px" class="bg-light text-secondary py-3 px-2">
-                                        sudo port install {{ port.name }}</code>
-                                    <button onclick="copyText('install-2')" style="height: 50px;" class="btn btn-light btn-sm mx-0">Copy</button>
+                                    <div style="display: inline-block" class="bg-light rounded-lg py-3 px-2 mt-2">
+                                        <code id="install-2" class="text-secondary">sudo port install {{ port.name }}</code>
+                                        <button onclick="copyText('install-2')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
+                                    </div>
                                 </li>
                                 <li class="py-2">
                                     To see what <strong>files</strong> were installed by {{port.name}}, run:<br>
-                                    <code id="contents" style="height: 50px" class="bg-light text-secondary py-3 px-2">
-                                        port contents {{ port.name }}</code>
-                                    <button onclick="copyText('contents')" style="height: 50px;" class="btn btn-light btn-sm mx-0">Copy</button>
+                                    <div style="display: inline-block" class="bg-light rounded-lg py-3 px-2 mt-2">
+                                        <code id="contents" class="text-secondary">port contents {{ port.name }}</code>
+                                        <button onclick="copyText('contents')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
+                                    </div>
                                 </li>
                                 <li class="py-2">
                                     To later <strong>upgrade</strong> {{port.name}}, run:<br>
-                                    <code id="upgrade" style="height: 50px" class="bg-light text-secondary py-3 px-2">
-                                        sudo port selfupdate && sudo port upgrade {{port.name}}
-                                    </code>
-                                    <button onclick="copyText('upgrade')" style="height: 50px;" class="btn btn-light btn-sm mx-0">Copy</button>
+                                    <div style="display: inline-block" class="bg-light rounded-lg py-3 px-2 mt-2">
+                                        <code id="upgrade" class="text-secondary">sudo port selfupdate && sudo port upgrade {{port.name}}</code>
+                                        <button onclick="copyText('upgrade')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
+                                    </div>
                                 </li>
                             </ul>
                         </div>
@@ -67,6 +71,16 @@
                 </div>
             </div>
         </div>
+        {% elif port.active is False %}
+        <div class="alert alert-danger text-center" role="alert">
+            This port has been deleted. This page will exist till another port with the name "{{ port.name }}" comes
+            into existence.
+        </div>
+        {% elif port.replaced_by %}
+        <div class="alert alert-warning" role="alert">
+            This port is obsolete. It has been replaced by <a href="{% url 'port_detail' port.replaced_by %}">{{ port.replaced_by }}</a>.
+        </div>
+        {% endif %}
 
         <div>
             <div class="btn-group px-0 mx-0" role="group" aria-label="Basic example">
