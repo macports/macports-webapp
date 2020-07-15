@@ -14,7 +14,7 @@
         <span class="lead">You have {% notifications_unread %} unread notification(s)</span>
         <a class="btn btn-primary btn-sm float-right" href="{% url 'notifications:mark_all_as_read' %}">Mark all as read</a>
     </div>
-    {% include 'includes/basic_pagination.html' with items=notifications show_count=False %}
+    {% include 'includes/basic_pagination.html' with items=notifications contents="result(s)" %}
     <table class="f15 table table-condensed mt-2">
         <thead>
         <tr>
