@@ -9,5 +9,5 @@
     <h3>Followed ports:</h3>
     {% include 'includes/user_filter_form.html' with form=form %}
     <hr>
-    {% include 'includes/user_ports_table.html' with ports=ports %}
+    {% include 'includes/user_ports_table.html' with ports=ports followed_ports=True %}
 {% endblock %}
