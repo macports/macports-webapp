@@ -1,6 +1,6 @@
 <ul class="nav nav-tabs mt-4 f15" id="tabs">
     <li class="nav-item">
-        <a href="{% url 'port_detail' port_name %}" id="summary" class="nav-link text-dark {% if active == "summary" %}active font-weight-bold{% endif %}">Summary</a>
+        <a href="{% url 'port_summary' port_name %}" id="summary" class="nav-link text-dark {% if active == "summary" %}active font-weight-bold{% endif %}">Summary</a>
     </li>
     <li class="nav-item">
         <a href="{% url 'port_builds' port_name %}" id="builds" class="nav-link text-dark {% if active == "builds" %}active font-weight-bold{% endif %}">Build Information</a>
