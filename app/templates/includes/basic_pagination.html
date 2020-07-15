@@ -1,6 +1,6 @@
 {% load url_replace %}
 
-{{ items.paginator.count }} port(s) found
+{% if show_count is not False %}{{ items.paginator.count }} port(s) found {% endif %}
 {% if items.has_other_pages %}
     <p class="f15">Page {{ items.number }} of {{ items.paginator.num_pages }} | Showing {{contents}} {{ items.start_index }} to
         {{ items.end_index }}</p>
