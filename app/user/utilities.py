@@ -40,14 +40,7 @@ def get_ports_context(request, req_ports, builder):
     req_ports = apply_filters(request, req_ports)
 
     # Paginate the req_ports
-    paginated_ports = Paginator(req_ports, 100)
-    page = request.GET.get('page', 1)
-    try:
-        ports = paginated_ports.get_page(page)
-    except PageNotAnInteger:
-        ports = paginated_ports.get_page(1)
-    except EmptyPage:
-        ports = paginated_ports.get_page(paginated_ports.num_pages)
+    ports = paginate(request, req_ports, 100)
 
     return ports
 
@@ -117,3 +110,16 @@ def apply_filters(request, ports):
         ports = ports.filter(active=True)
 
     return ports
+
+
+def paginate(request, items, paginate_by=100):
+    paginated_items = Paginator(items, paginate_by)
+    page = request.GET.get('page', 1)
+    try:
+        page_items = paginated_items.get_page(page)
+    except PageNotAnInteger:
+        page_items = paginated_items.get_page(1)
+    except EmptyPage:
+        page_items = paginated_items.get_page(paginated_items.num_pages)
+
+    return page_items

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from allauth.account.models import EmailAddress
 from allauth.socialaccount.models import SocialAccount
 
-from user.utilities import get_my_ports_context, get_followed_ports_context, get_ports_by_email, get_ports_by_github
+from user.utilities import get_my_ports_context, get_followed_ports_context, get_ports_by_email, get_ports_by_github, paginate
 from user.forms import MyPortsForm
 
 
@@ -70,7 +70,10 @@ def followed_ports(request):
 @login_required
 def notifications_all(request):
     usr = request.user
-    notifications = usr.notifications.all()
+    notifications_all_items = usr.notifications.all()
+
+    # paginate the notifications
+    notifications = paginate(request, notifications_all_items, 100)
 
     return render(request, 'account/notifications.html', {
         'notifications': notifications,
