@@ -2,7 +2,6 @@ from django.test import TransactionTestCase, Client
 from django.urls import reverse
 
 from port.models import Port, Dependency
-from config import TEST_PORTINDEX_JSON
 from tests import setup
 
 
@@ -15,6 +14,14 @@ class TestURLsPortDetail(TransactionTestCase):
 
     def test_port_detail(self):
         response = self.client.get(reverse('port_detail', kwargs={
+            'name': 'port-A1'
+        }))
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, template_name='port/port_basic.html')
+
+    def test_port_summary(self):
+        response = self.client.get(reverse('port_summary', kwargs={
             'name': 'port-A1'
         }))
 
