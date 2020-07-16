@@ -44,7 +44,7 @@ def port_landing(request, name):
     })
 
 
-def port_detail_summary(request, name):
+def port_details(request, name):
     try:
         port = Port.objects.get(name__iexact=name)
     except Port.DoesNotExist:
@@ -55,7 +55,7 @@ def port_detail_summary(request, name):
     dependents = Dependency.objects.filter(dependencies__id=port.id).values('type').annotate(ports=ArrayAgg('port_name__name'))
 
     count = get_install_count(port.name, 30)
-    return render(request, 'port/port_detail.html', {
+    return render(request, 'port/port_details.html', {
         'port': port,
         'builders': builders,
         'dependents': dependents,
@@ -65,7 +65,7 @@ def port_detail_summary(request, name):
     })
 
 
-def port_detail_build_information(request, name):
+def port_builds(request, name):
     try:
         port = Port.objects.get(name__iexact=name)
     except Port.DoesNotExist:
@@ -86,7 +86,7 @@ def port_detail_build_information(request, name):
     except EmptyPage:
         result = paginated_builds.get_page(paginated_builds.num_pages)
 
-    return render(request, 'port/port_detail_builds.html', {
+    return render(request, 'port/port_builds.html', {
         'port': port,
         'builds': result,
         'builder': builder,
@@ -96,7 +96,7 @@ def port_detail_build_information(request, name):
     })
 
 
-def port_detail_stats(request, name):
+def port_stats(request, name):
     try:
         port = Port.objects.get(name__iexact=name)
     except Port.DoesNotExist:
@@ -121,7 +121,7 @@ def port_detail_stats(request, name):
     port_installations = PortInstallation.objects.filter(submission_id__in=Subquery(submissions.values('id')), port__iexact=name)
     count = port_installations.aggregate(requested=Count('submission__user_id', filter=Q(requested=True)), all=Count('submission__user_id'))
 
-    return render(request, 'port/port_detail_stats.html', {
+    return render(request, 'port/port_stats.html', {
         'count': count,
         'days': days,
         'days_ago': days_ago,
@@ -157,7 +157,7 @@ def default_port_page_toggle(request, name):
 # Tickets are fetched from trac.macports.org, to prevent multiple hits to trac, tickets
 # should be cached. The can tolerate caching for an hour easily
 @cache_page(60 * 60)
-def port_detail_tickets(request, name):
+def port_tickets(request, name):
     port_name = request.GET.get('port_name')
     URL = "https://trac.macports.org/report/16?max=1000&PORT=(%5E%7C%5Cs){}($%7C%5Cs)".format(port_name)
     response = requests.get(URL)
@@ -171,7 +171,7 @@ def port_detail_tickets(request, name):
         all_tickets.append(ticket)
     all_tickets = sorted(all_tickets, key=lambda x: x['id'], reverse=True)
 
-    return render(request, 'port/port_detail_tickets.html', {
+    return render(request, 'port/port_tickets.html', {
         'portname': port_name,
         'tickets': all_tickets,
     })
