@@ -1,7 +1,8 @@
-from django.test import TransactionTestCase, Client
+from django.test import TransactionTestCase, Client, RequestFactory
 from django.urls import reverse
 
 from port.models import Port, Dependency
+from port.views import port_landing
 from tests import setup
 
 
@@ -20,7 +21,7 @@ class TestURLsPortDetail(TransactionTestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='port/port_basic.html')
 
-    def test_port_summary(self):
+    def test_port_details(self):
         response = self.client.get(reverse('port_details', kwargs={
             'name': 'port-A1'
         }))
@@ -36,7 +37,7 @@ class TestURLsPortDetail(TransactionTestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='port/exceptions/port_not_found.html')
 
-    def test_port_detail_stats(self):
+    def test_port_stats(self):
         response = self.client.get(reverse('port_stats', kwargs={
             'name': 'port-A1'
         }))
@@ -44,13 +45,40 @@ class TestURLsPortDetail(TransactionTestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='port/port_stats.html')
 
-    def test_port_detail_builds(self):
+    def test_port_builds(self):
         response = self.client.get(reverse('port_builds', kwargs={
             'name': 'port-A1'
         }))
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='port/port_builds.html')
+
+    def test_default_page_redirect(self):
+        request = RequestFactory().get(reverse('port_detail', kwargs={
+            'name': 'port-A1'
+        }))
+
+        request.COOKIES['default_port_page'] = "summary"
+        response = port_landing(request, 'port-A1')
+        response.client = self.client
+
+        self.assertRedirects(response, reverse('port_details', kwargs={
+            'name': 'port-A1',
+        }), status_code=302)
+
+    def test_default_cookie_set(self):
+        response = self.client.get(reverse('default_port_page_toggle', kwargs={
+            'name': 'port-A1'
+        }))
+
+        self.assertEquals(response.client.cookies['default_port_page'].value, "summary")
+
+        # run again to remove the cookie
+        response2 = self.client.get(reverse('default_port_page_toggle', kwargs={
+            'name': 'port-A1'
+        }))
+
+        self.assertEquals(response.client.cookies.get('default_port_page').value, "")
 
 
 class TestDependencies(TransactionTestCase):

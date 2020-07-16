@@ -33,7 +33,7 @@ def port_landing(request, name):
 
     default_port_page = request.COOKIES.get('default_port_page')
     if default_port_page == "summary":
-        return HttpResponseRedirect(reverse('port_summary', kwargs={'name': name}))
+        return HttpResponseRedirect(reverse('port_details', kwargs={'name': name}))
 
     count = get_install_count(port.name, 60)
 
@@ -142,7 +142,7 @@ def default_port_page_toggle(request, name):
 
     # if the cookie exists, delete it else set it
     default_port_page = request.COOKIES.get('default_port_page')
-    response = HttpResponseRedirect(reverse('port_summary', kwargs={'name': port.name}))
+    response = HttpResponseRedirect(reverse('port_details', kwargs={'name': port.name}))
     if default_port_page:
         response.delete_cookie('default_port_page')
         return response
