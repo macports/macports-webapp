@@ -105,7 +105,10 @@ def get_updated_portdirs():
 def get_portindex_json():
     if os.path.isfile(config.LOCAL_PORTINDEX_JSON):
         with open(config.LOCAL_PORTINDEX_JSON, "r", encoding='utf-8') as file:
-            data = json.load(file)
+            try:
+                data = json.load(file)
+            except json.decoder.JSONDecodeError:
+                data = None
         return data
     else:
-        return {}
+        return None

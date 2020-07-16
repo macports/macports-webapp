@@ -19,6 +19,8 @@ class Command(BaseCommand):
         if type_of_run == 'full':
             git_update.refresh_portindex_json()
             data = git_update.get_portindex_json()
+            if data is None:
+                raise CommandError("Failed to parse portindex.json")
             Port.add_or_update(data['ports'])
             LastPortIndexUpdate.update_or_create_first_object(data['info']['commit'])
             return
@@ -34,6 +36,8 @@ class Command(BaseCommand):
 
         # fetch the latest version of PortIndex.json and open the file
         data = git_update.get_portindex_json()
+        if data is None:
+            raise CommandError("Failed to parse portindex.json")
 
         # Generate a dictionary containing all the portdirs and initialise their values
         # with empty sets. The set would contain the ports under that portdir.
