@@ -19,7 +19,7 @@
 {% endif %}
 <!-- Deleted port warning end-->
 <h2 class="mb-1">
-    <span id="port_name" class="font-weight-bold">{{ port.name }}</span>
+    <span id="port_name" class="font-weight-bold display-4">{{ port.name }}</span>
     <span class="text-secondary" style="font-size: 14px">({{ port.portdir }})</span>
     {% if port.version_updated_at %}
     <span class="text-secondary" style="font-size: 14px"><ins>Updated: {{ port.version_updated_at|naturaltime }}</ins></span>
@@ -31,7 +31,7 @@
     </span>
 </h2>
 <p class="lead mb-0 mt-0">{{ port.description }}</p>
-<span class="f14 mr-md-4 mr-3"><strong>Version: </strong>{{ port.version }}
+<span class="f15 mr-md-4 mr-3"><strong>Version: </strong>{{ port.version }}
     {% if port.livecheck.has_updates %}
         <button type="button" class="btn p-0" data-toggle="tooltip" data-placement="top"
                 title="{{ port.livecheck.result }}">
@@ -39,8 +39,8 @@
         </button>
     {% endif %}
 </span>
-<span class="f14 mr-md-4 mr-3"><strong>License: </strong>{{ port.license }}</span>
-{% if port.active %}<span class="f14 mr-md-4 mr-3"><a target="_blank" style="text-decoration: none;" class="text-dark" href="https://github.com/macports/macports-ports/blob/master/{{ port.portdir }}/Portfile"><img class="mr-1" height="20px" src="{% static 'images/github.png' %}"><strong>GitHub</strong></a></span>{% endif %}
+<span class="f15 mr-md-4 mr-3"><strong>License: </strong>{{ port.license }}</span>
+{% if port.active %}<span class="f15 mr-md-4 mr-3"><a target="_blank" style="text-decoration: none;" class="text-dark" href="https://github.com/macports/macports-ports/blob/master/{{ port.portdir }}/Portfile"><img class="mr-1" height="20px" src="{% static 'images/github.png' %}"><strong>GitHub</strong></a></span>{% endif %}
 
 <div class="modal fade" id="tickets-modal" tabindex="-1" role="dialog" aria-labelledby="tickets-box-label" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">

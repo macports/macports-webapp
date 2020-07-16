@@ -5,25 +5,24 @@
 {% block title %}Install {{ port.name }} on MacOS with {% endblock %}
 
 {% block content %}
-    <div class="container shadow rounded-lg mt-5 py-4" style="max-width: 850px">
-        <h1 class="text-center display-4 mb-0">{{ port.name }}</h1>
-
+    <div class="container shadow-sm rounded-lg mt-5 py-4" style="max-width: 900px">
+        <h1 class="text-center display-4 font-weight-bold mb-0">{{ port.name }}</h1>
         <p class="text-center text-secondary mt-1 pt-0">
-            <span class="f12">v</span> <span class="lead">{{ port.version }}</span>
+            <span class="f12">v</span> <span class="lead" style="font-size: 1.3rem">{{ port.version }}</span>
             {% if port.version_updated_at %}
-                <span class="text-secondary" style="font-size: 14px"><ins>Updated: {{ port.version_updated_at|naturaltime }}</ins></span>
+                <span class="text-secondary" style="font-size: 0.9rem"><ins>Updated: {{ port.version_updated_at|naturaltime }}</ins></span>
             {% endif %}
         </p>
 
-        <p class="text-center lead">{{ port.description }}</p>
+        <p class="text-center lead" style="font-size: 1.5rem">{{ port.description }}</p>
 
         <p class="text-center"><a href="{{ port.homepage }}">{{ port.homepage }}</a></p>
 
         {% if port.active == True and port.replaced_by == None %}
         <div class="text-center mt-4">
-            <p class="f14 text-muted mb-1">To install {{ port.name }}, paste this in macOS terminal after <a href="https://www.macports.org/install.php">installing MacPorts</a></p>
+            <p class="text-muted mb-1">To install {{ port.name }}, paste this in macOS terminal after <a href="https://www.macports.org/install.php">installing MacPorts</a></p>
             <div style="display: inline-block" class="text-center bg-light rounded-lg py-3 px-2 mt-3">
-                <code id="install" class="text-dark">sudo port install {{ port.name }}</code>
+                <code id="install" class="text-dark lead">sudo port install {{ port.name }}</code>
                 <button onclick="copyText('install')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
             </div>
                 <br>
@@ -84,22 +83,20 @@
 
         <div>
             <div class="btn-group px-0 mx-0" role="group" aria-label="Basic example">
-                <a href="{% url 'port_summary' port.name %}" class="btn btn-link">Summary</a>
-                <a href="{% url 'port_builds' port.name %}" class="btn btn-link">Builds</a>
-                <a href="{% url 'port_stats' port.name %}" class="btn btn-link">Stats</a>
+                <a href="{% url 'port_summary' port.name %}" class="btn btn-outline-secondary">Details</a>
             </div>
             <span class="float-right">
             {% if is_followed %}
-                <a href="{% url 'unfollow_port' port.name %}" class="btn btn-sm btn-light"><i class="fa fa-minus-circle"></i> Unfollow</a>
+                <a href="{% url 'unfollow_port' port.name %}" class="btn btn-light"><i class="fa fa-minus-circle"></i> Unfollow</a>
             {% else %}
-                <a href="{% url 'follow_port' port.name %}" class="btn btn-sm btn-light"><i class="fa fa-plus"></i> Add to my watchlist</a>
+                <a href="{% url 'follow_port' port.name %}" class="btn btn-light"><i class="fa fa-plus"></i> Add to my watchlist</a>
             {% endif %}
-                <button class="btn btn-sm btn-light" disabled>{{ port.subscribers.count }}</button>
+                <button class="btn btn-light" disabled>{{ port.subscribers.count }}</button>
             </span>
         </div>
         <br>
         <div>
-            <table class="table table-striped">
+            <table class="table table-striped lead">
                 <tr>
                     <td>Installations</td>
                     <td>{{ count.all }}</td>
