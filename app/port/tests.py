@@ -21,12 +21,12 @@ class TestURLsPortDetail(TransactionTestCase):
         self.assertTemplateUsed(response, template_name='port/port_basic.html')
 
     def test_port_summary(self):
-        response = self.client.get(reverse('port_summary', kwargs={
+        response = self.client.get(reverse('port_details', kwargs={
             'name': 'port-A1'
         }))
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name='port/port_detail.html')
+        self.assertTemplateUsed(response, template_name='port/port_details.html')
 
     def test_port_not_found(self):
         response = self.client.get(reverse('port_detail', kwargs={
@@ -42,7 +42,7 @@ class TestURLsPortDetail(TransactionTestCase):
         }))
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name='port/port_detail_stats.html')
+        self.assertTemplateUsed(response, template_name='port/port_stats.html')
 
     def test_port_detail_builds(self):
         response = self.client.get(reverse('port_builds', kwargs={
@@ -50,7 +50,7 @@ class TestURLsPortDetail(TransactionTestCase):
         }))
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name='port/port_detail_builds.html')
+        self.assertTemplateUsed(response, template_name='port/port_builds.html')
 
 
 class TestDependencies(TransactionTestCase):
