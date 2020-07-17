@@ -58,6 +58,12 @@
     color: #bebebe !important;
 }
 
+[data-theme=dark] .list-group-item-action.active {
+    background-color: #000000 !important;
+    color: #bebebe !important;
+    border: 1px solid #bebebe !important;
+}
+
 [data-theme=dark] a.text-dark:hover {
     color: white !important;
 }
