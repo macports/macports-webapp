@@ -15,6 +15,11 @@
     background-color: black !important;
 }
 
+[data-theme=dark] .btn-outline-secondary {
+    border-color: #bebebe !important;
+    color: #f8f9fa !important;
+}
+
 [data-theme=dark] .navbar-light {
     background-color: #6c757d !important
 }
