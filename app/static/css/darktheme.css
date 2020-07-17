@@ -51,6 +51,7 @@
 
 [data-theme=dark] .btn-light {
     background-color: #6c757d !important;
+    color: #bebebe !important;
     border: 0 !important;
 }
 
@@ -378,5 +379,32 @@
     background-color: #222;
     border-color: #404040
 }
+
+[data-theme=dark] .modal-content {
+    color: #bebebe;
+    background-color: #222;
+    border-color: #404040
+}
+
+[data-theme=dark] .btn-link {
+    color: #b5dbfc !important;
+}
+
+[data-theme=dark] .btn-link.text-dark {
+    color: #bebebe !important;
+}
+
+[data-theme=dark] a {
+    color: #b5dbfc !important;
+}
+
+[data-theme=dark] .btn-link:hover {
+    color: #FFFFFF !important;
+}
+
+[data-theme=dark] a:hover {
+    color: #FFFFFF !important;
+}
+
 
 /*# sourceMappingURL=darktheme.css.map */
