@@ -43,21 +43,21 @@
                                 <li class="py-2">If not done already, <a href="https://www.macports.org/install.php">install MacPorts</a>.</li>
                                 <li class="py-2">To <strong>install</strong> {{ port.name }}, run the following command in MacOS terminal (Applications->Utilities->Terminal)<br>
                                     <div style="display: inline-block" class="bg-light rounded-lg py-3 px-2 mt-2">
-                                        <code id="install-2" class="text-secondary">sudo port install {{ port.name }}</code>
+                                        <code id="install-2" class="text-dark">sudo port install {{ port.name }}</code>
                                         <button onclick="copyText('install-2')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
                                     </div>
                                 </li>
                                 <li class="py-2">
                                     To see what <strong>files</strong> were installed by {{port.name}}, run:<br>
                                     <div style="display: inline-block" class="bg-light rounded-lg py-3 px-2 mt-2">
-                                        <code id="contents" class="text-secondary">port contents {{ port.name }}</code>
+                                        <code id="contents" class="text-dark">port contents {{ port.name }}</code>
                                         <button onclick="copyText('contents')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
                                     </div>
                                 </li>
                                 <li class="py-2">
                                     To later <strong>upgrade</strong> {{port.name}}, run:<br>
                                     <div style="display: inline-block" class="bg-light rounded-lg py-3 px-2 mt-2">
-                                        <code id="upgrade" class="text-secondary">sudo port selfupdate && sudo port upgrade {{port.name}}</code>
+                                        <code id="upgrade" class="text-dark">sudo port selfupdate && sudo port upgrade {{port.name}}</code>
                                         <button onclick="copyText('upgrade')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
                                     </div>
                                 </li>
