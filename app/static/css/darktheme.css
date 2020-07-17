@@ -33,6 +33,10 @@
     color: #bebebe !important;
 }
 
+[data-theme=dark] .table td, .table th {
+    border-top: 1px solid #6c757d;
+}
+
 [data-theme=dark] .navbar-light {
     background-color: #353a3f !important
 }
