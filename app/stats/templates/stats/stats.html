@@ -424,6 +424,7 @@
                 datasets: [{
                     label: "Users",
                     backgroundColor: "#5dc5bf",
+                    borderColor: "#bebebe",
                     fill: false,
                     data: [{% for i in users_by_month %}"{{ i.num }}"{% if not forloop.last %}, {% endif %}{% endfor %}]
                 }]

@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/darktheme.css' %}" />
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -19,12 +20,17 @@
     <script src="{% static 'js/typeahead.bundle.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/handlebars.min-v4.7.6.js' %}"></script>
+    <script src="{% static 'js/theme.js' %}"></script>
     {% block head_scripts %}
     {% endblock %}
 
     <title>{% block title %}{% endblock %} MacPorts</title>
 </head>
 <body>
+<script>
+    const themeConfig = new ThemeConfig();
+    themeConfig.initTheme();
+</script>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
     <a class="navbar-brand py-2" href="/"><img width="140px" src="{% static 'images/macports-flat-logo.svg' %}" class="img-fluid"></a>
@@ -64,7 +70,7 @@
                 <a class="nav-link topnav-a" href="{% url 'stats' %}">Statistics</a>
             </li>
         {% if user.is_authenticated %}
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown topnav-li">
                 <a class="nav-link dropdown-toggle {% if '/accounts/' in request.path %}active{% endif %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
                     {{user.username|truncatechars:10}}
@@ -91,6 +97,11 @@
                 </div>
             </li>
         {% endif %}
+        <li class="nav-item ml-4">
+                <script type="text/javascript">
+                    const darkSwitch = writeDarkSwitch(themeConfig);
+                </script>
+            </li>
         </ul>
     </div>
     </div>
@@ -109,7 +120,7 @@
     {% endblock %}
 </div>
 <br><br>
-<div class="bg-secondary">
+<div class="bg-footer">
     <div class="container p-4 text-light">
         <div class="row">
             <div class="col-lg-4">
