@@ -79,6 +79,10 @@ body{
     color: white;
 }
 
+.bg-footer {
+    background-color: #6c757d !important;
+}
+
 .home-logo{
     margin-top: 30px;
     max-width: 200px !important;
