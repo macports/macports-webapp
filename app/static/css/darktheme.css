@@ -21,11 +21,16 @@
 }
 
 [data-theme=dark] .tt-menu {
-    background-color: #353a3f !important;
+    background-color: #171717 !important;
+    border: 1px solid #bebebe;
 }
 
 [data-theme=dark] .tt-cursor, .search-result-item:hover {
-    background-color: #000000 !important;
+    background-color: #353a3f !important;
+}
+
+[data-theme=dark] .tt-hint {
+    color: #bebebe !important;
 }
 
 [data-theme=dark] .navbar-light {
