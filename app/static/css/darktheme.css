@@ -25,7 +25,7 @@
     border: 1px solid #bebebe;
 }
 
-[data-theme=dark] .tt-cursor, .search-result-item:hover {
+[data-theme=dark] .tt-cursor, [data-theme=dark] .search-result-item:hover {
     background-color: #353a3f !important;
 }
 
@@ -33,7 +33,7 @@
     color: #bebebe !important;
 }
 
-[data-theme=dark] .table td, .table th {
+[data-theme=dark] .table td, [data-theme=dark] .table th {
     border-top: 1px solid #6c757d;
 }
 
@@ -69,7 +69,7 @@
     color: white !important;
 }
 
-[data-theme=dark] .navbar-light .nav-link {
+[data-theme=dark] .navbar-light .nav-link, [data-theme=dark] .dropdown-item, [data-theme=dark] a.list-group-item {
     color: #bebebe !important
 }
 
