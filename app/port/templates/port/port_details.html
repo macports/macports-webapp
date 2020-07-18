@@ -88,7 +88,7 @@
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
                              aria-orientation="vertical">
                             {% for d in port.dependent_port.all %}
-                                <a class="nav-link {% if forloop.first %}active{% endif %}" id="vp-{{ d.type }}"
+                                <a class="nav-link" id="vp-{{ d.type }}"
                                    data-toggle="pill" href="#v-{{ d.type }}"
                                    role="tab" aria-controls="v-{{ d.type }}" aria-selected="true">{{ d.type }}
                                     ({{ d.dependencies.all|length }})</a>
@@ -97,8 +97,9 @@
                     </div>
                     <div class="col-9 rounded border p-2">
                         <div class="tab-content" id="v-pills-Content">
+                        <div class="tab-pane fade show active text-muted f14" role="tabpanel">Choose dependency-type from left...</div>
                             {% for d in port.dependent_port.all %}
-                                <div class="tab-pane fade {% if forloop.first %}show active{% endif %}"
+                                <div class="tab-pane fade"
                                      id="v-{{ d.type }}"
                                      role="tabpanel"
                                      aria-labelledby="vp-{{ d.type }}">
@@ -130,7 +131,7 @@
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
                              aria-orientation="vertical">
                             {% for d in dependents %}
-                                <a class="nav-link {% if forloop.first %}active{% endif %}" id="vpd-{{ d.type }}"
+                                <a class="nav-link" id="vpd-{{ d.type }}"
                                    data-toggle="pill" href="#vd-{{ d.type }}"
                                    role="tab" aria-controls="vd-{{ d.type }}" aria-selected="true">{{ d.type }}
                                     ({{ d.ports|length }})</a>
@@ -139,8 +140,9 @@
                     </div>
                     <div class="col-9 rounded border p-2">
                         <div class="tab-content" id="v-pills-depContent">
+                        <div class="tab-pane fade show active text-muted f14" role="tabpanel">Choose dependency-type from left...</div>
                             {% for d in dependents %}
-                                <div class="tab-pane fade {% if forloop.first %}show active{% endif %}"
+                                <div class="tab-pane fade"
                                      id="vd-{{ d.type }}" role="tabpanel"
                                      aria-labelledby="vpd-{{ d.type }}">
                                     <div class="row">
