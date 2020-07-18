@@ -11,13 +11,21 @@
     <li class="nav-item">
         <a href="#" data-toggle="modal" data-target="#tickets-modal" class="nav-link text-dark">Trac Tickets <span id="tickets-count" class="badge badge-light border border-secondary"></span></a>
     </li>
-    {% if "details" in request.path %}
     <li class="nav-item ml-auto">
-        <a href="{% url 'default_port_page_toggle' port.name %}" class="nav-link text-muted">
+        <a href="{% url 'port-detail' port.name %}" class="nav-link text-dark f14 py-1 border-0">API</a>
+    </li>
+    {% if request.path == "/port/"|add:port.name|add:"/details/" %}
+    <li class="nav-item">
+        <a href="{% url 'default_port_page_toggle' port.name %}" class="nav-link text-muted border-0 f14 py-1">
             {% if is_default %}Remove default
-            {% else %}Make default page
+            {% else %}Make default
             {% endif %}
         </a>
     </li>
+    {% endif %}
+    {% if request.path == "/port/"|add:port.name|add:"/stats/" %}
+        <li class="nav-item">
+        <a class="nav-link text-dark border-0 f14 py-1" href="{% url 'stats_faq' %}">Stats FAQ</a>
+        </li>
     {% endif %}
 </ul>

@@ -17,9 +17,6 @@
 
     <div class="row mt-4">
         <div class="col-lg-8">
-        <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#fullDescription" aria-expanded="false" aria-controls="fullDescription">Full Description <i class="fas fa-angle-down"></i> </button>
-        <a href="{% url 'port-detail' port.name %}" class="btn btn-light">API</a>
-            <p id="fullDescription" class="border p-2 rounded collapse">{{ port.long_description }}</p>
         <table class="table table-striped mt-2">
             <tr>
                 <td><strong>Maintainers</strong></td>
