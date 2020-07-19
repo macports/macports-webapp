@@ -2,9 +2,14 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from allauth.account.models import EmailAddress
 from allauth.socialaccount.models import SocialAccount
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.contrib.auth.models import User
+from django.utils.decorators import method_decorator
 
 from user.utilities import get_my_ports_context, get_followed_ports_context, get_ports_by_email, get_ports_by_github, paginate
 from user.forms import MyPortsForm
+from user.serializers import FollowedPortsSerializer
 
 
 @login_required
@@ -78,3 +83,17 @@ def notifications_all(request):
     return render(request, 'account/notifications.html', {
         'notifications': notifications,
     })
+
+
+class FollowedPortsAPIView(APIView):
+    def get(self, request):
+        usr = request.user
+        if not usr.is_authenticated:
+            return Response([])
+        result = FollowedPortsSerializer(
+            User.objects.all(),
+            context={
+                'user': request.user
+            }
+        )
+        return Response(result.data)

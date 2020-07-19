@@ -187,6 +187,10 @@ def follow_port(request, name):
     usr = request.user
     port.subscribers.add(usr)
 
+    # basic call to reduce data transfer when not needed
+    if request.GET.get('basic'):
+        return HttpResponse("Done")
+
     return redirect_back(request, port.get_absolute_url())
 
 
@@ -199,6 +203,10 @@ def unfollow_port(request, name):
 
     usr = request.user
     port.subscribers.remove(usr)
+
+    # basic call to reduce data transfer when not needed
+    if request.GET.get('basic'):
+        return HttpResponse("Done")
 
     return redirect_back(request, port.get_absolute_url())
 
