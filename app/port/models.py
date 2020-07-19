@@ -69,6 +69,19 @@ class Port(models.Model):
 
     @classmethod
     def add_or_update(cls, data):
+        def parse_license(license_object):
+            if isinstance(license_object, str):
+                return license_object
+
+            # format of license : license_object = ["MIT",["PSF","ZPL"],["Apache-2","BSD"]]
+            # required output: MIT and (PSF or ZPL) and (Apache-2 or BSD)
+            # We loop over each list element and join parent elements with "and".
+            # If child elements is a list, we join its internal elements using "or"
+
+            license_string = " and ".join(
+                ["({})".format(" or ".join(x)) if isinstance(x, list) else x for x in license_object])
+            return license_string
+
         @transaction.atomic
         def load_ports_table(ports):
             for port in ports:
@@ -100,7 +113,7 @@ class Port(models.Model):
                 port_object.long_description = port.get('long_description', '')
                 port_object.revision = port.get('revision', 0)
                 port_object.closedmaintainer = port.get('closedmaintainer', False)
-                port_object.license = port.get('license', '')
+                port_object.license = parse_license(port.get('license', ''))
                 port_object.replaced_by = port.get('replaced_by')
                 port_object.active = True
                 port_object.save()
