@@ -61,6 +61,32 @@ $(function () {
         $('#v-facets').html("");
         $('#super-submit').click();
     });
+
+    async function setFollowUnfollowButtons() {
+        const response = await fetch( "/api/v1/user/followed_ports/");
+        const data = await response.json();
+        let ports = [];
+        if ("ports" in data) ports =  data.ports;
+        const ports_object = {};
+        for (let i=0; i<ports.length; i++) {
+            ports_object[ports[i]] = 1;
+        }
+
+        for (let i=1; i<=20; i++) {
+            let box_id = "follow_port_" + i.toString();
+            let e = document.getElementById(box_id);
+            if (e === undefined) break;
+            let port_name = e.getAttribute("data-name");
+            if(!(port_name in ports_object)) {
+                e.innerHTML = `<button onclick="ajaxFollowUnfollow('${port_name}', '${box_id}', 'follow');" class='btn text-light'><i class='fa fa-plus-circle'></i></button>`;
+            } else {
+                e.innerHTML = `<button onclick="ajaxFollowUnfollow('${port_name}', '${box_id}', 'unfollow');" class='btn text-secondary'><i class='fa fa-minus-circle'></i></button>`;
+            }
+        }
+
+    }
+
+    setFollowUnfollowButtons();
 });
 
 
@@ -282,4 +308,39 @@ function applyInstalledFilesFilter() {
 function clearInstalledFilesFilter() {
     $("#id_installed_file").val("");
     $("#super-submit").click();
+}
+
+function ajaxFollowUnfollow(port_name, box_id, query) {
+    let url = `/port/${port_name}/${query}/`;
+    $.ajax({
+        type: 'GET',
+        url: url,
+        indexValue: {
+            port_name: port_name,
+            box_id: box_id,
+            query: query
+        },
+        data: {
+            'basic': "on"
+        },
+        success: function () {
+            let box_id = this.indexValue.box_id;
+            let port_name = this.indexValue.port_name;
+            let query = this.indexValue.query;
+            let box = document.getElementById(box_id);
+            setTimeout(function () {
+                if (query === 'unfollow') {
+                    box.innerHTML = `<button onclick="ajaxFollowUnfollow('${port_name}', '${box_id}', 'follow');" class='btn text-light'><i class='fa fa-plus-circle'></i></button>`;
+                } else if (query === 'follow') {
+                    box.innerHTML = `<button onclick="ajaxFollowUnfollow('${port_name}', '${box_id}', 'unfollow');" class='btn text-secondary'><i class='fa fa-minus-circle'></i></button>`;
+                }
+            }, 800);
+        },
+        beforeSend: function () {
+            let box = document.getElementById(box_id);
+            box.innerHTML = "";
+            box.innerHTML = '<button class="btn"><img width="22" src="/static/images/tspinner.gif"></button>';
+        },
+        dataType: 'html'
+    });
 }

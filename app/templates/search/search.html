@@ -164,6 +164,9 @@
                     <div>
                         <a class="btn btn-link text-primary p-0" href="{{ result.object.get_absolute_url }}">
                             <h4>{{ result.name }}</h4></a>
+                        <span class="float-right" {% if user.is_authenticated %}id="follow_port_{{ forloop.counter }}" data-name="{{ result.name }}"{% endif %}>
+                            {% if not user.is_authenticated %}<a href="{% url 'account_login' %}"><i class="fa fa-plus-circle"></i></a>{% endif %}
+                        </span>
                         <p class="mb-0 text-secondary" style="font-size: 18px">{{ result.description }}</p>
                         <span class="text-secondary" style="font-size: 13px">
                             <strong>Version:</strong>
