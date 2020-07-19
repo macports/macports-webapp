@@ -38,6 +38,12 @@
             <i class="text-warning fas fa-exclamation-circle"></i>
         </button>
     {% endif %}
+    {% if port.livecheck.error %}
+        <button type="button" class="btn p-0" data-toggle="tooltip" data-placement="top"
+                title="{{ port.livecheck.error }}">
+            <i class="text-secondary fas fa-exclamation-circle"></i>
+        </button>
+    {% endif %}
 </span>
 <span class="f15 mr-md-4 mr-3"><strong>License: </strong>{{ port.license }}</span>
 {% if port.active %}<span class="f15 mr-md-4 mr-3"><a target="_blank" style="text-decoration: none;" class="text-dark" href="https://github.com/macports/macports-ports/blob/master/{{ port.portdir }}/Portfile"><img class="mr-1" height="20px" src="{% static 'images/github.png' %}"><strong>GitHub</strong></a></span>{% endif %}
