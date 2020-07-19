@@ -398,6 +398,10 @@
     color: #b5dbfc !important;
 }
 
+[data-theme=dark] a.bg-warning, [data-theme=dark] a.btn-warning {
+    color: black !important;
+}
+
 [data-theme=dark] .btn-link:hover {
     color: #FFFFFF !important;
 }
