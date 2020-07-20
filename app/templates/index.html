@@ -50,7 +50,7 @@
                     <div class="card-body px-3 py-1">
                         {% for port in recently_added %}
                             <a class="btn btn-link btn-lg text-dark p-0"
-                               href="{% url 'port_detail' port.name %}">{{ port.name }} <span class="f14 text-muted">({{ port.updated_at|naturaltime }})</span></a></span><br>
+                               href="{% url 'port_detail' port.name %}">{{ port.name }} <span class="f14 text-muted">({{ port.created_at|naturaltime }})</span></a></span><br>
                         {% endfor %}
                     </div>
                 </div>
