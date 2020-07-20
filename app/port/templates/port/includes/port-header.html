@@ -19,7 +19,7 @@
 {% endif %}
 <!-- Deleted port warning end-->
 <h2 class="mb-1">
-    <span id="port_name" class="font-weight-bold display-4">{{ port.name }}</span>
+    <span id="port_name" class="font-weight-bold display-4"><a class="text-dark" style="text-decoration: none;" href="{% url 'port_detail' port.name %}">{{ port.name }}</a></span>
     <span class="text-secondary" style="font-size: 14px">({{ port.portdir }})</span>
     {% if port.version_updated_at %}
     <span class="text-secondary" style="font-size: 14px"><ins>Updated: {{ port.version_updated_at|naturaltime }}</ins></span>
