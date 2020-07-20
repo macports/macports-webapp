@@ -35,6 +35,15 @@ def refresh_portindex_json():
     if not os.path.isdir(config.MACPORTS_CONTRIB_DIR):
         rebuild_repo(config.MACPORTS_CONTRIB_DIR, config.MACPORTS_CONTRIB_URL, config.MACPORTS_CONTRIB)
 
+    # cd into the contrib repo
+    os.chdir(config.MACPORTS_CONTRIB_DIR)
+
+    # update the contrib repo
+    subprocess.call([config.GIT, 'pull', '--quiet'])
+
+    # go back
+    os.chdir("..")
+
     # check if the ports repo is available
     if not os.path.isdir(config.MACPORTS_PORTS_DIR):
         rebuild_repo(config.MACPORTS_PORTS_DIR, config.MACPORTS_PORTS_URL, config.MACPORTS_PORTS)
@@ -47,7 +56,7 @@ def refresh_portindex_json():
     latest_commit = subprocess.run([config.GIT, 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
     # update/generate the portindex
-    subprocess.run(['portindex'])
+    subprocess.run(['portindex', '-p', 'macosx_19_i386'])
 
     # update/generate portindex.json
     portindexjson = subprocess.run([config.TCLSH, config.PORTINDEX2JSON, config.LOCAL_PORTINDEX, '--info', 'commit={}'.format(latest_commit)], stdout=subprocess.PIPE).stdout.decode('utf-8')
