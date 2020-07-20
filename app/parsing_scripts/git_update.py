@@ -12,8 +12,8 @@ import config
 from settings import BASE_DIR
 
 sys.path.append(BASE_DIR)
-os.environ['DJANGO_SETTINGS_MODULE'] = 'MacPorts.settings'
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "MacPorts.settings")
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 
 django.setup()
 
