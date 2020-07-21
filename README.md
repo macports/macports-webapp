@@ -7,7 +7,7 @@ This is a web application that:
  2. Fetches and displays build history of the ports.
  3. Collects and displays installation statistics (system configurations and installed ports) from users who opt-in by
     installing the port `mpstats`.
- 4. Allows to follow ports and receive notifications when a port gets updated.
+ 4. Allows following ports and receiving notifications when a port gets updated.
     
 It aims at being an all-one-place for users to find relevant ports and for maintainers to monitor their ports and
 understand their user base. The app is running in production at [ports.macports.org](https://ports.macports.org).

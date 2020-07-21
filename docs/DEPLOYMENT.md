@@ -1,6 +1,6 @@
 ## Setting up the ports webapp
 
-For testing and development purposes, the ports webapp should be deployed locally. The main Django app is contained
+For testing and development purposes, the ports webapp can be deployed and populated locally. The main Django app is contained
 inside the `app` directory in the root of the project.
 
 ###### Project structure
@@ -18,19 +18,20 @@ inside the `app` directory in the root of the project.
 ```
 
 As mentioned, the `app` directory is a standalone django app. However, the app has been Dockerised and all the pain of
-setting up a local environment can be avoided working with Docker. However, we will also walk through the standard process.
+setting up a local environment can be avoided when working with Docker. But in case you do not want to work with Docker,
+we will also walk through the standard process of setting up the app.
 
 ## Getting the dependencies ready
 
-The the external dependencies of the app are: PostgreSQL, Solr and Memcached. The search page(/search/) is completely derived from
+The external dependencies of the app are: PostgreSQL, Solr and Memcached. The search page(/search/) is completely derived from
 Solr. Memcached is optional, and can be avoided if you don't want to cache the results of stats and trac tickets.
 
 If you are new to these technologies, you may use the instructions provided below, otherwise you are free to install and setup these
-dependencies by your preferred mechanism.
+dependencies using your preferred mechanism.
 
 ### PostgreSQL
-
-Download and install `Postgres.app` from [here](https://postgresapp.com/downloads.html).
+Either download and install Postgres.app from [here](https://postgresapp.com/downloads.html) or via MacPorts:
+`sudo port install postgresql13 postgresql13-server`
 
 After this, connect as root:
 ```bash
@@ -39,7 +40,7 @@ su - postgres
 
 Create your user(replace username and password with your preferred credentials):
 ```bash
-CREATE USER username PASSWORD 'passowrd';
+CREATE USER username PASSWORD 'password';
 ```
 
 Create a new database;
@@ -183,26 +184,223 @@ sudo docker run -d \
 
 Open `127.0.0.1:8080` in the browser to test if the app has started, you won't have any ports though.
 
-### 3. Setting up initial data
+## Setup without Docker
 
-- Migrations are automatically applied to the database by the docker image.
-- To populate the database with ports, run:
+This is the traditional python-django route that we will follow. Make sure PostgreSQL, SOLR and Memcached(optional) have
+been setup as described above. Python3 is recommended.
+
+Start by cloning the repository:
+```bash
+git clone https://github.com/macports/macports-webapp.git
+cd macports-webapp
+```
+
+**NOTE**: It is recommended that you clone your fork for development.
+
+Now, create a virtual environment and activate it.
+
+```bash
+python3 -m venv env
+source env/bin/activate
+```
+
+This will create an `env` directory in the root of the project.
+
+Install the requirements for our Django app:
+
+```
+pip install -r app/requirements.txt
+```
+
+Once all the dependencies are installed we can move to the most important step, that is connecting various services
+to the django app. If you followed the setup with Docker, you already know that we do this by using environment variables.
+To set the environment variables inside your virtual env, run the following commands:
+
+```bash
+export DB_NAME=                            (name of our database, webapp)
+export DB_USER=                            (username of the database user)
+export DB_PASSWORD=                        (password for your database user)
+export DB_HOST=                            (localhost)
+export DB_PORT=                            (default is 5432)
+export SECRET_KEY=                         (any string, but secret)
+export SOLR_URL=                           (http://127.0.0.1:8983/solr/tester)
+export SOLR_ADMIN_URL=                     (http://127.0.0.1:8983/solr/admin/cores)
+export EMAIL_HOST=                         (smtp host, optional)
+export EMAIL_PORT=                         (smtp port, optional)
+export EMAIL_HOST_USER=                    (smtp user, optional)
+export EMAIL_HOST_PASSWORD=                (smtp user password, optional)
+```
+
+**NOTE**: Add the values to the keys as explained and then remove the command. Anything between the `()` is just for your
+reference and should not be run with the command. A sample command would look like:
+
+```bash
+export DB_NAME=webapp
+```
+
+Setting up env variables every time is a tedious task and you might want to reduce the friction by following some really
+good guides: https://help.pythonanywhere.com/pages/environment-variables-for-web-apps/
+
+Once the database (and other services) have been connected, run the migrations. Before that let's cd into the main src 
+directory for the project, that is `app`.
+
+```bash
+cd app
+python3 manage.py migrate
+python3 manage.py collectstatic
+```
+
+You may now run the server, but your app has no data, yet.
+
+```bash
+python3 manage.py runserver
+```
+
+## Initialising the Webapp
+
+Now that you have the app running (using either of two routes above), it is time to add some data to the app. Some of these
+commands take a long time in their first run.
+
+Before proceeding make sure you are in the main django directory, i.e. `app`.
+
+**For docker:**
+```bash
+docker exec -it webapp-container bash
+cd code/app
+```
+**Without docker:**
+```bash
+cd app
+mkdir data
+```
+
+##### Add ports data
+```bash
+python3 manage.py update-portinfo --type=full
+```
+
+**NOTE**: This will take a lot of time, you might want to start another terminal window for rest of the work and keep
+this running.
+In this command, three tasks take place:
+- Fetching `macports-ports` and `macports-contrib` repositories
+- Generating the portindex and converting it to `JSON`
+- Adding the JSON to PostgreSQL database
+
+##### Create superuser
+```bash
+python3 manage.py createsuperuser
+```
+After this enter, username and password according to your choice- remember the credentials.
+
+##### Add a builder
+- Login to django admin dashboard using your credentials: `/admin`
+- Go to `BUILDHISTORY -> Builder -> Add builder`
+- An example of a builder is
     ```bash
-    docker exec webapp-container python3 /code/app/manage.py update-portinfo --type=full
+    Name of the builder as per buildbot = 10.15_x86_64
+    Simplified builder name: 10.XX: = 10.15
+    Name of the MacOS version, e.g. Catalina: = Catalina
     ```
-  This will take quite a while, as first we build a `Portindex` and then push the data to database.
-  You may run the command in background by adding `&` at the end of the command.
-- Create a superuser
-    ```bash
-    docker exec webapp-container python3 /code/app/manage.py createsuperuser
-    ```
-  and then enter username and password.
-- Login to the app, (127.0.0.1:8080/admin) using the credentials of the superuser. Once in the admin dashboard, add one or
-   more builders. You may see available builders from [ports.macports.org/all_builds](https://ports.macports.org/all_builds/)
-- Fetch some history
-    ```bash 
-     docker exec webapp-container python3 /code/app/manage.py fetch-build-history &
-    ```
-  Notice the `&` used to push the command to background.
   
-That's it.
+You may add more builders if you wish
+  
+##### Fetch some build history
+```bash
+python3 manage.py fetch-build-history &
+```
+
+**NOTE**: This command should be sent to background using `&` as the fetching can proceed in the background without any
+ issues.
+ 
+##### Run livecheck
+```bash
+port selfupdate && python3 manage.py run-full-livecheck &
+```
+
+**NOTE**: This is the most time consuming command. Livecheck can take 3-4 hours to finish for all ports and hence the command
+should always be ran in background.
+
+##### Add a solr schema and generate index
+- Generate Solr schema:
+    
+    **Docker**:
+    ```bash
+    python3 manage.py build_solr_schema --configure-directory=/solr/server/solr/tester/conf
+    ```
+    **Without Docker**:
+    ```bash
+    pyton3 manage.py build_solr_schema --configure-directory=path/to/solr/server/solr/tester/conf
+    ```
+  
+  This is because for Docker, we already the know path to Solr, but without Docker you should add path to Solr as per
+  your machine.
+  
+- Reload Solr core:
+
+    ```bash
+    python3 manage.py build_solr_schema -r RELOAD_CORE
+    ```
+- Build Solr index:
+
+    ```bash
+    python3 manage.py rebuild_index --noinput
+    ```
+  
+All needed data has been added.
+
+
+## Keeping the data up-to-date
+
+To update port information:
+```bash 
+python3 manage.py update-portinfo
+```
+
+To fetch new builds:
+```bash
+python3 manage.py fetch-build-history
+```
+**NOTE**: For all added builder, this will fetch all builds that have finished on the buildbot after the most recent 
+build in your database.
+
+To run livecheck again:
+```bash
+python3 manage.py run-full-livecheck
+```
+
+To update the Solr index:
+```bash
+python3 manage.py update_index
+```
+
+**IMPORTANT**: Updating the Solr index can be optimised by updating it only for those ports which have changed in past X
+hours. For example, if you are trying to update the Solr schema exactly after running `update-portinfo`, then you may
+limit the index to be updated for only those ports which have been update in the last hour (because the `update-portinfo`)
+command ran just before it. Remember, that the update we are talking about is when the data was added in the database and
+not when the port was actually modified on GitHub.
+
+```bash
+python3 manage.py update_index --age=1
+```
+
+
+### Setting up Crontabs
+
+Two crontabs can keep the up-to-date in a production environment.
+
+
+1. Run the following every 10 minutes:
+    
+    ```bash
+    python3 manage.py update-portinfo
+    python3 manage.py fetch-build-history
+    python3 manage.py update_index --age=5
+    ```
+    
+    The 5-hour window for updating the Solr index is to make sure no builds are missed, as builds might take some time to finish.
+    
+2. Run the following every two days
+    ```bash
+    python3 manage.py run-full-livecheck
+    python3 manage.py update_index
+    ```
