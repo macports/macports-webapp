@@ -57,8 +57,8 @@
                 <td><strong>Variants</strong></td>
                 <td>
                 {% if port.variants.all.count > 0 %}
-                    {% for variant in port.variants.all %}
-                        <a href="{% url 'variant' variant.variant %}">{{ variant.variant }}</a>{% if not forloop.last %}, {% endif %}
+                    {% for variant in port.variants.all|dictsort:"variant.lower" %}
+                        <a class="mr-1" href="{% url 'variant' variant.variant %}">{{ variant.variant }}</a>
                     {% endfor %}
                 {% else %}
                     -
