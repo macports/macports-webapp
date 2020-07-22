@@ -22,7 +22,7 @@ from stats.utilities.port_installs import get_install_count
 from buildhistory.filters import BuildHistoryFilter
 from stats.validators import validate_stats_days, ALLOWED_DAYS_FOR_STATS
 from port.serializers import SearchSerializer
-from port.utilities import redirect_back, get_subports
+from port.utilities import redirect_back
 
 
 def port_landing(request, name):
@@ -40,7 +40,7 @@ def port_landing(request, name):
     return render(request, 'port/port_basic.html', {
         'port': port,
         'count': count,
-        'is_followed': port.is_followed(request)
+        'is_followed': port.is_followed(request),
     })
 
 
@@ -62,7 +62,6 @@ def port_details(request, name):
         'count': count,
         'is_followed': port.is_followed(request),
         'is_default': request.COOKIES.get('default_port_page'),
-        'subports': get_subports(port.name, port.portdir)
     })
 
 

@@ -67,6 +67,26 @@ class Port(models.Model):
             return True
         return False
 
+    def is_stubport(self):
+        stubport_prefixes = ['py-', 'p5-']
+
+        for prefix in stubport_prefixes:
+            if self.name.startswith(prefix):
+                return True
+
+        return False
+
+    def get_subports(self):
+        subports = None
+
+        portdir_splitted = self.portdir.split('/')
+        if len(portdir_splitted) < 2:
+            return subports
+
+        subports = Port.objects.filter(portdir__iexact=self.portdir).exclude(name=self.name).order_by('name')
+
+        return subports
+
     @classmethod
     def add_or_update(cls, data):
         def parse_license(license_object):
