@@ -19,57 +19,73 @@
         <p class="text-center"><a href="{{ port.homepage }}">{{ port.homepage }}</a></p>
 
         {% if port.active == True and port.replaced_by == None %}
-        <div class="text-center mt-4">
-            <p class="text-muted mb-1">To install {{ port.name }}, paste this in macOS terminal after <a href="https://www.macports.org/install.php">installing MacPorts</a></p>
-            <div style="display: inline-block" class="text-center bg-light rounded-lg py-3 px-2 mt-3">
-                <code id="install" class="text-dark lead">sudo port install {{ port.name }}</code>
-                <button onclick="copyText('install')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
-            </div>
-                <br>
-            <button class="btn btn-link text-secondary" data-toggle="modal" data-target="#instructions">More instructions
-            </button>
-            <div class="modal fade" id="instructions" tabindex="-1" role="dialog" aria-labelledby="insLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="insLabel">Instructions</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body text-left">
-                            <ul>
-                                <li class="py-2">If not done already, <a href="https://www.macports.org/install.php">install MacPorts</a>.</li>
-                                <li class="py-2">To <strong>install</strong> {{ port.name }}, run the following command in MacOS terminal (Applications->Utilities->Terminal)<br>
-                                    <div style="display: inline-block" class="bg-light rounded-lg py-3 px-2 mt-2">
-                                        <code id="install-2" class="text-dark">sudo port install {{ port.name }}</code>
-                                        <button onclick="copyText('install-2')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
-                                    </div>
-                                </li>
-                                <li class="py-2">
-                                    To see what <strong>files</strong> were installed by {{port.name}}, run:<br>
-                                    <div style="display: inline-block" class="bg-light rounded-lg py-3 px-2 mt-2">
-                                        <code id="contents" class="text-dark">port contents {{ port.name }}</code>
-                                        <button onclick="copyText('contents')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
-                                    </div>
-                                </li>
-                                <li class="py-2">
-                                    To later <strong>upgrade</strong> {{port.name}}, run:<br>
-                                    <div style="display: inline-block" class="bg-light rounded-lg py-3 px-2 mt-2">
-                                        <code id="upgrade" class="text-dark">sudo port selfupdate && sudo port upgrade {{port.name}}</code>
-                                        <button onclick="copyText('upgrade')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            {% if not port.is_stubport %}
+            <div class="text-center mt-4">
+                <p class="text-muted mb-1">To install {{ port.name }}, paste this in macOS terminal after <a href="https://www.macports.org/install.php">installing MacPorts</a></p>
+                <div style="display: inline-block" class="text-center bg-light rounded-lg py-3 px-2 mt-3">
+                    <code id="install" class="text-dark lead">sudo port install {{ port.name }}</code>
+                    <button onclick="copyText('install')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
+                </div>
+                    <br>
+                <button class="btn btn-link text-secondary" data-toggle="modal" data-target="#instructions">More instructions
+                </button>
+                <div class="modal fade" id="instructions" tabindex="-1" role="dialog" aria-labelledby="insLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="insLabel">Instructions</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-left">
+                                <ul>
+                                    <li class="py-2">If not done already, <a href="https://www.macports.org/install.php">install MacPorts</a>.</li>
+                                    <li class="py-2">To <strong>install</strong> {{ port.name }}, run the following command in MacOS terminal (Applications->Utilities->Terminal)<br>
+                                        <div style="display: inline-block" class="bg-light rounded-lg py-3 px-2 mt-2">
+                                            <code id="install-2" class="text-dark">sudo port install {{ port.name }}</code>
+                                            <button onclick="copyText('install-2')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
+                                        </div>
+                                    </li>
+                                    <li class="py-2">
+                                        To see what <strong>files</strong> were installed by {{port.name}}, run:<br>
+                                        <div style="display: inline-block" class="bg-light rounded-lg py-3 px-2 mt-2">
+                                            <code id="contents" class="text-dark">port contents {{ port.name }}</code>
+                                            <button onclick="copyText('contents')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
+                                        </div>
+                                    </li>
+                                    <li class="py-2">
+                                        To later <strong>upgrade</strong> {{port.name}}, run:<br>
+                                        <div style="display: inline-block" class="bg-light rounded-lg py-3 px-2 mt-2">
+                                            <code id="upgrade" class="text-dark">sudo port selfupdate && sudo port upgrade {{port.name}}</code>
+                                            <button onclick="copyText('upgrade')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            {% else %}
+                <h4 class="text-center border-bottom">Installable ports:</h4>
+                {% with subports=port.get_subports %}
+                    {% if subports %}
+                        <div class="row px-5">
+                            {% for subport in subports %}
+                                <div class="col-3">
+                                    <a href="{% url 'port_detail' subport.name %}">{{ subport.name }}</a><br>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <br>
+                    {% endif %}
+                {% endwith %}
+            {% endif %}
         {% elif port.active is False %}
         <div class="alert alert-danger text-center" role="alert">
             This port has been deleted. This page will exist till another port with the name "{{ port.name }}" comes
