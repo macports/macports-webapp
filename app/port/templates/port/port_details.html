@@ -30,10 +30,9 @@
                     {% if port.maintainers.all.count > 0 %}
                         {% for maintainer in port.maintainers.all %}
                             {% if maintainer.github %}
-                                <a
-                                        href="{% url 'maintainer' maintainer.github %}">{{ maintainer.github }}</a>{% if not forloop.last %}, {% endif %}
+                                <a class="mr-1" href="{% url 'maintainer' maintainer.github %}">{{ maintainer.github }}</a>
                             {% else %}
-                                {{ maintainer.name }} (GitHub handle not provided){% if not forloop.last %}, {% endif %}
+                                <span class="mr-1">{{ maintainer.name }} (GitHub handle not provided)</span>
                             {% endif %}
                         {% endfor %}
                     {% else %}
@@ -46,7 +45,7 @@
                 <td>
                 {% if port.categories.all.count > 0 %}
                     {% for category in port.categories.all %}
-                        <a href="{% url 'category' category.name %}">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+                        <a class="mr-1" href="{% url 'category' category.name %}">{{ category.name }}</a>
                     {% endfor %}
                 {% else %}
                     --
