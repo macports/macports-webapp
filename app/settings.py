@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.admindocs',
     'rest_framework',
+    'corsheaders',
     'haystack',
     'port',
     'buildhistory',
@@ -67,6 +68,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -228,3 +230,5 @@ DJANGO_NOTIFICATIONS_CONFIG = {
     'USE_JSONFIELD': True,
     'SOFT_DELETE': True
 }
+
+CORS_ORIGIN_ALLOW_ALL = True
