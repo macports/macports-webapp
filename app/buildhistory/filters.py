@@ -10,9 +10,15 @@ class BuildHistoryFilter(django_filters.FilterSet):
         choices=STATUS_CHOICES
     )
     builder_name__name = django_filters.MultipleChoiceFilter(
-        choices=[(builder.name, builder.name) for builder in Builder.objects.all()]
     )
 
     class Meta:
         model = BuildHistory
         fields = []
+
+    def __init__(self, *args, **kwargs):
+        super(BuildHistoryFilter, self).__init__(*args, **kwargs)
+        # Load choices here so db calls are not made during migrations.
+        self.filters['builder_name__name'].extra.update({
+           'choices': [(builder.name, builder.name) for builder in Builder.objects.all()]
+        })
