@@ -4,7 +4,6 @@ import requests
 from bs4 import BeautifulSoup
 from django.shortcuts import render, reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery, Count, Prefetch, Q
 from django.contrib.postgres.aggregates import ArrayAgg
 from rest_framework import mixins, viewsets, filters
@@ -13,6 +12,7 @@ from drf_haystack.viewsets import HaystackViewSet
 from django.views.decorators.cache import cache_page
 from django.contrib.auth.decorators import login_required
 
+from utilities import paginate
 from port.forms import AdvancedSearchForm
 from port.serializers import PortHaystackSerializer, PortSerializer
 from port.models import Port, Dependency
@@ -72,21 +72,16 @@ def port_builds(request, name):
     except Port.DoesNotExist:
         return render(request, 'port/exceptions/port_not_found.html', {'name': name})
 
-    page = request.GET.get('page', 1)
     builds = BuildHistoryFilter(
-        request.GET
-    , queryset=BuildHistory.objects.filter(port_name__iexact=port.name).select_related('builder_name').order_by('-time_start')).qs
-    paginated_builds = Paginator(builds, 100)
-    try:
-        result = paginated_builds.get_page(page)
-    except PageNotAnInteger:
-        result = paginated_builds.get_page(1)
-    except EmptyPage:
-        result = paginated_builds.get_page(paginated_builds.num_pages)
+        request.GET,
+        queryset=BuildHistory.objects.filter(port_name__iexact=port.name).select_related('builder_name').order_by('-time_start')
+    ).qs
+
+    results = paginate(request, builds, 100)
 
     return render(request, 'port/port_builds.html', {
         'port': port,
-        'builds': result,
+        'builds': results,
         'form': BuildHistoryForm(request.GET),
         'is_followed': port.is_followed(request)
     })

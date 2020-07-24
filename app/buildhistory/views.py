@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Subquery
 from rest_framework import viewsets, filters
 import django_filters
 
+from utilities import paginate
 from buildhistory.models import BuildHistory, Builder
 from buildhistory.forms import BuildHistoryForm
 from buildhistory.filters import BuildHistoryFilter
@@ -15,7 +15,6 @@ def all_builds(request):
     builder_list = request.GET.getlist('builder_name__name')
     unresolved = request.GET.get('unresolved')
     port_name = request.GET.get('port_name')
-    page = request.GET.get('page', 1)
 
     # generate querysets
     if unresolved:
@@ -33,17 +32,10 @@ def all_builds(request):
             queryset=BuildHistory.objects.all().select_related('builder_name').order_by('-time_start')
         ).qs
 
-    # handle pagination
-    paginated_builds = Paginator(builds, 100)
-    try:
-        result = paginated_builds.get_page(page)
-    except PageNotAnInteger:
-        result = paginated_builds.get_page(1)
-    except EmptyPage:
-        result = paginated_builds.get_page(paginated_builds.num_pages)
+    results = paginate(request, builds, 100)
 
     return render(request, 'buildhistory/all_builds.html', {
-        'builds': result,
+        'builds': results,
         'form': BuildHistoryForm(request.GET)
     })
 
