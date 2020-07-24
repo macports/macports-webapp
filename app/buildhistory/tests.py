@@ -101,19 +101,19 @@ class TestBuildHistoryViews(TransactionTestCase):
         all_builds = response.context['builds']
         self.assertEquals(len(all_builds), 3)
 
-        response_only_successful = self.client.get(reverse('all_builds'), {'status-filter': 'build successful'})
+        response_only_successful = self.client.get(reverse('all_builds'), {'status': 'build successful'})
         self.assertEquals(len(response_only_successful.context['builds']), 1)
 
-        response_all_failed = self.client.get(reverse('all_builds'), {'status-filter': 'failed'})
-        self.assertEquals(len(response_all_failed.context['builds']), 2)
+        response_all_failed = self.client.get(reverse('all_builds'), {'status': 'failed install-port'})
+        self.assertEquals(len(response_all_failed.context['builds']), 1)
 
-        response_valid_builder = self.client.get(reverse('all_builds'), {'builder-filter': '10.15_x86_64'})
+        response_valid_builder = self.client.get(reverse('all_builds'), {'builder_name__name': '10.15_x86_64'})
         self.assertEquals(len(response_valid_builder.context['builds']), 3)
 
-        response_invalid_builder = self.client.get(reverse('all_builds'), {'builder-filter': '10.14_x86_64'})
-        self.assertEquals(len(response_invalid_builder.context['builds']), 0)
+        response_invalid_builder = self.client.get(reverse('all_builds'), {'builder_name__name': '10.14_x86_64'})
+        self.assertEquals(len(response_invalid_builder.context['builds']), 3)
 
-        response_port = self.client.get(reverse('all_builds'), {'name-filter': 'port-A2'})
+        response_port = self.client.get(reverse('all_builds'), {'port_name': 'port-A2'})
         self.assertEquals(len(response_port.context['builds']), 1)
 
     def test_unresolved(self):
@@ -133,7 +133,7 @@ class TestBuildHistoryViews(TransactionTestCase):
             watcher_id=1
         )
 
-        response = self.client.get(reverse('all_builds'), {'status-filter': 'unresolved'})
+        response = self.client.get(reverse('all_builds'), {'unresolved': 'on'})
         self.assertEquals(len(response.context['builds']), 1)
         self.assertEquals(response.context['builds'][0].build_id, 3)
 
@@ -148,7 +148,7 @@ class TestBuildHistoryViews(TransactionTestCase):
             watcher_id=1
         )
 
-        response = self.client.get(reverse('all_builds'), {'status-filter': 'unresolved'})
+        response = self.client.get(reverse('all_builds'), {'unresolved': 'on'})
         self.assertEquals(len(response.context['builds']), 0)
 
 

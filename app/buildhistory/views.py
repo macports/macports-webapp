@@ -5,31 +5,33 @@ from rest_framework import viewsets, filters
 import django_filters
 
 from buildhistory.models import BuildHistory, Builder
+from buildhistory.forms import BuildHistoryForm
 from buildhistory.filters import BuildHistoryFilter
 from buildhistory.serializers import BuilderSerializer, BuildHistorySerializer, BuildFilesSerializer
 
 
 def all_builds(request):
     # get page state (filter parameters)
-    builder = request.GET.get('builder-filter', '')
-    status = request.GET.get('status-filter', '')
-    port_name = request.GET.get('name-filter', '')
+    builder_list = request.GET.getlist('builder_name__name')
+    unresolved = request.GET.get('unresolved')
+    port_name = request.GET.get('port_name')
     page = request.GET.get('page', 1)
 
     # generate querysets
-    builders = Builder.objects.all()
-    if status == 'unresolved':
+    if unresolved:
         all_latest_builds = BuildHistory.objects.all().order_by('port_name', 'builder_name__display_name', '-build_id').distinct('port_name', 'builder_name__display_name')
-        builds = BuildHistoryFilter({
-            'builder_name__name': builder,
-            'port_name': port_name,
-        }, queryset=BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), status__icontains='failed').select_related('builder_name').order_by('-time_start')).qs
+        builds = BuildHistoryFilter(
+            {
+                'builder_name__name': builder_list,
+                'port_name': port_name,
+            },
+            queryset=BuildHistory.objects.filter(id__in=Subquery(all_latest_builds.values('id')), status__icontains='failed').select_related('builder_name').order_by('-time_start')
+        ).qs
     else:
-        builds = BuildHistoryFilter({
-            'builder_name__name': builder,
-            'port_name': port_name,
-            'status': status
-        }, queryset=BuildHistory.objects.all().select_related('builder_name').order_by('-time_start')).qs
+        builds = BuildHistoryFilter(
+            request.GET,
+            queryset=BuildHistory.objects.all().select_related('builder_name').order_by('-time_start')
+        ).qs
 
     # handle pagination
     paginated_builds = Paginator(builds, 100)
@@ -41,11 +43,8 @@ def all_builds(request):
         result = paginated_builds.get_page(paginated_builds.num_pages)
 
     return render(request, 'buildhistory/all_builds.html', {
-        'builders': builders,
         'builds': result,
-        'builder': builder,
-        'status': status,
-        'port_name': port_name,
+        'form': BuildHistoryForm(request.GET)
     })
 
 
