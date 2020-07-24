@@ -54,46 +54,7 @@
             </div>
         </div>
     </form>
-    <br>
-    {% if builds.has_other_pages %}
-                <p>Page {{ builds.number }} of {{ builds.paginator.num_pages }} | Showing builds {{ builds.start_index }} to
-                {{ builds.end_index }}</p>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        {% if builds.has_previous %}
-                            <li class="page-item"><a class="page-link" href="?{% url_replace page=builds.previous_page_number %}">&laquo;</a></li>
-                        {% else %}
-                            <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
-                        {% endif %}
-
-                        {% if builds.number|add:'-4' > 1 %}
-                            <li class="page-item"><a class="page-link" href="?{% url_replace page=builds.number|add:'-5' %}">&hellip;</a>
-                            </li>
-                        {% endif %}
-
-                        {% for i in builds.paginator.page_range %}
-                            {% if builds.number == i %}
-                                <li class="active page-item"><span class="page-link">{{ i }} <span
-                                        class="sr-only">(current)</span></span></li>
-                            {% elif i > builds.number|add:'-5' and i < builds.number|add:'5' %}
-                                <li class="page-item"><a class="page-link" href="?{% url_replace page=i %}">{{ i }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-
-                        {% if builds.paginator.num_pages > builds.number|add:'4' %}
-                            <li class="page-item"><a class="page-link" href="?{% url_replace page=builds.number|add:'5' %}">&hellip;</a>
-                            </li>
-                        {% endif %}
-
-                        {% if builds.has_next %}
-                            <li class="page-item"><a class="page-link" href="?{% url_replace page=builds.next_page_number %}">&raquo;</a>
-                            </li>
-                        {% else %}
-                            <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
-                        {% endif %}
-                    </ul>
-                </nav>
-    {% endif %}
+    {% include 'includes/basic_pagination.html' with items=builds contents="build(s)" %}
 
     <table class="table table-striped">
         <thead>
@@ -119,6 +80,7 @@
             </tr>
         {% endfor %}
     </table>
+    {% include 'includes/basic_pagination.html' with items=builds contents="build(s)" %}
 
 
 {% endblock %}

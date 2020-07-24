@@ -8,6 +8,20 @@
 
 {% block head_scripts %}
     <script type="text/javascript" src="{% static 'js/port-detail.js' %}"></script>
+    <style>
+        .bootstrap-select .bs-ok-default::after {
+            width: 0.3em;
+            height: 0.6em;
+            border-width: 0 0.1em 0.1em 0;
+            transform: rotate(45deg) translateY(0.5rem);
+        }
+
+        .btn.dropdown-toggle:focus {
+            outline: none !important;
+        }
+    </style>
+    <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap-multiselect.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -15,73 +29,26 @@
     {% include 'port/includes/port-header.html' with port=port %}
     {% include 'port/includes/port-tabs.html' with port_name=port.name active="builds" %}
 <br>
-<form method="get" action=".">
-<div class="form-row">
-    <div class="col-lg-4">
-        <label for="status-filter">Filter based on Status: </label>
-        <select onchange="this.form.submit()" class="form-control ml-2 filter" id="status" name="status">
-            <option value="">All</option>
-            <option value="build successful" {% if status == "build successful" %}selected{% endif %}>Successful Builds</option>
-            <option value="failed" {% if status == "failed" %}selected{% endif %}>All Failed Builds</option>
-            <option value="failed install-port" {% if status == "failed install-port" %}selected{% endif %}>failed install-port</option>
-            <option value="failed install-dependencies" {% if status == "failed install-dependencies" %}selected{% endif %}>failed install-dependencies</option>
-        </select>
-    </div>
-    <div class="col-lg-4">
-        <label for="builder-filter">Filter based on builder: </label>
-        <select onchange="this.form.submit()" class="form-control ml-2 filter" id="builder_name__display_name" name="builder_name__display_name">
-            <option value="">All</option>
-            {% for b in builders %}
-                <option value="{{ b.display_name }}" {%  if builder == b.display_name %}selected{% endif %}>{{ b.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
-</div>
-</form>
-<br><br>
+        <form method="get" action=".">
+            <div class="form-row">
+                <div class="col-md-5 px-0">
+                    <label>Select status: </label>
+                    {{ form.status }}
+                </div>
+                <div class="col-md-5 px-0">
+                    <label>Select builder(s): </label>
+                    {{ form.builder_name__name }}
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary" type="submit">Apply</button>
+                    <a href="." class="btn btn-link">Reset</a>
+                </div>
+            </div>
+        </form>
 {% if builds|length > 0 %}
-<h4 class="text-secondary">Showing {% if status == "" %} <ins>All Builds</ins> {% else %}builds with status: <ins>{{ status }}</ins>{% endif %} on <ins>{% if builder == "" %}All Builders {% else %}{{ builder }}{% endif %}</ins></h4>
-
-{% if builds.has_other_pages %}
-            Page {{ builds.number }} of {{ builds.paginator.num_pages }} | Showing builds {{ builds.start_index }} to
-            {{ builds.end_index }}<br><br>
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    {% if builds.has_previous %}
-                        <li class="page-item"><a class="page-link" href="?{% url_replace page=builds.previous_page_number %}">&laquo;</a></li>
-                    {% else %}
-                        <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
-                    {% endif %}
-
-                    {% if builds.number|add:'-4' > 1 %}
-                        <li class="page-item"><a class="page-link" href="?{% url_replace page=page.builds.number|add:'-5' %}">&hellip;</a>
-                        </li>
-                    {% endif %}
-
-                    {% for i in builds.paginator.page_range %}
-                        {% if builds.number == i %}
-                            <li class="active page-item"><span class="page-link">{{ i }} <span
-                                    class="sr-only">(current)</span></span></li>
-                        {% elif i > builds.number|add:'-5' and i < builds.number|add:'5' %}
-                            <li class="page-item"><a class="page-link" href="?{% url_replace page=i %}">{{ i }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-
-                    {% if builds.paginator.num_pages > builds.number|add:'4' %}
-                        <li class="page-item"><a class="page-link" href="?{% url_replace page=builds.number|add:'5' %}">&hellip;</a>
-                        </li>
-                    {% endif %}
-
-                    {% if builds.has_next %}
-                        <li class="page-item"><a class="page-link" href="?{% url_replace page=builds.next_page_number %}">&raquo;</a>
-                        </li>
-                    {% else %}
-                        <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
-                    {% endif %}
-                </ul>
-            </nav>
-{% endif %}
-<table class="table table-striped">
+    <br>
+    {% include 'includes/basic_pagination.html' with items=builds contents="build(s)" %}
+<table class="table table-striped mt-2">
     <thead>
     <tr>
         <th scope="col">Builder</th>

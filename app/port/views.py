@@ -17,6 +17,7 @@ from port.forms import AdvancedSearchForm
 from port.serializers import PortHaystackSerializer, PortSerializer
 from port.models import Port, Dependency
 from buildhistory.models import BuildHistory, Builder
+from buildhistory.forms import BuildHistoryForm
 from stats.models import Submission, PortInstallation
 from stats.utilities.port_installs import get_install_count
 from buildhistory.filters import BuildHistoryFilter
@@ -71,10 +72,7 @@ def port_builds(request, name):
     except Port.DoesNotExist:
         return render(request, 'port/exceptions/port_not_found.html', {'name': name})
 
-    status = request.GET.get('status', '')
-    builder = request.GET.get('builder_name__display_name', '')
     page = request.GET.get('page', 1)
-    builders = Builder.objects.all()
     builds = BuildHistoryFilter(
         request.GET
     , queryset=BuildHistory.objects.filter(port_name__iexact=port.name).select_related('builder_name').order_by('-time_start')).qs
@@ -89,9 +87,7 @@ def port_builds(request, name):
     return render(request, 'port/port_builds.html', {
         'port': port,
         'builds': result,
-        'builder': builder,
-        'builders': builders,
-        'status': status,
+        'form': BuildHistoryForm(request.GET),
         'is_followed': port.is_followed(request)
     })
 
