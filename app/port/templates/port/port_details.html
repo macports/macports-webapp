@@ -88,7 +88,7 @@
             </div>
             {% endfor %}
         </div>
-        <br><br>
+        <br>
         {% endif %}
         {% endwith %}
             <h4 class="border-bottom">"{{ port.name }}" depends on</h4>
@@ -106,7 +106,7 @@
             {% else %}
                 <p>No ports</p>
             {% endif %}
-            <br><br>
+            <br>
             <h4 class="border-bottom">Ports that depend on "{{ port.name }}"</h4>
             {% if dependents|length > 0 %}
                 {% for d in dependents %}
@@ -123,6 +123,12 @@
                 {% endfor %}
             {% else %}
                 <p>No ports</p>
+            {% endif %}
+            <br>
+            {% if port.notes %}
+                <h4 class="border-bottom">Port notes</h4>
+                {{ port.notes|safe }}
+                <br>
             {% endif %}
         </div>
         <div class="col-lg-4">
