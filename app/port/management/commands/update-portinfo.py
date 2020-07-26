@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from parsing_scripts import git_update
+from parsing_scripts import git_update, populate_variant_descriptions
 from port.models import Port, LastPortIndexUpdate
 
 
@@ -60,7 +60,10 @@ class Command(BaseCommand):
         Port.mark_deleted(dict_of_portdirs_with_ports)
 
         # Run updates
-        Port.add_or_update(ports_to_be_updated_json)
+        updated_port_objects = Port.add_or_update(ports_to_be_updated_json)
+
+        # for the updated ports, populate the variant descriptions
+        populate_variant_descriptions.populate_variant_descriptions_ports(updated_port_objects)
 
         # Write the commit hash into database
         LastPortIndexUpdate.update_or_create_first_object(data['info']['commit'])
