@@ -30,7 +30,8 @@
         <button class="btn btn-sm btn-light" disabled>{{ port.subscribers.count }}</button>
     </span>
 </h2>
-<span class="lead mb-0 mt-0">{{ port.description }} {% include 'port/includes/full-description-collapsible.html' with fd=port.long_description %}</span><br>
+<span class="lead mb-0 mt-0">{{ port.description }}</span>
+{% include 'port/includes/full-description-collapsible.html' with ld=port.long_description d=port.description %}
 <span class="f15 mr-md-4 mr-3"><strong>Version: </strong>{{ port.version }}
     {% if port.livecheck.has_updates %}
         <button type="button" class="btn p-0" data-toggle="tooltip" data-placement="top"

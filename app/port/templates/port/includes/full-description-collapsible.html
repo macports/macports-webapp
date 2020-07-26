@@ -1,6 +1,38 @@
-<button class="btn btn-link py-0 my-0" data-toggle="collapse" href="#fullDescription" role="button" aria-expanded="false" aria-controls="fullDescription">
-    More...
-</button>
-<div class="collapse" id="fullDescription">
-    {{ fd }}
-</div>
+{% if d == ld %}
+    <br>
+{% else %}
+    <p class="my-0 pt-0" id="long_description">{{ ld }}</p>
+    <p class="my-0 pt-0" id="long_description_full" style="display: none">{{ ld }}</p>
+    <p class="mb-0 py-0 text-right" style="display: none" id="expand-ld">
+        <button class="btn-link btn p-1 btn-sm" onclick="expandLD();" id="expand-ld-button">+ Show more</button>
+    </p>
+
+    <script type="text/javascript">
+        function expandLD() {
+            const BTN = $("#expand-ld-button");
+            $("#long_description").hide();
+            $("#long_description_full").show();
+            BTN.html("- Show less");
+            BTN.attr("onclick", "hideLD()");
+        }
+
+        function hideLD() {
+            const BTN = $("#expand-ld-button");
+            $("#long_description_full").hide();
+            $("#long_description").show();
+            BTN.html("+ Show less");
+            BTN.attr("onclick", "expandLD()");
+        }
+
+        $(document).ready(function () {
+            if (document.getElementById('long_description')) {
+                $clamp(document.getElementById('long_description'), {
+                    clamp: 4,
+                    useNativeClamp: false,
+                });
+            }
+        });
+
+    </script>
+
+{% endif %}

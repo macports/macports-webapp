@@ -14,8 +14,8 @@
             {% endif %}
         </p>
 
-        <p class="text-center lead" style="font-size: 1.5rem">{{ port.description }} {% include 'port/includes/full-description-collapsible.html' with fd=port.long_description %}</p>
-
+        <p class="text-center lead" style="font-size: 1.5rem">{{ port.description }}</p>
+        {% include 'port/includes/full-description-collapsible.html' with ld=port.long_description d=port.description %}
         <p class="text-center"><a href="{{ port.homepage }}">{{ port.homepage }}</a></p>
 
         {% if port.active == True and port.replaced_by == None %}
