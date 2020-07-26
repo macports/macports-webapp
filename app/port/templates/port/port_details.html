@@ -53,27 +53,32 @@
                 </td>
             </tr>
             <tr>
-                <td><strong>Variants</strong></td>
-                <td>
-                {% if port.variants.all.count > 0 %}
-                    {% for variant in port.variants.all|dictsort:"variant.lower" %}
-                        <a class="mr-1" href="{% url 'variant' variant.variant %}">{{ variant.variant }}</a>
-                    {% endfor %}
-                {% else %}
-                    -
-                {% endif %}
-                </td>
-            </tr>
-            <tr>
                 <td><strong>Homepage</strong></td>
                 <td>
                     <a href="{{ port.homepage }}">{{ port.homepage }}</a>
                 </td>
             </tr>
-        <tr>
+            <tr>
                 <td><strong>Platforms</strong></td>
                 <td>
                     {{ port.platforms }}
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Variants</strong></td>
+                <td>
+                    {% if port.variants.all.count > 0 %}
+                        {% for variant in port.variants.all|dictsort:"variant.lower" %}
+                            <ul class="list-group list-group-flush">
+                                <li>
+                                    <a href="{% url 'variant' variant.variant %}">{{ variant.variant }}</a>
+                                    {% if variant.description %}({{ variant.description }}){% endif %}
+                                </li>
+                            </ul>
+                        {% endfor %}
+                    {% else %}
+                        -
+                    {% endif %}
                 </td>
             </tr>
         </table>
