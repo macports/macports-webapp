@@ -105,6 +105,7 @@ class Port(models.Model):
 
         @transaction.atomic
         def load_ports_table(ports):
+            updated_port_objects = []
             for port in ports:
                 # any json object missing name, portdir, version will be ignored
                 try:
@@ -116,7 +117,7 @@ class Port(models.Model):
 
                 # get or create an object for this port
                 port_object, port_created = Port.objects.get_or_create(name__iexact=name, defaults={'name': name})
-
+                updated_port_objects.append(port_object)
                 # cache the original object for comparison
                 old_object = {
                     'version': port_object.version,
@@ -185,6 +186,8 @@ class Port(models.Model):
 
                 print("Updated port: ", port_object.name)
 
+            return updated_port_objects
+
         @transaction.atomic
         def load_dependencies_table(ports):
             # To prevent repetitive queries for adding a relation between port and its dependency
@@ -223,10 +226,12 @@ class Port(models.Model):
                 print("Updated port dependencies: ", port['name'])
 
         def run(ports):
-            load_ports_table(ports)
+            updated_port_objects = load_ports_table(ports)
             load_dependencies_table(ports)
 
-        run(data)
+            return updated_port_objects
+
+        return run(data)
 
     @classmethod
     def mark_deleted(cls, dict_of_portdirs_with_ports):
