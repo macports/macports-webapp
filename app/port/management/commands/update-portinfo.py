@@ -22,6 +22,7 @@ class Command(BaseCommand):
             if data is None:
                 raise CommandError("Failed to parse portindex.json")
             Port.add_or_update(data['ports'])
+            Port.mark_deleted_full_run(data['ports'])
             LastPortIndexUpdate.update_or_create_first_object(data['info']['commit'])
             return
 
