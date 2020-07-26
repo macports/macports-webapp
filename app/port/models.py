@@ -37,6 +37,7 @@ class Port(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     license = models.CharField(max_length=100, default='')
     replaced_by = models.CharField(max_length=100, null=True)
+    notes = models.TextField(null=True)
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
