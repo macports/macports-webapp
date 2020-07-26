@@ -283,3 +283,16 @@ class TestPortsQueryAndUpdate(TransactionTestCase):
         ])
         port_status = Port.objects.get(name='port-A1-subport').active
         self.assertEquals(port_status, True)
+
+    def test_full_deleted_run(self):
+        Port.mark_deleted_full_run([
+            {'name': 'port-A1'},
+            {'name': 'port-A2'},
+            {'name': 'port-A1-subport'},
+            {'name': 'PORT-C1'},
+            {'name': 'PORT-B1'},
+            {'name': 'pOrT-A5'},
+        ])
+
+        self.assertEquals(Port.objects.filter(active=True).count(), 6)
+

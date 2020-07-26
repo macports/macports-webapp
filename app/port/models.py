@@ -237,6 +237,20 @@ class Port(models.Model):
                     port.save()
                     notify.send(port, recipient=port.subscribers.all(), verb="Port has been deleted.")
 
+    @classmethod
+    def mark_deleted_full_run(cls, ports_json):
+        # generate set of port names
+        port_names = set()
+        for port in ports_json:
+            port_name = port['name'].lower()
+            port_names.add(port_name)
+
+        # loop over all ports in database, then search in set
+        for port in Port.objects.all().only('name', 'active', 'updated_at'):
+            if port.name.lower() not in port_names:
+                port.active = False
+                port.save()
+
     class PortIndexUpdateHandler:
         @staticmethod
         def sync_and_open_file():
