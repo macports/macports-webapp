@@ -60,7 +60,10 @@ class TestVariantsAddUpdate(TransactionTestCase):
             "categories": ["categoryA"],
             "version": "1.0.0",
             "revision": "0",
-            "variants": ["universal", "gcc"]
+            "vinfo": [
+                {"variant": "universal"},
+                {"variant": "gcc"}
+            ]
         }])
 
         self.assertEquals(Port.objects.get(name='port-A1').variants.all().count(), 2)
@@ -74,7 +77,9 @@ class TestVariantsAddUpdate(TransactionTestCase):
             "categories": ["categoryA"],
             "version": "1.0.0",
             "revision": "0",
-            "variants": ["UNIVERSAL"]
+            "vinfo": [
+                {"variant": "UNIVERSAL"}
+            ]
         }])
 
         self.assertEquals(Port.objects.get(name='port-A1').variants.all().count(), 1)
