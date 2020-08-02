@@ -181,8 +181,22 @@ class Port(models.Model):
 
                 # delete all related variants and then add all
                 port_object.variants.all().delete()
-                for variant in port.get('variants', []):
+                for v in port.get('vinfo', []):
+                    try:
+                        variant = v['variant']
+                    except KeyError:
+                        continue
+
                     v_obj, created = Variant.objects.get_or_create(port_id=port_object.id, variant__iexact=variant, defaults={'variant': variant})
+                    v_obj.description = v.get('description')
+                    v_obj.requires = v.get('requires')
+                    v_obj.conflicts = v.get('conflicts')
+                    v_obj.is_default = True if v.get('is_default') is True else False
+                    v_obj.save()
+
+                if port.get('notes'):
+                    port_object.notes = port.get('notes')
+                    port_object.save()
 
                 print("Updated port: ", port_object.name)
 
