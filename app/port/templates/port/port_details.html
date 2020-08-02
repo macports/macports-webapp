@@ -132,7 +132,7 @@
             <br>
             {% if port.notes %}
                 <h4 class="border-bottom">Port notes</h4>
-                {{ port.notes|safe }}
+                {{ port.notes|linebreaks }}
                 <br>
             {% endif %}
         </div>
