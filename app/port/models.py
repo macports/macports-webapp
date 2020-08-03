@@ -186,6 +186,8 @@ class Port(models.Model):
                         variant = v['variant']
                     except KeyError:
                         continue
+                    except TypeError:
+                        break
 
                     v_obj, created = Variant.objects.get_or_create(port_id=port_object.id, variant__iexact=variant, defaults={'variant': variant})
                     v_obj.description = v.get('description')
