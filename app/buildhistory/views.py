@@ -1,10 +1,14 @@
-from django.shortcuts import render
+import json
+
+from django.shortcuts import render, HttpResponse
 from django.db.models import Subquery
 from rest_framework import viewsets, filters
+from django.core.mail import send_mail
 import django_filters
 
 from utilities import paginate
-from buildhistory.models import BuildHistory, Builder
+from buildhistory.models import BuildHistory, Builder, TempBuildJSON
+from django.views.decorators.csrf import csrf_exempt
 from buildhistory.forms import BuildHistoryForm
 from buildhistory.filters import BuildHistoryFilter
 from buildhistory.serializers import BuilderSerializer, BuildHistorySerializer, BuildFilesSerializer
@@ -38,6 +42,21 @@ def all_builds(request):
         'builds': results,
         'form': BuildHistoryForm(request.GET)
     })
+
+
+@csrf_exempt
+def buildbot2_submit(request):
+    received_body = request.body.decode()
+
+    try:
+        received_json = json.loads(received_body, encoding='utf-8')
+        obj = TempBuildJSON()
+        obj.build_data = received_json
+        obj.save()
+    except:
+        pass
+
+    return HttpResponse("Build data parsed successfully")
 
 
 class BuilderAPIView(viewsets.ReadOnlyModelViewSet):
