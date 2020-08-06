@@ -36,6 +36,8 @@ class BuildHistory(models.Model):
     build_id = models.IntegerField()
     status = models.CharField(max_length=50)
     port_name = models.CharField(max_length=100)
+    port_version = models.CharField(max_length=50, null=True)
+    port_revision = models.CharField(max_length=50, null=True)
     time_start = models.DateTimeField()
     time_elapsed = models.DurationField(null=True)
     watcher_id = models.IntegerField()
@@ -158,6 +160,64 @@ class BuildHistory(models.Model):
                 build_data_summary = return_summary(buildername, build_number, build_data)
                 build_obj = load_build_to_db(builder, build_data_summary)
                 load_files_to_db(build_obj, installed_files)
+
+    @classmethod
+    def buildbot2_parse(cls, build_object):
+        properties_key = 'properties'
+
+        def get_state():
+            key = 'state_string'
+            if build_object.get(key):
+                return build_object[key]
+
+            return "unknown"
+
+        def get_port_info(obj):
+            port_version = obj.get('portversion', [None])[0]
+            port_revision = obj.get('portrevision', [None])[0]
+
+            return port_version, port_revision
+
+        def get_build_times():
+            time_start = str(datetime.datetime.fromtimestamp(int(float(build_object['started_at'])), tz=datetime.timezone.utc))
+            time_build_seconds = None
+            if build_object.get('complete') is True:
+                time_build_seconds = float(build_object['complete_at']) - float(build_object['started_at'])
+
+            time_build = None
+            if time_build_seconds:
+                time_build = str(datetime.timedelta(seconds=int(float(time_build_seconds))))
+
+            return [time_start, time_build]
+
+        # First try to get those fields which are essential for any build
+        # If the process of getting these fields fails, abort
+        try:
+            build_id = build_object['buildid']
+            builder_name = build_object[properties_key]['workername'][0]
+            builder_name = builder_name.replace("ports-", "")
+            port_name = build_object[properties_key]['portname'][0]
+
+        except (KeyError, TypeError, IndexError, ValueError):
+            # invalid build object, cannot proceed
+            return None
+
+        builder, builder_created = Builder.objects.get_or_create(name=builder_name)
+        build, builder_created = BuildHistory.objects.get_or_create(
+            builder_name_id=builder.id,
+            build_id=build_id,
+            port_name=port_name,
+            time_start=get_build_times()[0],
+            watcher_id=build_object.get('builderid', 0)
+        )
+
+        build.status = get_state()
+        build.port_version, build.port_revision = get_port_info(build_object[properties_key])
+        build.time_elapsed = get_build_times()[1]
+
+        build.save()
+
+        return build
 
 
 class InstalledFile(models.Model):

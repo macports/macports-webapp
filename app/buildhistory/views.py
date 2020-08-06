@@ -53,10 +53,12 @@ def buildbot2_submit(request):
         obj = TempBuildJSON()
         obj.build_data = received_json
         obj.save()
-    except:
-        pass
 
-    return HttpResponse("Build data parsed successfully")
+        BuildHistory.buildbot2_parse(received_json)
+
+        return HttpResponse("Build data parsed successfully")
+    except KeyError:
+        return HttpResponse("Failed to parse build data")
 
 
 class BuilderAPIView(viewsets.ReadOnlyModelViewSet):
