@@ -14,7 +14,6 @@
     {% include 'port/includes/port-header.html' with port=port %}
     {% include 'port/includes/port-tabs.html' with port_name=port.name active="stats" %}
 <br>
-    <a class="btn btn-link my-0 py-0 btn-sm" href="{% url 'stats_faq' %}">FAQ</a>
 <form method="get" action="." class="p-2 form form-inline justify-content-center">
     <lable for="days">Displaying statistics for <strong>{{ users_in_duration_count }} users</strong> who made submissions during:</lable>
     <select onchange="this.form.submit()" id="days" name="days" class="form-control mx-2">
@@ -52,30 +51,35 @@
     <br>
     <br>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-6" id="macos_versions">
+            <p class="text-center p-0 m-0 f14 font-weight-bold"><a href="#macos_versions">MacOS Versions</a></p>
             <canvas id="os_version_chart"></canvas>
-            <p id="os_version_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}"></p>
+            <p id="os_version_chart_loader" class="text-secondary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}"></p>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6" id="port_versions">
+            <p class="text-center p-0 m-0 f14 font-weight-bold"><a href="#port_versions">Port Versions</a></p>
             <canvas id="port_version_chart"></canvas>
-            <p id="port_version_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}"></p>
+            <p id="port_version_chart_loader" class="text-secondary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}"></p>
         </div>
     </div>
     <br>
     <br>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-6" id="xcode_versions">
+            <p class="text-center p-0 m-0 f14 font-weight-bold"><a href="#xcode_versions">XCode Versions</a></p>
             <canvas id="xcode_version_chart"></canvas>
-            <p id="xcode_version_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}"></p>
+            <p id="xcode_version_chart_loader" class="text-secondary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}"></p>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6" id="clt_versions">
+            <p class="text-center p-0 m-0 f14 font-weight-bold"><a href="#clt_versions">CLT Versions</a></p>
             <canvas id="clt_version_chart"></canvas>
-            <p id="clt_version_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}"></p>
+            <p id="clt_version_chart_loader" class="text-secondary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}"></p>
         </div>
     </div>
     <br>
     <br>
     <!-- TABLE FOR VARIANTS -->
+    <p class="text-center p-0 m-0 f14 font-weight-bold" id="variants"><a href="#variants">Variants table</a></p>
     <table id="variants_table" class="table table-striped table-condensed">
         <thead>
         <tr class="p-0">
@@ -90,9 +94,10 @@
     <p class="text-center">Can remain cached upto 24 hours</p>
     <br>
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-8" id="monthly_installations">
+            <p class="text-center p-0 m-0 f14 font-weight-bold"><a href="#monthly_installations">Port installations by month</a></p>
             <canvas id="monthly_chart"></canvas>
-            <p id="monthly_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}">
+            <p id="monthly_chart_loader" class="text-secondary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}">
             </p>
         </div>
         <div class="col-lg-3">
@@ -100,9 +105,10 @@
     </div>
     <br><br><hr><br><br>
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-8" id="version_monthly_installations">
+            <p class="text-center p-0 m-0 f14 font-weight-bold"><a href="#version_monthly_installations">Percentage of installations per version per month</a></p>
             <canvas id="monthly_versions_chart"></canvas>
-            <p id="monthly_versions_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}"></p>
+            <p id="monthly_versions_chart_loader" class="text-secondary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}"></p>
         </div>
         <div class="col-lg-3" id="monthly_versions_table">
         </div>
@@ -151,7 +157,7 @@
             data: data,
             options: {
 					title: {
-						display: true,
+						display: false,
 						text: 'Port Versions'
 					},
 					tooltips: {
@@ -231,7 +237,7 @@
             data: data,
             options: {
 					title: {
-						display: true,
+						display: false,
 						text: 'MacOS Versions'
 					},
 					tooltips: {
@@ -315,7 +321,7 @@
             data: data,
             options: {
 					title: {
-						display: true,
+						display: false,
 						text: 'XCode Versions'
 					},
 					tooltips: {
@@ -399,7 +405,7 @@
             data: data,
             options: {
                 title: {
-                    display: true,
+                    display: false,
                     text: 'CLT Versions'
                 },
                 tooltips: {
@@ -482,7 +488,7 @@
             data: data,
             options: {
                 title: {
-                    display: true,
+                    display: false,
                     text: 'Port installations by month'
                 },
                 tooltips: {
@@ -570,7 +576,7 @@
             data: data,
             options: {
                 title: {
-                    display: true,
+                    display: false,
                     text: 'Percentage of installations per version per month'
                 },
                 tooltips: {
