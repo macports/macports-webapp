@@ -74,20 +74,24 @@
 
     <br>
     <div class="contiainer full-width-chart-container">
+        <p class="text-center p-0 m-0 f14 font-weight-bold" id="macports_versions"><a href="#macports_versions">MacPorts Versions</a></p>
         <canvas id="macports_version_chart"></canvas>
-        <p id="macports_version_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}">
+        <p id="macports_version_chart_loader" class="text-secondary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}">
         </p>
         <br><br><br>
+        <p class="text-center p-0 m-0 f14 font-weight-bold" id="macos_versions"><a href="#macos_versions">MacOS Versions</a></p>
         <canvas id="os_version_chart"></canvas>
-        <p id="os_version_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}">
+        <p id="os_version_chart_loader" class="text-secondary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}">
         </p>
         <br><br><br>
+        <p class="text-center p-0 m-0 f14 font-weight-bold" id="xcode_versions"><a href="#xcode_versions">XCode Versions</a></p>
         <canvas id="xcode_version_chart"></canvas>
-        <p id="xcode_version_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}">
+        <p id="xcode_version_chart_loader" class="text-secondary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}">
         </p>
         <br><br><br>
+        <p class="text-center p-0 m-0 f14 font-weight-bold" id="clt_versions"><a href="#clt_versions">CLT Versions</a></p>
         <canvas id="clt_version_chart"></canvas>
-        <p id="clt_version_chart_loader" class="text-primary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}">
+        <p id="clt_version_chart_loader" class="text-secondary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}">
         </p>
     </div>
 {% endblock %}
@@ -124,7 +128,7 @@
             data: data,
             options: {
 					title: {
-						display: true,
+						display: false,
 						text: 'MacPorts Version'
 					},
 					responsive: true
@@ -189,7 +193,7 @@
             data: data,
             options: {
 					title: {
-						display: true,
+						display: false,
 						text: 'MacOS Versions'
 					},
 					tooltips: {
@@ -280,7 +284,7 @@
             data: data,
             options: {
                 title: {
-                    display: true,
+                    display: false,
                     text: 'XCode Versions'
                 },
                 tooltips: {
@@ -373,7 +377,7 @@
             data: data,
             options: {
                 title: {
-                    display: true,
+                    display: false,
                     text: 'CLT Versions'
                 },
                 tooltips: {
