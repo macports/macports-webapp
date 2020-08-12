@@ -5,7 +5,7 @@ $(document).ready(function () {
         limit: 20,
         rateLimitWait: 800,
         remote: {
-            url: '/api/v1/autocomplete/port?q=%QUERY&name=on',
+            url: '/api/v1/autocomplete/port/?q=%QUERY&name=on',
             wildcard: '%QUERY',
             filter: function (response) {
                 return response.results;
