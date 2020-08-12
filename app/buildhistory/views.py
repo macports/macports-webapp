@@ -3,11 +3,10 @@ import json
 from django.shortcuts import render, HttpResponse
 from django.db.models import Subquery
 from rest_framework import viewsets, filters
-from django.core.mail import send_mail
 import django_filters
 
 from utilities import paginate
-from buildhistory.models import BuildHistory, Builder, TempBuildJSON
+from buildhistory.models import BuildHistory, Builder
 from django.views.decorators.csrf import csrf_exempt
 from buildhistory.forms import BuildHistoryForm
 from buildhistory.filters import BuildHistoryFilter
@@ -47,18 +46,19 @@ def all_builds(request):
 @csrf_exempt
 def buildbot2_submit(request):
     received_body = request.body.decode()
+    error_message = HttpResponse("Failed to parse build data")
+    success_message = HttpResponse("Build data parsed successfully")
 
     try:
         received_json = json.loads(received_body, encoding='utf-8')
-        obj = TempBuildJSON()
-        obj.build_data = received_json
-        obj.save()
 
-        BuildHistory.buildbot2_parse(received_json)
+        build_object = BuildHistory.buildbot2_parse(received_json)
+        if build_object:
+            return success_message
 
-        return HttpResponse("Build data parsed successfully")
-    except KeyError:
-        return HttpResponse("Failed to parse build data")
+        return error_message
+    except json.JSONDecodeError:
+        return error_message
 
 
 class BuilderAPIView(viewsets.ReadOnlyModelViewSet):
