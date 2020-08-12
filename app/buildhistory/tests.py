@@ -200,3 +200,80 @@ class TestBuildHistoryAPIViews(TransactionTestCase):
                 self.assertEquals(len(files), 4)
             else:
                 self.assertEquals(len(files), 0)
+
+
+class TestBuildbot2HTTPStatusPush(TransactionTestCase):
+    reset_sequences = True
+    build_data = """
+                {
+                    "buildid": 7646,
+                    "builderid": 3420,
+                    "workerid": 21,
+                    "started_at": 1596624615,
+                    "complete_at": 1596624754,
+                    "complete": true,
+                    "state_string": "build successful",
+                    "properties": {
+                        "portname": [
+                            "portA",
+                            "Trigger"
+                        ],
+                        "workername": [
+                            "ports-darwin20-x86_64",
+                            "Worker"
+                        ],
+                        "portrevision": [
+                            "0",
+                            "SetPropertyFromCommand Step"
+                        ],
+                        "portversion": [
+                            "1.2",
+                            "SetPropertyFromCommand Step"
+                        ]
+                    }
+                }
+                """
+
+    invalid_build_data = """
+                {
+                    "buildid": 7646,
+                    "builderid": 3420,
+                    "workerid": 21,
+                    "started_at": 1596624615,
+                    "complete_at": 1596624754,
+                }
+                """
+
+    def setUp(self):
+        self.client = Client()
+
+    def test_new_builder_added(self):
+        Builder.objects.create(name="builder-1")
+
+        self.assertEquals(Builder.objects.all().count(), 1)
+
+        # Now make a push, new builder should be added automatically
+        response = self.client.post(reverse('buildbot2_submit'), data=self.build_data, content_type='text/plain')
+        self.assertEquals(Builder.objects.all().count(), 2)
+
+        # Make same call again
+        response = self.client.post(reverse('buildbot2_submit'), data=self.build_data, content_type='text/plain')
+        self.assertEquals(Builder.objects.all().count(), 2)
+        self.assertEquals(BuildHistory.objects.all().count(), 1)
+
+    def test_invalid_build_data(self):
+        response = self.client.post(reverse('buildbot2_submit'), data=self.invalid_build_data, content_type='text/plain')
+        self.assertEquals(BuildHistory.objects.all().count(), 0)
+        self.assertEquals(Builder.objects.all().count(), 0)
+
+    def test_build_properties(self):
+        response = self.client.post(reverse('buildbot2_submit'), data=self.build_data, content_type='text/plain')
+
+        self.assertEquals(BuildHistory.objects.all().count(), 1)
+
+        build_object = BuildHistory.objects.get(build_id=7646)
+
+        self.assertEquals(build_object.status, "build successful")
+        self.assertEquals(build_object.port_name, "portA")
+        self.assertEquals(build_object.port_version, "1.2")
+        self.assertEquals(build_object.port_revision, "0")
