@@ -264,6 +264,12 @@ class Port(models.Model):
                                     print("Failed to append {} as a dependency to {}. Not Found.".format(
                                         depends.rsplit(':', 1)[-1],
                                         port['name']))
+                                except MultipleObjectsReturned as e:
+                                    print("Could not append {} as a dependency to {}, because the depspec does"
+                                          " not uniquely identify a port".format(
+                                        depends,
+                                        port['name']))
+                                    raise e
                             obj.save()
                             obj.dependencies.add(*dependencies)
 
