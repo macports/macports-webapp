@@ -31,7 +31,6 @@ The project has been packaged using:
 ___
 
 ### More information
- - [API](/docs/API.json)
+ - [API](/docs/API_v1/ENDPOINTS.md)
  - [Collection of data](/docs/SOURCES.md)
  - [Deploying the app](/docs/DEPLOYMENT.md)
- - [History](/docs/HISTORY.md)
