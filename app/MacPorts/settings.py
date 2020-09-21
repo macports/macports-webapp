@@ -24,10 +24,12 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+
+USE_X_FORWARDED_HOST = True
 
 ALLOWED_HOSTS = [
-    '*'
+    'ports.macports.org'
 ]
 
 
