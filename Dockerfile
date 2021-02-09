@@ -1,7 +1,11 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 ARG USER=0:0
 
 # Install required packages and remove the apt packages cache when done.
+
+ENV TZ UTC
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN true
 
 RUN apt-get update && \
     apt-get upgrade -y && \
