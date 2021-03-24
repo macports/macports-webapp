@@ -193,3 +193,36 @@ class TestUpdatePortinfo(TransactionTestCase):
         ])
         port_status = Port.objects.get(name='port-A1-subport').active
         self.assertEquals(port_status, True)
+
+    def test_port_case_change(self):
+        # Make a case-only rename of a port (port-A1-subport)
+        Port.update([
+            {
+                "variants": ["universal"],
+                "portdir": "categoryA\/port-A1",
+                "description": "This is port A1 of categoryA",
+                "homepage": "http:\/\/portA1.website\/",
+                "platforms": "darwin",
+                "name": "PORT-A1-SUBPORT",
+                "depends_lib": ["lib:pq:port-A2", "port:port-A3-diff"],
+                "long_description": "Just a test port written to test something.",
+                "license": "MIT",
+                "maintainers": [{
+                    "email": {
+                        "domain": "email.com",
+                        "name": "user"
+                    },
+                    "github": "user"
+                }],
+                "categories": ["categoryA"],
+                "version": "1.0.0",
+                "revision": "0"
+            }
+        ])
+
+        # <get> query for port-A1-subport should not fail
+        port_a1_subport = Port.objects.get(name__iexact='port-A1-subport')
+
+        # the name of the port should be updated to PORT-A1-SUBPORT
+        updated_name = "PORT-A1-SUBPORT"
+        self.assertEquals(updated_name, port_a1_subport.name)

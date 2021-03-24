@@ -181,7 +181,10 @@ class Port(models.Model):
         def full_update_ports(ports):
 
             for port in ports:
-                port_object, port_created = Port.objects.get_or_create(name=port['name'])
+                port_object, port_created = Port.objects.get_or_create(name__iexact=port['name'], defaults={'name': port['name']})
+
+                # set the name again, so that case change in port name is refelcted
+                port_object.name = port['name']
 
                 port_object.portdir = port['portdir']
                 port_object.version = port['version']
@@ -200,7 +203,7 @@ class Port(models.Model):
                 try:
                     port_object.categories.clear()
                     for category in port['categories']:
-                        category_object, category_created = Category.objects.get_or_create(name=category)
+                        category_object, category_created = Category.objects.get_or_create(name__iexact=category, defaults={'name': category})
                         port_object.categories.add(category_object)
                 except KeyError:
                     pass
@@ -213,23 +216,27 @@ class Port(models.Model):
                             variant_object.delete()
 
                     for variant in port['variants']:
-                        v_obj, created = Variant.objects.get_or_create(port_id=port_object.id, variant=variant)
+                        v_obj, created = Variant.objects.get_or_create(port_id=port_object.id, variant__iexact=variant, defaults={'variant': variant})
                 except KeyError:
                     pass
 
                 try:
                     port_object.maintainers.clear()
                     for maintainer in port['maintainers']:
-                        name = maintainer.get('email', {}).get('name', '')
-                        domain = maintainer.get('email', {}).get('domain', '')
-                        github = maintainer.get('github', '')
+                        maintainer_name = maintainer.get('email', {}).get('name', '')
+                        maintainer_domain = maintainer.get('email', {}).get('domain', '')
+                        maintainer_github = maintainer.get('github', '')
 
                         maintainer_object, created = Maintainer.objects.get_or_create(
-                            name=name,
-                            domain=domain,
-                            github=github
+                            name__iexact=maintainer_name,
+                            domain__iexact=maintainer_domain,
+                            github__iexact=maintainer_github,
+                            defaults={
+                                'name': maintainer_name,
+                                'domain': maintainer_domain,
+                                'github': maintainer_github
+                            }
                         )
-
                         maintainer_object.ports.add(port_object)
                 except KeyError:
                     pass
@@ -239,7 +246,7 @@ class Port(models.Model):
             for port in ports:
                 try:
                     all_dependency_objects = Dependency.objects.filter(port_name__name__iexact=port['name'])
-                    port_object = Port.objects.get(name=port['name'])
+                    port_object = Port.objects.get(name__iexact=port['name'])
 
                     # Delete the dependency types from database that no longer exist in
                     for dependency_object in all_dependency_objects:
