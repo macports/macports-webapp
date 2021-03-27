@@ -8,52 +8,41 @@
 {% endblock %}
 
 {% block content %}
-    <br>
-    <form onSubmit="clearTimeout(requestTimer); ajaxCallSearch(); return false" class="shadow-sm p-3 rounded">
+    <div class="container mb-4" id="main-content">
+        <h4 class="text-left p-0 mb-0 text-secondary mt-5">Available Ports for <ins>The MacPorts Project</ins></h4>
+        <h1 class="display-4 font-weight-bold text-left">
+            Install and upgrade open source software on macOS.
+        </h1>
+        <div class="my-1 text-center text-md-left">
+            New to MacPorts? <a class="font-weight-bold" href="https://www.macports.org/install.php">Install now!</a>
+        </div>
+    </div>
+    <form onSubmit="clearTimeout(requestTimer); ajaxCallSearch(); return false" class="p-3 justify-content-center">
         {% csrf_token %}
-        <div class="form-group mb-0">
+        <div class="form-group text-center mb-0">
             <label class="radio-inline mr-3"><input class="mr-2" onclick="switch_search()" type="radio" name="search_by" value="name" checked>Search by port-name</label>
             <label class="radio-inline"><input class="mr-2" onclick="switch_search()" type="radio" name="search_by" value="description">Search by description</label>
         </div>
-        <div class="form-group">
-            <input type="text" class="form-control" id="search" name="search" placeholder="Search Ports" autofocus>
+        <div class="form-group text-center flex-container">
+            <input style="max-width: 700px; height: 45px;" type="text" class="form-control rounded-pill" id="search" name="search" placeholder="Search among {{ all_ports_count }} active ports" autofocus>
         </div>
     </form>
-    <br>
-    <div class="container" id="main-content">
-        <div class="row">
-        <div class="col-lg-8 shadow-sm pt-2">
-            <h3 class="text-secondary border-bottom border-secondary">Browse by category</h3>
-                <div class="category-grid-container">
-                    {% for cat in categories %}
-                    <div class="category-grid-item">
-                        <a class="float-left" href="{% url 'category_list' cat.name %}">{{ cat.name }}</a>
-                        <span class="float-right ml-4 text-muted">{{ cat.ports_count }}</span>
-                    </div>
-                    {% endfor %}
-                </div>
-        <br>
-        </div>
-        <div class="col-lg-4">
-            <div class="bg-secondary pl-2 pt-1">
-                <h5 style="color: white;">Top Installations</h5>
-                <p class="text-light">Requested ports in last 30 days</p>
-            </div>
-            <div class="border" style="padding: 12px">
-                <ul>
-                    {% for top_port in top_ports %}
-                    <li><a href="{% url 'port_detail' top_port.port %}">{{ top_port.port }}</a><span class="float-right">{{ top_port.num }}</span> </li>
-                    {% endfor %}
-                </ul>
-                <a href="{% url 'stats_port_installations' %}">More...</a>
-            </div>
-        </div>
-        </div>
-    </div>
-
     <div id="filtered_table">
     </div>
-
+    <div>
+        <div class="pl-2 pt-1">
+            <h5>Popular ports</h5>
+        </div>
+        <div >
+            <ul style="max-width: 700px; list-style-type: none;">
+                {% for top_port in top_ports %}
+                <li>
+                    <a href="{% url 'port_detail' top_port.port %}">{{ top_port.port }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
 {% endblock %}
 
