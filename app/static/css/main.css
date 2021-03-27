@@ -2,6 +2,11 @@ body{
     padding: 0;
 }
 
+.flex-container {
+    display: flex;
+    justify-content: center;
+}
+
 .category-grid-container {
   display: grid;
   justify-content: space-evenly;
