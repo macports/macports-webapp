@@ -14,6 +14,7 @@ function ajaxCallSearch() {
     if (search) {
         $('#filtered_table').show();
         $('#main-content').hide();
+        $('#home-popular-ports').hide();
         currentSearchRequest = $.ajax({
             type: 'GET',
             url: '/ports/search/',
@@ -32,6 +33,7 @@ function ajaxCallSearch() {
         $('#filtered_table').hide();
         $('#searching-image').hide();
         $('#main-content').show();
+        $('#home-popular-ports').show();
     }
 }
 
@@ -67,6 +69,7 @@ function searchSuccess(data, textStatus, jqXHR) {
 function cancel_search() {
     $('#filtered_table').hide();
     $('#main-content').show();
+    $('#home-popular-ports').show();
     $('#search').val('');
     updateLocation();
 }
