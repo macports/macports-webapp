@@ -102,7 +102,7 @@ class BuildHistory(models.Model):
 
         for buildername in builders:
             # fetch the last build first in order to figure out its number
-            last_build_data, resp_code = get_data_from_url(get_url_json(buildername, -1))
+            last_build_data, _ = get_data_from_url(get_url_json(buildername, -1))
 
             # skip the builder in case of failure to fetch last build
             if not last_build_data:
