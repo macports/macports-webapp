@@ -205,27 +205,9 @@
             return r;
         }, {});
 
-        const dataMap = {};
-        for(let i=0; i<result.length; i++) {
-            let key = result[i].submission__os_version;
-            dataMap[key] = 0;
-        }
-
-        let datasets = {};
-
-        for(let key in group) {
-            let d = Object.assign({}, dataMap);
-            if(group.hasOwnProperty(key)) {
-                let g = group[key];
-                for(let i=0; i<g.length; i++) {
-                    let keyInner = g[i].submission__os_version;
-                    d[keyInner] = g[i].count;
-                }
-            }
-            datasets[key] = d;
-        }
-        return datasets;
+        return generateDataset(result, group, 'submission__os_version');
     }
+
     async function drawOSVersionsChart() {
         const ctx = document.getElementById('os_version_chart').getContext('2d');
         let data = {
@@ -267,14 +249,14 @@
                 let obj = {
                     label: key,
                     backgroundColor: getColors(keys.length)[c],
-                    data: Object.values(result[key])
+                    data: Array.from(result[key].values())
                 };
                 c++;
                 datasets.push(obj);
             }
         }
         datasets.sort(BasicSort);
-        data.labels = Object.keys(result[keys[0]]);
+        data.labels = Array.from(result[keys[0]].keys());
         data.datasets = datasets;
         $("#os_version_chart_loader").hide();
         myChart.update();
@@ -289,26 +271,7 @@
             return r;
         }, {});
 
-        const dataMap = {};
-        for(let i=0; i<result.length; i++) {
-            let key = result[i].submission__os_version;
-            dataMap[key] = 0;
-        }
-
-        let datasets = {};
-
-        for(let key in group) {
-            let d = Object.assign({}, dataMap);
-            if(group.hasOwnProperty(key)) {
-                let g = group[key];
-                for(let i=0; i<g.length; i++) {
-                    let keyInner = g[i].submission__os_version;
-                    d[keyInner] = g[i].count;
-                }
-            }
-            datasets[key] = d;
-        }
-        return datasets;
+        return generateDataset(result, group, 'submission__os_version');
     }
     async function drawXcodeVersionsChart() {
         const ctx = document.getElementById('xcode_version_chart').getContext('2d');
@@ -351,14 +314,14 @@
                 let obj = {
                     label: key,
                     backgroundColor: getColors(keys.length)[c],
-                    data: Object.values(result[key])
+                    data: Array.from(result[key].values())
                 };
                 c++;
                 datasets.push(obj);
             }
         }
         datasets.sort(BasicSort);
-        data.labels = Object.keys(result[keys[0]]);
+        data.labels = Array.from(result[keys[0]].keys());
         data.datasets = datasets;
         $("#xcode_version_chart_loader").hide();
         myChart.update();
@@ -373,26 +336,7 @@
             return r;
         }, {});
 
-        const dataMap = {};
-        for(let i=0; i<result.length; i++) {
-            let key = result[i].submission__os_version;
-            dataMap[key] = 0;
-        }
-
-        let datasets = {};
-
-        for(let key in group) {
-            let d = Object.assign({}, dataMap);
-            if(group.hasOwnProperty(key)) {
-                let g = group[key];
-                for(let i=0; i<g.length; i++) {
-                    let keyInner = g[i].submission__os_version;
-                    d[keyInner] = g[i].count;
-                }
-            }
-            datasets[key] = d;
-        }
-        return datasets;
+        return generateDataset(result, group, 'submission__os_version');
     }
     async function drawCLTVersionsChart() {
         const ctx = document.getElementById('clt_version_chart').getContext('2d');
@@ -435,14 +379,14 @@
                 let obj = {
                     label: key,
                     backgroundColor: getColors(keys.length)[c],
-                    data: Object.values(result[key])
+                    data: Array.from(result[key].values())
                 };
                 c++;
                 datasets.push(obj);
             }
         }
         datasets.sort(BasicSort);
-        data.labels = Object.keys(result[keys[0]]);
+        data.labels = Array.from(result[keys[0]].keys());
         data.datasets = datasets;
         $("#clt_version_chart_loader").hide();
         myChart.update();

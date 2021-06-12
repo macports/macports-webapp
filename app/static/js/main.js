@@ -104,3 +104,26 @@ function getColors(length) {
 
     return colors;
 }
+
+function generateDataset(result, group, label) {
+    const dataMap = new Map();
+    for(let i=0; i<result.length; i++) {
+        let key = result[i][label];
+        dataMap.set(key, 0);
+    }
+
+    let datasets = {};
+
+    for(let key in group) {
+        let d = new Map(dataMap);
+        if(group.hasOwnProperty(key)) {
+            let g = group[key];
+            for(let i=0; i<g.length; i++) {
+                let keyInner = g[i][label];
+                d.set(keyInner, g[i].count);
+            }
+        }
+        datasets[key] = d;
+    }
+    return datasets;
+}
