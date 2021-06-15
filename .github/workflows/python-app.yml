@@ -1,0 +1,60 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python application
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    # setup the postgres service needed by the webapp
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mp
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        
+    # setup env for the application
+    env:
+      DJANGO_SETTINGS_MODULE: 'MacPorts.settings'
+      DB_HOST: 127.0.0.1
+      DB_PASSWORD: postgres
+      DB_NAME: mp
+      DB_USER: postgres
+      SECRET_KEY: thISkEyisUsedForTravis
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r app/requirements.txt
+        pip install codecov
+    - name: Create and run migrations
+      run: |
+        python app/manage.py makemigrations --noinput
+        python app/manage.py migrate --noinput
+    - name: Run collectstatic
+      run: python app/manage.py collectstatic --noinput
+    - name: Run tests
+      run: |
+        cd app
+        coverage run --source=. manage.py test
+        coverage report
