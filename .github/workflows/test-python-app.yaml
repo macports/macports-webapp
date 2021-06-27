@@ -1,0 +1,66 @@
+name: Test Python (Django) application
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test_django:
+
+    runs-on: ubuntu-latest
+    
+    # setup the postgres service needed by the webapp
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mp
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        
+    # setup env for the application
+    env:
+      DJANGO_SETTINGS_MODULE: 'settings'
+      DB_HOST: 127.0.0.1
+      DB_PASSWORD: postgres
+      DB_NAME: mp
+      DB_USER: postgres
+      SECRET_KEY: thISkEyisUsedForTesting
+      SOLR_URL: http://127.0.0.1:8983/solr/tester
+      SOLR_ADMIN_URL: http://127.0.0.1:8983/solr/admin/cores
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+    - name: Install dependencies
+      run: |
+        cd app
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install codecov
+    - name: Create and run migrations
+      run: |
+        cd app
+        python manage.py makemigrations --noinput
+        python manage.py migrate --noinput
+    - name: Run collectstatic
+      run: python app/manage.py collectstatic --noinput
+    - name: Run tests
+      run: |
+        cd app
+        coverage run --branch --source=. manage.py test
+        coverage report
+        coverage xml --fail-under=65
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1.5.2
+      with:
+        fail_ci_if_error: true
