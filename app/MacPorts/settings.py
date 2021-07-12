@@ -29,7 +29,8 @@ DEBUG = False
 USE_X_FORWARDED_HOST = True
 
 ALLOWED_HOSTS = [
-    'ports.macports.org'
+    'ports.macports.org',
+    'ports-old.macports.org',
 ]
 
 
