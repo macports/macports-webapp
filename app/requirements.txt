@@ -9,7 +9,7 @@ certifi==2020.6.20
 cffi==1.14.1
 chardet==3.0.4
 coverage==5.2.1
-cryptography==3.0
+cryptography==3.3.2
 DateTime==4.3
 defusedxml==0.6.0
 distlib==0.3.1
