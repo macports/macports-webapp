@@ -41,7 +41,7 @@ oauthlib==3.1.0
 packaging==20.4
 pluggy==0.13.1
 psycopg2==2.8.5
-py==1.9.0
+py==1.10.0
 pycodestyle==2.6.0
 pycparser==2.20
 Pygments==2.6.1
