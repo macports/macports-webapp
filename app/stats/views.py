@@ -15,7 +15,7 @@ from django.utils.decorators import method_decorator
 from stats.models import Submission, PortInstallation
 from stats.validators import validate_stats_days, validate_columns_port_installations, validate_unique_columns_port_installations, ALLOWED_DAYS_FOR_STATS
 from stats.serializers import PortStatisticsSerializer, PortMonthlyInstallationsSerializer, GeneralStatisticsSerializer
-
+from stats.utilities import dates
 
 def stats(request):
     days = request.GET.get('days', 30)
@@ -32,8 +32,6 @@ def stats(request):
 
     end_date = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=days_ago)
     start_date = end_date - datetime.timedelta(days=days)
-    today_day = datetime.datetime.now().day
-    last_12_months = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=int(today_day) + 365)
 
     current_week = datetime.datetime.today().isocalendar()[1]
     all_submissions = Submission.objects.all().only('id')
@@ -42,7 +40,7 @@ def stats(request):
     last_week_unique = all_submissions.filter(timestamp__week=current_week - 1).distinct('user').count()
 
     # Number of unique users vs month
-    users_by_month = Submission.objects.only('id').filter(timestamp__gte=last_12_months).annotate(month=TruncMonth('timestamp')).values('month').annotate(num=Count('user_id', distinct=True))
+    users_by_month = Submission.objects.only('id').filter(timestamp__gte=dates.get_first_day_of_month_x_months_ago(12)).annotate(month=TruncMonth('timestamp')).values('month').annotate(num=Count('user_id', distinct=True))
 
     submissions_last_x_days = Submission.objects.only('id').filter(timestamp__range=[start_date, end_date]).order_by('user', '-timestamp').distinct('user')
 
