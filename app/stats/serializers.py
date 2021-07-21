@@ -9,6 +9,7 @@ from stats.models import Submission
 from stats.utilities.sort_by_version import sort_list_of_dicts_by_version
 from stats.validators import ALLOWED_DAYS_FOR_STATS as ALLOWED_DAYS
 from stats.validators import ALLOWED_PROPERTIES, ALLOWED_GENERAL_PROPERTIES
+from stats.utilities import dates
 
 
 class PortStatisticsSerializer(serializers.Serializer):
@@ -120,11 +121,10 @@ class PortMonthlyInstallationsSerializer(serializers.Serializer):
         is_valid = self.validate_context()
         if not is_valid:
             return PortInstallation.objects.none()
-        today_day = datetime.datetime.now().day
-        last_12_months = datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=int(today_day) + 365)
+
         result = PortInstallation.objects \
             .only('id') \
-            .filter(port__iexact=self.port_name, submission__timestamp__gte=last_12_months) \
+            .filter(port__iexact=self.port_name, submission__timestamp__gte=dates.get_first_day_of_month_x_months_ago(12)) \
             .annotate(datetime=TruncMonth('submission__timestamp')) \
             .order_by('datetime') \
             .annotate(
