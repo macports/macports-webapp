@@ -144,7 +144,7 @@
                     {% with builder.latest_builds|first as latest_build %}
                     {% if latest_build %}
                         <li class="list-group-item py-0">
-                            <a target="_blank" class="text-dark" href="{% build_url builder.name latest_build.build_id %}">
+                            <a class="text-dark" href="{% build_url builder.name latest_build.build_id %}">
                                 {% if latest_build.status == "build successful" %}
                                     <span class="badge text-success p-0 mr-1"><i style="width: 10px" class="fa fa-check"></i></span>
                                 {% else %}
