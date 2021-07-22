@@ -3,7 +3,7 @@
     <table class="table table-striped">
         {% for ticket in tickets %}
             <tr>
-                <td><a target="_blank" href="https://trac.macports.org{{ ticket.url }}">{{ ticket.id }}</a></td>
+                <td><a href="https://trac.macports.org{{ ticket.url }}">{{ ticket.id }}</a></td>
                 <td>{{ ticket.title }}</td>
                 <td class="{% if 'defect' in ticket.type %}
                                text-danger
