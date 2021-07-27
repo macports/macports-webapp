@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %}Install {{ port.name }} on MacOS with {% endblock %}
+{% block title %}Install {{ port.name }} on macOS with {% endblock %}
 
 {% block content %}
     <div class="container shadow-sm rounded-lg mt-5 py-4" style="max-width: 900px">
@@ -42,7 +42,7 @@
                             <div class="modal-body text-left">
                                 <ul>
                                     <li class="py-2">If not done already, <a href="https://www.macports.org/install.php">install MacPorts</a>.</li>
-                                    <li class="py-2">To <strong>install</strong> {{ port.name }}, run the following command in MacOS terminal (Applications->Utilities->Terminal)<br>
+                                    <li class="py-2">To <strong>install</strong> {{ port.name }}, run the following command in macOS terminal (Applications->Utilities->Terminal)<br>
                                         <div style="display: inline-block" class="bg-light rounded-lg py-3 px-2 mt-2">
                                             <code id="install-2" class="text-dark">sudo port install {{ port.name }}</code>
                                             <button onclick="copyText('install-2')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
