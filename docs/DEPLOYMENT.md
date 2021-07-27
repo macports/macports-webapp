@@ -299,7 +299,7 @@ After this enter, username and password according to your choice- remember the c
     ```bash
     Name of the builder as per buildbot = 10.15_x86_64
     Simplified builder name: 10.XX: = 10.15
-    Name of the MacOS version, e.g. Catalina: = Catalina
+    Name of the macOS version, e.g. Catalina: = Catalina
     ```
   
 You may add more builders if you wish
