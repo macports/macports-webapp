@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'captcha',
 
     # needed for GitHub login
     'allauth.socialaccount.providers.github',
@@ -234,3 +235,13 @@ DJANGO_NOTIFICATIONS_CONFIG = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# Configuration for RECAPTCHA
+RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY', '')
+RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY', '')
+
+RECAPTCHA_USE_SSL = True
+
+# Override default django-allauth form with this one.
+# It adds the recaptcha field
+ACCOUNT_SIGNUP_FORM_CLASS = 'user.forms.AllAuthSignupForm'

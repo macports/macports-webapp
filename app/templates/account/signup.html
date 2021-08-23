@@ -23,7 +23,30 @@
                 {% include "account/social_list.html" with process="login" %}
               {% endif %}
                 <hr>
-            {{ form.as_p }}
+                <p>
+                  <label for="id_email">Email:</label>
+                  {{ form.email.errors }}
+                  {{ form.email }}
+                </p>
+                <p>
+                  <label for="id_username">Username:</label>
+                  {{ form.username.errors }}
+                  {{ form.username }}
+                </p>
+                <p>
+                  <label for="id_password1">Password:</label>
+                  {{ form.password1.errors }}
+                  {{ form.password1 }}
+                </p>
+                <p>
+                  <label for="id_password2">Confirm Password:</label>
+                  {{ form.password2.errors }}
+                  {{ form.password2 }}
+                </p>
+                <p>
+                  {{ form.captcha.errors }}
+                  {{ form.captcha }}
+                </p>
 
                 {% if redirect_field_value %}
                     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>

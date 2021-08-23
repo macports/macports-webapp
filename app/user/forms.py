@@ -1,4 +1,5 @@
 from django import forms
+from captcha.fields import ReCaptchaField
 
 from buildhistory.models import Builder
 
@@ -71,3 +72,11 @@ class MyPortsForm(forms.Form):
 
         # Load choices here so db calls are not made during migrations.
         self.fields['builder'].choices = [(builder.name, builder.name) for builder in Builder.objects.all()]
+
+class AllAuthSignupForm(forms.Form):
+
+    captcha = ReCaptchaField()
+
+    def save(self, request, user):
+        user = super(AllAuthSignupForm, self).save(request)
+        return user
