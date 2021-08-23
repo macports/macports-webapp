@@ -77,6 +77,5 @@ class AllAuthSignupForm(forms.Form):
 
     captcha = ReCaptchaField()
 
-    def save(self, request, user):
-        user = super(AllAuthSignupForm, self).save(request)
-        return user
+    def signup(self, request, user):
+        pass
