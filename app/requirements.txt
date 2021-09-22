@@ -14,7 +14,7 @@ cryptography==3.3.2
 DateTime==4.3
 defusedxml==0.6.0
 distlib==0.3.1
-Django==3.1.12
+Django==3.1.13
 django-allauth==0.42.0
 django-cors-headers==3.4.0
 django-filter==2.3.0
