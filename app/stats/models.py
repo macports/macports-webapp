@@ -66,7 +66,7 @@ class Submission(models.Model):
 
 class PortInstallation(models.Model):
     submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
-    port = models.CharField(max_length=100)
+    port = models.CharField(max_length=200)
     version = models.CharField(max_length=100)
     variants = models.CharField(max_length=200, default='')
     requested = models.BooleanField(default=False)
