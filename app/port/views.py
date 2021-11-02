@@ -150,7 +150,7 @@ def default_port_page_toggle(request, name):
 @cache_page(60 * 60)
 def port_tickets(request, name):
     port_name = request.GET.get('port_name')
-    URL = "https://trac.macports.org/report/16?max=1000&PORT=(%5E%7C%5Cs){}($%7C%5Cs)".format(port_name)
+    URL = "https://trac.macports.org/report/16?max=1000&PORT=(%5E%7C%5Cs%7C,){}($%7C%5Cs%7C,)".format(port_name)
     response = requests.get(URL)
     Soup = BeautifulSoup(response.content, 'html5lib')
     all_tickets = []
