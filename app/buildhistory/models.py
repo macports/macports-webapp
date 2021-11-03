@@ -12,7 +12,7 @@ from port.database import StringToArray
 
 class BuilderModelManager(models.Manager):
     def get_queryset(self):
-        return super(BuilderModelManager, self).get_queryset().annotate(version_array=StringToArray('name'),).order_by('-version_array')
+        return super(BuilderModelManager, self).get_queryset().annotate(version_array=StringToArray('display_name'),).order_by('-version_array')
 
 
 class Builder(models.Model):
