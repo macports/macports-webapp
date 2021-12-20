@@ -51,14 +51,12 @@ def port_details(request, name):
     except Port.DoesNotExist:
         return render(request, 'port/exceptions/port_not_found.html', {'name': name})
 
-    this_builds = BuildHistory.objects.filter(port_name__iexact=name).annotate(files_count=Count('files')).order_by('-time_start')
-    builders = Builder.objects.all().prefetch_related(Prefetch('builds', queryset=this_builds, to_attr='latest_builds'))
     dependents = Dependency.objects.filter(dependencies__id=port.id).values('type').annotate(ports=ArrayAgg('port_name__name'))
-
+    
     count = get_install_count(port.name, 30)
+    
     return render(request, 'port/port_details.html', {
         'port': port,
-        'builders': builders,
         'dependents': dependents,
         'count': count,
         'is_followed': port.is_followed(request),
@@ -124,6 +122,13 @@ def port_stats(request, name):
         'is_followed': port.is_followed(request)
     })
 
+def port_health(request, name):
+    this_builds = BuildHistory.objects.filter(port_name__iexact=name).annotate(files_count=Count('files')).order_by('-time_start')
+    builders = Builder.objects.all().prefetch_related(Prefetch('builds', queryset=this_builds, to_attr='latest_builds'))
+    
+    return render(request, 'port/port_health.html', {
+        'builders': builders,
+    })
 
 def default_port_page_toggle(request, name):
     try:
