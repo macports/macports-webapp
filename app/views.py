@@ -2,13 +2,20 @@ import datetime
 
 from django.shortcuts import render
 from django.db.models import Subquery, Count
+from django.http import HttpResponseRedirect
 
 from port.models import Port
 from stats.models import Submission, PortInstallation
 from port.filters import PortFilterByMultiple
+from utilities import old_search_redirect
 
 
 def index(request):
+    # Support for old "?search=<QUERY>&search_by=<name,description>" links
+    # Check if search query is present
+    if request.GET.get('search'):
+        return HttpResponseRedirect(old_search_redirect(request))    
+
     ports_count = Port.objects.filter(active=True).count()
     submissions_unique = Submission.objects.filter(timestamp__gte=datetime.datetime.now(tz=datetime.timezone.utc) - datetime.timedelta(days=30)).order_by('user', '-timestamp').distinct('user')
     top_ports = PortInstallation.objects.filter(submission_id__in=Subquery(submissions_unique.values('id')), requested=True).exclude(port__icontains='mpstats').values('port').annotate(num=Count('port')).order_by('-num')[:10]
