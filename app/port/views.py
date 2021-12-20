@@ -123,7 +123,7 @@ def port_stats(request, name):
     })
 
 def port_health(request, name):
-    this_builds = BuildHistory.objects.filter(port_name__iexact=name).annotate(files_count=Count('files')).order_by('-time_start')
+    this_builds = BuildHistory.objects.distinct('builder_name').filter(port_name__iexact=name).prefetch_related('files').order_by('builder_name', '-build_id')
     builders = Builder.objects.all().prefetch_related(Prefetch('builds', queryset=this_builds, to_attr='latest_builds'))
     
     return render(request, 'port/port_health.html', {
