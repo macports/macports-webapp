@@ -13,11 +13,11 @@
                 {% endif %}
             {{ builder.natural_name }}
             </a>
-            {% if latest_build.files_count > 0 %}
-                <button id="build-{{ latest_build.id }}" class="btn btn-sm btn-link text-secondary p-0 m-0 float-right loadFiles">Files ({{latest_build.files_count}})</button>
+            {% if latest_build.files.count > 0 %}
+                <button id="build-{{ latest_build.id }}" class="btn btn-sm btn-link text-secondary p-0 m-0 float-right loadFiles">Files ({{ latest_build.files.count }})</button>
             {% endif %}
         </li>
-        {% if latest_build.files_count > 0 %}
+        {% if latest_build.files.count > 0 %}
             <div class="modal fade f12" id="build-{{ latest_build.id }}-modal" tabindex="-1" role="dialog"
                      aria-hidden="true">
                     <div class="modal-dialog modal-xl" role="document">
