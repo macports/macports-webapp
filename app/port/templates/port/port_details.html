@@ -1,7 +1,6 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% load format_names %}
-{% load url_generate %}
 {% load humanize %}
 
 {% block title %}{{ port.name }} |{% endblock %}
@@ -139,52 +138,9 @@
         <div class="col-lg-4">
             <div>
                 <h5>Port Health:</h5>
-                <ul class="list-group">
-                    {% for builder in builders %}
-                    {% with builder.latest_builds|first as latest_build %}
-                    {% if latest_build %}
-                        <li class="list-group-item py-0">
-                            <a class="text-dark" href="{% build_url builder.name latest_build.build_id %}">
-                                {% if latest_build.status == "build successful" %}
-                                    <span class="badge text-success p-0 mr-1"><i style="width: 10px" class="fa fa-check"></i></span>
-                                {% else %}
-                                    <span class="badge text-danger p-0 mr-1"><i style="width: 10px" class="fa fa-times"></i></span>
-                                {% endif %}
-                            {{ builder.natural_name }}
-                            </a>
-                            {% if latest_build.files_count > 0 %}
-                                <button id="build-{{ latest_build.id }}" class="btn btn-sm btn-link text-secondary p-0 m-0 float-right loadFiles">Files ({{latest_build.files_count}})</button>
-                            {% endif %}
-                        </li>
-                        {% if latest_build.files_count > 0 %}
-                            <div class="modal fade f12" id="build-{{ latest_build.id }}-modal" tabindex="-1" role="dialog"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog modal-xl" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Files ({{ builder.display_name }})</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body" id="build-{{ latest_build.id }}-modal-body">
-                                                <p class="text-center">Please wait...</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endif %}
-                    {% else %}
-                        <li class="list-group-item py-0 text-dark">
-                            <span class="badge text-dark p-0 mr-1"><i style="width: 10px;" class="fa fa-question"></i></span>
-                            {{ builder.natural_name }}
-                        </li>
-                    {% endif %}
-                    {% endwith %}
-                {% endfor %}
-                </ul>
-                <p class="text-secondary p-0 mb-0 f10 text-right"><i class="fa fa-question"></i> - No history in app's database</p>
+                <div id="port-health-table-wrapper" style="min-height: 400px;">
+                    <p class="lead text-center mt-5"><img width="35px" style="margin-right: 25px;" src="/static/images/tspinner.gif">Loading Port Health</p>
+                </div>
             </div>
             <div class="card bg-light p-0 mt-2">
                 <div class="card-body bg-light p-2">
