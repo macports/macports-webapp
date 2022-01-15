@@ -12,13 +12,16 @@
         <a href="#" data-toggle="modal" data-target="#tickets-modal" class="nav-link text-dark">Trac Tickets <span id="tickets-count" class="badge badge-light border border-secondary"></span></a>
     </li>
     <li class="nav-item ml-auto">
+        <a target="_blank" href="https://trac.macports.org/newticket?port={{ port.name }}" class="nav-link text-dark f14 py-1 border-0">Report an Issue with this port</a>
+    </li>
+    <li class="nav-item">
         <a href="{% url 'port-detail' port.name %}" class="nav-link text-dark f14 py-1 border-0">API</a>
     </li>
     {% if request.path == "/port/"|add:port.name|add:"/details/" %}
     <li class="nav-item">
         <a href="{% url 'default_port_page_toggle' port.name %}" class="nav-link text-muted border-0 f14 py-1">
-            {% if is_default %}Remove default
-            {% else %}Make default
+            {% if is_default %}Never skip to Details page
+            {% else %}Always skip to Details page
             {% endif %}
         </a>
     </li>
