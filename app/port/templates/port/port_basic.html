@@ -29,6 +29,9 @@
                     <br>
                 <button class="btn btn-link text-secondary" data-toggle="modal" data-target="#instructions">More instructions
                 </button>
+                <button class="btn text-secondary" data-toggle="modal" data-target="#report-an-issue">
+                    <i class="text-secondary fas fa-exclamation-circle"></i> Report an issue with this port
+                </button>
                 <div class="modal fade" id="instructions" tabindex="-1" role="dialog" aria-labelledby="insLabel"
                      aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
@@ -63,6 +66,29 @@
                                         </div>
                                     </li>
                                 </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="report-an-issue" tabindex="-1" role="dialog" aria-labelledby="insLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="insLabel">Reporting an issue on MacPorts Trac</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-left">
+                                The MacPorts Project uses a system called Trac to file tickets to report bugs and enhancement requests. 
+                                Though anyone may search Trac for tickets, <strong>you must have a GitHub account</strong> in order to login to Trac to create tickets.<br><br>
+                                <div class="text-center mt-4">
+                                        <a target="_blank" href="https://trac.macports.org/newticket?port={{ port.name }}" class="btn btn-primary">Report an Issue on MacPorts Trac</a>
+                                        (GitHub login required)
+                                    </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
