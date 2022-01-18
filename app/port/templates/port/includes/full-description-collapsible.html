@@ -1,4 +1,4 @@
-{% if d == ld %}
+{% if d == ld or d|add:"." == ld %}
     <br>
 {% else %}
     <p class="my-0 pt-0" id="long_description">{{ ld }}</p>
