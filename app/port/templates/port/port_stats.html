@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% load url_replace %}
+{% load humanize %}
 
 {% block title %}Statistics - {{ port.name }} |{% endblock %}
 
@@ -15,7 +16,7 @@
     {% include 'port/includes/port-tabs.html' with port_name=port.name active="stats" %}
 <br>
 <form method="get" action="." class="p-2 form form-inline justify-content-center">
-    <lable for="days">Displaying statistics for <strong>{{ users_in_duration_count }} users</strong> who made submissions during:</lable>
+    <lable for="days">Displaying statistics for <strong>{{ users_in_duration_count|intcomma }} users</strong> who made submissions during:</lable>
     <select onchange="this.form.submit()" id="days" name="days" class="form-control mx-2">
     {% for i in allowed_days|slice:"1:" %}
         <option value="{{ i }}" {% if days == i %}selected{% endif %}>{{ i }} days</option>
@@ -39,11 +40,11 @@
             <table class="table border">
                 <tr>
                     <th scope="row">Total Installations</th>
-                    <td>{{ count.all }}</td>
+                    <td>{{ count.all|intcomma }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Requested Installations</th>
-                    <td>{{ count.requested }}</td>
+                    <td>{{ count.requested|intcomma }}</td>
                 </tr>
             </table>
         </div>

@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block head_scripts %}
     <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
@@ -29,19 +30,19 @@
                 <tbody>
                 <tr>
                     <th scope="row">Total submissions:</th>
-                    <td class="text-right">{{ total_submissions }}</td>
+                    <td class="text-right">{{ total_submissions|intcomma }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Total unique users:</th>
-                    <td class="text-right">{{ unique_users }}</td>
+                    <td class="text-right">{{ unique_users|intcomma }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Unique users last week:</th>
-                    <td class="text-right">{{ last_week }}</td>
+                    <td class="text-right">{{ last_week|intcomma }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Unique users this week:</th>
-                    <td class="text-right">{{ current_week }}</td>
+                    <td class="text-right">{{ current_week|intcomma }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -52,7 +53,7 @@
     <br>
     {% csrf_token %}
     <form id="duration-selector" class="bg-light p-2 form form-inline justify-content-center" method="get" action="{% url 'stats' %}#duration-selector">
-        <lable for="days">Displaying statistics for <strong>{{ users_count_in_duration }} users</strong> who made submissions during:</lable>
+        <lable for="days">Displaying statistics for <strong>{{ users_count_in_duration|intcomma }} users</strong> who made submissions during:</lable>
         <select onchange="this.form.submit()" id="days" name="days" class="form-control mx-2">
             {% for i in allowed_days|slice:"1:" %}
                 <option value="{{ i }}" {% if days == i %}selected{% endif %}>{{ i }} days</option>
@@ -73,7 +74,7 @@
     </h6>
 
     <br>
-    <div class="contiainer full-width-chart-container">
+    <div class="container full-width-chart-container">
         <p class="text-center p-0 m-0 f14 font-weight-bold" id="macports_versions"><a href="#macports_versions">MacPorts Versions</a></p>
         <canvas id="macports_version_chart"></canvas>
         <p id="macports_version_chart_loader" class="text-secondary text-center">Loading Chart <img width="30px" src="{% static 'images/tspinner.gif' %}">
@@ -161,7 +162,7 @@
             return r;
         }, {});
 
-       return generateDataset(result, group, 'os_version'); 
+       return generateDataset(result, group, 'os_version');
     }
 
     async function drawOSVersionsChart() {

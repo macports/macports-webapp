@@ -27,7 +27,7 @@
     <span class="float-right">
         {% if is_followed %}<a href="{% url 'unfollow_port' port.name %}" class="btn btn-sm btn-light"><i class="fa fa-minus-circle"></i> Unfollow</a>
         {% else %}<a href="{% url 'follow_port' port.name %}" class="btn btn-sm btn-light"><i class="fa fa-plus"></i> Add to my watchlist</a>{% endif %}
-        <button class="btn btn-sm btn-light" disabled>{{ port.subscribers.count }}</button>
+        <button class="btn btn-sm btn-light" disabled>{{ port.subscribers.count|intcomma }}</button>
     </span>
 </h2>
 <span class="lead mb-0 mt-0">{{ port.description }}</span>

@@ -83,7 +83,7 @@
                                 </button>
                             </div>
                             <div class="modal-body text-left">
-                                The MacPorts Project uses a system called Trac to file tickets to report bugs and enhancement requests. 
+                                The MacPorts Project uses a system called Trac to file tickets to report bugs and enhancement requests.
                                 Though anyone may search Trac for tickets, <strong>you must have a GitHub account</strong> in order to login to Trac to create tickets.<br><br>
                                 <div class="text-center mt-4">
                                         <a target="_blank" href="https://trac.macports.org/newticket?port={{ port.name }}" class="btn btn-primary">Report an Issue on MacPorts Trac</a>
@@ -133,7 +133,7 @@
             {% else %}
                 <a href="{% url 'follow_port' port.name %}" class="btn btn-light"><i class="fa fa-plus"></i> Add to my watchlist</a>
             {% endif %}
-                <button class="btn btn-light" disabled>{{ port.subscribers.count }}</button>
+                <button class="btn btn-light" disabled>{{ port.subscribers.count|intcomma }}</button>
             </span>
         </div>
         <br>
@@ -141,11 +141,11 @@
             <table class="table table-striped lead">
                 <tr>
                     <td>Installations</td>
-                    <td>{{ count.all }}</td>
+                    <td>{{ count.all|intcomma }}</td>
                 </tr>
                  <tr>
                     <td>Requested Installations</td>
-                    <td>{{ count.requested }}</td>
+                    <td>{{ count.requested|intcomma }}</td>
                 </tr>
             </table>
         </div>
