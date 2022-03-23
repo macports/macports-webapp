@@ -1,6 +1,7 @@
 {% extends 'account/account_layout.html' %}
 
 {% load notifications_tags %}
+{% load humanize %}
 
 {% block account_head_scripts %}{% include 'account/style.html' %}{% endblock %}
 {% block account_title %}Profile |{% endblock %}
@@ -12,7 +13,7 @@
     <hr>
 
     {% if followed_count > 0 %}
-    <p class="lead">You are following {{ followed_count }} port(s). <a href="{% url 'followed_ports' %}">View</a></p>
+    <p class="lead">You are following {{ followed_count|intcomma }} port(s). <a href="{% url 'followed_ports' %}">View</a></p>
     {% else %}
     <p class="lead">You are not following any ports. To receive notifications about changes to the
     ports that interest you, add them to your watchlist.</p>
@@ -33,7 +34,7 @@
                             <li class="list-group-item">{{ handle }}</li>
                         {% endfor %}
                         </ul>
-                        <a href="{% url 'my_ports_github' %}" class="btn btn-sm btn-primary">View ports ({{ ports_by_github_count }})</a>
+                        <a href="{% url 'my_ports_github' %}" class="btn btn-sm btn-primary">View ports ({{ ports_by_github_count|intcomma }})</a>
                         <a href="{% url 'socialaccount_connections' %}" class="btn btn-sm btn-warning">Mange GitHub connections</a>
                     {% else %}
                         <p>You have no GitHub accounts connected. To track the ports maintained by you, please add a GitHub account.</p>

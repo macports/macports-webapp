@@ -61,7 +61,7 @@
                         <h6 class="text-uppercase mb-0">Active Ports</h6>
                     </div>
                     <div class="card-body px-3 py-1">
-                        <h1 class="display-6 mb-0">{{ ports_count }}</h1>
+                        <h1 class="display-6 mb-0">{{ ports_count|intcomma }}</h1>
                     </div>
                     <a href="{% url 'search' %}" class="btn btn-light">View all</a>
                 </div>

@@ -1,11 +1,13 @@
+{% load humanize %}
+
 <button class="float-right" type="button" style="color: red;" onclick="cancel_search()">Cancel Search</button>
 {% if ports.count > 0 %}
     {% if content == "Category" %}
-        <h4>Your search "{{ query }}" in category "{{ search_in }}" matched {{ ports|length }} ports.</h4>
+        <h4>Your search "{{ query }}" in category "{{ search_in }}" matched {{ ports|length|intcomma }} ports.</h4>
     {% elif content == "Maintainer" %}
-        <h4>Your search "{{ query }}" in ports maintained by "{{ search_in }}" matched {{ ports|length }} ports.</h4>
+        <h4>Your search "{{ query }}" in ports maintained by "{{ search_in }}" matched {{ ports|length|intcomma }} ports.</h4>
     {% elif content == "Variant" %}
-        <h4>Your search "{{ query }}" in variant "{{ search_in }}" matched {{ ports|length }} ports.</h4>
+        <h4>Your search "{{ query }}" in variant "{{ search_in }}" matched {{ ports|length|intcomma }} ports.</h4>
     {% else %}
         <h4>Showing results for "{{ query }}".</h4>
     {% endif %}
@@ -68,4 +70,3 @@
         </div>
     {% endif %}
 {% endif %}
-

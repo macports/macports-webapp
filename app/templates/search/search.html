@@ -2,6 +2,7 @@
 {% load static %}
 {% load highlight %}
 {% load url_replace %}
+{% load humanize %}
 
 {% block head_scripts %}
     <script type="text/javascript" src="{% static 'js/search.js' %}"></script>
@@ -35,7 +36,7 @@
                         </button>
                         {% for maintainer in facets.fields.maintainers|slice:":5" %}
                             <button class="btn btn-link p-0 m-0 btn-sm"
-                                    onclick="appendMaintainerFilter('{{ maintainer.0 }}');$('#super-submit').click();">{{ maintainer.0 }}({{ maintainer.1 }})
+                                    onclick="appendMaintainerFilter('{{ maintainer.0 }}');$('#super-submit').click();">{{ maintainer.0 }}({{ maintainer.1|intcomma }})
                             </button>
                         {% endfor %}
                     </div>
@@ -63,7 +64,7 @@
                         </button>
                         {% for category in facets.fields.categories|slice:":5" %}
                             <button class="btn btn-link p-0 m-0 btn-sm"
-                                    onclick="appendCategoryFilter('{{ category.0 }}');$('#super-submit').click();">{{ category.0 }}({{ category.1 }})
+                                    onclick="appendCategoryFilter('{{ category.0 }}');$('#super-submit').click();">{{ category.0 }}({{ category.1|intcomma }})
                             </button>
                         {% endfor %}
                     </div>
@@ -91,7 +92,7 @@
                         </button>
                         {% for variant in facets.fields.variants|slice:":5" %}
                             <button class="btn btn-link p-0 m-0 btn-sm"
-                                    onclick="appendVariantFilter('{{ variant.0 }}');$('#super-submit').click();">{{ variant.0 }}({{ variant.1 }})
+                                    onclick="appendVariantFilter('{{ variant.0 }}');$('#super-submit').click();">{{ variant.0 }}({{ variant.1|intcomma }})
                             </button>
                         {% endfor %}
                     </div>

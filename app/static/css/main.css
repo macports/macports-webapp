@@ -48,6 +48,10 @@ body{
   min-height: 300px !important;
 }
 
+.table, .chart {
+  font-variant-numeric: tabular-nums;
+}
+
 .tab-content > .tab-pane:not(.active),
 .pill-content > .pill-pane:not(.active) {
     display: block;

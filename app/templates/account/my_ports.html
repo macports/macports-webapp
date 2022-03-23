@@ -1,6 +1,7 @@
 {% extends 'account/account_layout.html' %}
 
 {% load i18n %}
+{% load humanize %}
 
 {% block account_head_scripts %}{% include 'account/style.html' %}{% endblock %}
 {% block account_title %}Maintained by me |{% endblock %}
@@ -9,8 +10,8 @@
     <h3>Ports maintained by me:</h3>
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link text-dark {% if using == 'GitHub' %}active font-weight-bold{% endif %}" href="{% url 'my_ports_github' %}">Using GitHub ({{ ports_by_github_count }})</a>
-            <a class="nav-item nav-link text-dark {% if using == 'email' %}active font-weight-bold{% endif %}" href="{% url 'my_ports_email' %}">Using Email(s) ({{ ports_by_email_count }})</a>
+            <a class="nav-item nav-link text-dark {% if using == 'GitHub' %}active font-weight-bold{% endif %}" href="{% url 'my_ports_github' %}">Using GitHub ({{ ports_by_github_count|intcomma }})</a>
+            <a class="nav-item nav-link text-dark {% if using == 'email' %}active font-weight-bold{% endif %}" href="{% url 'my_ports_email' %}">Using Email(s) ({{ ports_by_email_count|intcomma }})</a>
         </div>
     </nav>
             {% if connections|length > 0 %}

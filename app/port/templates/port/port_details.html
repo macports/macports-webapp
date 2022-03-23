@@ -84,7 +84,7 @@
             <br>
         {% with subports=port.get_subports %}
         {% if subports %}
-        <h4 class="border-bottom">Subport(s) ({{ subports.count }})</h4>
+        <h4 class="border-bottom">Subport(s) ({{ subports.count|intcomma }})</h4>
         <div class="row">
             {% for subport in subports %}
             <div class="col-3">
@@ -98,7 +98,7 @@
             <h4 class="border-bottom">"{{ port.name }}" depends on</h4>
             {% if port.dependent_port.all.count > 0 %}
                     {% for d in port.dependent_port.all %}
-                        <h6><ins>{{ d.type }} ({{ d.dependencies.all.count }})</ins></h6>
+                        <h6><ins>{{ d.type }} ({{ d.dependencies.all.count|intcomma }})</ins></h6>
                         <div class="row mb-4">
                         {% for i in d.dependencies.all|dictsort:"name.lower" %}
                             <div class="col-3">
@@ -115,7 +115,7 @@
             {% if dependents|length > 0 %}
                 {% for d in dependents %}
                     <a class="btn pl-0" data-toggle="collapse" href="#d2-{{ d.type }}" role="button" aria-expanded="false" aria-controls="d2-{{ d.type }}">
-                        <ins>{{ d.type }} ({{ d.ports|length }})</ins> <i class="fa fa-chevron-circle-down"></i>
+                        <ins>{{ d.type }} ({{ d.ports|length|intcomma }})</ins> <i class="fa fa-chevron-circle-down"></i>
                     </a><br>
                     <div class="row mb-4 collapse" id="d2-{{ d.type }}">
                         {% for i in d.ports|dictsort:"0.lower" %}
@@ -145,13 +145,13 @@
             <div class="card bg-light p-0 mt-2">
                 <div class="card-body bg-light p-2">
                     <h6 class="text-uppercase">Installations (30 days)</h6>
-                    <h1 class="display-5 mb-0">{{count.all}}</h1>
+                    <h1 class="display-5 mb-0">{{count.all|intcomma}}</h1>
                 </div>
             </div>
             <div class="card bg-light p-0 mt-2">
                 <div class="card-body bg-light p-2">
                     <h6 class="text-uppercase">Requested Installations (30 days)</h6>
-                    <h1 class="display-5 mb-0">{{ count.requested }}</h1>
+                    <h1 class="display-5 mb-0">{{ count.requested|intcomma }}</h1>
                 </div>
             </div>
             {% if port.livecheck.result %}
