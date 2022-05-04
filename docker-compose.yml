@@ -1,0 +1,36 @@
+services:
+  webapp:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./app:/code/app
+      - ./tmp:/code/app/data
+    links:
+      - db
+      - solr
+    environment:
+      SECRET_KEY: secret
+      DB_NAME: webapp
+      DB_USER: postgres
+      DB_PASSWORD: password
+      DB_HOST: db
+      DB_PORT: 5432
+      SOLR_URL: http://solr:8983/solr/macports
+      SOLR_ADMIN_URL: http://solr:8983/solr/admin/cores
+  db:
+    image: postgres:13
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: webapp
+      PGDATA: /var/lib/postgresql/data/pgdata
+  solr:
+    image: solr:6
+    volumes:
+      - ./tmp/solr:/opt/solr/server/solr/mycores
+    command: solr-precreate macports
+
+volumes:
+  db: {}
