@@ -21,9 +21,28 @@ As mentioned, the `app` directory is a standalone Django app. However, the app h
 setting up a local environment can be avoided when working with Docker. But in case you do not want to work with Docker,
 we will also walk through the standard process of setting up the app.
 
-## Getting the dependencies ready
+## The full-Docker way
 
-The external dependencies of the app are: PostgreSQL, Solr and Memcached. The search page(/search/) is completely derived from
+If you would like to work with the Dockerised app and dependencies, all you need to do is:
+
+1. Run `docker compose up` from the project root
+2. Run `./docker_compose_setup.sh` from the project root
+3. Access the site at http://localhost:8080
+
+This will take care of all dependencies and initialization. Note, however, that in particular step 2 takes a *long* time
+(several hours). Until it completes, some data will not be available in the app (ports, search, build info, livecheck
+results).
+
+Data is stored in two places:
+
+- `tmp` in the repo root: webapp data and Solr data
+- `db` Docker volume: PostgreSQL data
+
+To reset your local environment completely, be sure to delete both.
+
+## The other way: Getting the dependencies ready
+
+The external dependencies of the app are: PostgreSQL, Solr and Memcached. The search page (/search/) is completely derived from
 Solr. Memcached is optional, and can be avoided if you don't want to cache the results of stats and trac tickets.
 
 If you are new to these technologies, you may use the instructions provided below, otherwise you are free to install and setup these
@@ -103,6 +122,9 @@ There are two options available:
 
 - Build the Docker image from source. (long but useful for development)
 - Download an image from the Docker registry. (ready to go in one command)
+
+(Note that this is only using Docker for the webapp itself; if you would like to use Docker for everything, see [The
+full-Docker way](#the-full-docker-way) above.)
 
 ### 1.a: Building the image from source
 
