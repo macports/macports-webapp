@@ -1,7 +1,6 @@
 ---
-name: Issue Template
-about: Primary purpose of this template is to ensure issues related to MacPorts are
-  not created in this repository by mistake.
+name: Bug/Suggestion/Feature Request
+about: Use this for Bug/Suggestion/Feature-Request related to the website ports.macports.org
 title: ''
 labels: ''
 assignees: ''
