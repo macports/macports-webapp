@@ -1,4 +1,4 @@
-FROM arjunsalyan/macports-ubuntu
+FROM arjunsalyan/macports-ubuntu:2.8.0
 ARG USER=0:0
 
 # Install required packages and remove the apt packages cache when done.
