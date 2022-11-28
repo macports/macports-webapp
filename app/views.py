@@ -9,7 +9,7 @@ from stats.models import Submission, PortInstallation
 from port.filters import PortFilterByMultiple
 from utilities import old_search_redirect
 
-
+@cache_page(60 * 60 * 24)
 def index(request):
     # Support for old "?search=<QUERY>&search_by=<name,description>" links
     # Check if search query is present
