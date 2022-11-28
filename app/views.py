@@ -3,6 +3,7 @@ import datetime
 from django.shortcuts import render
 from django.db.models import Subquery, Count
 from django.http import HttpResponseRedirect
+from django.views.decorators.cache import cache_page
 
 from port.models import Port
 from stats.models import Submission, PortInstallation
