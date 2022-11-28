@@ -1,0 +1,21 @@
+FROM python:3.6-buster
+
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y \
+        nginx \
+        libpq-dev && \
+    pip3 install -U pip setuptools && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install uwsgi
+
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+COPY config/nginx.conf /etc/nginx/sites-available/default
+COPY config/supervisor-server.conf /etc/supervisor/conf.d/
+
+COPY . /code/app/
+RUN pip3 install -r /code/app/requirements.txt
+
+EXPOSE 8080
+CMD ["/usr/bin/supervisord", "-n"]
