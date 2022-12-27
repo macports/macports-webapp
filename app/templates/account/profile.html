@@ -35,7 +35,7 @@
                         {% endfor %}
                         </ul>
                         <a href="{% url 'my_ports_github' %}" class="btn btn-sm btn-primary">View ports ({{ ports_by_github_count|intcomma }})</a>
-                        <a href="{% url 'socialaccount_connections' %}" class="btn btn-sm btn-warning">Mange GitHub connections</a>
+                        <a href="{% url 'socialaccount_connections' %}" class="btn btn-sm btn-warning">Manage GitHub connections</a>
                     {% else %}
                         <p>You have no GitHub accounts connected. To track the ports maintained by you, please add a GitHub account.</p>
                     {% endif %}
@@ -55,7 +55,7 @@
                             {% endfor %}
                         </ul>
                         <a href="{% url 'my_ports_email' %}" class="btn btn-sm btn-primary">View ports ({{ ports_by_emails_count }})</a>
-                        <a href="{% url 'account_email' %}" class="btn btn-sm btn-warning">Mange Emails</a>
+                        <a href="{% url 'account_email' %}" class="btn btn-sm btn-warning">Manage Emails</a>
                     {% else %}
                         <p>You have no emails added to your account. To track the ports maintained by you, please add
                             emails that you use in Portfiles.</p>
