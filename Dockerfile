@@ -1,4 +1,4 @@
-FROM arjunsalyan/macports-ubuntu:20.04_2.8.0
+FROM arjunsalyan/macports-ubuntu:20.04_2.8.1
 ARG USER=0:0
 
 # Install required packages and remove the apt packages cache when done.
