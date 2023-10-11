@@ -91,3 +91,4 @@ staticfiles
 .env
 db.sqlite3
 /app/data/
+/tmp
