@@ -9,7 +9,7 @@ on:
 jobs:
   test_django:
 
-    runs-on: ubuntu-latest
+    runs-on: Ubuntu-latest
     
     # setup the postgres service needed by the webapp
     services:
