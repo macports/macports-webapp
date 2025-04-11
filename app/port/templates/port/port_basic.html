@@ -21,7 +21,7 @@
         {% if port.active == True and port.replaced_by == None %}
             {% if not port.is_stubport %}
             <div class="text-center mt-4">
-                <p class="text-muted mb-1">To install {{ port.name }}, paste this in macOS terminal after <a href="https://www.macports.org/install.php">installing MacPorts</a></p>
+                <p class="text-muted mb-1">To install {{ port.name }}, paste this into the macOS Terminal after <a href="https://www.macports.org/install.php">installing MacPorts</a></p>
                 <div style="display: inline-block" class="text-center bg-light rounded-lg py-3 px-2 mt-3">
                     <code id="install" class="text-dark lead">sudo port install {{ port.name }}</code>
                     <button onclick="copyText('install')" class="btn btn-outline-secondary btn-sm ml-2">Copy</button>
