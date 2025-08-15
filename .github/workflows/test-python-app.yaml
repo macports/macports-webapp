@@ -14,7 +14,7 @@ jobs:
     # setup the postgres service needed by the webapp
     services:
       postgres:
-        image: postgres:12
+        image: postgres:17
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -36,11 +36,11 @@ jobs:
       SOLR_ADMIN_URL: http://127.0.0.1:8983/solr/admin/cores
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v2
+    - uses: actions/checkout@v5
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.7
+        python-version: '3.13'
     - name: Install dependencies
       run: |
         cd app
@@ -61,6 +61,6 @@ jobs:
         coverage report
         coverage xml --fail-under=65
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1.5.2
+      uses: codecov/codecov-action@v5
       with:
         fail_ci_if_error: true
