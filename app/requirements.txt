@@ -1,5 +1,5 @@
 appdirs==1.4.4
-asgiref==3.2.10
+asgiref==3.9.1
 asn1crypto==1.4.0
 astroid==2.4.2
 autopep8==1.5.4
@@ -13,7 +13,7 @@ coverage==5.2.1
 cryptography==44.0.1
 DateTime==4.3
 defusedxml==0.6.0
-distlib==0.3.1
+distlib==0.4.0
 Django==3.2.25
 django-allauth==0.50.0
 django-cors-headers==3.4.0
@@ -27,7 +27,7 @@ djangorestframework==3.11.2
 docutils==0.16
 drf-haystack==1.8.10
 elasticsearch==7.8.1
-filelock==3.0.12
+filelock==3.19.1
 gprof2dot==2019.11.30
 gunicorn==23.0.0
 html5lib==1.1
@@ -37,7 +37,7 @@ isort==4.2.5
 Jinja2==3.1.6
 jsonfield==3.1.0
 lazy-object-proxy==1.4.0
-MarkupSafe==1.1.1
+MarkupSafe==3.0.2
 mccabe==0.6.1
 MonthDelta==0.9.1
 oauthlib==3.1.0
