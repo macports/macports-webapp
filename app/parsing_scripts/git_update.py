@@ -56,7 +56,7 @@ def refresh_portindex_json():
     latest_commit = subprocess.run([config.GIT, 'rev-parse', 'HEAD'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
     # update/generate the portindex
-    subprocess.run(['portindex', '-p', 'macosx_19_i386', '-x'])
+    subprocess.run(['portindex', '-p', 'macosx_24_arm', '-x'])
 
     # update/generate portindex.json
     portindexjson = subprocess.run([config.TCLSH, config.PORTINDEX2JSON, config.LOCAL_PORTINDEX, '--info', 'commit={}'.format(latest_commit)], stdout=subprocess.PIPE).stdout.decode('utf-8')

@@ -11,7 +11,7 @@ TCLSH = "/usr/bin/tclsh"
 
 # configuration for rsync
 RSYNC = "/usr/bin/rsync"
-PORTINDEX_SOURCE = "rsync://rsync.macports.org/macports//trunk/dports/PortIndex_darwin_18_i386/PortIndex.json"
+PORTINDEX_SOURCE = "rsync://rsync.macports.org/macports/release/tarballs/PortIndex_darwin_24_arm/PortIndex.json"
 PORTINDEX_JSON = os.path.join(DATA_DIR, "portindex.json")
 
 # configuration required for macports repositories
