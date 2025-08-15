@@ -1,5 +1,4 @@
-from django.urls import path, include
-from django.conf.urls import url
+from django.urls import path, include, re_path
 from django.contrib import admin
 from haystack.views import FacetedSearchView
 from haystack.query import SearchQuerySet
@@ -32,18 +31,18 @@ urlpatterns = [
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     # URL for advanced search page
-    url(r'^search/', FacetedSearchView(
+    re_path(r'^search/', FacetedSearchView(
         form_class=AdvancedSearchForm,
         searchqueryset=SearchQuerySet().facet('maintainers').facet('categories').facet('variants'),
     ), name='search'),
     path('statistics/', include('stats.urls')),
     path('maintainer/', include('maintainer.urls')),
     path('port/', include('port.urls')),
-    url(r"api/v1/statistics/port/monthly", PortMonthlyInstallationsAPIView.as_view(), name='port-monthly-stats'),
-    url(r"api/v1/statistics/port", PortStatisticsAPIView.as_view(), name='port-stats'),
-    url(r"api/v1/statistics/", GeneralStatisticsAPIView.as_view(), name='general-stats'),
-    url(r"api/v1/user/followed_ports", FollowedPortsAPIView.as_view(), name='followed-ports'),
-    url(r"api/v1/", include(router.urls)),
+    re_path(r"api/v1/statistics/port/monthly", PortMonthlyInstallationsAPIView.as_view(), name='port-monthly-stats'),
+    re_path(r"api/v1/statistics/port", PortStatisticsAPIView.as_view(), name='port-stats'),
+    re_path(r"api/v1/statistics/", GeneralStatisticsAPIView.as_view(), name='general-stats'),
+    re_path(r"api/v1/user/followed_ports", FollowedPortsAPIView.as_view(), name='followed-ports'),
+    re_path(r"api/v1/", include(router.urls)),
     path('category/', include('category.urls')),
     path('variant/', include('variant.urls')),
     path('ports/search/', views.search, name='ports_search'),
@@ -51,11 +50,11 @@ urlpatterns = [
     path('about/', views.about_page, name='about_page'),
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('user.urls')),
-    url('^accounts/notifications/', include(notifications.urls, namespace='notifications')),
+    re_path('^accounts/notifications/', include(notifications.urls, namespace='notifications')),
 
     # redirects to keep the old urls alive
-    url(r'^maintainer/github/(?P<m>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='maintainer'), name='maintainer_old'),
-    url(r'^ports/category/(?P<cat>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='category'), name='category_old'),
-    url(r'^ports/variant/(?P<v>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='variant'), name='variant_old'),
-    url(r'^ports/all_builds/$', RedirectView.as_view(pattern_name='all_builds'), name='all_build_old'),
+    re_path(r'^maintainer/github/(?P<m>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='maintainer'), name='maintainer_old'),
+    re_path(r'^ports/category/(?P<cat>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='category'), name='category_old'),
+    re_path(r'^ports/variant/(?P<v>[-a-zA-Z0-9_.]+)/$', RedirectView.as_view(pattern_name='variant'), name='variant_old'),
+    re_path(r'^ports/all_builds/$', RedirectView.as_view(pattern_name='all_builds'), name='all_build_old'),
 ]

@@ -1,5 +1,4 @@
-from django.conf.urls import url
-from django.urls import path
+from django.urls import re_path
 from rest_framework import routers
 
 from maintainer import views
@@ -9,5 +8,5 @@ router.register("autocomplete/maintainer", views.MaintainerAutocompleteView, bas
 router.register('maintainer', views.MaintainerAPIView, basename='maintainer')
 
 urlpatterns = [
-    url(r'^(?P<m>[-a-zA-Z0-9_.]+)/$', views.maintainer, name='maintainer'),
+    re_path(r'^(?P<m>[-a-zA-Z0-9_.]+)/$', views.maintainer, name='maintainer'),
 ]
