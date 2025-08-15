@@ -50,7 +50,7 @@ def buildbot2_submit(request):
     success_message = HttpResponse("Build data parsed successfully")
 
     try:
-        received_json = json.loads(received_body, encoding='utf-8')
+        received_json = json.loads(received_body)
 
         build_object = BuildHistory.buildbot2_parse(received_json)
         if build_object:

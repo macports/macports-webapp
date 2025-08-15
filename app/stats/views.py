@@ -154,7 +154,7 @@ def stats_submit(request):
             if not received_body.startswith(prefix):
                 return HttpResponse("Invalid body of the request.")
 
-            received_json = json.loads(received_body[len(prefix):], encoding='utf-8')
+            received_json = json.loads(received_body[len(prefix):])
             submission_id = Submission.populate(received_json, datetime.datetime.now(tz=datetime.timezone.utc))
             PortInstallation.populate(received_json['active_ports'], submission_id)
 
