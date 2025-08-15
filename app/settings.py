@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'captcha',
+    'django_recaptcha',
 
     # needed for GitHub login
     'allauth.socialaccount.providers.github',
