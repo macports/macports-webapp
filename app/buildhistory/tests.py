@@ -53,7 +53,7 @@ class TestURLsBuilds(TransactionTestCase):
     def test_all_builds(self):
         response = self.client.get(reverse('all_builds'))
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='buildhistory/all_builds.html')
 
     def test_old_url_redirect(self):
@@ -75,8 +75,8 @@ class TestBuildbotFetch(TransactionTestCase):
         # try to fetch some build history
         BuildHistory.populate()
 
-        self.assertEquals(BuildHistory.objects.all().count(), 5)
-        self.assertEquals(Builder.objects.all().count(), 1)
+        self.assertEqual(BuildHistory.objects.all().count(), 5)
+        self.assertEqual(Builder.objects.all().count(), 1)
 
         # loop over entire the buildhistory and check for related file
         # if the status is "build successful"
@@ -99,22 +99,22 @@ class TestBuildHistoryViews(TransactionTestCase):
         response = self.client.get(reverse('all_builds'))
 
         all_builds = response.context['builds']
-        self.assertEquals(len(all_builds), 3)
+        self.assertEqual(len(all_builds), 3)
 
         response_only_successful = self.client.get(reverse('all_builds'), {'status': 'build successful'})
-        self.assertEquals(len(response_only_successful.context['builds']), 1)
+        self.assertEqual(len(response_only_successful.context['builds']), 1)
 
         response_all_failed = self.client.get(reverse('all_builds'), {'status': 'failed install-port'})
-        self.assertEquals(len(response_all_failed.context['builds']), 1)
+        self.assertEqual(len(response_all_failed.context['builds']), 1)
 
         response_valid_builder = self.client.get(reverse('all_builds'), {'builder_name__name': '10.15_x86_64'})
-        self.assertEquals(len(response_valid_builder.context['builds']), 3)
+        self.assertEqual(len(response_valid_builder.context['builds']), 3)
 
         response_invalid_builder = self.client.get(reverse('all_builds'), {'builder_name__name': '10.14_x86_64'})
-        self.assertEquals(len(response_invalid_builder.context['builds']), 3)
+        self.assertEqual(len(response_invalid_builder.context['builds']), 3)
 
         response_port = self.client.get(reverse('all_builds'), {'port_name': 'port-A2'})
-        self.assertEquals(len(response_port.context['builds']), 1)
+        self.assertEqual(len(response_port.context['builds']), 1)
 
     def test_unresolved(self):
         # we should get only those builds in return which do not have a successful build following
@@ -134,8 +134,8 @@ class TestBuildHistoryViews(TransactionTestCase):
         )
 
         response = self.client.get(reverse('all_builds'), {'unresolved': 'on'})
-        self.assertEquals(len(response.context['builds']), 1)
-        self.assertEquals(response.context['builds'][0].build_id, 3)
+        self.assertEqual(len(response.context['builds']), 1)
+        self.assertEqual(response.context['builds'][0].build_id, 3)
 
         # let us resolve the build for port-A2 also now
         BuildHistory.objects.create(
@@ -149,7 +149,7 @@ class TestBuildHistoryViews(TransactionTestCase):
         )
 
         response = self.client.get(reverse('all_builds'), {'unresolved': 'on'})
-        self.assertEquals(len(response.context['builds']), 0)
+        self.assertEqual(len(response.context['builds']), 0)
 
 
 class TestBuildHistoryAPIViews(TransactionTestCase):
@@ -164,19 +164,19 @@ class TestBuildHistoryAPIViews(TransactionTestCase):
         response = response.data
 
         # pagination occurs after 50 objects, but we have only 3 categories
-        self.assertEquals(len(response['results']), 3)
+        self.assertEqual(len(response['results']), 3)
 
         response_filter_builder = self.client.get(reverse('builds-list'), {'builder_name__name': '10.15_x86_64'}, format='json')
-        self.assertEquals(len(response_filter_builder.data['results']), 3)
+        self.assertEqual(len(response_filter_builder.data['results']), 3)
 
         response_filter_builder_port = self.client.get(reverse('builds-list'), {'builder_name__name': '10.15_x86_64', 'port_name': 'port-A2'}, format='json')
-        self.assertEquals(len(response_filter_builder_port.data['results']), 1)
+        self.assertEqual(len(response_filter_builder_port.data['results']), 1)
 
     def test_builds_detail_view(self):
         response = self.client.get(reverse('builds-detail', kwargs={'pk': 1}), format='json')
         response = response.data
 
-        self.assertEquals(response['port_name'], 'port-A1')
+        self.assertEqual(response['port_name'], 'port-A1')
 
     def test_files_view(self):
         build = BuildHistory.objects.get(id=1)
@@ -190,16 +190,16 @@ class TestBuildHistoryAPIViews(TransactionTestCase):
         data = response.data['results']
 
         # should return 3 objects, one for each build
-        self.assertEquals(len(data), 3)
+        self.assertEqual(len(data), 3)
 
         for i in data:
             build_id = i['build_id']
             files = i['files']
 
             if build_id == 1:
-                self.assertEquals(len(files), 4)
+                self.assertEqual(len(files), 4)
             else:
-                self.assertEquals(len(files), 0)
+                self.assertEqual(len(files), 0)
 
 
 class TestBuildbot2HTTPStatusPush(TransactionTestCase):
@@ -250,30 +250,30 @@ class TestBuildbot2HTTPStatusPush(TransactionTestCase):
     def test_new_builder_added(self):
         Builder.objects.create(name="builder-1")
 
-        self.assertEquals(Builder.objects.all().count(), 1)
+        self.assertEqual(Builder.objects.all().count(), 1)
 
         # Now make a push, new builder should be added automatically
         response = self.client.post(reverse('buildbot2_submit'), data=self.build_data, content_type='text/plain')
-        self.assertEquals(Builder.objects.all().count(), 2)
+        self.assertEqual(Builder.objects.all().count(), 2)
 
         # Make same call again
         response = self.client.post(reverse('buildbot2_submit'), data=self.build_data, content_type='text/plain')
-        self.assertEquals(Builder.objects.all().count(), 2)
-        self.assertEquals(BuildHistory.objects.all().count(), 1)
+        self.assertEqual(Builder.objects.all().count(), 2)
+        self.assertEqual(BuildHistory.objects.all().count(), 1)
 
     def test_invalid_build_data(self):
         response = self.client.post(reverse('buildbot2_submit'), data=self.invalid_build_data, content_type='text/plain')
-        self.assertEquals(BuildHistory.objects.all().count(), 0)
-        self.assertEquals(Builder.objects.all().count(), 0)
+        self.assertEqual(BuildHistory.objects.all().count(), 0)
+        self.assertEqual(Builder.objects.all().count(), 0)
 
     def test_build_properties(self):
         response = self.client.post(reverse('buildbot2_submit'), data=self.build_data, content_type='text/plain')
 
-        self.assertEquals(BuildHistory.objects.all().count(), 1)
+        self.assertEqual(BuildHistory.objects.all().count(), 1)
 
         build_object = BuildHistory.objects.get(build_id=7646)
 
-        self.assertEquals(build_object.status, "build successful")
-        self.assertEquals(build_object.port_name, "portA")
-        self.assertEquals(build_object.port_version, "1.2")
-        self.assertEquals(build_object.port_revision, "0")
+        self.assertEqual(build_object.status, "build successful")
+        self.assertEqual(build_object.port_name, "portA")
+        self.assertEqual(build_object.port_version, "1.2")
+        self.assertEqual(build_object.port_revision, "0")

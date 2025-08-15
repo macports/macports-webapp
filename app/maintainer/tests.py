@@ -42,31 +42,31 @@ class TestMaintainerAPIViews(TransactionTestCase):
         response = self.client.get(reverse('maintainer-list'), format='json')
         data = response.data
 
-        self.assertEquals(len(data['results']), 6)
+        self.assertEqual(len(data['results']), 6)
 
         for m in data['results']:
             if m['github'] == 'user' and m['name'] == 'user':
-                self.assertEquals(m['ports_count'], 2)
+                self.assertEqual(m['ports_count'], 2)
 
             if m['github'] == 'user' and m['name'] == 'user2':
-                self.assertEquals(m['ports_count'], 1)
+                self.assertEqual(m['ports_count'], 1)
 
     def test_list_view_filter(self):
         response = self.client.get(reverse('maintainer-list'), {'github': 'user'}, format='json')
         data = response.data['results']
 
-        self.assertEquals(len(data), 3)
+        self.assertEqual(len(data), 3)
 
     def test_detail_view(self):
         response = self.client.get(reverse('maintainer-detail', kwargs={'github': 'user2'}), format='json')
         data = response.data
 
-        self.assertEquals(len(data), 1)
+        self.assertEqual(len(data), 1)
 
         response2 = self.client.get(reverse('maintainer-detail', kwargs={'github': 'user'}), format='json')
         data2 = response2.data
 
-        self.assertEquals(len(data2), 3)
+        self.assertEqual(len(data2), 3)
 
 
 class TestMaintainerLoadAndUpdate(TransactionTestCase):
@@ -96,8 +96,8 @@ class TestMaintainerLoadAndUpdate(TransactionTestCase):
             ]
         }])
 
-        self.assertEquals(Port.objects.get(name="port-A1").maintainers.all().count(), 2)
-        self.assertEquals(Maintainer.objects.all().count(), 7)
+        self.assertEqual(Port.objects.get(name="port-A1").maintainers.all().count(), 2)
+        self.assertEqual(Maintainer.objects.all().count(), 7)
 
         # Now remove the maintainer, this should not delete the object from Maintainer model,
         # and should only delete the relation
@@ -116,8 +116,8 @@ class TestMaintainerLoadAndUpdate(TransactionTestCase):
             ]
         }])
 
-        self.assertEquals(Port.objects.get(name="port-A1").maintainers.all().count(), 1)
-        self.assertEquals(Maintainer.objects.all().count(), 7)
+        self.assertEqual(Port.objects.get(name="port-A1").maintainers.all().count(), 1)
+        self.assertEqual(Maintainer.objects.all().count(), 7)
 
     def test_invalid_addition(self):
         Port.add_or_update([{
@@ -142,8 +142,8 @@ class TestMaintainerLoadAndUpdate(TransactionTestCase):
             ]
         }])
 
-        self.assertEquals(Port.objects.get(name="port-A1").maintainers.all().count(), 1)
-        self.assertEquals(Maintainer.objects.all().count(), 6)
+        self.assertEqual(Port.objects.get(name="port-A1").maintainers.all().count(), 1)
+        self.assertEqual(Maintainer.objects.all().count(), 6)
 
     def test_existing_maintainer(self):
         # adding a maintainer that already exists to another port
@@ -169,8 +169,8 @@ class TestMaintainerLoadAndUpdate(TransactionTestCase):
             ]
         }])
 
-        self.assertEquals(Port.objects.get(name="port-A1").maintainers.all().count(), 2)
-        self.assertEquals(Maintainer.objects.all().count(), 6)
+        self.assertEqual(Port.objects.get(name="port-A1").maintainers.all().count(), 2)
+        self.assertEqual(Maintainer.objects.all().count(), 6)
 
     def test_remove_maintainer(self):
         # adding a maintainer that already exists to another port
@@ -180,6 +180,6 @@ class TestMaintainerLoadAndUpdate(TransactionTestCase):
             "version": "1.2.3",
         }])
 
-        self.assertEquals(Port.objects.get(name="port-A1").maintainers.all().count(), 0)
-        self.assertEquals(Maintainer.objects.all().count(), 6)
+        self.assertEqual(Port.objects.get(name="port-A1").maintainers.all().count(), 0)
+        self.assertEqual(Maintainer.objects.all().count(), 6)
 

@@ -52,25 +52,25 @@ class TestURLsStats(TransactionTestCase):
     def test_stats(self):
         response = self.client.get(reverse('stats'))
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='stats/stats.html')
 
     def test_port_installations(self):
         response = self.client.get(reverse('stats_port_installations'))
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='stats/stats_port_installations.html')
 
     def test_port_installations_filter(self):
         response = self.client.get(reverse('stats_port_installations_filter'))
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='stats/port_installations_table.html')
 
     def test_stats_faq(self):
         response = self.client.get(reverse('stats_faq'))
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='stats/stats_faq.html')
 
 
@@ -109,17 +109,17 @@ class TestStatsViews(TransactionTestCase):
         }"""
         self.client.generic('POST', reverse('stats_submit'), submission_body)
 
-        self.assertEquals(UUID.objects.count(), 6)
-        self.assertEquals(Submission.objects.count(), 7)
-        self.assertEquals(PortInstallation.objects.count(), 29)
+        self.assertEqual(UUID.objects.count(), 6)
+        self.assertEqual(Submission.objects.count(), 7)
+        self.assertEqual(PortInstallation.objects.count(), 29)
 
     def test_port_installation_counts(self):
         response1 = self.client.get(reverse('port_stats', kwargs={
             'name': 'port-A1'
         }))
 
-        self.assertEquals(response1.context['count']['all'], 4)
-        self.assertEquals(response1.context['count']['requested'], 2)
+        self.assertEqual(response1.context['count']['all'], 4)
+        self.assertEqual(response1.context['count']['requested'], 2)
 
     def test_time_travel(self):
         time_now = datetime.datetime.now(tz=datetime.timezone.utc)
@@ -158,11 +158,11 @@ class TestStatsViews(TransactionTestCase):
             }
         ])
 
-        self.assertEquals(response1.context['count']['all'], 1)
-        self.assertEquals(response1.context['count']['requested'], 0)
-        self.assertEquals(response2.context['count']['all'], 1)
-        self.assertEquals(response2.context['count']['requested'], 0)
-        self.assertEquals(response3.context['count']['all'], 0)
+        self.assertEqual(response1.context['count']['all'], 1)
+        self.assertEqual(response1.context['count']['requested'], 0)
+        self.assertEqual(response2.context['count']['all'], 1)
+        self.assertEqual(response2.context['count']['requested'], 0)
+        self.assertEqual(response3.context['count']['all'], 0)
 
     def test_users_count(self):
         today_day = datetime.datetime.now().day
@@ -190,13 +190,13 @@ class TestStatsViews(TransactionTestCase):
             if i['month'] == datetime.datetime.strptime(eleven_months_ago_year + "-" + eleven_months_ago_month + "-01 00:00:00-+0000", '%Y-%m-%d %H:%M:%S-%z'):
                 eleven_months_count = i['num']
 
-        self.assertEquals(three_months_count, 1)
-        self.assertEquals(eleven_months_count, 1)
+        self.assertEqual(three_months_count, 1)
+        self.assertEqual(eleven_months_count, 1)
 
-        self.assertEquals(response.context['total_submissions'], 8)
-        self.assertEquals(response.context['unique_users'], 6)
-        self.assertEquals(response.context['current_week'], 5)
-        self.assertEquals(response.context['last_week'], 0)
+        self.assertEqual(response.context['total_submissions'], 8)
+        self.assertEqual(response.context['unique_users'], 6)
+        self.assertEqual(response.context['current_week'], 5)
+        self.assertEqual(response.context['last_week'], 0)
 
     def test_validation_general_stats(self):
         response1 = self.client.get(reverse('stats'), data={
@@ -211,8 +211,8 @@ class TestStatsViews(TransactionTestCase):
             'days': 30
         })
 
-        self.assertEquals(response1.content, b"'91' is an invalid value. Allowed values are: [0, 7, 30, 90, 180, 365]")
-        self.assertEquals(response2.content, b"Received 'randomString'. Expecting an integer.")
+        self.assertEqual(response1.content, b"'91' is an invalid value. Allowed values are: [0, 7, 30, 90, 180, 365]")
+        self.assertEqual(response2.content, b"Received 'randomString'. Expecting an integer.")
         self.assertIsInstance(response3.context['days'], int)
 
     def test_validation_port_stats(self):
@@ -228,8 +228,8 @@ class TestStatsViews(TransactionTestCase):
             'days': 30
         })
 
-        self.assertEquals(response1.content, b"'91' is an invalid value. Allowed values are: [0, 7, 30, 90, 180, 365]")
-        self.assertEquals(response2.content, b"Received 'randomString'. Expecting an integer.")
+        self.assertEqual(response1.content, b"'91' is an invalid value. Allowed values are: [0, 7, 30, 90, 180, 365]")
+        self.assertEqual(response2.content, b"Received 'randomString'. Expecting an integer.")
         self.assertIsInstance(response3.context['days'], int)
 
 
@@ -261,8 +261,8 @@ class TestGeneralStatsAPIViews(TransactionTestCase):
             if i['macports_version'] == '2.5.4':
                 count_2_5_4 = i['count']
 
-        self.assertEquals(count_2_5_1, 5)
-        self.assertEquals(count_2_5_4, 1)
+        self.assertEqual(count_2_5_1, 5)
+        self.assertEqual(count_2_5_4, 1)
 
     def test_macos_version_general_stats(self):
         response = self.client.get(reverse('general-stats'), data={
@@ -282,9 +282,9 @@ class TestGeneralStatsAPIViews(TransactionTestCase):
             if i['os_version'] == '10.13':
                 count_10_13 = i['count']
 
-        self.assertEquals(count_10_14, 3)
-        self.assertEquals(count_10_14_no_build_arch, 1)
-        self.assertEquals(count_10_13, 1)
+        self.assertEqual(count_10_14, 3)
+        self.assertEqual(count_10_14_no_build_arch, 1)
+        self.assertEqual(count_10_13, 1)
 
     def test_xcode_version_general_stats(self):
         response = self.client.get(reverse('general-stats'), data={
@@ -298,7 +298,7 @@ class TestGeneralStatsAPIViews(TransactionTestCase):
             if i['os_version'] == '10.14' and i['xcode_version'] == '10.3':
                 count_10_3 = i['count']
 
-        self.assertEquals(count_10_3, 3)
+        self.assertEqual(count_10_3, 3)
 
     def test_invalid_property(self):
         response = self.client.get(reverse('general-stats'), data={
@@ -306,7 +306,7 @@ class TestGeneralStatsAPIViews(TransactionTestCase):
         }, format='json')
 
         data = response.data['result']
-        self.assertEquals(len(data), 0)
+        self.assertEqual(len(data), 0)
 
     def test_invalid_sorting(self):
         response1 = self.client.get(reverse('general-stats'), data={
@@ -315,7 +315,7 @@ class TestGeneralStatsAPIViews(TransactionTestCase):
         }, format='json')
 
         data = response1.data['result']
-        self.assertEquals(len(data), 4)
+        self.assertEqual(len(data), 4)
 
     def test_invalid_duration(self):
         response1 = self.client.get(reverse('general-stats'), data={
@@ -324,7 +324,7 @@ class TestGeneralStatsAPIViews(TransactionTestCase):
         }, format='json')
 
         data = response1.data['result']
-        self.assertEquals(len(data), 0)
+        self.assertEqual(len(data), 0)
 
 
 class TestPortStatsAPIViews(TransactionTestCase):
@@ -356,8 +356,8 @@ class TestPortStatsAPIViews(TransactionTestCase):
             if i['version'] == '0.9':
                 count_0_9 = i['count']
 
-        self.assertEquals(count_1_1, 4)
-        self.assertEquals(count_0_9, 1)
+        self.assertEqual(count_1_1, 4)
+        self.assertEqual(count_0_9, 1)
 
     def test_macos_version(self):
         response = self.client.get(reverse('port-stats'), data={
@@ -375,8 +375,8 @@ class TestPortStatsAPIViews(TransactionTestCase):
             if i['submission__os_version'] == '10.13' and i['submission__build_arch'] == 'x86_64':
                 count_10_13 = i['count']
 
-        self.assertEquals(count_10_14, 2)
-        self.assertEquals(count_10_13, 1)
+        self.assertEqual(count_10_14, 2)
+        self.assertEqual(count_10_13, 1)
 
     def test_clt_version(self):
         response = self.client.get(reverse('port-stats'), data={
@@ -391,7 +391,7 @@ class TestPortStatsAPIViews(TransactionTestCase):
             if i['submission__os_version'] == '10.14' and i['submission__clt_version'] == '10.3.0.0.2':
                 count_10_14 = i['count']
 
-        self.assertEquals(count_10_14, 1)
+        self.assertEqual(count_10_14, 1)
 
     def test_invalid_property(self):
         response = self.client.get(reverse('port-stats'), data={
@@ -401,7 +401,7 @@ class TestPortStatsAPIViews(TransactionTestCase):
 
         data = response.data['result']
 
-        self.assertEquals(len(data), 0)
+        self.assertEqual(len(data), 0)
 
     def test_invalid_duration(self):
         response = self.client.get(reverse('port-stats'), data={
@@ -413,7 +413,7 @@ class TestPortStatsAPIViews(TransactionTestCase):
 
         data = response.data['result']
 
-        self.assertEquals(len(data), 0)
+        self.assertEqual(len(data), 0)
 
     def test_invalid_port(self):
         response = self.client.get(reverse('port-stats'), data={
@@ -424,7 +424,7 @@ class TestPortStatsAPIViews(TransactionTestCase):
 
         data = response.data['result']
 
-        self.assertEquals(len(data), 0)
+        self.assertEqual(len(data), 0)
 
     def test_invalid_sorting(self):
         response = self.client.get(reverse('port-stats'), data={
@@ -436,7 +436,7 @@ class TestPortStatsAPIViews(TransactionTestCase):
 
         data = response.data['result']
 
-        self.assertEquals(len(data), 3)
+        self.assertEqual(len(data), 3)
 
     def test_monthly(self):
         today_day = datetime.datetime.now().day
@@ -470,8 +470,8 @@ class TestPortStatsAPIViews(TransactionTestCase):
             if i['month'] == "{},{}".format(eleven_months_ago_year, eleven_months_ago_month):
                 eleven_months_count = i['count']
 
-        self.assertEquals(three_months_count, 1)
-        self.assertEquals(eleven_months_count, 1)
+        self.assertEqual(three_months_count, 1)
+        self.assertEqual(eleven_months_count, 1)
 
         response2 = self.client.get(reverse('port-monthly-stats'), data={
             'name': 'port-A2',
@@ -491,9 +491,9 @@ class TestPortStatsAPIViews(TransactionTestCase):
             if i['month'] == "{},{}".format(datetime.datetime.utcnow().year, datetime.datetime.utcnow().month) and i['version'] == '1.2':
                 current_month_count = i['count']
 
-        self.assertEquals(three_months_count, 1)
-        self.assertEquals(eleven_months_count, 1)
-        self.assertEquals(current_month_count, 2)
+        self.assertEqual(three_months_count, 1)
+        self.assertEqual(eleven_months_count, 1)
+        self.assertEqual(current_month_count, 2)
 
 
 class TestVersionsSorting(TransactionTestCase):
@@ -541,7 +541,7 @@ class TestVersionsSorting(TransactionTestCase):
             {"version": "9"},
         ]
 
-        self.assertEquals(versions, expected)
+        self.assertEqual(versions, expected)
 
     def test_alphanumeric_dict(self):
         versions = [
@@ -586,7 +586,7 @@ class TestVersionsSorting(TransactionTestCase):
             {"version": "AAA-A+B"},
             {"version": "AAA-A-A"},
         ]
-        self.assertEquals(versions, expected)
+        self.assertEqual(versions, expected)
 
     def test_version_list(self):
         versions = [
@@ -636,4 +636,4 @@ class TestVersionsSorting(TransactionTestCase):
             "AAA-A-A",
         ]
 
-        self.assertEquals(versions, expected)
+        self.assertEqual(versions, expected)

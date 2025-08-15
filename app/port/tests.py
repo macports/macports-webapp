@@ -18,7 +18,7 @@ class TestURLsPortDetail(TransactionTestCase):
             'name': 'port-A1'
         }))
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='port/port_basic.html')
 
     def test_port_details(self):
@@ -26,7 +26,7 @@ class TestURLsPortDetail(TransactionTestCase):
             'name': 'port-A1'
         }))
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='port/port_details.html')
 
     def test_port_not_found(self):
@@ -34,7 +34,7 @@ class TestURLsPortDetail(TransactionTestCase):
             'name': 'testingA404.'
         }))
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='port/exceptions/port_not_found.html')
 
     def test_port_stats(self):
@@ -42,7 +42,7 @@ class TestURLsPortDetail(TransactionTestCase):
             'name': 'port-A1'
         }))
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='port/port_stats.html')
 
     def test_port_builds(self):
@@ -50,7 +50,7 @@ class TestURLsPortDetail(TransactionTestCase):
             'name': 'port-A1'
         }))
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='port/port_builds.html')
 
     def test_default_page_redirect(self):
@@ -71,14 +71,14 @@ class TestURLsPortDetail(TransactionTestCase):
             'name': 'port-A1'
         }))
 
-        self.assertEquals(response.client.cookies['default_port_page'].value, "summary")
+        self.assertEqual(response.client.cookies['default_port_page'].value, "summary")
 
         # run again to remove the cookie
         response2 = self.client.get(reverse('default_port_page_toggle', kwargs={
             'name': 'port-A1'
         }))
 
-        self.assertEquals(response.client.cookies.get('default_port_page').value, "")
+        self.assertEqual(response.client.cookies.get('default_port_page').value, "")
 
 
 class TestDependencies(TransactionTestCase):
@@ -89,7 +89,7 @@ class TestDependencies(TransactionTestCase):
         setup.setup_test_data()
 
     def test_rows_created(self):
-        self.assertEquals(Dependency.objects.all().count(), 6)
+        self.assertEqual(Dependency.objects.all().count(), 6)
 
     def test_updates(self):
         updated_port = [{
@@ -101,9 +101,9 @@ class TestDependencies(TransactionTestCase):
         }]
         Port.add_or_update(updated_port)
         dependencies = Dependency.objects.filter(port_name__name__iexact='port-A5')
-        self.assertEquals(dependencies.get(type='run').dependencies.all().count(), 1)
-        self.assertEquals(dependencies.get(type='run').dependencies.all().first().name, 'port-A1')
-        self.assertEquals(dependencies.count(), 2)
+        self.assertEqual(dependencies.get(type='run').dependencies.all().count(), 1)
+        self.assertEqual(dependencies.get(type='run').dependencies.all().first().name, 'port-A1')
+        self.assertEqual(dependencies.count(), 2)
 
 
 class TestPortsQueryAndUpdate(TransactionTestCase):
@@ -122,8 +122,8 @@ class TestPortsQueryAndUpdate(TransactionTestCase):
 
         port_status_subport = Port.objects.get(name='port-A1-subport').active
         port_status_mainport = Port.objects.get(name='port-A1').active
-        self.assertEquals(port_status_mainport, True)
-        self.assertEquals(port_status_subport, False)
+        self.assertEqual(port_status_mainport, True)
+        self.assertEqual(port_status_subport, False)
 
     def test_moved(self):
         Port.add_or_update([
@@ -178,9 +178,9 @@ class TestPortsQueryAndUpdate(TransactionTestCase):
         port_status_subport1 = Port.objects.get(name='port-A1-subport').active
         port_status_subport2 = Port.objects.get(name='port-A2-subport').active
         port_status_subport3 = Port.objects.get(name='port-A3-subport').active
-        self.assertEquals(port_status_subport1, True)
-        self.assertEquals(port_status_subport2, True)
-        self.assertEquals(port_status_subport3, True)
+        self.assertEqual(port_status_subport1, True)
+        self.assertEqual(port_status_subport2, True)
+        self.assertEqual(port_status_subport3, True)
 
         # Entire categoryA/port-A1 portdir is removed, but the subports move to other directory
         # All ports under category/port-A1 would be deleted.
@@ -191,9 +191,9 @@ class TestPortsQueryAndUpdate(TransactionTestCase):
         port_status_subport1 = Port.objects.get(name='port-A1-subport').active
         port_status_subport2 = Port.objects.get(name='port-A2-subport').active
         port_status_subport3 = Port.objects.get(name='port-A3-subport').active
-        self.assertEquals(port_status_subport1, False)
-        self.assertEquals(port_status_subport2, False)
-        self.assertEquals(port_status_subport3, False)
+        self.assertEqual(port_status_subport1, False)
+        self.assertEqual(port_status_subport2, False)
+        self.assertEqual(port_status_subport3, False)
 
         # The moved ports would be found at the new location and will be appended to the list of JSON objects
         Port.add_or_update([
@@ -247,8 +247,8 @@ class TestPortsQueryAndUpdate(TransactionTestCase):
 
         port_status_subport2 = Port.objects.get(name='port-A2-subport').active
         port_status_subport3 = Port.objects.get(name='port-A3-subport').active
-        self.assertEquals(port_status_subport2, True)
-        self.assertEquals(port_status_subport3, True)
+        self.assertEqual(port_status_subport2, True)
+        self.assertEqual(port_status_subport3, True)
 
     def test_added_back(self):
         Port.mark_deleted({
@@ -282,7 +282,7 @@ class TestPortsQueryAndUpdate(TransactionTestCase):
             }
         ])
         port_status = Port.objects.get(name='port-A1-subport').active
-        self.assertEquals(port_status, True)
+        self.assertEqual(port_status, True)
 
     def test_full_deleted_run(self):
         Port.mark_deleted_full_run([
@@ -294,5 +294,5 @@ class TestPortsQueryAndUpdate(TransactionTestCase):
             {'name': 'pOrT-A5'},
         ])
 
-        self.assertEquals(Port.objects.filter(active=True).count(), 6)
+        self.assertEqual(Port.objects.filter(active=True).count(), 6)
 

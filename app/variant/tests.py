@@ -38,7 +38,7 @@ class TestVariantsAddUpdate(TransactionTestCase):
         setup.setup_test_data()
 
     def test_added(self):
-        self.assertEquals(Variant.objects.all().count(), 8)
+        self.assertEqual(Variant.objects.all().count(), 8)
 
     def test_removed(self):
         Port.add_or_update([{
@@ -50,8 +50,8 @@ class TestVariantsAddUpdate(TransactionTestCase):
             "revision": "0"
         }])
 
-        self.assertEquals(Port.objects.get(name='port-A1').variants.all().count(), 0)
-        self.assertEquals(Variant.objects.all().count(), 7)
+        self.assertEqual(Port.objects.get(name='port-A1').variants.all().count(), 0)
+        self.assertEqual(Variant.objects.all().count(), 7)
 
         Port.add_or_update([{
             "portdir": "categoryA\/port-A1",
@@ -66,8 +66,8 @@ class TestVariantsAddUpdate(TransactionTestCase):
             ]
         }])
 
-        self.assertEquals(Port.objects.get(name='port-A1').variants.all().count(), 2)
-        self.assertEquals(Variant.objects.all().count(), 9)
+        self.assertEqual(Port.objects.get(name='port-A1').variants.all().count(), 2)
+        self.assertEqual(Variant.objects.all().count(), 9)
 
     def test_different_case(self):
         Port.add_or_update([{
@@ -82,7 +82,7 @@ class TestVariantsAddUpdate(TransactionTestCase):
             ]
         }])
 
-        self.assertEquals(Port.objects.get(name='port-A1').variants.all().count(), 1)
-        self.assertEquals(Variant.objects.all().count(), 8)
+        self.assertEqual(Port.objects.get(name='port-A1').variants.all().count(), 1)
+        self.assertEqual(Variant.objects.all().count(), 8)
 
 
