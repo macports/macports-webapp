@@ -66,7 +66,7 @@ soupsieve==2.0.1
 sqlparse==0.3.1
 swapper==1.1.2.post1
 toml==0.10.1
-urllib3==1.26.5
+urllib3==2.5.0
 virtualenv==20.0.29
 webencodings==0.5.1
 whitenoise==5.1.0
