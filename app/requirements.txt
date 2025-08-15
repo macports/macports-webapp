@@ -47,11 +47,11 @@ pycodestyle==2.6.0
 pycparser==2.20
 Pygments==2.15.0
 pylint==2.5.3
+pymemcache==4.0.0
 pyOpenSSL==19.1.0
 pysolr==3.9.0
 python-coveralls==2.9.3
 python-dateutil==2.8.1
-python-memcached==1.59
 python3-openid==3.2.0
 pytz==2020.1
 PyYAML==6.0.2
