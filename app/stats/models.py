@@ -1,7 +1,6 @@
 from distutils.version import LooseVersion
 
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 
 
 class UUID(models.Model):
@@ -18,7 +17,7 @@ class Submission(models.Model):
     macports_version = models.CharField(max_length=10)
     cxx_stdlib = models.CharField(max_length=20, default='')
     clt_version = models.CharField(max_length=100, default='')
-    raw_json = JSONField(default=dict)
+    raw_json = models.JSONField(default=dict)
     timestamp = models.DateTimeField()
 
     class Meta:

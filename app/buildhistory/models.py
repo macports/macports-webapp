@@ -4,7 +4,6 @@ import json
 import datetime
 
 from django.db import models, transaction
-from django.contrib.postgres.fields import JSONField
 
 from config import BUILDERS_JSON_URL, BUILDBOT_URL_PREFIX, BUILDS_FETCHED_COUNT
 from port.database import StringToArray
@@ -231,4 +230,4 @@ class InstalledFile(models.Model):
 
 
 class TempBuildJSON(models.Model):
-    build_data = JSONField(default=dict)
+    build_data = models.JSONField(default=dict)
