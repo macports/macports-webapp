@@ -47,7 +47,7 @@ psycopg2==2.9.10
 py==1.10.0
 pycodestyle==2.6.0
 pycparser==2.20
-Pygments==2.7.4
+Pygments==2.15.0
 pylint==2.5.3
 pyOpenSSL==19.1.0
 pyparsing==2.4.7
