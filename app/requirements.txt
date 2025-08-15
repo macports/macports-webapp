@@ -18,7 +18,7 @@ Django==4.2.22
 django-allauth==0.50.0
 django-cors-headers==3.4.0
 django-filter==2.4.0
-django-haystack==3.0b2
+django-haystack==3.3.0
 django-model-utils==4.0.0
 django-notifications-hq==1.8.3
 django-recaptcha==4.1.0
