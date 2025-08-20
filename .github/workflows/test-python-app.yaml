@@ -29,6 +29,9 @@ jobs:
         ports:
           - 8983:8983
 
+      memcached:
+        image: memcached:1.6
+
     # setup env for the application
     env:
       DJANGO_SETTINGS_MODULE: 'settings'
