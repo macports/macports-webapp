@@ -28,9 +28,13 @@ jobs:
         image: solr:9
         ports:
           - 8983:8983
+        command:
+          - solr-precreate tester
 
       memcached:
         image: memcached:1.6
+        ports:
+          - 11211:11211
 
     # setup env for the application
     env:
