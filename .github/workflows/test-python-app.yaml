@@ -28,8 +28,6 @@ jobs:
         image: solr:9
         ports:
           - 8983:8983
-        command:
-          - solr-precreate tester
 
       memcached:
         image: memcached:1.6
@@ -59,6 +57,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install codecov
+    - name: Configure solr
+      run: |
+        cd app
+        python manage.py build_solr_schema --configure-directory=/solr/server/solr/tester/conf
+        python manage.py build_solr_schema -r RELOAD_CORE
+        python manage.py rebuild_index --noinput
     - name: Create and run migrations
       run: |
         cd app
