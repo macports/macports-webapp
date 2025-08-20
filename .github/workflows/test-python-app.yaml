@@ -28,6 +28,8 @@ jobs:
         image: solr:9
         ports:
           - 8983:8983
+        volumes:
+          - /var/solr:/var/solr
 
       memcached:
         image: memcached:1.6
@@ -60,7 +62,7 @@ jobs:
     - name: Configure solr
       run: |
         cd app
-        python manage.py build_solr_schema --configure-directory=/solr/server/solr/tester/conf
+        python manage.py build_solr_schema --configure-directory=/var/solr/server/solr/tester/conf
         python manage.py build_solr_schema -r RELOAD_CORE
         python manage.py rebuild_index --noinput
     - name: Create and run migrations
