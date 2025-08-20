@@ -2,7 +2,9 @@ name: Test Python (Django) application
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - ci-fix
   pull_request:
     branches: [ main ]
 
