@@ -62,7 +62,8 @@ jobs:
     - name: Configure solr
       run: |
         cd app
-        mkdir -p /var/solr/server/solr/tester/conf
+        sudo mkdir -p /var/solr/server/solr/tester/conf
+        sudo chmod -R u+rwX /var/solr
         python manage.py build_solr_schema --configure-directory=/var/solr/server/solr/tester/conf
         python manage.py build_solr_schema -r RELOAD_CORE
         python manage.py rebuild_index --noinput
