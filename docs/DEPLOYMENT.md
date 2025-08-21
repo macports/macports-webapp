@@ -5,7 +5,7 @@ inside the `app` directory in the root of the project.
 
 ###### Project structure
 ```
-|-- app     (main django app)
+|-- app     (main Django app)
 |-- config
 |-- docs
 |-- .gitignore
@@ -17,13 +17,32 @@ inside the `app` directory in the root of the project.
 |-- README.md
 ```
 
-As mentioned, the `app` directory is a standalone django app. However, the app has been Dockerised and all the pain of
+As mentioned, the `app` directory is a standalone Django app. However, the app has been Dockerised and all the pain of
 setting up a local environment can be avoided when working with Docker. But in case you do not want to work with Docker,
 we will also walk through the standard process of setting up the app.
 
-## Getting the dependencies ready
+## The full-Docker way
 
-The external dependencies of the app are: PostgreSQL, Solr and Memcached. The search page(/search/) is completely derived from
+If you would like to work with the Dockerised app and dependencies, all you need to do is:
+
+1. Run `docker compose up` from the project root
+2. Run `./docker_compose_setup.sh` from the project root
+3. Access the site at http://localhost:8080
+
+This will take care of all dependencies and initialization. Note, however, that in particular step 2 takes a *long* time
+(several hours). Until it completes, some data will not be available in the app (ports, search, build info, livecheck
+results).
+
+Data is stored in two places:
+
+- `tmp` in the repo root: webapp data and Solr data
+- `db` Docker volume: PostgreSQL data
+
+To reset your local environment completely, be sure to delete both.
+
+## The other way: Getting the dependencies ready
+
+The external dependencies of the app are: PostgreSQL, Solr and Memcached. The search page (/search/) is completely derived from
 Solr. Memcached is optional, and can be avoided if you don't want to cache the results of stats and trac tickets.
 
 If you are new to these technologies, you may use the instructions provided below, otherwise you are free to install and setup these
@@ -38,7 +57,7 @@ After this, connect as root:
 su - postgres
 ```
 
-Create your user(replace username and password with your preferred credentials):
+Create your user (replace username and password with your preferred credentials):
 ```bash
 CREATE USER username PASSWORD 'password';
 ```
@@ -51,7 +70,7 @@ CREATE DATABASE webapp;
 
 Grant permissions to your user on this database.
 
-```bash 
+```bash
 GRANT ALL PRIVILEGES ON DATABASE webapp TO username;
 ```
 
@@ -59,11 +78,11 @@ That's it for PostgreSQL, our database for the app is ready.
 
 ### Solr
 
-To get the required version of Solr working we need [openjdk8](https://openjdk.java.net/install/). On a mac, you may use 
-[MacPorts to install openjdk8](https://ports.macports.org/port/openjdk8/). New versions of openjdk may raise problems,
+To get the required version of Solr working we need [openjdk8](https://openjdk.java.net/install/). On a Mac, you may use
+[MacPorts to install openjdk8](https://ports.macports.org/port/openjdk8/). New versions of OpenJDK may raise problems;
 we recommend openjdk8.
 
-Once opendjk8 has been installed, we can proceed to downloading and launching Solr. We would need 
+Once opendjk8 has been installed, we can proceed to downloading and launching Solr. We would need
 [Solr 6.6.6](https://archive.apache.org/dist/lucene/solr/6.6.6/). The below steps are self explanatory:
 
 ```bash
@@ -76,11 +95,11 @@ cd solr
 ```
 
 By default this will create a core with a managed schema. This setup is dynamic but not useful for the app, later we will
-configure solr to use a static schema, which we will generate with the help of `django-haystack`.
+configure Solr to use a static schema, which we will generate with the help of `django-haystack`.
 
 ### Memcached (optional)
 
-Setting up memcached is straightforward. On Linux:
+Setting up Memcached is straightforward. On Linux:
 
 ```bash
 wget http://memcached.org/latest
@@ -89,9 +108,9 @@ cd memcached-1.x.x
 ./configure && make && make test && sudo make install
 ```
 
-Now you may start memcached by running `memcached -d` in the terminal.
+Now you may start Memcached by running `memcached -d` in the terminal.
 
-On a mac, you may use [MacPorts to install memcached](https://ports.macports.org/port/memcached/summary).
+On a Mac, you may use [MacPorts to install Memcached](https://ports.macports.org/port/memcached/summary).
 
 ---
 
@@ -101,8 +120,11 @@ We have the dependencies ready now and are ready to move forward to actually set
 
 There are two options available:
 
-- Build the docker image from source. (long but useful for development)
+- Build the Docker image from source. (long but useful for development)
 - Download an image from the Docker registry. (ready to go in one command)
+
+(Note that this is only using Docker for the webapp itself; if you would like to use Docker for everything, see [The
+full-Docker way](#the-full-docker-way) above.)
 
 ### 1.a: Building the image from source
 
@@ -111,12 +133,12 @@ There are two options available:
     git clone https://github.com/macports/macports-webapp.git
     cd macports-webapp
     ```
- - Build the docker image
+ - Build the Docker image
     ```bash
     docker build -t macports-webapp .
     ```
  - Once build finishes, the image is ready to run.
- 
+
 ### 1.b: Downloading image from Docker registry
 
 This is rather simple, but useless if your purpose is development as you won't be able to test your changes.
@@ -128,7 +150,7 @@ docker pull arjunsalyan/macports-webapp
 ### 2. Starting the container
 
 After using any one of the methods described in (1.a) or (1.b), you have an image with you. We will start this image with
-several environment variables that are needed to connect to PostgreSQL, Solr and memcached. A file `env.sample` has been
+several environment variables that are needed to connect to PostgreSQL, Solr and Memcached. A file `env.sample` has been
 added in the repo for your convenience.
 
 ```bash
@@ -146,19 +168,19 @@ EMAIL_HOST_USER=                    (smtp user, optional)
 EMAIL_HOST_PASSWORD=                (smtp user password, optional)
 ```
 
-On a mac, `host.docker.internal` should be used instead of "localhost" or "127.0.0.1".
+On a Mac, `host.docker.internal` should be used instead of "localhost" or "127.0.0.1".
 
 Set values for the variables and save this as a file, let's name it `env`.
 
-Environment variables are ready, we will also mount some volumes to our Docker container. Get the path to your solr 
-directory, from the step where we installed Solr. Also, create a folder for the app to store some utility data 
-(portindex, portindex.json etc.). We will mount both these directories as volumes to the docker container, call them `path/to/solr`
+Environment variables are ready, we will also mount some volumes to our Docker container. Get the path to your Solr
+directory, from the step where we installed Solr. Also, create a folder for the app to store some utility data
+(portindex, portindex.json etc.). We will mount both these directories as volumes to the Docker container, call them `path/to/solr`
 and `path/to/data`.
 
 Start the image:
 
 On Linux:
-```bash 
+```bash
 docker run -d \
     -v /path/to/solr:/solr \
     -v /path/to/data:/code/app/data \
@@ -176,9 +198,9 @@ On Mac:
 sudo docker run -d \
     -p 8080:8080 \
     -v /path/to/solr:/solr \
-    -v /path/to/data:/code/app/data \ 
+    -v /path/to/data:/code/app/data \
     --name=webapp-container \
-    --env-file=env \ 
+    --env-file=env \
     macports-webapp
 ```
 
@@ -186,8 +208,8 @@ Open `127.0.0.1:8080` in the browser to test if the app has started, you won't h
 
 ## Setup without Docker
 
-This is the traditional python-django route that we will follow. Make sure PostgreSQL, SOLR and Memcached(optional) have
-been setup as described above. Python3 is recommended.
+This is the traditional Python-Django route that we will follow. Make sure PostgreSQL, Solr and Memcached (optional) have
+been setup as described above. Python 3 is recommended.
 
 Start by cloning the repository:
 ```bash
@@ -213,7 +235,7 @@ pip install -r app/requirements.txt
 ```
 
 Once all the dependencies are installed we can move to the most important step, that is connecting various services
-to the django app. If you followed the setup with Docker, you already know that we do this by using environment variables.
+to the Django app. If you followed the setup with Docker, you already know that we do this by using environment variables.
 To set the environment variables inside your virtual env, run the following commands:
 
 ```bash
@@ -241,7 +263,7 @@ export DB_NAME=webapp
 Setting up env variables every time is a tedious task and you might want to reduce the friction by following some really
 good guides: https://help.pythonanywhere.com/pages/environment-variables-for-web-apps/
 
-Once the database (and other services) have been connected, run the migrations. Before that let's cd into the main src 
+Once the database (and other services) have been connected, run the migrations. Before that let's cd into the main src
 directory for the project, that is `app`.
 
 ```bash
@@ -261,7 +283,7 @@ python3 manage.py runserver
 Now that you have the app running (using either of two routes above), it is time to add some data to the app. Some of these
 commands take a long time in their first run.
 
-Before proceeding make sure you are in the main django directory, i.e. `app`.
+Before proceeding make sure you are in the main Django directory, i.e. `app`.
 
 **For docker:**
 ```bash
@@ -293,7 +315,7 @@ python3 manage.py createsuperuser
 After this enter, username and password according to your choice- remember the credentials.
 
 ##### Add a builder
-- Login to django admin dashboard using your credentials: `/admin`
+- Login to Django admin dashboard using your credentials: `/admin`
 - Go to `BUILDHISTORY -> Builder -> Add builder`
 - An example of a builder is
     ```bash
@@ -301,9 +323,9 @@ After this enter, username and password according to your choice- remember the c
     Simplified builder name: 10.XX: = 10.15
     Name of the macOS version, e.g. Catalina: = Catalina
     ```
-  
+
 You may add more builders if you wish
-  
+
 ##### Fetch some build history
 ```bash
 python3 manage.py fetch-build-history &
@@ -311,7 +333,7 @@ python3 manage.py fetch-build-history &
 
 **NOTE**: This command should be sent to background using `&` as the fetching can proceed in the background without any
  issues.
- 
+
 ##### Run livecheck
 ```bash
 port selfupdate && python3 manage.py run-full-livecheck &
@@ -320,9 +342,9 @@ port selfupdate && python3 manage.py run-full-livecheck &
 **NOTE**: This is the most time consuming command. Livecheck can take 3-4 hours to finish for all ports and hence the command
 should always be ran in background.
 
-##### Add a solr schema and generate index
+##### Add a Solr schema and generate index
 - Generate Solr schema:
-    
+
     **Docker**:
     ```bash
     python3 manage.py build_solr_schema --configure-directory=/solr/server/solr/tester/conf
@@ -331,10 +353,10 @@ should always be ran in background.
     ```bash
     pyton3 manage.py build_solr_schema --configure-directory=path/to/solr/server/solr/tester/conf
     ```
-  
+
   This is because for Docker, we already the know path to Solr, but without Docker you should add path to Solr as per
   your machine.
-  
+
 - Reload Solr core:
 
     ```bash
@@ -345,14 +367,14 @@ should always be ran in background.
     ```bash
     python3 manage.py rebuild_index --noinput
     ```
-  
+
 All needed data has been added.
 
 
 ## Keeping the data up-to-date
 
 To update port information:
-```bash 
+```bash
 python3 manage.py update-portinfo
 ```
 
@@ -360,7 +382,7 @@ To fetch new builds:
 ```bash
 python3 manage.py fetch-build-history
 ```
-**NOTE**: For all added builder, this will fetch all builds that have finished on the buildbot after the most recent 
+**NOTE**: For all added builder, this will fetch all builds that have finished on the buildbot after the most recent
 build in your database.
 
 To run livecheck again:
@@ -390,15 +412,15 @@ Two crontabs can keep the up-to-date in a production environment.
 
 
 1. Run the following every 10 minutes:
-    
+
     ```bash
     python3 manage.py update-portinfo
     python3 manage.py fetch-build-history
     python3 manage.py update_index --age=5
     ```
-    
+
     The 5-hour window for updating the Solr index is to make sure no builds are missed, as builds might take some time to finish.
-    
+
 2. Run the following every two days
     ```bash
     python3 manage.py run-full-livecheck
