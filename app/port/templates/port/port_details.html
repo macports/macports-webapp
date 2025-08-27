@@ -67,7 +67,7 @@
                 <td><strong>Variants</strong></td>
                 <td>
                     {% if port.variants.all.count > 0 %}
-                        {% for variant in port.variants.all|dictsort:"variant.lower" %}
+                        {% for variant in port.variants.all.values|dictsort:"variant" %}
                             <ul class="list-group list-group-flush">
                                 <li>
                                     <a href="{% url 'variant' variant.variant %}">{{ variant.variant }}</a>
@@ -100,7 +100,7 @@
                     {% for d in port.dependent_port.all %}
                         <h6><ins>{{ d.type }} ({{ d.dependencies.all.count|intcomma }})</ins></h6>
                         <div class="row mb-4">
-                        {% for i in d.dependencies.all|dictsort:"name.lower" %}
+                        {% for i in d.dependencies.all.values|dictsort:"name" %}
                             <div class="col-3">
                                 <a class="f15" href="{% url 'port_detail' i.name %}">{{ i.name }}</a><br>
                             </div>
@@ -118,7 +118,7 @@
                         <ins>{{ d.type }} ({{ d.ports|length|intcomma }})</ins> <i class="fa fa-chevron-circle-down"></i>
                     </a><br>
                     <div class="row mb-4 collapse" id="d2-{{ d.type }}">
-                        {% for i in d.ports|dictsort:"0.lower" %}
+                        {% for i in d.ports %}
                             <div class="col-3">
                                 <a class="f15" href="{% url 'port_detail' i %}">{{ i }}</a><br>
                             </div>
