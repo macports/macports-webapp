@@ -230,9 +230,11 @@ class PortAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = Port.objects.all()
     lookup_field = 'name__iexact'
     lookup_value_regex = '[a-zA-Z0-9_.-]+'
-    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter, DjangoFilterBackend]
     search_fields = ['name', 'maintainers__github', 'variants__variant', 'categories__name']
     filterset_fields = ['name', 'categories', 'maintainers__github', 'variants__variant']
+    ordering_fields = ['name', 'created_at', 'updated_at']
+    ordering = ['-created_at']  # Default ordering by newest first
 
 
 class SearchAPIView(HaystackViewSet):
