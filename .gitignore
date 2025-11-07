@@ -92,5 +92,10 @@ staticfiles
 db.sqlite3
 /app/data/
 
-
-ui/**
+# UI directory - only ignore build artifacts and dependencies
+ui/node_modules/
+ui/.next/
+ui/out/
+ui/logs/
+ui/.env.local
+ui/.env.production.local
