@@ -37,11 +37,18 @@ class PortSerializer(serializers.ModelSerializer):
                   'maintainers',
                   'variants',
                   'dependencies',
-                  'depends_on'
+                  'depends_on',
+                  'created_at',
+                  'updated_at',
+                  'version_updated_at',
+                  'openmaintainer',
+                  'closedmaintainer',
+                  'submitter',
+                  'notes'
                   )
 
     def get_variants(self, obj):
-        return obj.variants.all().values_list('variant', flat=True)
+        return obj.variants.all().values('variant', 'description')
 
     def get_dependencies(self, obj):
         return obj.dependent_port.all().values('type').annotate(ports=ArrayAgg('dependencies__name'))

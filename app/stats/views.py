@@ -207,3 +207,53 @@ class GeneralStatisticsAPIView(APIView):
             }
         )
         return Response(result.data)
+
+
+class PopularPortsAPIView(APIView):
+    @method_decorator(cache_page(60 * 60))  # Cache for 1 hour
+    def get(self, request):
+        days = int(request.GET.get('days', 30))
+        limit = int(request.GET.get('limit', 10))
+        
+        # Get submissions from the last X days
+        end_date = datetime.datetime.now(tz=datetime.timezone.utc)
+        start_date = end_date - datetime.timedelta(days=days)
+        
+        submissions_unique = Submission.objects.filter(
+            timestamp__range=[start_date, end_date]
+        ).order_by('user', '-timestamp').distinct('user')
+        
+        # Get popular ports based on installation counts
+        popular_ports = PortInstallation.objects.filter(
+            submission_id__in=Subquery(submissions_unique.values('id')),
+            requested=True
+        ).exclude(
+            port__icontains='mpstats'
+        ).values('port').annotate(
+            total_count=Count('port'),
+            req_count=Count(Case(When(requested=True, then=1), output_field=IntegerField()))
+        ).order_by('-total_count')[:limit]
+        
+        return Response(list(popular_ports))
+
+
+class EnhancedStatisticsAPIView(APIView):
+    @method_decorator(cache_page(60 * 60))  # Cache for 1 hour
+    def get(self, request):
+        from port.models import Port
+        
+        # Get basic statistics
+        current_week = datetime.datetime.today().isocalendar()[1]
+        all_submissions = Submission.objects.all().only('id')
+        total_unique_users = all_submissions.distinct('user').count()
+        current_week_unique = all_submissions.filter(timestamp__week=current_week).distinct('user').count()
+        last_week_unique = all_submissions.filter(timestamp__week=current_week - 1).distinct('user').count()
+        total_ports = Port.objects.filter(active=True).count()
+        
+        return Response({
+            'current_week': current_week_unique,
+            'last_week': last_week_unique,
+            'total_submissions': all_submissions.count(),
+            'total_unique_users': total_unique_users,
+            'total_ports': total_ports,
+        })
