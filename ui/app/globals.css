@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0b1220;
+  --foreground: #eaf1ff;
+}
+
+:root.light {
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+}
+
+html, body {
+  height: 100%;
+}
+
+/* Dark mode styles (default) */
+body {
+  color: var(--foreground);
+  background: radial-gradient(1200px 600px at 20% -20%, #17315f 0, transparent 50%),
+              radial-gradient(800px 400px at 90% 0%, #0a1a35 0, transparent 50%),
+              #0b1220;
+}
+
+/* Light mode styles */
+html.light body {
+  color: var(--foreground);
+  /* Brighter, more vibrant light background with soft brand tints */
+  background:
+    radial-gradient(1200px 600px at 20% -20%, rgba(59, 130, 246, 0.18) 0, transparent 55%),
+    radial-gradient(900px 420px at 95% -10%, rgba(168, 85, 247, 0.10) 0, transparent 55%),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.container {
+  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-md bg-brand-500 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 focus:ring-offset-slate-900 transition;
+}
+
+/* Light mode button */
+html.light .btn-primary {
+  @apply focus:ring-offset-white;
+  background-image: linear-gradient(180deg, #3b82f6, #2563eb);
+  box-shadow: 0 6px 14px -6px rgba(37, 99, 235, 0.5), 0 2px 6px -2px rgba(37, 99, 235, 0.35);
+}
+html.light .btn-primary:hover {
+  background-image: linear-gradient(180deg, #2563eb, #1d4ed8);
+}
+
+.card {
+  @apply rounded-xl border border-white/10 bg-white/5 backdrop-blur p-4 shadow-sm hover:shadow-md transition-shadow;
+}
+
+/* Light mode card */
+html.light .card {
+  @apply border-gray-200 shadow-sm;
+  background-image: linear-gradient(180deg, #ffffff, #f9fafb);
+  transition: border-color 150ms, box-shadow 150ms, transform 150ms;
+}
+html.light .card:hover {
+  border-color: #bfdbfe; /* brand-200 */
+  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.20), 0 4px 10px -4px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+/* ----------------------------------------------------
+   Global light-mode overrides for common “white” utils
+   Ensures visibility for search bars, port cards, etc.
+   ---------------------------------------------------- */
+
+/* Text colors */
+html.light .text-white { color: #111827; }            /* gray-900 */
+html.light .text-white\/90 { color: #1f2937; }        /* gray-800 */
+html.light .text-white\/80 { color: #374151; }        /* gray-700 */
+html.light .text-white\/70 { color: #4b5563; }        /* gray-600 */
+html.light .text-white\/60 { color: #6b7280; }        /* gray-500 */
+html.light .text-white\/50 { color: #9ca3af; }        /* gray-400 */
+html.light .placeholder\:text-white\/40::placeholder { color: #9ca3af; } /* gray-400 */
+
+/* Inputs: ensure placeholders are readable in light */
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #9ca3af; /* gray-400 */
+}
+
+/* Backgrounds using white alpha -> neutral grays in light */
+html.light .bg-white\/5 { background-color: #f9fafb; }   /* gray-50 */
+html.light .bg-white\/10 { background-color: #f3f4f6; }  /* gray-100 */
+html.light .bg-white\/20 { background-color: #e5e7eb; }  /* gray-200 */
+
+/* Hover backgrounds */
+html.light .hover\:bg-white\/10:hover { background-color: #f3f4f6; } /* gray-100 */
+
+/* Borders using white alpha -> neutral grays in light */
+html.light .border-white\/10,
+html.light .border-white\/15 {
+  border-color: #e5e7eb; /* gray-200 */
+}
+
+/* Make generic chip-like whites more visible in light mode */
+html.light .rounded.bg-white\/10 {
+  /* brand-tinted chip */
+  background-color: #eff6ff; /* blue-50 */
+  color: #1d4ed8;            /* blue-700 */
+  border: 1px solid #bfdbfe; /* blue-200 */
+}
+html.light .rounded.bg-white\/5 {
+  /* neutral chip */
+  background-color: #f3f4f6; /* gray-100 */
+  color: #374151;            /* gray-700 */
+  border: 1px solid #e5e7eb; /* gray-200 */
+}
+
+/* Reusable tag utilities (work in both themes) */
+@layer components {
+  .tag {
+    @apply inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium;
+  }
+  .tag-muted {
+    @apply tag border-gray-200 bg-gray-100 text-gray-700 dark:border-white/10 dark:bg-white/5 dark:text-white/80;
+  }
+  .tag-info {
+    @apply tag border-blue-200 bg-blue-50 text-blue-700 dark:border-white/10 dark:bg-white/10 dark:text-brand-200;
+  }
+  .tag-success {
+    @apply tag border-green-200 bg-green-50 text-green-700 dark:border-white/10 dark:bg-white/10 dark:text-green-300;
+  }
+  .tag-warning {
+    @apply tag border-amber-200 bg-amber-50 text-amber-700 dark:border-white/10 dark:bg-white/10 dark:text-amber-300;
+  }
+  .tag-danger {
+    @apply tag border-rose-200 bg-rose-50 text-rose-700 dark:border-white/10 dark:bg-white/10 dark:text-rose-300;
+  }
+}

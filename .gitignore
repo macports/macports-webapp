@@ -40,8 +40,8 @@ develop-eggs/
 dist/
 downloads/
 eggs/
-lib/
-lib64/
+/lib/
+/lib64/
 parts/
 sdist/
 var/
@@ -91,3 +91,11 @@ staticfiles
 .env
 db.sqlite3
 /app/data/
+
+# UI directory - only ignore build artifacts and dependencies
+ui/node_modules/
+ui/.next/
+ui/out/
+ui/logs/
+ui/.env.local
+ui/.env.production.local
