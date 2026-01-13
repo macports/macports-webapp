@@ -64,7 +64,7 @@ sqlparse==0.5.0
 swapper==1.1.2.post1
 toml==0.10.1
 urllib3==2.2.3
-virtualenv==20.26.6
+virtualenv==20.36.1
 webencodings==0.5.1
 whitenoise==5.1.0
 wrapt==1.12.1
