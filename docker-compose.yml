@@ -1,0 +1,114 @@
+# One-shot docker-compose for the macports-webapp.
+#
+# Setup:
+#   1. Copy env.sample to .env (or create .env directly) and fill in values:
+#        DB_NAME=macportswebapp
+#        DB_USER=macportswebapp
+#        DB_PASSWORD=...
+#        SECRET_KEY=...
+#        EMAIL_HOST=mail.macports.org
+#        EMAIL_PORT=587
+#        EMAIL_HOST_USER=...
+#        EMAIL_HOST_PASSWORD=...
+#        FROM_EMAIL=...
+#        RECAPTCHA_PUBLIC_KEY=...
+#        RECAPTCHA_PRIVATE_KEY=...
+#      Note: leave DB_HOST / DB_PORT / SOLR_URL / SOLR_ADMIN_URL OUT of .env
+#      (or it doesn't matter — they are overridden below for inter-container DNS).
+#
+#   2. docker compose up -d --build
+#
+#   3. First-time only — generate solr schema and build the index:
+#        docker exec webapp-container python3 /code/app/manage.py update-portinfo --type=full
+#        docker exec webapp-container python3 /code/app/manage.py build_solr_schema --configure-directory=/solr/server/solr/tester/conf
+#        docker exec webapp-container python3 /code/app/manage.py build_solr_schema -r RELOAD_CORE
+#        docker exec webapp-container python3 /code/app/manage.py rebuild_index --noinput
+#
+# The cron service replaces the host-level cron-ten-minutes.sh / cron-two-days.sh
+# you currently run (the supervisor [program:cron] / [program:livecheck] are not used —
+# they don't work). It uses the host docker socket to docker-exec into the webapp
+# container, exactly mirroring your existing host-cron pattern.
+
+services:
+  postgres:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  memcached:
+    image: memcached:1.6-alpine
+    restart: unless-stopped
+    command: ["-m", "256"]
+
+  solr:
+    image: solr:6.6.6
+    restart: unless-stopped
+    ports:
+      - "8983:8983"
+    # solr_home is a named volume mounted at /opt/solr/server/solr in this
+    # container AND at /solr/server/solr in the webapp container — so when
+    # `manage.py build_solr_schema --configure-directory=/solr/server/solr/tester/conf`
+    # runs inside the webapp container, it writes to the same physical files
+    # that solr reads from at /opt/solr/server/solr/tester/conf.
+    volumes:
+      - solr_home:/opt/solr/server/solr
+    command: ["solr-precreate", "tester"]
+
+  webapp:
+    build: .
+    image: macports-webapp
+    container_name: webapp-container
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      solr:
+        condition: service_started
+      memcached:
+        condition: service_started
+    env_file:
+      - .env
+    # These override whatever is in .env so the webapp uses the
+    # in-compose service DNS names instead of localhost / 127.0.0.1.
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      SOLR_URL: http://solr:8983/solr/tester
+      SOLR_ADMIN_URL: http://solr:8983/solr/admin/cores
+      MEMCACHED_LOCATION: memcached:11211
+    ports:
+      - "8080:8080"
+    volumes:
+      - solr_home:/solr/server/solr
+      - app_data:/code/app/data
+
+  cron:
+    image: docker:cli
+    restart: unless-stopped
+    depends_on:
+      - webapp
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        cat > /etc/crontabs/root <<'EOF'
+        */10 * * * * docker exec webapp-container python3 /code/app/manage.py update-portinfo && docker exec webapp-container python3 /code/app/manage.py fetch-build-history && docker exec webapp-container python3 /code/app/manage.py update_index --age=1
+        0 0 */2 * * docker exec webapp-container port sync && docker exec webapp-container python3 /code/app/manage.py run-full-livecheck
+        EOF
+        exec crond -f -l 8 -L /dev/stderr
+
+volumes:
+  postgres_data:
+  solr_home:
+  app_data:
