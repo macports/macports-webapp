@@ -141,13 +141,13 @@ services:
       - app_data:/code/app/data
     # Generous cap — webapp runs uwsgi workers + cron-triggered jobs
     # (livecheck, port sync, update-portinfo) which spike well past
-    # steady-state. 12 GiB is high enough that those jobs won't trip it
+    # steady-state. 10 GiB is high enough that those jobs won't trip it
     # under normal load, but low enough to contain a runaway leak before
     # it takes the host down.
     deploy:
       resources:
         limits:
-          memory: 12G
+          memory: 10G
         reservations:
           memory: 2G
 
