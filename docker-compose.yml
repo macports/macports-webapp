@@ -37,6 +37,21 @@ services:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    # Tuned for a 10 GiB container budget on m6g.2xlarge.
+    # shared_buffers ~25% of mem_limit; effective_cache_size hints at the
+    # OS page cache available outside the container.
+    command:
+      - postgres
+      - -c
+      - shared_buffers=2560MB
+      - -c
+      - effective_cache_size=5GB
+      - -c
+      - work_mem=32MB
+      - -c
+      - maintenance_work_mem=512MB
+      - -c
+      - max_connections=100
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -44,16 +59,34 @@ services:
       interval: 5s
       timeout: 5s
       retries: 30
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 10G
+        reservations:
+          memory: 4G
 
   memcached:
     image: memcached:1.6-alpine
     restart: unless-stopped
     command: ["-m", "256"]
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 384M
+        reservations:
+          memory: 256M
 
   solr:
     image: solr:6.6.6
     platform: linux/amd64
     restart: unless-stopped
+    environment:
+      # JVM heap. Stay well below mem_limit so off-heap (Lucene mmap,
+      # direct buffers, JVM metaspace, QEMU overhead) has room.
+      SOLR_HEAP: 4g
     ports:
       - "8983:8983"
     # solr_home is a named volume mounted at /opt/solr/server/solr in this
@@ -64,6 +97,13 @@ services:
     volumes:
       - solr_home:/opt/solr/server/solr
     command: ["solr-precreate", "tester"]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 6G
+        reservations:
+          memory: 3G
 
   webapp:
     build:
@@ -99,6 +139,17 @@ services:
     volumes:
       - solr_home:/solr/server/solr
       - app_data:/code/app/data
+    # Generous cap — webapp runs uwsgi workers + cron-triggered jobs
+    # (livecheck, port sync, update-portinfo) which spike well past
+    # steady-state. 12 GiB is high enough that those jobs won't trip it
+    # under normal load, but low enough to contain a runaway leak before
+    # it takes the host down.
+    deploy:
+      resources:
+        limits:
+          memory: 12G
+        reservations:
+          memory: 2G
 
   caddy:
     image: caddy:2-alpine
@@ -116,6 +167,13 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+        reservations:
+          memory: 64M
 
   cron:
     image: docker:cli
@@ -132,6 +190,11 @@ services:
         0 0 */2 * * docker exec webapp-container port sync && docker exec webapp-container python3 /code/app/manage.py run-full-livecheck
         EOF
         exec crond -f -l 8 -L /dev/stderr
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
 
 volumes:
   postgres_data:
