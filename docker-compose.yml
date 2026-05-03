@@ -52,6 +52,7 @@ services:
 
   solr:
     image: solr:6.6.6
+    platform: linux/amd64
     restart: unless-stopped
     ports:
       - "8983:8983"
@@ -65,7 +66,11 @@ services:
     command: ["solr-precreate", "tester"]
 
   webapp:
-    build: .
+    build:
+      context: .
+      platforms:
+        - linux/amd64
+    platform: linux/amd64
     image: macports-webapp
     container_name: webapp-container
     restart: unless-stopped
@@ -86,11 +91,31 @@ services:
       SOLR_URL: http://solr:8983/solr/tester
       SOLR_ADMIN_URL: http://solr:8983/solr/admin/cores
       MEMCACHED_LOCATION: memcached:11211
+    # Bound to localhost only — Caddy reaches webapp over the internal
+    # docker network. Remove this mapping entirely if you don't need
+    # local debugging access.
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     volumes:
       - solr_home:/solr/server/solr
       - app_data:/code/app/data
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - webapp
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAINS: ${DOMAINS}
+      ACME_EMAIL: ${ACME_EMAIL}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
 
   cron:
     image: docker:cli
@@ -112,3 +137,5 @@ volumes:
   postgres_data:
   solr_home:
   app_data:
+  caddy_data:
+  caddy_config:
