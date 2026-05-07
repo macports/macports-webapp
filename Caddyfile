@@ -4,5 +4,7 @@
 
 {$DOMAINS} {
 	encode zstd gzip
+	@blocked_builds path_regexp blockedBuilds ^/port/[^/]+/builds(?:/.*)?$
+	respond @blocked_builds 403
 	reverse_proxy webapp:8080
 }

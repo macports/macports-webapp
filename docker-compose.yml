@@ -59,25 +59,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 30
-    deploy:
-      resources:
-        limits:
-          cpus: "2.0"
-          memory: 10G
-        reservations:
-          memory: 4G
 
   memcached:
     image: memcached:1.6-alpine
     restart: unless-stopped
-    command: ["-m", "256"]
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 384M
-        reservations:
-          memory: 256M
+    # 4 GiB cache. Increase to 8192 for 8 GiB if host memory allows.
+    command: ["-m", "4096"]
 
   solr:
     image: solr:6.6.6
@@ -97,13 +84,6 @@ services:
     volumes:
       - solr_home:/opt/solr/server/solr
     command: ["solr-precreate", "tester"]
-    deploy:
-      resources:
-        limits:
-          cpus: "1.5"
-          memory: 6G
-        reservations:
-          memory: 3G
 
   webapp:
     build:
@@ -139,17 +119,6 @@ services:
     volumes:
       - solr_home:/solr/server/solr
       - app_data:/code/app/data
-    # Generous cap — webapp runs uwsgi workers + cron-triggered jobs
-    # (livecheck, port sync, update-portinfo) which spike well past
-    # steady-state. 10 GiB is high enough that those jobs won't trip it
-    # under normal load, but low enough to contain a runaway leak before
-    # it takes the host down.
-    deploy:
-      resources:
-        limits:
-          memory: 10G
-        reservations:
-          memory: 2G
 
   caddy:
     image: caddy:2-alpine
@@ -167,13 +136,6 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 256M
-        reservations:
-          memory: 64M
 
   cron:
     image: docker:cli
@@ -190,11 +152,6 @@ services:
         0 0 */2 * * docker exec webapp-container port sync && docker exec webapp-container python3 /code/app/manage.py run-full-livecheck
         EOF
         exec crond -f -l 8 -L /dev/stderr
-    deploy:
-      resources:
-        limits:
-          cpus: "0.25"
-          memory: 128M
 
 volumes:
   postgres_data:
