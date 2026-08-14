@@ -14,7 +14,7 @@ class BuildHistorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BuildHistory
-        fields = ('port_name', 'builder_name', 'build_id', 'status', 'time_start', 'time_elapsed', 'watcher_id')
+        fields = ('port_name', 'port_version', 'port_revision', 'builder_name', 'build_id', 'status', 'time_start', 'time_elapsed', 'watcher_id')
 
 
 class FilesSerializer(serializers.ModelSerializer):
